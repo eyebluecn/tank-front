@@ -5,7 +5,12 @@
       <div class="col-md-12">
 
         <div>
-          <NbFilter :pager="pager" :callback="search"></NbFilter>
+          <NbFilter :pager="pager" :callback="search">
+            <button class="btn btn-sm btn-primary" @click.stop.prevent="createDirectory">
+              <i class="fa fa-plus"></i>
+              创建文件夹
+            </button>
+          </NbFilter>
         </div>
         <div v-for="matter in pager.data">
           <MatterPanel @goToDirectory="goToDirectory" :matter="matter"/>
@@ -110,6 +115,7 @@
             that.breadcrumbs.splice(0, that.breadcrumbs.length);
             let query = that.pager.getParams()
             query["puuid"] = "root"
+            //添加一个随机数，防止watch $route失败
             query["_t"] = new Date().getTime()
             that.breadcrumbs.push({
               title: '全部文件',
@@ -135,8 +141,16 @@
             })
           })
         }
+      },
+      createDirectory() {
+        let newMatter = new Matter()
+        newMatter.name = '新建文件夹'
+        newMatter.dir = true
+        newMatter.editMode = true
+        this.pager.data.unshift(newMatter)
+        setTimeout(function () {
 
-
+        }, 100)
       }
     },
     watch: {

@@ -7,15 +7,27 @@
       <span>
         <img class="matter-icon" :src="matter.getIcon()"/>
       </span>
-      <span class="matter-name">
+      <span class="matter-name-edit" v-if="matter.editMode">
+
+        <input ref="editInput" class="form-control"
+               :class="matter.uuid"
+               v-model="matter.name"
+               placeholder="请输入名称"
+               @blur="finishRename()"
+               v-on:keyup.13="finishRename()"/>
+
+      </span>
+      <span class="matter-name" v-else>
         {{matter.name}}
       </span>
+
     </div>
     <div class="right-part">
 
       <span class="matter-operation">
-        <i class="fa fa-pencil btn-action text-primary" title="重命名"></i>
-        <i class="fa fa-download btn-action text-primary" title="下载" v-if="!matter.dir" @click.stop.prevent="download"></i>
+        <i class="fa fa-pencil btn-action text-primary" title="重命名" @click.stop.prevent="prepareRename"></i>
+        <i class="fa fa-download btn-action text-primary" title="下载" v-if="!matter.dir"
+           @click.stop.prevent="download"></i>
         <i class="fa fa-trash btn-action text-danger" title="删除"></i>
       </span>
       <span class="matter-size" v-if="matter.dir">
@@ -38,6 +50,7 @@
   import Matter from '../../../common/model/matter/Matter'
   import NbCheckbox from "../../../common/widget/NbCheckbox"
   import Vue from "vue"
+  import $ from "jquery"
 
   export default {
     data() {
@@ -66,6 +79,17 @@
       },
       download() {
         window.open(Vue.http.options.root + '/alien/download/' + this.matter.uuid + '/' + this.matter.name)
+      },
+      prepareRename() {
+        let that = this
+        this.matter.editMode = true
+        setTimeout(function () {
+          $(that.$refs.editInput).select()
+        }, 100)
+
+      },
+      finishRename() {
+
       }
     },
     created() {
@@ -87,6 +111,14 @@
       float: left;
       .matter-icon {
         width: 24px;
+      }
+      .matter-name-edit {
+        margin-left: 5px;
+        input {
+          width: 200px;
+          height: 26px;
+          display: inline-block;
+        }
       }
       .matter-name {
         margin-left: 5px;
