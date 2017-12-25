@@ -21,7 +21,7 @@
       </span>
 
     </div>
-    <div class="right-part">
+    <div class="right-part" v-if="matter.uuid">
 
       <span class="matter-operation">
         <i class="fa fa-pencil btn-action text-primary" title="重命名" @click.stop.prevent="prepareRename"></i>

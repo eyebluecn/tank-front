@@ -20,13 +20,6 @@
       </div>
     </NbExpanding>
 
-
-    <NbExpanding>
-      <div v-show="tank.procedure === tank.Procedure.FETCHING_UPLOAD_TOKEN">
-        <i class="fa fa-spinner fa-spin fa-fw"></i> 准备上传中...
-      </div>
-    </NbExpanding>
-
     <NbExpanding>
       <div class="huge-block clearfix"
            v-if="tank.procedure === tank.Procedure.UPLOADING">
@@ -57,14 +50,11 @@
         </div>
         <div>
           <i class="f16" v-show="tank.fileIcon() && !tank.publicImgUrl()" :class="[tank.fileIcon()]"></i>
-          <span class="f14 black cursor hover-underline" @click.stop.prevent="tank.download()">
+          <span class="f14 black">
 					{{tank.name}}
 				</span>
           <span>
 					{{tank.size | humanFileSize}}
-				</span>
-          <span>
-					<i class="btn-action f16 fa fa-download text-success" @click.stop.prevent="tank.download()"></i>
 				</span>
           <span v-if="edit">
 					<i class="btn-action f16 fa fa-trash text-danger" @click.stop.prevent="del()"></i>
@@ -119,13 +109,15 @@
     methods: {
       fileChanged() {
         let that = this
-
         let value = that.$refs['refFile'].value
         if (!value) {
           return
         }
-
-        this.tank.file = this.$refs['refFile'].files[0]
+        this.beginUpload(this.$refs['refFile'].files[0])
+      },
+      beginUpload(file) {
+        let that = this
+        this.tank.file = file
 
         this.tank.httpUpload(function (response) {
 

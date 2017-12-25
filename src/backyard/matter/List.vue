@@ -14,8 +14,11 @@
               <i class="fa fa-plus"></i>
               创建文件夹
             </button>
-
           </NbFilter>
+        </div>
+
+        <div>
+          <NbTank :tank="tank"/>
         </div>
         <div v-if="director.createMode">
           <MatterPanel ref="newMatterPanel" @createDirectorySuccess="refresh()" :matter="newMatter"
@@ -66,7 +69,11 @@
         pager: new Pager(Matter, 50),
         user: this.$store.state.user,
         breadcrumbs: this.$store.state.breadcrumbs,
-        director: new Director()
+        director: new Director(),
+        //正在排队等待上传的文件。
+        tanks: [],
+        //一个测试的tank
+        tank: new Tank("*", true, 1024 * 1024 * 1024)
       }
     },
     components: {

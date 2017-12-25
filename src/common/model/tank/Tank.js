@@ -6,9 +6,7 @@ import {getMimeType} from "../../util/MimeUtil";
 //当前tank处于怎样的步骤中
 let Procedure = {
   'FREE': 'FREE',
-  'FETCHING_UPLOAD_TOKEN': 'FETCHING_UPLOAD_TOKEN',
   'UPLOADING': 'UPLOADING',
-  'FETCHING_DOWNLOAD_TOKEN': 'FETCHING_DOWNLOAD_TOKEN',
   'DOWNLOADING': 'DOWNLOADING'
 }
 
@@ -59,9 +57,7 @@ export default class Tank extends BaseEntity {
 
   }
 
-  static URL_FETCH_UPLOAD_TOKEN = '/tank/fetch/upload/token'
-  static URL_DOWNLOAD = '/tank/download/'
-  static URL_CONFIRM = '/tank/confirm'
+  static URL_UPLOAD = '/matter/upload'
 
   render(obj) {
     super.render(obj)
@@ -287,17 +283,6 @@ export default class Tank extends BaseEntity {
     return false
   }
 
-  //开始下载
-  download() {
-
-    if (this.privacy) {
-      window.open(Vue.http.options.root + Tank.URL_DOWNLOAD + this.uuid)
-    } else {
-      window.open(this.url)
-    }
-
-  }
-
   //在上传的途中，清空一切，从头开始。
   clear() {
 
@@ -311,45 +296,6 @@ export default class Tank extends BaseEntity {
 
     this.render(newTank)
 
-  }
-
-  //去服务器上汇报自己上传工作已经完成。
-  httpConfirm(successMessage, errorMessage) {
-    let that = this
-
-    if (!this.uuid) {
-      this.errorMessage = '不能正常确认文件'
-      return
-    }
-
-    this.httpPost(Tank.URL_CONFIRM, {uuid: this.uuid, matterUuid: this.matterUuid}, function (response) {
-
-      that.render(response.data.data);
-
-
-      if (typeof successMessage === "function") {
-        successMessage(response)
-      }
-
-    }, errorMessage)
-  }
-
-  //获取上传的token
-  httpFetchUploadToken(successMessage, errorMessage) {
-    let that = this
-
-    if (!this.validate()) {
-      return
-    }
-
-
-    this.httpPost(Tank.URL_FETCH_UPLOAD_TOKEN, this.getForm(), function (response) {
-
-      that.render(response.data.data);
-
-      (typeof successMessage === 'function') && successMessage()
-
-    }, errorMessage)
   }
 
   //文件上传
@@ -372,64 +318,36 @@ export default class Tank extends BaseEntity {
       return
     }
 
-    this.procedure = Procedure.FETCHING_UPLOAD_TOKEN
-    this.httpFetchUploadToken(function (response) {
+    //（兼容性：chrome，ff，IE9及以上）
+    let formData = new FormData()
 
-      //（兼容性：chrome，ff，IE9及以上）
-      let formData = new FormData()
+    formData.append('uploadTokenUuid', that.uploadTokenUuid)
+    formData.append('file', that.file)
 
-      formData.append('uploadTokenUuid', that.uploadTokenUuid)
-      formData.append('file', that.file)
+    that.procedure = Procedure.UPLOADING
+    that.httpPost(that.uploadUrl, formData, function (response) {
 
-      that.procedure = Procedure.UPLOADING
-      that.httpPost(that.uploadUrl, formData, function (response) {
+      //上传到tank服务器成功了，更新matterUuid.
+      that.matterUuid = response.data.data.uuid
 
-        //上传到tank服务器成功了，更新matterUuid.
-        that.matterUuid = response.data.data.uuid
+    }, function (response) {
 
-        //去服务器确认文件
-        that.httpConfirm(function (response) {
+      console.log("上传到tank服务器失败", response.data)
+      console.log(response)
 
-          console.log("确认成功啦！")
-          that.procedure = Procedure.FREE
+      that.procedure = Procedure.FREE
+      that.errorMessage = '上传出错，请稍后重试'
+      that.clear()
 
-          //已经被自己服务器确认过了
-          that.confirmed = true
+      that.defaultErrorHandler(response, failureCallback)
 
-          if (typeof successCallback === 'function') {
-            successCallback(response)
-          }
+    }, {
+      progress: function (event) {
 
-        }, function () {
+        //上传进度。
+        that.progress = event.loaded / event.total
 
-
-          that.procedure = Procedure.FREE
-          that.errorMessage = '准备去确认，出错啦'
-          that.clear()
-
-          that.defaultErrorHandler(response, failureCallback)
-
-        })
-
-      }, function (response) {
-
-        console.log("上传到tank服务器失败", response.data)
-        console.log(response)
-
-        that.procedure = Procedure.FREE
-        that.errorMessage = '上传出错，请稍后重试'
-        that.clear()
-
-        that.defaultErrorHandler(response, failureCallback)
-
-      }, {
-        progress: function (event) {
-
-          //上传进度。
-          that.progress = event.loaded / event.total
-
-        }
-      })
+      }
     })
 
   }
