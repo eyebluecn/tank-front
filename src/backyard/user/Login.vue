@@ -15,6 +15,10 @@
                @keyup.enter="login">
       </div>
 
+      <div class="mv10">
+        体验账号： lish516@126.com 密码：123456
+      </div>
+
       <div class="mb15">
         <button class="btn btn-primary button full-width" @click.prevent.stop="login" :disabled="user.loading">
           <span v-if="user.loading">

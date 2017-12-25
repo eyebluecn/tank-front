@@ -204,12 +204,6 @@ router.beforeEach((to, from, next) => {
     store.state.breadcrumbs.push.apply(store.state.breadcrumbs, to.meta.breadcrumbs)
   }
 
-  if (to.meta.title) {
-    document.title = to.meta.title
-  } else {
-    document.title = '个人博客'
-  }
-
   //handle auth feature.
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in

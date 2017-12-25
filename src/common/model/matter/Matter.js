@@ -44,7 +44,7 @@ export default class Matter extends BaseEntity {
       new Filter(Filter.prototype.Type.INPUT, '父级菜单uuid', 'puuid', null, null, false),
       new Filter(Filter.prototype.Type.INPUT, '用户ID', 'userUuid'),
       new Filter(Filter.prototype.Type.INPUT, '关键字', 'name'),
-      new Filter(Filter.prototype.Type.SORT, '是否是文件夹', 'dir'),
+      new Filter(Filter.prototype.Type.CHECK, '是否是文件夹', 'dir'),
       new Filter(Filter.prototype.Type.SORT, '文件夹', 'orderDir'),
       new Filter(Filter.prototype.Type.SORT, '创建时间', 'orderCreateTime'),
       new Filter(Filter.prototype.Type.SORT, '大小', 'orderSize'),
@@ -68,30 +68,30 @@ export default class Matter extends BaseEntity {
   getIcon() {
 
     if (this.dir) {
-      return "/static/img/file/folder.png"
+      return "/static/img/file/folder.svg"
     }
 
     let mimeType = getMimeType(this.name)
     if (startWith(mimeType, 'application/pdf')) {
-      return "/static/img/file/pdf.png"
+      return "/static/img/file/pdf.svg"
     } else if (startWith(mimeType, 'application/msword') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
-      return "/static/img/file/doc.png"
+      return "/static/img/file/doc.svg"
     } else if (startWith(mimeType, 'application/vnd.ms-powerpoint') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.presentationml.presentation')) {
-      return "/static/img/file/ppt.png"
+      return "/static/img/file/ppt.svg"
     } else if (startWith(mimeType, 'application/vnd.ms-excel') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
-      return "/static/img/file/xls.png"
+      return "/static/img/file/xls.svg"
     } else if (startWith(mimeType, 'audio')) {
-      return "/static/img/file/audio.png"
+      return "/static/img/file/audio.svg"
     } else if (startWith(mimeType, 'video')) {
-      return "/static/img/file/video.png"
+      return "/static/img/file/video.svg"
     } else if (startWith(mimeType, 'text')) {
-      return "/static/img/file/text.png"
+      return "/static/img/file/text.svg"
     } else if (startWith(mimeType, 'image')) {
-      return "/static/img/file/image.png"
+      return "/static/img/file/image.svg"
     } else if (endWith(this.name, 'zip') || endWith(this.name, 'rar') || endWith(this.name, 'rar') || endWith(this.name, '7z')) {
-      return "/static/img/file/archive.png"
+      return "/static/img/file/archive.svg"
     } else {
-      return "/static/img/file/file.png"
+      return "/static/img/file/file.svg"
     }
 
   }

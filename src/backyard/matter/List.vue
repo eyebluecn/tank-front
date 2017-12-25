@@ -229,6 +229,11 @@
         this.pager.setFilterValue("puuid", "root")
       }
 
+      //如果所有的排序都没有设置，那么默认以时间降序。
+      if (!this.pager.getFilterValue("orderDir") && !this.pager.getFilterValue("orderCreateTime") && !this.pager.getFilterValue("orderSize") && !this.pager.getFilterValue("orderName")) {
+        this.pager.setFilterValue("orderCreateTime", "DESC")
+      }
+
       this.refresh();
 
 
