@@ -6,10 +6,15 @@
 
         <div>
           <NbFilter :pager="pager" :callback="search">
-            <button class="btn btn-sm btn-primary" @click.stop.prevent="upload">
-              <i class="fa fa-plus"></i>
-              上传文件
-            </button>
+
+            <span class="btn btn-primary btn-sm btn-file">
+              <slot name="button">
+                <i class="fa fa-plus"></i>
+                <span>上传文件</span>
+              </slot>
+              <input ref="refFile" type="file" @change.prevent.stop="triggerUpload"/>
+				</span>
+
             <button class="btn btn-sm btn-primary" @click.stop.prevent="createDirectory">
               <i class="fa fa-plus"></i>
               创建文件夹
@@ -17,9 +22,10 @@
           </NbFilter>
         </div>
 
-        <div>
-          <NbTank :tank="tank"/>
+        <div v-for="m in uploadMatters">
+          <UploadMatterPanel :matter="m"/>
         </div>
+
         <div v-if="director.createMode">
           <MatterPanel ref="newMatterPanel" @createDirectorySuccess="refresh()" :matter="newMatter"
                        :director="director"/>
@@ -39,23 +45,16 @@
   </div>
 </template>
 <script>
-  import Vue from 'vue'
-  import NbTank from '../../common/widget/NbTank.vue'
   import MatterPanel from "./widget/MatterPanel";
+  import UploadMatterPanel from "./widget/UploadMatterPanel";
 
   import NbSlidePanel from '../../common/widget/NbSlidePanel.vue'
   import NbExpanding from '../../common/widget/NbExpanding.vue'
   import NbCheckbox from '../../common/widget/NbCheckbox.vue'
   import NbFilter from '../../common/widget/filter/NbFilter'
   import NbPager from '../../common/widget/NbPager'
-
-
-  import Tank from '../../common/model/tank/Tank'
-  import {Message, MessageBox, Notification} from 'element-ui'
   import Matter from '../../common/model/matter/Matter'
-  import $ from 'jquery'
   import Pager from '../../common/model/base/Pager'
-  import User from '../../common/model/user/User'
   import Director from "./widget/Director";
 
 
@@ -66,22 +65,20 @@
         matter: new Matter(),
         //准备新建的文件。
         newMatter: new Matter(),
+        //准备上传的一系列文件
+        uploadMatters: [],
         pager: new Pager(Matter, 50),
         user: this.$store.state.user,
         breadcrumbs: this.$store.state.breadcrumbs,
-        director: new Director(),
-        //正在排队等待上传的文件。
-        tanks: [],
-        //一个测试的tank
-        tank: new Tank("*", true, 1024 * 1024 * 1024)
+        director: new Director()
       }
     },
     components: {
       NbCheckbox,
       MatterPanel,
+      UploadMatterPanel,
       NbFilter,
       NbPager,
-      NbTank,
       NbSlidePanel,
       NbExpanding
     },
@@ -116,6 +113,8 @@
 
         //根目录简单处理即可。
         if (!uuid || uuid === "root") {
+
+          this.matter.uuid = "root"
           that.breadcrumbs.splice(0, that.breadcrumbs.length);
           that.breadcrumbs.push({
             title: '全部文件'
@@ -140,7 +139,7 @@
             query["_t"] = new Date().getTime()
             that.breadcrumbs.push({
               title: '全部文件',
-              path: '/matter/list',
+              path: '/',
               query: query
             })
 
@@ -151,7 +150,7 @@
               query["_t"] = new Date().getTime()
               that.breadcrumbs.push({
                 title: m.name,
-                path: '/matter/list',
+                path: '/',
                 query: query
               })
             }
@@ -178,7 +177,25 @@
           that.$refs.newMatterPanel.highLight()
         }, 100)
       },
-      upload() {
+      triggerUpload() {
+        let that = this
+
+        let m = new Matter()
+        m.dir = false
+        m.puuid = that.matter.uuid
+        m.userUuid = that.user.uuid
+
+        let value = that.$refs['refFile'].value
+        if (!value) {
+          return
+        }
+        m.file = that.$refs['refFile'].files[0]
+
+        m.httpUpload(function () {
+          that.refresh()
+        })
+
+        that.uploadMatters.push(m)
 
       }
     },

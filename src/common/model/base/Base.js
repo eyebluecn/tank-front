@@ -686,6 +686,7 @@ export default class Base {
 
     })
 
+
   }
 
   //获取到当前类的单数标签。比如 Project便得到 project

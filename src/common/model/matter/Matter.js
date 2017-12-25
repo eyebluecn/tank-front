@@ -1,7 +1,7 @@
 import BaseEntity from '../base/BaseEntity'
 import Filter from '../base/Filter'
 import {getMimeType, MimeUtil} from '../../util/MimeUtil'
-import {endWith, startWith} from '../../filter/str'
+import {containStr, endWith, getExtension, startWith} from '../../filter/str'
 
 export default class Matter extends BaseEntity {
   constructor(args) {
@@ -19,11 +19,29 @@ export default class Matter extends BaseEntity {
     this.newFolderStatus = false
     this.showOperation = false
     this.renameStatus = false
+
+    /*
+    这部分是辅助UI的字段信息
+     */
+    //允许用户选择的文件类型
+    this.filter = "*"
+    //本地字段
+    //允许上传的最大大小。
+    this.maxSize = 1024 * 1024 * 1024
+    //给用户的提示文字
+    this.uploadHint = null
+    //浏览器中选择好的原生file，未作任何处理。
+    this.file = null
+    //当前上传进度的数值 0-1之间
+    this.progress = 0
+    //实时上传速度 byte/s
+    this.speed = 0
+
   }
 
   getFilters() {
     return [
-      new Filter(Filter.prototype.Type.INPUT, '父级菜单uuid', 'puuid'),
+      new Filter(Filter.prototype.Type.INPUT, '父级菜单uuid', 'puuid', null, null, false),
       new Filter(Filter.prototype.Type.INPUT, '用户ID', 'userUuid'),
       new Filter(Filter.prototype.Type.INPUT, '关键字', 'name'),
       new Filter(Filter.prototype.Type.SORT, '是否是文件夹', 'dir'),
@@ -41,6 +59,7 @@ export default class Matter extends BaseEntity {
   static URL_MATTER_RENAME = '/matter/rename'
   static URL_MATTER_MOVE = '/matter/move'
   static URL_MATTER_DOWNLOAD = '/matter/download'
+  static URL_MATTER_UPLOAD = '/matter/upload'
 
   render(obj) {
     super.render(obj)
@@ -120,10 +139,210 @@ export default class Matter extends BaseEntity {
     }, errorCallback)
   }
 
-  httpDownload(successCallback, errorCallback) {
-    this.httpPost(Matter.URL_MATTER_DOWNLOAD, {'uuid': this.uuid}, function (response) {
-      typeof successCallback === 'function' && successCallback(response)
-    }, errorCallback)
+
+  /*
+  以下是和上传相关的内容。
+   */
+
+  //从file中装填metaData
+  validate() {
+
+    if (!this.file) {
+      this.errorMessage = '请选择上传文件'
+      return false
+    }
+
+    this.name = this.file.name
+    if (!this.name) {
+      this.errorMessage = '请选择上传文件'
+      return false
+    }
+
+
+    if (this.file.size > this.maxSize) {
+      this.errorMessage = '文件超出指定大小'
+      return false
+    }
+
+    this.size = this.file.size
+
+    this.errorMessage = null
+    return true
+
+  }
+
+  //验证过滤器有没有误填写，这个方法主要给开发者使用。
+  validateFilter() {
+
+    let filter = this.filter
+    if (filter === null || filter === '') {
+      this.errorMessage = '过滤器设置错误，请检查-1'
+      console.error('过滤器设置错误，请检查.-1')
+      return false
+    }
+    if (filter !== '*') {
+      let regex1 = /^(image|audio|video|text)(\|(image|audio|video|text))*$/g
+      let regex2 = /^(\.[\w]+)(\|\.[\w]+)*$/
+      // 测试几种特殊类型 image|audio|video|text
+
+      if (!regex1.test(filter)) {
+        //测试后缀名
+        if (!regex2.test(filter)) {
+          this.errorMessage = '过滤器设置错误，请检查-2'
+          console.error('过滤器设置错误，请检查.-2')
+          return false
+        }
+      }
+    }
+
+    //validate privacy
+    let privacy = this.privacy
+    if (privacy !== true) {
+      if (privacy !== false) {
+        this.errorMessage = 'privacy属性为Boolean类型'
+        console.error('privacy属性为Boolean类型.')
+        return false
+      }
+    }
+
+    return true
+  }
+
+  //验证用户上传的文件是否符合过滤器
+  validateFileType() {
+    if (!this.filter) {
+      this.errorMessage = '该过滤条件有问题'
+      return false
+    }
+    if (this.filter === '*') {
+      this.errorMessage = null
+      return true
+    }
+
+    let type = getMimeType(this.name)
+    let extension = getExtension(this.name)
+    let simpleType = type.substring(0, type.indexOf('/'))
+
+    //专门解决android微信浏览器中名字乱命名的bug.
+    if (startWith(this.name, 'image%3A')) {
+      extension = 'jpg'
+      simpleType = 'image'
+    } else if (startWith(this.name, 'video%3A')) {
+      extension = 'mp4'
+      simpleType = 'video'
+    } else if (startWith(this.name, 'audio%3A')) {
+      extension = 'mp3'
+      simpleType = 'audio'
+    }
+
+    if (containStr(this.filter, extension)) {
+      this.errorMessage = null
+      return true
+    }
+
+    if (simpleType) {
+      if (containStr(this.filter, simpleType)) {
+        this.errorMessage = null
+        return true
+      }
+    }
+    this.errorMessage = '您上传的文件格式不符合要求'
+    return false
+  }
+
+
+  //文件上传
+  httpUpload(successCallback, failureCallback) {
+
+    let that = this
+
+    //验证是否装填好
+    if (!this.validate()) {
+      return
+    }
+
+    //验证用户填写的过滤条件是否正确
+    if (!this.validateFilter()) {
+      return
+    }
+
+    //验证是否满足过滤器
+    if (!this.validateFileType()) {
+      return
+    }
+
+    //（兼容性：chrome，ff，IE9及以上）
+    let formData = new FormData()
+
+    formData.append('userUuid', that.userUuid)
+    formData.append('puuid', that.puuid)
+    formData.append('file', that.file)
+
+
+    //闭包
+    let lastTimeStamp = new Date().getTime()
+    let lastSize = 0
+    that.httpPost(Matter.URL_MATTER_UPLOAD, formData, function (response) {
+
+      //上传到tank服务器成功了，更新matterUuid.
+      that.uuid = response.data.data.uuid
+
+      if (typeof successCallback === "function") {
+        successCallback()
+      }
+
+    }, function (response) {
+
+      console.log("上传到tank服务器失败", response.data)
+      console.log(response)
+
+      that.errorMessage = '上传出错，请稍后重试'
+      that.clear()
+
+      that.defaultErrorHandler(response, failureCallback)
+
+    }, {
+      progress: function (event) {
+
+        //上传进度。
+        that.progress = event.loaded / event.total
+
+        let currentTime = (new Date()).getTime();
+        let deltaTime = currentTime - lastTimeStamp;
+
+
+        //每2s计算一次速度
+        if (deltaTime > 1000) {
+          lastTimeStamp = currentTime;
+
+          let currentSize = event.loaded;
+          let deltaSize = currentSize - lastSize;
+          lastSize = currentSize;
+
+
+          that.speed = (deltaSize / (deltaTime / 1000)).toFixed(0);
+        }
+
+      }
+    })
+
+  }
+
+  //清除文件
+  clear() {
+
+    //filter,privacy不变
+    let matter = new Matter()
+    matter.filter = this.filter
+    matter.privacy = this.privacy
+    matter.errorMessage = this.errorMessage
+    matter.uploadHint = this.uploadHint
+    matter.maxSize = this.maxSize
+    this.render(matter)
+
+    //TODO:如果还正在上传东西，那么停止请求。
+
+
   }
 
 }

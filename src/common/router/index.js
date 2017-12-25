@@ -19,36 +19,23 @@ const router = new Router({
   linkActiveClass: 'is-link-active',
   scrollBehavior: () => ({y: 0}),
   routes: [
+
+
     {
       path: '/',
       component: ByFrameView,
       children: [
         {
           path: '',
-          name: 'byIndexDefault',
-          component: ByIndexView,
+          name: 'MatterList',
+          component: MatterList,
           meta: {
-            title: '个人博客管理系统',
+            title: '全部文件',
             requiresAuth: true,
             breadcrumbs: [
               {
-                name: 'byIndexDefault',
-                title: '首页'
-              }
-            ]
-          }
-        },
-        {
-          path: '',
-          name: 'byIndex',
-          component: ByIndexView,
-          meta: {
-            title: '个人博客管理系统',
-            requiresAuth: true,
-            breadcrumbs: [
-              {
-                name: 'byIndex',
-                title: '首页'
+                name: 'MatterList',
+                title: '全部文件'
               }
             ]
           }
@@ -163,21 +150,6 @@ const router = new Router({
               {
                 name: 'UserEdit',
                 title: '编辑用户'
-              }
-            ]
-          }
-        },
-        {
-          path: 'matter/list',
-          name: 'MatterList',
-          component: MatterList,
-          meta: {
-            title: '全部文件',
-            requiresAuth: true,
-            breadcrumbs: [
-              {
-                name: 'MatterList',
-                title: '全部文件'
               }
             ]
           }
