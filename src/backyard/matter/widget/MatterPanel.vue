@@ -13,9 +13,8 @@
                :class="matter.uuid"
                v-model="matter.name"
                placeholder="请输入名称"
-               @blur="finishRename()"
-               v-on:keyup.13="enterFinishRename()"/>
-
+               @blur="blurTrigger()"
+               v-on:keyup.13="enterTrigger()"/>
       </span>
       <span class="matter-name" v-else>
         {{matter.name}}
@@ -166,8 +165,35 @@
         })
 
       },
-      enterFinishRename() {
+      finishCreateDirectory() {
+        let that = this
+        that.matter.httpCreateDirectory(function () {
+          that.director.createMode = false
+          that.editMode = false
+
+          that.$emit("createDirectorySuccess", that.matter)
+
+        }, function (response) {
+          that.director.createMode = false
+          that.editMode = false
+          Message.error(response.data.msg)
+        })
+      },
+      blurTrigger() {
+        let that = this
+        if (that.matter.editMode) {
+          if (that.director.createMode) {
+            that.finishCreateDirectory()
+          } else if (that.director.renameMode) {
+            that.finishRename()
+          }
+        }
+      },
+      enterTrigger() {
         $(this.$refs.editInput).blur();
+      },
+      highLight() {
+        $(this.$refs.editInput).select();
       }
     },
     created() {

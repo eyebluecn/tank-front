@@ -6,11 +6,20 @@
 
         <div>
           <NbFilter :pager="pager" :callback="search">
+            <button class="btn btn-sm btn-primary" @click.stop.prevent="upload">
+              <i class="fa fa-plus"></i>
+              上传文件
+            </button>
             <button class="btn btn-sm btn-primary" @click.stop.prevent="createDirectory">
               <i class="fa fa-plus"></i>
               创建文件夹
             </button>
+
           </NbFilter>
+        </div>
+        <div v-if="director.createMode">
+          <MatterPanel ref="newMatterPanel" @createDirectorySuccess="refresh()" :matter="newMatter"
+                       :director="director"/>
         </div>
         <div v-for="matter in pager.data">
           <MatterPanel @goToDirectory="goToDirectory" @deleteSuccess="refresh()" :matter="matter" :director="director"/>
@@ -52,6 +61,8 @@
       return {
         //当前文件夹信息。
         matter: new Matter(),
+        //准备新建的文件。
+        newMatter: new Matter(),
         pager: new Pager(Matter, 50),
         user: this.$store.state.user,
         breadcrumbs: this.$store.state.breadcrumbs,
@@ -137,7 +148,6 @@
                 query: query
               })
             }
-
             //第一个文件
             that.breadcrumbs.push({
               title: that.matter.name
@@ -146,14 +156,23 @@
         }
       },
       createDirectory() {
-        let newMatter = new Matter()
-        newMatter.name = '新建文件夹'
-        newMatter.dir = true
-        newMatter.editMode = true
-        this.pager.data.unshift(newMatter)
-        setTimeout(function () {
+        let that = this
+        that.newMatter.name = '新建文件夹'
+        that.newMatter.dir = true
+        that.newMatter.editMode = true
+        that.newMatter.puuid = that.matter.uuid
+        if (!that.newMatter.puuid) {
+          that.newMatter.puuid = "root"
+        }
+        that.newMatter.userUuid = that.user.uuid
+        that.director.createMode = true
 
+        setTimeout(function () {
+          that.$refs.newMatterPanel.highLight()
         }, 100)
+      },
+      upload() {
+
       }
     },
     watch: {

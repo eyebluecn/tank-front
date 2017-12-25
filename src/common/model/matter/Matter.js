@@ -78,15 +78,10 @@ export default class Matter extends BaseEntity {
   }
 
 
-
-  httpCreateDirectory(userUuid, puuid, successCallback, errorCallback) {
+  httpCreateDirectory(successCallback, errorCallback) {
     let that = this
-    let form = {'userUuid': userUuid, 'name': this.name}
-    if (puuid) {
-      form.puuid = puuid
-    } else {
-      form.puuid = 'root'
-    }
+    let form = {'userUuid': that.userUuid, 'name': that.name, 'puuid': that.puuid}
+
     this.httpPost(Matter.URL_MATTER_CREATE_DIRECTORY, form, function (response) {
       that.render(response.data.data)
       typeof successCallback === 'function' && successCallback(response)
