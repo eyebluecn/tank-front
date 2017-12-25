@@ -1,0 +1,66 @@
+.compulsory {
+	&:before {
+		content: "*";
+		color: red;
+	}
+}
+
+.limit-hints {
+	font-size: 10px;
+	color: #aaaaaa;
+	float: right;
+}
+
+.hover-underline {
+
+	cursor: pointer;
+	&:hover {
+		text-decoration: underline;
+	}
+
+}
+
+.btn-file {
+	overflow: hidden;
+	position: relative;
+	vertical-align: middle;
+	cursor: pointer;
+	> input {
+		position: absolute;
+		top: 0;
+		right: 0;
+		margin: 0;
+		opacity: 0;
+		filter: alpha(opacity=0);
+		font-size: 23px;
+		height: 100%;
+		width: 100%;
+		direction: ltr;
+		cursor: pointer;
+	}
+}
+
+.list-text-restriction {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	position: relative;
+	line-height: 17px;
+	max-height: 51px;
+	-webkit-line-clamp: 3;
+	text-overflow: ellipsis;
+}
+
+.one-line {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.inline-block {
+	display: inline-block;
+}
+
+.overflow-hidden {
+	overflow: hidden;
+}

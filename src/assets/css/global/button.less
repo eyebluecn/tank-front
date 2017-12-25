@@ -1,0 +1,31 @@
+
+.btn-action {
+	margin: 0 3px;
+	display: inline-block;
+	opacity: 0.85;
+	-webkit-transition: all 0.1s;
+	-o-transition: all 0.1s;
+	transition: all 0.1s;
+	cursor: pointer;
+
+	&:hover {
+		text-decoration: none;
+		opacity: 1;
+		-moz-transform: scale(1.2);
+		-webkit-transform: scale(1.2);
+		-o-transform: scale(1.2);
+		-ms-transform: scale(1.2);
+		transform: scale(1.2);
+	}
+}
+
+//编辑区域按钮，鼠标一上去按钮变大
+.action-buttons {
+	a {
+		.btn-action;
+	}
+}
+
+.cursor {
+	cursor: pointer;
+}

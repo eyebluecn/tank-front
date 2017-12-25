@@ -1,0 +1,127 @@
+//global css.
+//Include font-awesome
+//Include what we need in bootstrap.
+@import "bootstrap/bootstrap.less";
+@import "inspinia/style.less";
+//Animated
+@import "~animate.css/animate.min.css";
+//element-ui
+@import "~element-ui/lib/theme-chalk/index.css";
+//使用自定义的主题
+@import "global/border.less";
+@import "global/button.less";
+@import "global/color.less";
+@import "global/font.less";
+@import "global/layout.less";
+@import "global/miscellaneous.less";
+@import "global/responsive.less";
+
+//h2被污染了
+.el-notification__title {
+  margin-top: 0;
+}
+
+//手机端的弹出框太大了
+@media (max-width: 768px) {
+  .el-message-box__wrapper {
+    .el-message-box {
+      width: 300px;
+    }
+  }
+}
+
+html, body {
+  font-family: "微软雅黑", Microsoft YaHei, "Helvetica Neue", Helvetica, Arial, sans-serif, "open sans";
+  font-size: 13px;
+  color: @text-color;
+  background-color: white;
+
+  img {
+    max-width: 100%;
+  }
+
+}
+
+//列表单元格的样式。
+.nb-app {
+
+  //media-body下的p字体大小
+  .media-body {
+    p {
+      font-size: 13px;
+    }
+  }
+
+  .cell-title {
+    font-size: 17px;
+    color: @app-color-title;
+    .one-line;
+
+    a {
+      font-size: 17px;
+      color: @app-color-title;
+      &:hover {
+        color: @brand-primary;
+      }
+    }
+  }
+
+  .cell-content {
+    font-size: 12px;
+    color: @app-color-title;
+    letter-spacing: 0;
+    line-height: 18px;
+  }
+  .cell-description {
+    font-size: 12px;
+    color: @app-color-content;
+    letter-spacing: 0;
+    line-height: 24px;
+  }
+
+}
+
+//超链接颜色.
+a {
+  color: @brand-primary;
+
+  &:hover, &:focus {
+    color: @brand-info;
+  }
+}
+
+//段落统一样式
+p {
+  color: #333;
+  font-size: 15px;
+  padding: 0;
+}
+
+//每个页面导航处样式
+.pedia-navigation {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #E6E6E6;
+
+  .item, a {
+    font-size: 16px;
+    color: #778195;
+    margin-top: 15px;
+    margin-right: 20px;
+    display: inline-block;
+    box-sizing: content-box;
+    line-height: 30px;
+
+    &:hover, &.is-link-active, &.active {
+      color: @brand-primary;
+
+      border-bottom: 2px solid @brand-primary;
+    }
+  }
+}
+
+//markdown中默认图片剧中
+p {
+  > img {
+    text-align: center;
+  }
+}

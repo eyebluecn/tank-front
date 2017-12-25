@@ -1,0 +1,33 @@
+@media (min-width: 992px) {
+  .visible-mobile {
+    display: none !important;
+  }
+
+  .visible-pc {
+    display: block !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .visible-mobile {
+    display: block !important;
+  }
+
+  .visible-pc {
+    display: none !important;
+  }
+}
+
+//浏览器滚动条样式
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+}
