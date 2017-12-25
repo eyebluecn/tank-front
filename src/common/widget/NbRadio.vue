@@ -10,6 +10,7 @@
 
 	import $ from "jquery"
 	import iCheck from "../fork/icheck/icheck-vue"
+
 	//css
 	import "icheck/skins/square/green.css";
 

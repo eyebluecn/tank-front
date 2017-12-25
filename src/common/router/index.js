@@ -172,12 +172,12 @@ const router = new Router({
           name: 'MatterList',
           component: MatterList,
           meta: {
-            title: '所有文件',
+            title: '全部文件',
             requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'MatterList',
-                title: '所有文件'
+                title: '全部文件'
               }
             ]
           }

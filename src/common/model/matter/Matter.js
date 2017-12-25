@@ -48,6 +48,10 @@ export default class Matter extends BaseEntity {
 
   getIcon() {
 
+    if (this.dir) {
+      return "/static/img/file/folder.png"
+    }
+
     let mimeType = getMimeType(this.name)
     if (startWith(mimeType, 'application/pdf')) {
       return "/static/img/file/pdf.png"
@@ -72,6 +76,8 @@ export default class Matter extends BaseEntity {
     }
 
   }
+
+
 
   httpMatterCreateDirectory(userUuid, puuid, successCallback, errorCallback) {
     let that = this

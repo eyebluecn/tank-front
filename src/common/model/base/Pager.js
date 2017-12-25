@@ -1,11 +1,11 @@
 import Base from './Base'
 import Vue from 'vue'
 import $ from 'jquery'
-import { isInteger } from '../../util/Utils'
+import {isInteger} from '../../util/Utils'
 
 export default class Pager extends Base {
 
-  constructor (Clazz, pageSize = 10, page = 0) {
+  constructor(Clazz, pageSize = 10, page = 0) {
     super()
 
     this.page = page
@@ -58,7 +58,7 @@ export default class Pager extends Base {
   }
 
   //重置Filter。
-  resetFilter () {
+  resetFilter() {
     for (let i = 0; i < this.FILTERS.length; i++) {
       let filter = this.FILTERS[i]
       filter.reset()
@@ -66,7 +66,7 @@ export default class Pager extends Base {
   };
 
   //手动设置过滤器的值
-  setFilterValue (key, value) {
+  setFilterValue(key, value) {
     if (!this.FILTERS || !this.FILTERS.length) {
       return
     }
@@ -79,7 +79,7 @@ export default class Pager extends Base {
   };
 
   //根据key来删除某个Filter
-  removeFilter (key) {
+  removeFilter(key) {
     if (!this.FILTERS || !this.FILTERS.length) {
       return
     }
@@ -93,7 +93,7 @@ export default class Pager extends Base {
   };
 
   //隐藏某个Filter，实际上我们可以根据这个filter来筛选，只不过不出现在NbFilter中而已。
-  showFilter (key, visible = true) {
+  showFilter(key, visible = true) {
     if (!this.FILTERS || !this.FILTERS.length) {
       return
     }
@@ -106,7 +106,7 @@ export default class Pager extends Base {
     }
   };
 
-  showAllFilter (visible = true) {
+  showAllFilter(visible = true) {
     if (!this.FILTERS || !this.FILTERS.length) {
       return
     }
@@ -117,7 +117,7 @@ export default class Pager extends Base {
   }
 
   //根据一个key来获取某个filter
-  getFilter (key) {
+  getFilter(key) {
     if (!this.FILTERS || !this.FILTERS.length) {
       return null
     }
@@ -130,11 +130,11 @@ export default class Pager extends Base {
   };
 
   //获取当前pager中的list
-  getList () {
+  getList() {
     return this.data
   }
 
-  isEmpty () {
+  isEmpty() {
     if (!this.data) {
       return true
     }
@@ -145,7 +145,7 @@ export default class Pager extends Base {
   //该方法是在地址栏添加上query参数，参数就是FILTERS中的key和value.
   //同时地址栏上有的参数也会自动读取到FILTERS中去
   //因此，启用该方法后返回时可以停留在之前的页码中。
-  enableHistory () {
+  enableHistory() {
     this.history = true
 
     let query = Vue.store.state.route.query
@@ -189,7 +189,7 @@ export default class Pager extends Base {
   }
 
   //you can specify the page url here.
-  httpCustomPage (url, params, successCallback, errorCallback) {
+  httpCustomPage(url, params, successCallback, errorCallback) {
     let that = this
     this.loading = true
     this.errorMessage = null
@@ -210,7 +210,7 @@ export default class Pager extends Base {
   };
 
   //use default FILTERS as parameters..
-  httpFastPage (successCallback, errorCallback) {
+  httpFastPage(successCallback, errorCallback) {
 
     if (!isInteger(this.page)) {
       this.page = 0
@@ -238,13 +238,13 @@ export default class Pager extends Base {
   };
 
   //use default url_page.
-  httpPage (params, successCallback, errorCallback) {
+  httpPage(params, successCallback, errorCallback) {
 
     this.httpCustomPage(this.URL_PAGE, params, successCallback, errorCallback)
 
   };
 
-  render (obj) {
+  render(obj) {
 
     super.render(obj)
     this.renderList('data', this.Clazz)
