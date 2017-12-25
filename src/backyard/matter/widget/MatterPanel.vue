@@ -14,7 +14,7 @@
                v-model="matter.name"
                placeholder="请输入名称"
                @blur="finishRename()"
-               v-on:keyup.13="finishRename()"/>
+               v-on:keyup.13="enterFinishRename()"/>
 
       </span>
       <span class="matter-name" v-else>
@@ -28,7 +28,7 @@
         <i class="fa fa-pencil btn-action text-primary" title="重命名" @click.stop.prevent="prepareRename"></i>
         <i class="fa fa-download btn-action text-primary" title="下载" v-if="!matter.dir"
            @click.stop.prevent="download"></i>
-        <i class="fa fa-trash btn-action text-danger" title="删除"></i>
+        <i class="fa fa-trash btn-action text-danger" title="删除" @click.stop.prevent="deleteMatter"></i>
       </span>
       <span class="matter-size" v-if="matter.dir">
         -
@@ -51,11 +51,16 @@
   import NbCheckbox from "../../../common/widget/NbCheckbox"
   import Vue from "vue"
   import $ from "jquery"
+  import Director from "./Director";
+  import {Message, MessageBox, Notification} from 'element-ui'
+  import {setInputSelection} from "../../../common/util/Utils";
 
   export default {
     data() {
       return {
-        val: false
+        val: false,
+        //正在向服务器提交rename的请求
+        renamingLoading: false
       }
     },
     components: {
@@ -65,11 +70,22 @@
       matter: {
         type: Matter,
         required: true
+      },
+      director: {
+        type: Director,
+        required: true
       }
+
     },
     methods: {
       clickRow() {
         let that = this
+
+        if (this.director.isEditing()) {
+          console.log("导演正忙着，不予执行")
+          return
+        }
+
         if (this.matter.dir) {
           this.$emit("goToDirectory", that.matter.uuid)
         } else {
@@ -78,18 +94,80 @@
 
       },
       download() {
+        if (this.director.isEditing()) {
+          console.log("导演正忙着，不予执行")
+          return
+        }
+
         window.open(Vue.http.options.root + '/alien/download/' + this.matter.uuid + '/' + this.matter.name)
+      },
+      deleteMatter() {
+        let that = this
+        MessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          callback: function (action, instance) {
+            if (action === 'confirm') {
+              that.matter.httpDelete(function (response) {
+                Message.success('删除成功！')
+                that.$emit("deleteSuccess", that.matter)
+                that.refresh()
+              })
+            }
+
+          }
+        })
       },
       prepareRename() {
         let that = this
+
+        if (this.director.isEditing()) {
+          console.log("导演正忙着，不予执行")
+          return
+        }
+        //告诉导演，自己正在编辑
+        this.director.renameMode = true
         this.matter.editMode = true
+
         setTimeout(function () {
-          $(that.$refs.editInput).select()
+
+          let dotIndex = that.matter.name.lastIndexOf(".");
+          if (dotIndex === -1) {
+            setInputSelection(that.$refs.editInput, 0, that.matter.name.length);
+          } else {
+            setInputSelection(that.$refs.editInput, 0, dotIndex);
+          }
+
         }, 100)
 
       },
       finishRename() {
+        let that = this
+        //有可能按enter的时候和blur同时了。
+        if (that.renamingLoading) {
+          return
+        }
+        that.renamingLoading = true
+        this.matter.httpRename(function () {
+          that.renamingLoading = false
+          Message.info('重命名成功！')
+          //告诉导演，自己编辑完毕
+          that.director.renameMode = false
+          that.matter.editMode = false
 
+        }, function (response) {
+          that.renamingLoading = false
+          Message.error(response.data.msg)
+          //告诉导演，自己编辑完毕
+          that.director.renameMode = false
+          that.matter.editMode = false
+
+        })
+
+      },
+      enterFinishRename() {
+        $(this.$refs.editInput).blur();
       }
     },
     created() {
@@ -105,23 +183,35 @@
 
     border-top: 1px solid #eee;
     background-color: white;
-    padding: 10px;
+
+    @base-height: 48px;
+    padding-left: 10px;
+
+    .left-part, .right-part {
+      height: @base-height;
+      display: inline-block;
+      > span {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: @base-height;
+        margin-right: 10px;
+      }
+    }
 
     .left-part {
-      float: left;
+
       .matter-icon {
         width: 24px;
       }
       .matter-name-edit {
-        margin-left: 5px;
         input {
           width: 200px;
           height: 26px;
           display: inline-block;
+          padding: 6px;
         }
       }
       .matter-name {
-        margin-left: 5px;
       }
     }
     .right-part {

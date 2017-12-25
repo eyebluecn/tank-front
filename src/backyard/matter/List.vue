@@ -13,11 +13,11 @@
           </NbFilter>
         </div>
         <div v-for="matter in pager.data">
-          <MatterPanel @goToDirectory="goToDirectory" :matter="matter"/>
+          <MatterPanel @goToDirectory="goToDirectory" @deleteSuccess="refresh()" :matter="matter" :director="director"/>
         </div>
 
         <div>
-          <NbPager :pager="pager" :callback="refresh"/>
+          <NbPager :pager="pager" :callback="refresh" emptyHint="该目录下暂无任何内容"/>
         </div>
       </div>
 
@@ -44,6 +44,8 @@
   import $ from 'jquery'
   import Pager from '../../common/model/base/Pager'
   import User from '../../common/model/user/User'
+  import Director from "./widget/Director";
+
 
   export default {
     data() {
@@ -52,7 +54,8 @@
         matter: new Matter(),
         pager: new Pager(Matter, 50),
         user: this.$store.state.user,
-        breadcrumbs: this.$store.state.breadcrumbs
+        breadcrumbs: this.$store.state.breadcrumbs,
+        director: new Director()
       }
     },
     components: {

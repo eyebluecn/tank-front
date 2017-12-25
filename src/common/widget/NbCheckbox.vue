@@ -14,7 +14,6 @@
   import "../fork/icheck/blue.css";
 
 
-
   iCheck($);
 
   export default {
@@ -109,8 +108,8 @@
     vertical-align: middle;
     margin: 0;
     padding: 0;
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    line-height: 18px;
     border: none;
   }
 </style>
