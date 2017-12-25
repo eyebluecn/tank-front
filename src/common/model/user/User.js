@@ -66,7 +66,7 @@ let StatusMap = {
 export default class User extends BaseEntity {
   constructor(args) {
     super(args)
-    this.role = Role.USER_ROLE_USER
+    this.role = Role.USER_ROLE_GUEST
     this.username = null
     this.password = null
     this.email = null
