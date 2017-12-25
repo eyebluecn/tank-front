@@ -22,9 +22,9 @@ MenuManager.refreshMenus = function (user) {
     let indexMenu = new Menu('首页', '/', false, 'fa fa-home')
     menus.push(indexMenu)
 
-    //文章列表
-    let articleListMenu = new Menu('文章列表', '/article/list', false, 'fa fa-book')
-    menus.push(articleListMenu)
+    //全部文件
+    let matterListMenu = new Menu('全部文件', '/matter/list', false, 'fa fa-th')
+    menus.push(matterListMenu)
 
     //标签列表
     let tagListMenu = new Menu('标签列表', '/tag/list', false, 'fa fa-tags')

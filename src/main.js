@@ -14,6 +14,10 @@ import VueResource from 'vue-resource'
 import NProgress from 'vue-nprogress'
 import filters from './common/filter'
 
+//将整个eleme 都引进来了。
+import ElementUI from 'element-ui'
+
+Vue.use(ElementUI)
 
 //expose to global.
 Vue.store = store;

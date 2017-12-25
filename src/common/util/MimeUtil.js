@@ -1,4 +1,4 @@
-let MimeType = {
+let MimeUtil = {
   '.323': 'text/h323',
   '.3g2': 'video/3gpp2',
   '.3gp': 'video/3gpp',
@@ -622,11 +622,11 @@ export function getExtension(filename) {
 
 export function getMimeType(filename) {
   let extension = getExtension(filename);
-  if (MimeType[extension]) {
-    return MimeType[extension];
+  if (MimeUtil[extension]) {
+    return MimeUtil[extension];
   } else {
     return "application/octet-stream";
   }
 }
 
-export {MimeType}
+export {MimeUtil}

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import ByIndexView from '../../backyard/index/Index.vue'
 import ByFrameView from '../../backyard/Frame.vue'
+import MatterList from '../../backyard/matter/List'
 import UserLogin from '../../backyard/user/Login.vue'
 import UserList from '../../backyard/user/List'
 import UserDetail from '../../backyard/user/Detail'
@@ -92,6 +93,8 @@ const router = new Router({
             ]
           }
         },
+
+
         {
           path: 'user/detail/:uuid',
           name: 'UserDetail',
@@ -164,6 +167,22 @@ const router = new Router({
             ]
           }
         },
+        {
+          path: 'matter/list',
+          name: 'MatterList',
+          component: MatterList,
+          meta: {
+            title: '所有文件',
+            requiresAuth: true,
+            breadcrumbs: [
+              {
+                name: 'MatterList',
+                title: '所有文件'
+              }
+            ]
+          }
+        },
+
         {
           path: 'preference',
           name: 'PreferenceIndex',

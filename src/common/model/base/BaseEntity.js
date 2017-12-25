@@ -1,13 +1,13 @@
 import Base from './Base'
-import { str2Date } from '../../filter/time'
+import {str2Date} from '../../filter/time'
 import Filter from './Filter'
-import { lowerSlash, startWith } from '../../filter/str'
-import { MessageBox, Notification as NotificationBox } from 'element-ui'
+import {lowerSlash, startWith} from '../../filter/str'
+import {MessageBox, Notification as NotificationBox} from 'element-ui'
 import Schema from '../../../../node_modules/async-validator'
 
 export default class BaseEntity extends Base {
 
-  constructor (args) {
+  constructor(args) {
     super(args)
     this.uuid = null
     this.sort = null
@@ -20,7 +20,7 @@ export default class BaseEntity extends Base {
   }
 
   //This is just a intermedia method.
-  render (obj, one2one = false) {
+  render(obj, one2one = false) {
 
     super.render(obj)
     this.createTime = str2Date(this.createTime)
@@ -29,14 +29,14 @@ export default class BaseEntity extends Base {
   }
 
   //获取过滤器，必须每次动态生成，否则会造成filter逻辑混乱。
-  getFilters () {
+  getFilters() {
     return [
       new Filter('SORT', 'ID', 'orderId')
     ]
   };
 
   //获取表单的验证规则
-  getSchema () {
+  getSchema() {
 
     return null
 
@@ -44,16 +44,16 @@ export default class BaseEntity extends Base {
 
 
 //该实体目前是否能够编辑
-  canEdit () {
+  canEdit() {
     console.error('canEdit: you should override this base method.')
   }
 
 //该实体目前是否能够删除
-  canDel () {
+  canDel() {
     console.error('canDel: you should override this base method.')
   }
 
-  getForm () {
+  getForm() {
     console.error('getForm: you should override this base method.')
   }
 
@@ -61,7 +61,7 @@ export default class BaseEntity extends Base {
     console.error('validate: you should override this base method.')
   }*/
 
-  validate (validatorSchema = this.validatorSchema) {
+  validate(validatorSchema = this.validatorSchema) {
     let valid = true
     let that = this
     let schema = validatorSchema
@@ -94,7 +94,7 @@ export default class BaseEntity extends Base {
   }
 
   //common http detail methods.
-  httpDetail (successCallback, errorCallback) {
+  httpDetail(successCallback, errorCallback) {
 
     let that = this
     if (!this.uuid) {
@@ -136,7 +136,7 @@ export default class BaseEntity extends Base {
 
   }
 
-  httpSave (successCallback, errorCallback) {
+  httpSave(successCallback, errorCallback) {
 
     let that = this
 
@@ -161,7 +161,7 @@ export default class BaseEntity extends Base {
 
   }
 
-  httpDel (successCallback, errorCallback) {
+  httpDel(successCallback, errorCallback) {
 
     let that = this
     if (!this.uuid) {
@@ -186,7 +186,7 @@ export default class BaseEntity extends Base {
 
   }
 
-  httpSort (uuid1, sort1, uuid2, sort2, successCallback, failureCallback) {
+  httpSort(uuid1, sort1, uuid2, sort2, successCallback, failureCallback) {
 
     let that = this
 
@@ -217,7 +217,7 @@ export default class BaseEntity extends Base {
   }
 
   //确认删除操作.
-  confirmDel (successCallback, failureCallback) {
+  confirmDel(successCallback, failureCallback) {
 
     let that = this
 
@@ -247,47 +247,46 @@ export default class BaseEntity extends Base {
     )
   }
 
-  getUrlCreate () {
+  getUrlCreate() {
     let prefix = this.getUrlPrefix()
 
     return prefix + '/create'
   }
 
-  getUrlDel (uuid = null) {
+  getUrlDel(uuid = null) {
     let prefix = this.getUrlPrefix()
 
     if (uuid === null) {
-      return prefix + '/del/{uuid}'
+      return prefix + '/del?uuid={uuid}'
     } else {
-      return prefix + '/del/' + uuid
+      return prefix + '/del?uuid=' + uuid
     }
-
   }
 
-  getUrlEdit () {
+  getUrlEdit() {
     let prefix = this.getUrlPrefix()
 
     return prefix + '/edit'
   }
 
-  getUrlDetail (uuid = null) {
+  getUrlDetail(uuid = null) {
     let prefix = this.getUrlPrefix()
 
     if (uuid === null) {
-      return prefix + '/detail/{uuid}'
+      return prefix + '/detail?uuid={uuid}'
     } else {
-      return prefix + '/detail/' + uuid
+      return prefix + '/detail?uuid=' + uuid
     }
 
   }
 
-  getUrlPage () {
+  getUrlPage() {
     let prefix = this.getUrlPrefix()
 
     return prefix + '/page'
   }
 
-  getUrlSort () {
+  getUrlSort() {
     let prefix = this.getUrlPrefix()
 
     return prefix + '/sort'
