@@ -209,7 +209,8 @@ const router = new Router({
               {
                 name: 'PreferenceIndex',
                 title: '网站偏好'
-              }, {
+              },
+              {
                 name: 'PreferenceEdit',
                 title: '网站偏好设置'
               }
@@ -224,11 +225,11 @@ const router = new Router({
 //add global interceptor.
 router.beforeEach((to, from, next) => {
 
-  //handle breadcrumbs things.
+  //清空数组
+  store.state.breadcrumbs.splice(0, store.state.breadcrumbs.length);
   if (to.meta.breadcrumbs) {
-    store.state.breadcrumbs = to.meta.breadcrumbs
-  } else {
-    store.state.breadcrumbs = []
+    //追加一个数组
+    store.state.breadcrumbs.push.apply(store.state.breadcrumbs, to.meta.breadcrumbs)
   }
 
   if (to.meta.title) {

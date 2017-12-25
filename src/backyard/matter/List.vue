@@ -43,8 +43,11 @@
   export default {
     data() {
       return {
+        //当前文件夹信息。
+        matter: new Matter(),
         pager: new Pager(Matter, 50),
-        user: this.$store.state.user
+        user: this.$store.state.user,
+        breadcrumbs: this.$store.state.breadcrumbs
       }
     },
     components: {
@@ -67,15 +70,90 @@
         this.refresh()
       },
       refresh() {
+
+        //刷新面包屑
+        this.refreshBreadcrumbs()
+
         this.pager.httpFastPage();
       },
       goToDirectory(uuid) {
         this.pager.setFilterValue("puuid", uuid)
         this.search()
+        this.refreshBreadcrumbs()
+      },
+      refreshBreadcrumbs() {
+
+        let that = this
+
+        let uuid = that.pager.getFilterValue("puuid")
+
+
+        //根目录简单处理即可。
+        if (!uuid || uuid === "root") {
+          that.breadcrumbs.splice(0, that.breadcrumbs.length);
+          that.breadcrumbs.push({
+            title: '全部文件'
+          })
+
+        } else {
+
+          this.matter.uuid = uuid
+          this.matter.httpDetail(function () {
+
+            let arr = []
+            let cur = that.matter.parent
+            while (cur) {
+              arr.push(cur)
+              cur = cur.parent;
+            }
+
+            that.breadcrumbs.splice(0, that.breadcrumbs.length);
+            let query = that.pager.getParams()
+            query["puuid"] = "root"
+            query["_t"] = new Date().getTime()
+            that.breadcrumbs.push({
+              title: '全部文件',
+              path: '/matter/list',
+              query: query
+            })
+
+            for (let i = arr.length - 1; i >= 0; i--) {
+              let m = arr[i]
+              let query = that.pager.getParams()
+              query["puuid"] = m.uuid
+              query["_t"] = new Date().getTime()
+              that.breadcrumbs.push({
+                title: m.name,
+                path: '/matter/list',
+                query: query
+              })
+            }
+
+            //第一个文件
+            that.breadcrumbs.push({
+              title: that.matter.name
+            })
+          })
+        }
+
 
       }
     },
-    watch: {},
+    watch: {
+      '$route'(newVal, oldVal) {
+
+        let puuid = this.$route.query.puuid
+        if (puuid) {
+          this.pager.setFilterValue("puuid", puuid)
+        } else {
+          this.pager.setFilterValue("puuid", "root")
+        }
+
+        this.refresh()
+
+
+      }
+    },
     created() {
 
     },
@@ -83,8 +161,16 @@
 
       let that = this
       this.pager.enableHistory();
-      this.pager.setFilterValue("puuid", "root")
+
+      let puuid = this.$route.query.puuid
+      if (puuid) {
+        this.pager.setFilterValue("puuid", puuid)
+      } else {
+        this.pager.setFilterValue("puuid", "root")
+      }
+
       this.refresh();
+
 
     }
   }

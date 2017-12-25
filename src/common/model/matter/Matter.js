@@ -79,7 +79,7 @@ export default class Matter extends BaseEntity {
 
 
 
-  httpMatterCreateDirectory(userUuid, puuid, successCallback, errorCallback) {
+  httpCreateDirectory(userUuid, puuid, successCallback, errorCallback) {
     let that = this
     let form = {'userUuid': userUuid, 'name': this.name}
     if (puuid) {
@@ -93,19 +93,19 @@ export default class Matter extends BaseEntity {
     }, errorCallback)
   }
 
-  httpMatterDelete(successCallback, errorCallback) {
+  httpDelete(successCallback, errorCallback) {
     this.httpPost(Matter.URL_MATTER_DELETE, {'uuid': this.uuid}, function (response) {
       typeof successCallback === 'function' && successCallback(response)
     }, errorCallback)
   }
 
-  httpMatterDeleteBatch(uuids, successCallback, errorCallback) {
+  httpDeleteBatch(uuids, successCallback, errorCallback) {
     this.httpPost(Matter.URL_MATTER_DELETE_BATCH, {'uuids': uuids}, function (response) {
       typeof successCallback === 'function' && successCallback(response)
     }, errorCallback)
   }
 
-  httpMatterRename(successCallback, errorCallback) {
+  httpRename(successCallback, errorCallback) {
     let that = this
     this.httpPost(Matter.URL_MATTER_RENAME, {'uuid': this.uuid, 'name': this.name}, function (response) {
       that.render(response.data.data)
@@ -113,7 +113,7 @@ export default class Matter extends BaseEntity {
     }, errorCallback)
   }
 
-  httpMatterMove(srcUuids, destUuid, successCallback, errorCallback) {
+  httpMove(srcUuids, destUuid, successCallback, errorCallback) {
     let form = {'srcUuids': srcUuids}
     if (destUuid) {
       form.destUuid = destUuid
@@ -125,7 +125,7 @@ export default class Matter extends BaseEntity {
     }, errorCallback)
   }
 
-  httpMatterDownload(successCallback, errorCallback) {
+  httpDownload(successCallback, errorCallback) {
     this.httpPost(Matter.URL_MATTER_DOWNLOAD, {'uuid': this.uuid}, function (response) {
       typeof successCallback === 'function' && successCallback(response)
     }, errorCallback)

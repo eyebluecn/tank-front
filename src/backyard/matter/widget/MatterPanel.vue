@@ -56,7 +56,6 @@
     },
     methods: {
       clickRow() {
-        console.log("click name?")
         let that = this
         if (this.matter.dir) {
           this.$emit("goToDirectory", that.matter.uuid)

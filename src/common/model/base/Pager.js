@@ -129,6 +129,39 @@ export default class Pager extends Base {
     }
   };
 
+  //根据一个key来获取某个filter
+  getFilterValue(key) {
+    let filter = this.getFilter(key)
+    if (!filter) {
+      return null
+    } else {
+      return filter.getParam()
+    }
+
+  };
+
+  //获取所有的filter参数，键值对形式
+  getParams() {
+
+    let params = {
+      page: this.page,
+      pageSize: this.pageSize
+    }
+    if (!this.FILTERS || !this.FILTERS.length) {
+      return params
+    }
+
+    for (let i = 0; i < this.FILTERS.length; i++) {
+      let filter = this.FILTERS[i]
+
+      if (filter.getParam() !== null && filter.getParam() !== '') {
+        params[filter.key] = filter.getParam()
+      }
+    }
+
+    return params;
+  };
+
   //获取当前pager中的list
   getList() {
     return this.data
@@ -220,18 +253,7 @@ export default class Pager extends Base {
       this.pageSize = 10
     }
 
-    let params = {
-      page: this.page,
-      pageSize: this.pageSize
-    }
-
-    for (let i = 0; i < this.FILTERS.length; i++) {
-      let filter = this.FILTERS[i]
-
-      if (filter.getParam() !== null && filter.getParam() !== '') {
-        params[filter.key] = filter.getParam()
-      }
-    }
+    let params = this.getParams()
 
     this.httpCustomPage(this.URL_PAGE, params, successCallback, errorCallback)
 

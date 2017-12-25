@@ -99,7 +99,7 @@ export default class BaseEntity extends Base {
     let that = this
     if (!this.uuid) {
 
-      this.errorMessage = '没有详情！'
+      this.errorMessage = '没有定义uui,没有详情！'
 
       this.defaultErrorHandler(this.errorMessage, errorCallback)
 

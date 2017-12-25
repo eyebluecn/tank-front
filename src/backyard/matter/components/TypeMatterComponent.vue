@@ -204,7 +204,7 @@
                   uuids += i.uuid
                 }
               })
-              that.matter.httpMatterDeleteBatch(uuids, function (response) {
+              that.matter.httpDeleteBatch(uuids, function (response) {
                 Message.success('删除成功！')
                 that.refresh()
               }, function (response) {
@@ -256,7 +256,7 @@
         if (row.renameStatus) {
           let that = this
           row.name = $('#modify').val()
-          row.httpMatterRename(function (response) {
+          row.httpRename(function (response) {
             Message.success('重命名成功！')
             row.renameStatus = false
           }, function (response) {
@@ -281,7 +281,7 @@
           type: 'warning',
           callback: function (action, instance) {
             if (action === 'confirm') {
-              row.httpMatterDelete(function (response) {
+              row.httpDelete(function (response) {
                 Message.success('删除成功！')
                 that.refresh()
               })
