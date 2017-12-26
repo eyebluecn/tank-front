@@ -99,7 +99,7 @@
     data () {
       return {
         FeatureType,
-        repassword: null,
+        rePassword: null,
         currentUser: this.$store.state.user,
         user: new User()
       }
@@ -112,7 +112,7 @@
     methods: {
       save () {
         let that = this
-        if (!this.user.editMode && this.user.password !== this.repassword) {
+        if (!this.user.editMode && this.user.password !== this.rePassword) {
           Notification.error('两次密码输入不一致')
           return
         }

@@ -2,6 +2,7 @@ import BaseEntity from '../base/BaseEntity'
 import MenuManager from '../../frontend/MenuManager'
 import Filter from '../base/Filter'
 import {readLocalStorage, removeLocalStorage, saveToLocalStorage} from "../../util/Utils";
+import UserInputSelection from '../../../backyard/user/widget/UserInputSelection'
 
 let Role = {
   USER_ROLE_GUEST: 'GUEST',
@@ -130,7 +131,7 @@ export default class User extends BaseEntity {
 
   getFilters() {
     return [
-      new Filter(Filter.prototype.Type.INPUT, '用户名', 'username'),
+      new Filter(Filter.prototype.Type.HTTP_INPUT_SELECTION, '用户', 'username', null, User, true, UserInputSelection),
       new Filter(Filter.prototype.Type.INPUT, '邮箱', 'email'),
       new Filter(Filter.prototype.Type.INPUT, '手机号', 'phone'),
       new Filter(Filter.prototype.Type.SORT, '最新更新时间', 'orderLastTime'),

@@ -8,15 +8,13 @@
 			             selectedLabel="已选"
 			             deselectLabel="点击移除"
 			             selectLabel="点击选择"
+			             label="username"
+			             track-by="uuid"
 			             :options="options"
 			             :custom-label="customLabel"
 			             :multiple="true"
 			             :max="1"
 			>
-				<template slot="option" slot-scope="props">
-					<div class="option__desc"><span class="option__title">{{ props.option.username }}</span>
-					</div>
-				</template>
 				<span class="italic" slot="maxElements">
 					最多只能选择1项
 				</span>

@@ -9,18 +9,18 @@
         </div>
       </div>
 
-      <div class="col-md-12">
+      <div class="col-md-10 col-md-offset-1">
         <div class="bg-white br4 p10">
           <div class="media">
 
-            <div :class="{'pull-left':!$store.state.config.mobile}">
+            <div class="mr20" :class="{'pull-left':!$store.state.config.mobile}">
               <img class="img-container"
                    :class="{'img-blg':!$store.state.config.mobile,'img-lg':$store.state.config.mobile}"
                    :src="currentUser.getAvatarUrl()">
             </div>
             <div class="media-body">
               <div class="cell-title">
-                <h1>{{currentUser.username}}</h1>
+                <h1 class="mt10">{{currentUser.username}}</h1>
               </div>
 
 
