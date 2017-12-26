@@ -86,26 +86,26 @@
 											</span>
                   </div>
                   <div class="col-md-12 text-right">
-                    <el-button size="medium" class="mb5" v-if="currentUser.uuid !== user.uuid"
+                    <button class="btn btn-sm btn-primary mb5" v-if="currentUser.uuid !== user.uuid"
                                @click.stop.prevent="$router.push('/user/profile')">
                       返回管理员账户
-                    </el-button>
-                    <el-button size="medium" class="mb5" v-if="user.role === 'ADMINISTRATOR'"
+                    </button>
+                    <button class="btn btn-sm btn-primary mb5" v-if="user.role === 'ADMINISTRATOR'"
                                @click.stop.prevent="resetPassword">
                       重置密码
-                    </el-button>
-                    <el-button size="medium" class="mb5" v-if="currentUser.uuid === user.uuid"
+                    </button>
+                    <button class="btn btn-sm btn-primary mb5" v-if="currentUser.uuid === user.uuid"
                                @click.stop.prevent="changePassword">
                       修改密码
-                    </el-button>
-                    <el-button size="medium" class="mb5"
+                    </button>
+                    <button class="btn btn-sm btn-primary mb5"
                                @click.stop.prevent="$router.push('/matter/list/root?userUuid=' + currentUser.uuid)">
                       {{currentUser.uuid === user.uuid ? '我的文件' : '他的文件'}}
-                    </el-button>
-                    <el-button size="medium" class="mb5"
+                    </button>
+                    <button class="btn btn-sm btn-primary mb5"
                                @click.stop.prevent="$router.push('/user/edit/' + currentUser.uuid)">
                       {{currentUser.uuid === user.uuid ? '编辑个人资料' : '编辑他的资料'}}
-                    </el-button>
+                    </button>
                   </div>
                 </div>
 

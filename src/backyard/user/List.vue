@@ -6,27 +6,27 @@
 					<span class="item active">文章列表</span>
 				</div>
 			</div>
-		</div>
 
-		<div class="col-md-12">
-			<NbFilter :pager="pager" :callback="search">
-				<router-link class="btn btn-primary btn-sm" to="/user/create">
-					<i class="fa fa-plus"></i>
-					创建用户
-				</router-link>
-			</NbFilter>
-		</div>
 
-		<div class="col-md-12" v-for="(user,index) in pager.data">
-			<div class="bg-white border br4 p10 mb10">
-				<div class="media">
-					<div class="pull-left">
-						<router-link :to="'/user/detail/'+user.uuid">
-							<img class="img-circle img-md" :src="user.getAvatarUrl()">
-						</router-link>
-					</div>
-					<div class="media-body">
-						<div>
+			<div class="col-md-12">
+				<NbFilter :pager="pager" :callback="search">
+					<router-link class="btn btn-primary btn-sm" to="/user/create">
+						<i class="fa fa-plus"></i>
+						创建用户
+					</router-link>
+				</NbFilter>
+			</div>
+
+			<div class="col-md-12" v-for="(user,index) in pager.data">
+				<div class="bg-white border br4 p10 mb10">
+					<div class="media">
+						<div class="pull-left">
+							<router-link :to="'/user/detail/'+user.uuid">
+								<img class="img-circle img-md" :src="user.getAvatarUrl()">
+							</router-link>
+						</div>
+						<div class="media-body">
+							<div>
 							<span class="f16">
 								<router-link class="black" :to="'/user/detail/'+user.uuid">
 											{{user.username}}
@@ -34,27 +34,27 @@
 										      class="text-danger">(It's you)</span>
 								</router-link>
 							</span>
-						</div>
-						<div>
-							<div class="mt5">
-								{{user.getRoleName()}}
 							</div>
-							<div class="mt5">
-								<i class="fa fa-envelope text-success" v-if="user.email"></i>
-								{{user.email}}
+							<div>
+								<div class="mt5">
+									{{user.getRoleName()}}
+								</div>
+								<div class="mt5">
+									<i class="fa fa-envelope text-success" v-if="user.email"></i>
+									{{user.email}}
 
-								<i class="fa fa-phone text-info" v-if="user.phone"></i>
-								{{user.phone}}
+									<i class="fa fa-phone text-info" v-if="user.phone"></i>
+									{{user.phone}}
+								</div>
 							</div>
-						</div>
-						<div class="mv5 text-muted one-line">
-							{{user.description}}
-						</div>
-						<div>
-							<span class="mr10">上次登录: {{user.lastTime | humanTime}}</span>
-							<span class="mr10">上次IP: {{user.lastIp}}</span>
+							<div class="mv5 text-muted one-line">
+								{{user.description}}
+							</div>
+							<div>
+								<span class="mr10">上次登录: {{user.lastTime | humanTime}}</span>
+								<span class="mr10">上次IP: {{user.lastIp}}</span>
 
-							<span class="pull-right action-buttons">
+								<span class="pull-right action-buttons">
 									<router-link :to="'/user/edit/'+user.uuid">
 										<i class="fa fa-pencil text-info f18"></i>
 									</router-link>
@@ -63,18 +63,18 @@
 									</a>
 							</span>
 
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="col-md-12 mt20">
-			<NbPager :pager="pager" :callback="refresh"></NbPager>
-		</div>
+			<div class="col-md-12 mt20">
+				<NbPager :pager="pager" :callback="refresh"></NbPager>
+			</div>
 
+		</div>
 	</div>
-
 </template>
 
 <script>
