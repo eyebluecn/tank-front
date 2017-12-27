@@ -11,11 +11,11 @@
 							<i class="fa fa-check-square"></i>
 							全选
 						</button>
-						<button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length === pager.data.length" @click.stop.prevent="checkNone">
+						<button class="btn btn-primary btn-sm" v-if="pager.data.length && temporaryMatterUuids.length === pager.data.length" @click.stop.prevent="checkNone">
 							<i class="fa fa-square-o"></i>
 							取消全选
 						</button>
-						<button class="btn btn-primary btn-sm" @click.stop.prevent="deleteBatch">
+						<button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length" @click.stop.prevent="deleteBatch">
 							<i class="fa fa-trash"></i>
 							删除
 						</button>
