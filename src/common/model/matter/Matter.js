@@ -2,6 +2,8 @@ import BaseEntity from '../base/BaseEntity'
 import Filter from '../base/Filter'
 import {getMimeType, MimeUtil} from '../../util/MimeUtil'
 import {containStr, endWith, getExtension, startWith} from '../../filter/str'
+import User from '../user/User'
+import UserInputSelection from '../../../backyard/user/widget/UserInputSelection'
 
 export default class Matter extends BaseEntity {
   constructor(args) {
@@ -16,9 +18,7 @@ export default class Matter extends BaseEntity {
     this.path = null
 
     //本地操作变量
-    this.newFolderStatus = false
-    this.showOperation = false
-    this.renameStatus = false
+    this.check = false      //作为勾选变量
 
     /*
     这部分是辅助UI的字段信息
@@ -42,9 +42,9 @@ export default class Matter extends BaseEntity {
   getFilters() {
     return [
       new Filter(Filter.prototype.Type.INPUT, '父级菜单uuid', 'puuid', null, null, false),
-      new Filter(Filter.prototype.Type.INPUT, '用户ID', 'userUuid'),
+      new Filter(Filter.prototype.Type.HTTP_INPUT_SELECTION, '用户', 'userUuid', null, User, true, UserInputSelection),
       new Filter(Filter.prototype.Type.INPUT, '关键字', 'name'),
-      new Filter(Filter.prototype.Type.CHECK, '是否是文件夹', 'dir'),
+      new Filter(Filter.prototype.Type.CHECK, '文件夹', 'dir'),
       new Filter(Filter.prototype.Type.SORT, '文件夹', 'orderDir'),
       new Filter(Filter.prototype.Type.SORT, '创建时间', 'orderCreateTime'),
       new Filter(Filter.prototype.Type.SORT, '大小', 'orderSize'),

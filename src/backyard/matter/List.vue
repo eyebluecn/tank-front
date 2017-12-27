@@ -1,52 +1,63 @@
 <template>
-  <div class="backyard-matter-list">
-    <div class="row">
+	<div class="backyard-matter-list">
+		<div class="row">
 
-      <div class="col-md-12">
+			<div class="col-md-12">
 
-        <div>
-          <NbFilter :pager="pager" :callback="search">
+				<div>
+					<NbFilter :pager="pager" :callback="search">
 
-            <span class="btn btn-primary btn-sm btn-file">
+						<button class="btn btn-primary btn-sm" @click.stop.prevent="checkAll">
+							<i class="fa fa-check-square"></i>
+							全选
+						</button>
+						<button class="btn btn-primary btn-sm" @click.stop.prevent="checkNone">
+							<i class="fa fa-square-o"></i>
+							取消全选
+						</button>
+
+						<span class="btn btn-primary btn-sm btn-file">
               <slot name="button">
-                <i class="fa fa-plus"></i>
+                <i class="fa fa-cloud-upload"></i>
                 <span>上传文件</span>
               </slot>
               <input ref="refFile" type="file" @change.prevent.stop="triggerUpload"/>
-				</span>
+				    </span>
 
-            <button class="btn btn-sm btn-primary" @click.stop.prevent="createDirectory">
-              <i class="fa fa-plus"></i>
-              创建文件夹
-            </button>
-          </NbFilter>
-        </div>
+						<button class="btn btn-sm btn-primary" @click.stop.prevent="createDirectory">
+							<i class="fa fa-plus"></i>
+							创建文件夹
+						</button>
+					</NbFilter>
 
-        <div v-for="m in uploadMatters">
-          <UploadMatterPanel :matter="m"/>
-        </div>
+				</div>
 
-        <div v-if="director.createMode">
-          <MatterPanel ref="newMatterPanel" @createDirectorySuccess="refresh()" :matter="newMatter"
-                       :director="director"/>
-        </div>
-        <div v-for="matter in pager.data">
-          <MatterPanel @goToDirectory="goToDirectory" @deleteSuccess="refresh()" :matter="matter" :director="director"/>
-        </div>
+				<div v-for="m in uploadMatters">
+					<UploadMatterPanel :matter="m"/>
+				</div>
 
-        <div>
-          <NbPager :pager="pager" :callback="refresh" emptyHint="该目录下暂无任何内容"/>
-        </div>
-      </div>
+				<div v-if="director.createMode">
+					<MatterPanel ref="newMatterPanel" @createDirectorySuccess="refresh()" :matter="newMatter"
+					             :director="director"/>
+				</div>
+				<div v-for="matter in pager.data">
+					<MatterPanel @goToDirectory="goToDirectory" @deleteSuccess="refresh()" :matter="matter" :director="director"
+					             @checkMatter="checkMatter"/>
+				</div>
+
+				<div>
+					<NbPager :pager="pager" :callback="refresh" emptyHint="该目录下暂无任何内容"/>
+				</div>
+			</div>
 
 
-    </div>
+		</div>
 
-  </div>
+	</div>
 </template>
 <script>
-  import MatterPanel from "./widget/MatterPanel";
-  import UploadMatterPanel from "./widget/UploadMatterPanel";
+  import MatterPanel from './widget/MatterPanel'
+  import UploadMatterPanel from './widget/UploadMatterPanel'
 
   import NbSlidePanel from '../../common/widget/NbSlidePanel.vue'
   import NbExpanding from '../../common/widget/NbExpanding.vue'
@@ -55,11 +66,10 @@
   import NbPager from '../../common/widget/NbPager'
   import Matter from '../../common/model/matter/Matter'
   import Pager from '../../common/model/base/Pager'
-  import Director from "./widget/Director";
-
+  import Director from './widget/Director'
 
   export default {
-    data() {
+    data () {
       return {
         //当前文件夹信息。
         matter: new Matter(),
@@ -67,6 +77,8 @@
         newMatter: new Matter(),
         //准备上传的一系列文件
         uploadMatters: [],
+        //临时暂存区，用于文件的相关操作
+        temporaryMatterUuids: [],
         pager: new Pager(Matter, 50),
         user: this.$store.state.user,
         breadcrumbs: this.$store.state.breadcrumbs,
@@ -83,39 +95,41 @@
       NbExpanding
     },
     methods: {
-      reset() {
-        this.pager.page = 0;
-        this.pager.resetFilter();
-        this.pager.enableHistory();
+      reset () {
+        this.pager.page = 0
+        this.pager.resetFilter()
+        this.pager.enableHistory()
       },
-      search() {
-        this.pager.page = 0;
+      search () {
+        this.pager.page = 0
         this.refresh()
       },
-      refresh() {
+      refresh () {
 
         //刷新面包屑
         this.refreshBreadcrumbs()
 
-        this.pager.httpFastPage();
+        this.pager.httpFastPage()
       },
-      goToDirectory(uuid) {
-        this.pager.setFilterValue("puuid", uuid)
+      goToDirectory (uuid) {
+        this.pager.setFilterValue('puuid', uuid)
         this.search()
         this.refreshBreadcrumbs()
       },
-      refreshBreadcrumbs() {
+      refreshBreadcrumbs () {
 
         let that = this
 
-        let uuid = that.pager.getFilterValue("puuid")
+	      //清空暂存区
+        this.temporaryMatterUuids.splice(0,this.temporaryMatterUuids.length)
 
+        let uuid = that.pager.getFilterValue('puuid')
 
         //根目录简单处理即可。
-        if (!uuid || uuid === "root") {
+        if (!uuid || uuid === 'root') {
 
-          this.matter.uuid = "root"
-          that.breadcrumbs.splice(0, that.breadcrumbs.length);
+          this.matter.uuid = 'root'
+          that.breadcrumbs.splice(0, that.breadcrumbs.length)
           that.breadcrumbs.push({
             title: '全部文件'
           })
@@ -129,14 +143,14 @@
             let cur = that.matter.parent
             while (cur) {
               arr.push(cur)
-              cur = cur.parent;
+              cur = cur.parent
             }
 
-            that.breadcrumbs.splice(0, that.breadcrumbs.length);
+            that.breadcrumbs.splice(0, that.breadcrumbs.length)
             let query = that.pager.getParams()
-            query["puuid"] = "root"
+            query['puuid'] = 'root'
             //添加一个随机数，防止watch $route失败
-            query["_t"] = new Date().getTime()
+            query['_t'] = new Date().getTime()
             that.breadcrumbs.push({
               title: '全部文件',
               path: '/',
@@ -146,8 +160,8 @@
             for (let i = arr.length - 1; i >= 0; i--) {
               let m = arr[i]
               let query = that.pager.getParams()
-              query["puuid"] = m.uuid
-              query["_t"] = new Date().getTime()
+              query['puuid'] = m.uuid
+              query['_t'] = new Date().getTime()
               that.breadcrumbs.push({
                 title: m.name,
                 path: '/',
@@ -161,14 +175,14 @@
           })
         }
       },
-      createDirectory() {
+      createDirectory () {
         let that = this
         that.newMatter.name = '新建文件夹'
         that.newMatter.dir = true
         that.newMatter.editMode = true
         that.newMatter.puuid = that.matter.uuid
         if (!that.newMatter.puuid) {
-          that.newMatter.puuid = "root"
+          that.newMatter.puuid = 'root'
         }
         that.newMatter.userUuid = that.user.uuid
         that.director.createMode = true
@@ -177,7 +191,7 @@
           that.$refs.newMatterPanel.highLight()
         }, 100)
       },
-      triggerUpload() {
+      triggerUpload () {
         let that = this
 
         let m = new Matter()
@@ -197,53 +211,75 @@
 
         that.uploadMatters.push(m)
 
+      },
+
+      //全选
+      checkAll () {
+        this.pager.data.forEach(function (i, index) {
+          i.check = true
+        })
+      },
+      //取消全选
+      checkNone () {
+        this.pager.data.forEach(function (i, index) {
+          i.check = false
+        })
+      },
+      //选择文件时放入暂存区等待操作
+      checkMatter (val) {
+        if (val.checkStatus && this.temporaryMatterUuids.indexOf(val.matterUuid) === -1) {
+          this.temporaryMatterUuids.push(val.matterUuid)
+        } else if (!val.checkStatus && this.temporaryMatterUuids.indexOf(val.matterUuid) !== -1) {
+          let index = this.temporaryMatterUuids.indexOf(val.matterUuid)
+          this.temporaryMatterUuids.splice(index, 1)
+        }
+        return true
       }
     },
     watch: {
-      '$route'(newVal, oldVal) {
+      '$route' (newVal, oldVal) {
 
         let puuid = this.$route.query.puuid
         if (puuid) {
-          this.pager.setFilterValue("puuid", puuid)
+          this.pager.setFilterValue('puuid', puuid)
         } else {
-          this.pager.setFilterValue("puuid", "root")
+          this.pager.setFilterValue('puuid', 'root')
         }
 
         this.refresh()
 
-
       }
-    },
-    created() {
 
     },
-    mounted() {
+    created () {
+
+    },
+    mounted () {
 
       let that = this
-      this.pager.enableHistory();
+      this.pager.enableHistory()
 
       let puuid = this.$route.query.puuid
       if (puuid) {
-        this.pager.setFilterValue("puuid", puuid)
+        this.pager.setFilterValue('puuid', puuid)
       } else {
-        this.pager.setFilterValue("puuid", "root")
+        this.pager.setFilterValue('puuid', 'root')
       }
 
       //如果所有的排序都没有设置，那么默认以时间降序。
-      if (!this.pager.getFilterValue("orderDir") && !this.pager.getFilterValue("orderCreateTime") && !this.pager.getFilterValue("orderSize") && !this.pager.getFilterValue("orderName")) {
-        this.pager.setFilterValue("orderCreateTime", "DESC")
+      if (!this.pager.getFilterValue('orderDir') && !this.pager.getFilterValue('orderCreateTime') && !this.pager.getFilterValue('orderSize') && !this.pager.getFilterValue('orderName')) {
+        this.pager.setFilterValue('orderCreateTime', 'DESC')
       }
 
-      this.refresh();
-
+      this.refresh()
 
     }
   }
 </script>
 <style lang="less" rel="stylesheet/less">
-  @import "../../assets/css/global/variables";
+	@import "../../assets/css/global/variables";
 
-  .backyard-matter-list {
+	.backyard-matter-list {
 
-  }
+	}
 </style>

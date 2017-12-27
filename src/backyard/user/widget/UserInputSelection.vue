@@ -11,7 +11,6 @@
 			             label="username"
 			             track-by="uuid"
 			             :options="options"
-			             :custom-label="customLabel"
 			             :multiple="true"
 			             :max="1"
 			>
@@ -36,26 +35,17 @@
   import User from '../../../common/model/user/User'
 
   export default {
-    model: {
-      prop: 'tag',
-      event: 'option'
-    },
     data () {
       return {
         innerTags: [],
         options: [],
-        pager: new Pager(User, 20)/*,
-        isLoading: false*/
+        pager: new Pager(User, 20)
       }
     },
     props: {
-      /*initUser: {
+      activeItem: {
         type: User,
-        required: true
-      }*/
-      tag: {
-        type: User,
-        "default": null
+	      required: true
       },
       initFilter: {
         type: Object,
@@ -64,16 +54,17 @@
     },
     watch: {
       "innerTags"(newVal, oldVal){
+        console.log(newVal)
         if (this.innerTags) {
+          /*console.log(this.innerTags[0])*/
           if (this.innerTags.length > 0) {
-            this.$emit('option', this.innerTags[0]);
+
+            this.activeItem.render(this.innerTags[0])
+	          /*console.log(this.activeItem)*/
           } else {
-            this.$emit('option', null);
+            this.activeItem.render(new User())
           }
         }
-      },
-      "tag"(newVal, oldVal){
-        this.fillInnerTags();
       }
 
     },
@@ -95,32 +86,30 @@
       },
       //用tags的元素去装填innerTags
       fillInnerTags(){
-        if (this.innerTags[0] === this.tag) {
+
+        if (this.innerTags[0] && this.innerTags[0].uuid === this.activeItem.uuid) {
           //Event from inner.
 
         } else {
+
           //Event from outer
 
           //清空innerTags
           this.innerTags.splice(0, this.innerTags.length);
           //把tags中所有的item追加过来
 
-          if (this.tag) {
-            this.innerTags.push(this.tag)
+          if (this.activeItem.uuid) {
+            this.innerTags.push(this.activeItem)
           }
 
         }
       },
 
-      customLabel ({username}) {
-        return `${username}`
-      },
       asyncFind (value) {
         let that = this
         this.isLoading = true
         this.pager.setFilterValue('username', value)
         this.pager.httpFastPage(function (response) {
-          that.userList = that.pager.data
           that.isLoading = false
 
         })
@@ -130,16 +119,10 @@
       Multiselect
     },
     created () {
-      /*let that = this
-      if(this.initUser){
-        this.selectedUser.uuid = this.initUser.uuid
-        this.selectedUser.httpDetail(function (response) {
-          console.log(that.selectedUser)
-        })
-      }*/
+
     },
     mounted () {
-      this.fillInnerTags();
+      /*this.fillInnerTags();*/
       if (this.initFilter) {
         for (let key in this.initFilter) {
           this.pager.setFilterValue(key, this.initFilter[key]);
