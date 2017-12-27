@@ -7,13 +7,17 @@
 				<div>
 					<NbFilter :pager="pager" :callback="search">
 
-						<button class="btn btn-primary btn-sm" @click.stop.prevent="checkAll">
+						<button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length !== pager.data.length" @click.stop.prevent="checkAll">
 							<i class="fa fa-check-square"></i>
 							全选
 						</button>
-						<button class="btn btn-primary btn-sm" @click.stop.prevent="checkNone">
+						<button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length === pager.data.length" @click.stop.prevent="checkNone">
 							<i class="fa fa-square-o"></i>
 							取消全选
+						</button>
+						<button class="btn btn-primary btn-sm" @click.stop.prevent="deleteBatch">
+							<i class="fa fa-trash"></i>
+							删除
 						</button>
 
 						<span class="btn btn-primary btn-sm btn-file">
@@ -67,6 +71,7 @@
   import Matter from '../../common/model/matter/Matter'
   import Pager from '../../common/model/base/Pager'
   import Director from './widget/Director'
+  import { Message, MessageBox, Notification } from 'element-ui'
 
   export default {
     data () {
@@ -234,6 +239,26 @@
           this.temporaryMatterUuids.splice(index, 1)
         }
         return true
+      },
+	    //批量删除
+      deleteBatch(){
+        let that = this
+        MessageBox.confirm('此操作将永久删除这些文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          callback: function (action, instance) {
+            if (action === 'confirm') {
+              let uuids = that.temporaryMatterUuids.join(',')
+              that.matter.httpDeleteBatch(uuids,function (response) {
+                Message.success('删除成功！')
+                that.refresh()
+              })
+            }
+
+          }
+        })
+
       }
     },
     watch: {
