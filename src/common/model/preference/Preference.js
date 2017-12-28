@@ -1,5 +1,4 @@
 import BaseEntity from '../base/BaseEntity'
-import Tank from '../tank/Tank'
 
 export default class Preference extends BaseEntity {
   constructor (args) {
@@ -9,7 +8,6 @@ export default class Preference extends BaseEntity {
 
     //logo
     this.logoUrl = null
-    this.logoTankUuid = null
     this.faviconUrl = null
     this.faviconTankUuid = null
 
@@ -17,8 +15,6 @@ export default class Preference extends BaseEntity {
     this.footerLine1 = null
     this.footerLine2 = null
 
-    this.logoTank = new Tank('image', false, 1024 * 1024, '图片不能超过1M')
-    this.faviconTank = new Tank('.ico', false, 1024 * 1024, '图片不能超过1M')
 
     this.validatorSchema = {
       name: {
@@ -40,9 +36,7 @@ export default class Preference extends BaseEntity {
     return {
       name: this.name,
       logoUrl: this.logoUrl,
-      logoTankUuid: this.logoTankUuid,
       faviconUrl: this.faviconUrl,
-      faviconTankUuid: this.faviconTankUuid,
       footerLine1: this.footerLine1,
       footerLine2: this.footerLine2
     }

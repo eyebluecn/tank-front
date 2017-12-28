@@ -11,12 +11,12 @@ export default class Matter extends BaseEntity {
     this.puuid = null
     this.userUuid = null
     this.dir = false
+    this.alien = false
     this.name = null
     this.md5 = null
     this.size = 0
     this.privacy = true
     this.path = null
-
 
 
     /*
@@ -70,7 +70,12 @@ export default class Matter extends BaseEntity {
   getIcon() {
 
     if (this.dir) {
-      return "/static/img/file/folder.svg"
+      if (this.alien) {
+        return "/static/img/file/alien.svg"
+      } else {
+        return "/static/img/file/folder.svg"
+      }
+
     }
 
     let mimeType = getMimeType(this.name)
@@ -279,6 +284,7 @@ export default class Matter extends BaseEntity {
     formData.append('userUuid', that.userUuid)
     formData.append('puuid', that.puuid)
     formData.append('file', that.file)
+    formData.append('alien', that.alien)
 
 
     //闭包

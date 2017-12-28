@@ -90,7 +90,6 @@
   import { Notification } from 'element-ui'
   import { FeatureType } from '../../common/model/feature/FeatureType'
   import NbRadio from '../../common/widget/NbRadio.vue'
-  import NbTank from '../../common/widget/NbTank.vue'
   import CreateSaveButton from '../widget/CreateSaveButton'
   import User from '../../common/model/user/User'
 
@@ -106,7 +105,6 @@
     },
     components: {
       NbRadio,
-      NbTank,
       CreateSaveButton
     },
     methods: {

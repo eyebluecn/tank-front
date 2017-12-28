@@ -17,19 +17,6 @@
 				</div>
 			</div>
 
-			<div class="row mt10">
-				<label class="col-md-2 control-label mt5">logo</label>
-				<div class="col-md-10">
-					<NbTank :tank="preference.logoTank"/>
-				</div>
-			</div>
-
-			<div class="row mt10" v-if="preference.faviconTank">
-				<label class="col-md-2 control-label mt5">favicon</label>
-				<div class="col-md-10">
-					<NbTank :tank="preference.faviconTank"/>
-				</div>
-			</div>
 
 			<div class="row mt10">
 				<div class="col-md-12">
@@ -44,7 +31,6 @@
 </template>
 
 <script>
-	import NbTank from '../../common/widget/NbTank'
   import CreateSaveButton from '../widget/CreateSaveButton'
   import Preference from '../../common/model/preference/Preference'
 	import { Notification } from 'element-ui'
@@ -57,7 +43,6 @@
       }
 	  },
 	  components:{
-      NbTank,
       CreateSaveButton
 	  },
 	  methods:{
