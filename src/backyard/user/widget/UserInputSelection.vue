@@ -57,13 +57,14 @@
     },
     watch: {
       "users"(newVal, oldVal) {
-        console.log("oldValue => ", oldVal, "newValue => ", newVal)
         if (this.users) {
-          /*console.log(this.users[0])*/
           if (this.users.length > 0) {
+            for (let i = 0; i < this.options.length; i++) {
+              if (this.options[i].uuid === this.users[0].uuid) {
+                this.activeItem.render(this.options[i])
+              }
+            }
 
-            this.activeItem.render(this.users[0])
-            /*console.log(this.activeItem)*/
           } else {
             this.activeItem.render(new User())
           }
@@ -80,39 +81,16 @@
           if (list && list.length > 0) {
             that.options.splice(0, that.options.length);
             list.forEach(item => {
-
               that.options.push(item);
-
             })
           }
         });
-      },
-      //用tags的元素去装填users
-      fillUsers() {
-
-        if (this.users[0] && this.users[0].uuid === this.activeItem.uuid) {
-          //Event from inner.
-
-        } else {
-
-          //Event from outer
-
-          //清空users
-          this.users.splice(0, this.users.length);
-          //把tags中所有的item追加过来
-          if (this.activeItem.uuid) {
-            this.users.push(this.activeItem)
-          }
-
-        }
       },
       inputChange(value, id) {
         this.pager.setFilterValue("username", value);
         this.refresh();
       },
       select(selectedOption, id) {
-        console.log("selectedOption:")
-        console.log(selectedOption)
       }
     },
     components: {
@@ -122,7 +100,6 @@
 
     },
     mounted() {
-      /*this.fillUsers();*/
       if (this.initFilter) {
         for (let key in this.initFilter) {
           this.pager.setFilterValue(key, this.initFilter[key]);
