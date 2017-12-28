@@ -11,12 +11,39 @@
 		</div>
 		<div class="bg-white br4 p20 mt10">
 			<div class="row" v-validator="preference.validatorSchema.name.error">
-				<label class="col-md-2 control-label mt5 compulsory">网站名称</label>
+				<label class="col-md-2 control-label mt5 compulsory">网盘名称</label>
 				<div class="col-md-10 validate">
 					<input type="text" class="form-control" v-model="preference.name">
 				</div>
 			</div>
 
+			<div class="row mt10">
+				<label class="col-md-2 control-label mt5">云盘logo</label>
+				<div class="col-md-10">
+					<MatterImage v-model="preference.logoUrl"/>
+				</div>
+			</div>
+
+			<div class="row mt10">
+				<label class="col-md-2 control-label mt5">favicon</label>
+				<div class="col-md-10">
+					<MatterImage v-model="preference.faviconUrl"/>
+				</div>
+			</div>
+
+			<div class="row mt10">
+				<label class="col-md-2 control-label mt5">底部第一行文字</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" v-model="preference.footerLine1">
+				</div>
+			</div>
+
+			<div class="row mt10">
+				<label class="col-md-2 control-label mt5">底部第二行文字</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" v-model="preference.footerLine2">
+				</div>
+			</div>
 
 			<div class="row mt10">
 				<div class="col-md-12">
@@ -32,6 +59,7 @@
 
 <script>
   import CreateSaveButton from '../widget/CreateSaveButton'
+  import MatterImage from '../matter/widget/MatterImage'
   import Preference from '../../common/model/preference/Preference'
 	import { Notification } from 'element-ui'
 
@@ -43,6 +71,7 @@
       }
 	  },
 	  components:{
+      MatterImage,
       CreateSaveButton
 	  },
 	  methods:{

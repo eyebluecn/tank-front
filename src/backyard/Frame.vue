@@ -32,7 +32,7 @@
 
         <TopNavigation/>
       </div>
-
+      <BottomNavigation />
     </div>
   </div>
 
@@ -43,6 +43,7 @@
   import {Notification} from 'element-ui'
   import SideNavigation from './layout/SideNavigation.vue'
   import TopNavigation from './layout/TopNavigation.vue'
+  import BottomNavigation from './layout/BottomNavigation.vue'
   import enquire from 'enquire.js/dist/enquire'
 
   export default {
@@ -58,7 +59,8 @@
     },
     components: {
       SideNavigation,
-      TopNavigation
+      TopNavigation,
+      BottomNavigation
     },
     methods: {
       blankClick() {
@@ -101,7 +103,7 @@
     left: @sidebar-width;
     top: @top-navigation-height;
     right: 0;
-    bottom: 0;
+    bottom: @power-footer-height;
     overflow-y: auto;
     overflow-x: hidden;
 

@@ -5,7 +5,7 @@
 
       <div class="menu-header" @click="goToProfile">
         <div class="logo-area">
-          <img alt="image" class="img-circle w80" :src="user.getAvatarUrl()"/>
+          <img alt="image" class="img-circle w80" :src="user.uuid ? user.getAvatarUrl() + '?imageProcess=resize&imageResizeM=fill&imageResizeW=100&imageResizeH=100'  : user.getAvatarUrl()"/>
         </div>
         <div class="text-area">
           <div class="nickname">
