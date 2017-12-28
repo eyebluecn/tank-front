@@ -205,6 +205,7 @@ export default class User extends BaseEntity {
 
   getForm() {
     let form = {
+      avatarUrl: this.avatarUrl,
       username: this.username,
       password: this.password,
       email: this.email,

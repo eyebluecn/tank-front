@@ -24,7 +24,7 @@
 						</button>
 						<button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length"
 						        @click.stop.prevent="moveBatch($createElement)">
-							<i class="fa fa-share"></i>
+							<i class="fa fa-arrows"></i>
 							移动
 						</button>
 

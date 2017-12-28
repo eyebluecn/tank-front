@@ -9,7 +9,6 @@ export default class Preference extends BaseEntity {
     //logo
     this.logoUrl = null
     this.faviconUrl = null
-    this.faviconTankUuid = null
 
     //底部第一行文字
     this.footerLine1 = null
@@ -28,8 +27,6 @@ export default class Preference extends BaseEntity {
 
   render (obj) {
     super.render(obj)
-    this.renderEntity('logoTank', Tank)
-    this.renderEntity('faviconTank', Tank)
   }
 
   getForm () {
@@ -43,14 +40,7 @@ export default class Preference extends BaseEntity {
   }
 
   validate(){
-    if (this.logoTank) {
-      this.logoTankUuid = this.logoTank.uuid
-      this.logoUrl = this.logoTank.url
-    }
-    if (this.faviconTank) {
-      this.faviconTankUuid = this.faviconTank.uuid
-      this.faviconUrl = this.faviconTank.url
-    }
+
     return super.validate()
   }
 

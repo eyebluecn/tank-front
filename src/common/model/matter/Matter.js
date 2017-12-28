@@ -4,6 +4,7 @@ import {getMimeType, MimeUtil} from '../../util/MimeUtil'
 import {containStr, endWith, getExtension, startWith} from '../../filter/str'
 import User from '../user/User'
 import UserInputSelection from '../../../backyard/user/widget/UserInputSelection'
+import Vue from "vue"
 
 export default class Matter extends BaseEntity {
   constructor(args) {
@@ -70,12 +71,7 @@ export default class Matter extends BaseEntity {
   getIcon() {
 
     if (this.dir) {
-      if (this.alien) {
-        return "/static/img/file/alien.svg"
-      } else {
-        return "/static/img/file/folder.svg"
-      }
-
+      return "/static/img/file/folder.svg"
     }
 
     let mimeType = getMimeType(this.name)
@@ -292,7 +288,6 @@ export default class Matter extends BaseEntity {
     let lastSize = 0
     that.httpPost(Matter.URL_MATTER_UPLOAD, formData, function (response) {
 
-      //上传到tank服务器成功了，更新matterUuid.
       that.uuid = response.data.data.uuid
 
       if (typeof successCallback === "function") {
@@ -301,8 +296,6 @@ export default class Matter extends BaseEntity {
 
     }, function (response) {
 
-      console.log("上传到tank服务器失败", response.data)
-      console.log(response)
 
       that.errorMessage = '上传出错，请稍后重试'
       that.clear()
@@ -351,6 +344,10 @@ export default class Matter extends BaseEntity {
     //TODO:如果还正在上传东西，那么停止请求。
 
 
+  }
+
+  getDownloadUrl() {
+    return Vue.http.options.root + '/alien/download/' + this.uuid + '/' + this.name
   }
 
 }
