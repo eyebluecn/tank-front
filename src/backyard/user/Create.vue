@@ -130,6 +130,13 @@
           Notification.success({
             message: that.user.editMode ? '修改用户成功！' : '创建用户成功！'
           })
+
+
+          if (that.currentUser.uuid === that.user.uuid) {
+            that.currentUser.innerLogin(response)
+          }
+
+
           that.$router.go(-1)
         })
       }
