@@ -17,12 +17,14 @@ export default class Matter extends BaseEntity {
     this.privacy = true
     this.path = null
 
-    //本地操作变量
-    this.check = false      //作为勾选变量
+
 
     /*
     这部分是辅助UI的字段信息
      */
+    //作为勾选变量
+    this.check = false
+
     //允许用户选择的文件类型
     this.filter = "*"
     //本地字段
