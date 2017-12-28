@@ -69,6 +69,22 @@
             this.activeItem.render(new User())
           }
         }
+      },
+      "activeItem.uuid"(newVal, oldVal) {
+        let that = this
+        if (newVal) {
+          if (this.activeItem.username) {
+            //inner change
+          } else {
+            //outer change.
+
+            this.activeItem.httpDetail(function () {
+              that.selectedOptions.push(that.activeItem)
+            })
+          }
+        }
+
+
       }
 
     },
