@@ -2,7 +2,7 @@
   <div>
 
     <div>
-      <Multiselect v-model="users"
+      <Multiselect v-model="selectedOptions"
                    tag-placeholder="选择用户"
                    placeholder="搜索或选择用户"
                    selectedLabel="已选"
@@ -40,7 +40,7 @@
   export default {
     data() {
       return {
-        users: [],
+        selectedOptions: [],
         options: [],
         pager: new Pager(User, 20)
       }
@@ -56,11 +56,11 @@
       }
     },
     watch: {
-      "users"(newVal, oldVal) {
-        if (this.users) {
-          if (this.users.length > 0) {
+      "selectedOptions"(newVal, oldVal) {
+        if (this.selectedOptions) {
+          if (this.selectedOptions.length > 0) {
             for (let i = 0; i < this.options.length; i++) {
-              if (this.options[i].uuid === this.users[0].uuid) {
+              if (this.options[i].uuid === this.selectedOptions[0].uuid) {
                 this.activeItem.render(this.options[i])
               }
             }
