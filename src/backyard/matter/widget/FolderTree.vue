@@ -1,11 +1,11 @@
 <template>
 	<div class="folder-tree">
 		<div class="h50 cursor folder-block" :class="{'bg-silver-white': targetMatter.uuid === matter.uuid}" @click.stop.prevent="deepFolderToggle">
-			<span class="fa fa-chevron-down mr5" v-if="pager.data.length && deepFolder"></span>
-			<span class="fa fa-chevron-right mr5" v-if="pager.data.length && !deepFolder"></span>
-			<span :class="{ 'ml18': !pager.data.length }">
+			<span class="fa fa-chevron-down mr5 w14" v-if="pager.data.length && deepFolder"></span>
+			<span class="fa fa-chevron-right mr5 w14" v-if="pager.data.length && !deepFolder"></span>
+			<span :class="{ 'ml23': !pager.data.length }">
 				<span v-if="matter.uuid">
-					<img :src="matter.getIcon()" class="mr5" alt="文件夹" width="24" />
+					<img :src="matter.getIcon()" class="mr5" alt="文件夹" width="22" />
 					<span>{{matter.name}}</span>
 				</span>
 				<span v-else>
@@ -15,11 +15,14 @@
 			</span>
 
 		</div>
-		<div v-if="pager.data.length && deepFolder" class="pl20">
-			<div v-for="(child, index) in pager.data">
-				<FolderTree :matter="child" :targetMatter="targetMatter"></FolderTree>
+		<NbExpanding>
+			<div v-if="pager.data.length && deepFolder" class="pl20">
+				<div v-for="(child, index) in pager.data">
+					<FolderTree :matter="child" :targetMatter="targetMatter"></FolderTree>
+				</div>
 			</div>
-		</div>
+		</NbExpanding>
+
 	</div>
 </template>
 
@@ -52,9 +55,6 @@
 	      default: false
       }
 	  },
-    watch: {
-
-    },
 	  methods:{
       deepFolderToggle () {
         this.deepFolder = !this.deepFolder
@@ -65,7 +65,6 @@
 	  },
 	  components:{
       NbExpanding
-
 	  },
 	  mounted() {
       if (!this.matter.uuid) {
@@ -94,6 +93,9 @@
 			&:hover {
 				background: #eee;
 			}
+		}
+		.ml23{
+			margin-left: 23px;
 		}
 	}
 

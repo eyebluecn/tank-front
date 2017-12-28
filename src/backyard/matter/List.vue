@@ -293,6 +293,7 @@
               let uuids = that.temporaryMatterUuids.join(',')
               that.matter.httpMove(uuids, this.targetMatter.uuid, function (response) {
                 Message.success('移动成功！')
+	              that.targetMatter.render(new Matter())
                 that.refresh()
               })
             }
