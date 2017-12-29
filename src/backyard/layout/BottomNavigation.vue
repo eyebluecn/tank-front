@@ -4,7 +4,7 @@
 			{{preference.footerLine1}}
 		</span>
 		<span class="mr10" style="max-width: 300px">
-			{{preference.footerLine2}}
+			<span v-html="preference.footerLine2"></span>
 		</span>
 		<!-- 版本号：cn.eyeblue.tank:1.0.0 -->
 		<!-- 开源不易，请不要移除掉这里的代码，蓝眼云盘谢谢您 ^_^ -->

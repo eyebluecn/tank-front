@@ -1,18 +1,17 @@
 <template>
-  <div class="nb-app">
+	<div class="nb-app">
 
-    <NprogressContainer/>
-    <router-view/>
+		<NprogressContainer/>
+		<router-view/>
 
-  </div>
+	</div>
 </template>
 
 <script>
   import NprogressContainer from 'vue-nprogress/src/NprogressContainer'
 
-
   export default {
-    data() {
+    data () {
       return {
         preference: this.$store.state.preference
       }
@@ -21,13 +20,12 @@
     components: {
       NprogressContainer
     },
-    mounted() {
+    mounted () {
 
-      let that = this;
+      let that = this
       this.preference.httpFetch(function () {
-        document.title = that.preference.name;
+        document.title = that.preference.name
       })
-
 
     }
   }
@@ -36,61 +34,61 @@
 
 <style lang="less" rel="stylesheet/less">
 
-  @import "~font-awesome/css/font-awesome.css";
-  @import "./assets/css/app.less";
+	@import "~font-awesome/css/font-awesome.css";
+	@import "./assets/css/app.less";
 
-  .nb-app {
+	.nb-app {
 
-    height: 100%;
+		height: 100%;
 
-    .nprogress-container {
-      position: fixed !important;
-      width: 100%;
-      height: 150px;
-      z-index: 2048;
-      pointer-events: none;
+		.nprogress-container {
+			position: fixed !important;
+			width: 100%;
+			height: 150px;
+			z-index: 2048;
+			pointer-events: none;
 
-      #nprogress {
-        //@color: #48e79a;
-        @color: #1ab394;
+			#nprogress {
+				//@color: #48e79a;
+				@color: #1ab394;
 
-        .bar {
-          background: @color;
-        }
-        .peg {
-          box-shadow: 0 0 10px @color, 0 0 5px @color;
-        }
+				.bar {
+					background: @color;
+				}
+				.peg {
+					box-shadow: 0 0 10px @color, 0 0 5px @color;
+				}
 
-        .spinner-icon {
-          border-top-color: @color;
-          border-left-color: @color;
-        }
-      }
-    }
+				.spinner-icon {
+					border-top-color: @color;
+					border-left-color: @color;
+				}
+			}
+		}
 
-    //所有的滚动条样式
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track-piece {
-      background-color: #eee;
-      margin: -2px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #aaa;
-      min-height: 150px;
-      min-width: 150px;
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb:vertical:hover {
-      background: #555555
-    }
-    ::-webkit-scrollbar-thumb:horizontal:hover {
-      background: #555555
-    }
+		//所有的滚动条样式
+		::-webkit-scrollbar {
+			width: 6px;
+			height: 6px;
+		}
+		::-webkit-scrollbar-track-piece {
+			background-color: #eee;
+			margin: -2px;
+		}
+		::-webkit-scrollbar-thumb {
+			background: #aaa;
+			min-height: 150px;
+			min-width: 150px;
+			border-radius: 10px;
+		}
+		::-webkit-scrollbar-thumb:vertical:hover {
+			background: #555555
+		}
+		::-webkit-scrollbar-thumb:horizontal:hover {
+			background: #555555
+		}
 
-  }
+	}
 
 
 </style>

@@ -55,7 +55,7 @@
 					底部第二行文字
 				</div>
 				<div class="col-md-10 col-sm-10 col-xs-8">
-					{{preference.footerLine2}}
+					<span v-html="preference.footerLine2"></span>
 				</div>
 			</div>
 
