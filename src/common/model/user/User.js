@@ -240,9 +240,9 @@ export default class User extends BaseEntity {
 
     this.render(new User())
 
-    //菜单刷新一次。
+    /*//菜单刷新一次。
     this.refreshMenus()
-
+*/
     this.clearLocalStorage()
 
   }
