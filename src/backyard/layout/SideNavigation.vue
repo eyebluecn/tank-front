@@ -54,7 +54,7 @@
         if (this.user.role === 'GUEST') {
           this.$router.push("/user/login");
         } else {
-          this.$router.push("/user/profile/" + this.user.uuid);
+          this.$router.push("/user/detail/" + this.user.uuid);
         }
 
 

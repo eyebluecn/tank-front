@@ -1,5 +1,6 @@
 import BaseEntity from '../base/BaseEntity'
 import Filter from '../base/Filter'
+import { Notification,Message } from 'element-ui'
 import {getMimeType, MimeUtil} from '../../util/MimeUtil'
 import {containStr, endWith, getExtension, startWith} from '../../filter/str'
 import User from '../user/User'
@@ -134,9 +135,8 @@ export default class Matter extends BaseEntity {
   httpChangePrivacy(privacy, successCallback, errorCallback) {
     let that = this
     this.httpPost(Matter.URL_CHANGE_PRIVACY, {'uuid': this.uuid, 'privacy': privacy}, function (response) {
-
       that.privacy = privacy
-
+      Message.success(response.data.msg)
       typeof successCallback === 'function' && successCallback(response)
     }, errorCallback)
   }

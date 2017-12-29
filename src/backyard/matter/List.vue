@@ -317,7 +317,12 @@
 
     },
     created () {
-
+      /*初始化inputSelection*/
+      if (this.user.role === 'ADMINISTRATOR') {
+        this.pager.getFilter('userUuid').visible = true
+      } else {
+        this.pager.setFilterValue('userUuid', this.user.uuid)
+      }
     },
     mounted () {
 
@@ -331,11 +336,6 @@
         this.pager.setFilterValue('puuid', 'root')
       }
 
-      if (this.user.role === 'ADMINISTRATOR') {
-        this.pager.getFilter('userUuid').visible = true
-      } else {
-        this.pager.setFilterValue('userUuid', this.user.uuid)
-      }
 
       //如果所有的排序都没有设置，那么默认以时间降序。
       if (!this.pager.getFilterValue('orderDir') && !this.pager.getFilterValue('orderCreateTime') && !this.pager.getFilterValue('orderSize') && !this.pager.getFilterValue('orderName')) {

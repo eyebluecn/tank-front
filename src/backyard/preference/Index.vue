@@ -83,6 +83,8 @@
 
 <style lang="less" rel="stylesheet/less">
 	.backyard-preference{
-
+		.tankImg{
+			max-height: 100px;
+		}
 	}
 </style>

@@ -50,7 +50,7 @@ const router = new Router({
             breadcrumbs: []
           }
         },
-        {
+        /*{
           path: 'user/profile/:uuid',
           name: 'UserProfile',
           component: UserDetail,
@@ -64,7 +64,7 @@ const router = new Router({
               }
             ]
           }
-        },
+        },*/
         {
           path: 'user/list',
           name: 'UserList',
@@ -154,7 +154,6 @@ const router = new Router({
             ]
           }
         },
-
         {
           path: 'preference',
           name: 'PreferenceIndex',
