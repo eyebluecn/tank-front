@@ -52,20 +52,28 @@
 						</div>
 
 						<div class="row mt10">
+							<label class="col-md-2 control-label mt5">单文件限制(单位：byte) 当前大小：{{currentUser.sizeLimit | humanFileSize}} </label>
+							<div class="col-md-10">
+								<input type="number" class="form-control" v-model="currentUser.sizeLimit">
+							</div>
+						</div>
+
+            <div class="row mt10">
 							<label class="col-md-2 control-label mt5">手机号</label>
 							<div class="col-md-10">
 								<input type="text" class="form-control" v-model="currentUser.phone">
 							</div>
 						</div>
 
+
 						<div class="row mt10">
 							<label class="col-md-2 control-label mt5">性别</label>
 							<div class="col-md-10">
 
-            <span v-for="gender in currentUser.getGenderList()" class="mr10">
-              <NbRadio v-model="currentUser.gender" :val="gender.value" name="gender"></NbRadio>
-              <label>{{gender.name}}</label>
-            </span>
+                <span v-for="gender in currentUser.getGenderList()" class="mr10">
+                  <NbRadio v-model="currentUser.gender" :val="gender.value" name="gender"></NbRadio>
+                  <label>{{gender.name}}</label>
+                </span>
 
 							</div>
 						</div>

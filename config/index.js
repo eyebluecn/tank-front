@@ -33,8 +33,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://tank.zicpo.cn',
-        //target: 'http://localhost:6010',
+        //target: 'http://tank.eyeblue.cn',
+        target: 'http://localhost:6010',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'

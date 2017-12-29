@@ -56,11 +56,19 @@
 														<span class="bold">城市：</span>{{currentUser.city}}
 													</div>
 												</div>
+
 												<div class="mt5 col-md-12">
+													<div>
+														<span class="bold">单文件限制：</span>{{currentUser.sizeLimit | humanFileSize}}
+													</div>
+												</div>
+
+                        <div class="mt5 col-md-12">
 													<div>
 														<span class="bold">状态：</span>{{currentUser.getStatusName()}}
 													</div>
 												</div>
+
 												<div class="mt5 col-md-12" v-if="currentUser.lastIp">
 													<div>
 														<span class="bold">上次登录IP：</span>{{currentUser.lastIp}}

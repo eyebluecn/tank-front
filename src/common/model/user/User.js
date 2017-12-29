@@ -77,6 +77,8 @@ export default class User extends BaseEntity {
     this.avatarUrl = null
     this.lastIp = null
     this.lastTime = null
+    //默认大小限制100Mb.
+    this.sizeLimit = 104857600
     this.status = Status.USER_STATUS_OK
 
     //local fields
@@ -209,7 +211,8 @@ export default class User extends BaseEntity {
       username: this.username,
       password: this.password,
       email: this.email,
-      gender: this.gender
+      gender: this.gender,
+      sizeLimit: this.sizeLimit
     }
 
     if (this.phone) {
