@@ -41,6 +41,24 @@
 				</div>
 			</div>
 
+			<div class="row p10 border-bottom">
+				<div class="col-md-2 col-sm-2 col-xs-4">
+					底部第一行文字
+				</div>
+				<div class="col-md-10 col-sm-10 col-xs-8">
+					{{preference.footerLine1}}
+				</div>
+			</div>
+
+			<div class="row p10 border-bottom">
+				<div class="col-md-2 col-sm-2 col-xs-4">
+					底部第二行文字
+				</div>
+				<div class="col-md-10 col-sm-10 col-xs-8">
+					{{preference.footerLine2}}
+				</div>
+			</div>
+
 		</div>
 
 	</div>

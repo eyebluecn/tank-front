@@ -1,13 +1,13 @@
 <template>
 	<div class="bottom-navigation text-right">
-		<!-- 版本号：cn.eyeblue.tank:1.0.0 -->
-		<!-- 开源不易，请不要移除掉这里的代码，蓝眼云盘谢谢您 ^_^ -->
 		<span class="mr10" style="max-width: 300px">
 			{{preference.footerLine1}}
 		</span>
 		<span class="mr10" style="max-width: 300px">
 			{{preference.footerLine2}}
 		</span>
+		<!-- 版本号：cn.eyeblue.tank:1.0.0 -->
+		<!-- 开源不易，请不要移除掉这里的代码，蓝眼云盘谢谢您 ^_^ -->
 		<span>
 			Powered by<a href="#"><img class="w30" src="../../assets/img/logo.png"/> 蓝眼云盘</a>
 		</span>
@@ -36,6 +36,7 @@
 		right: 0;
 		left: @sidebar-width;
 		padding: 0 20px;
+		border-top: 1px solid #eee;
 		//大屏幕
 		@media (min-width: @screen-sm-min) {
 			left: @sidebar-width;

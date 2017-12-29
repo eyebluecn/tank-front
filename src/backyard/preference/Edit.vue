@@ -67,7 +67,8 @@
     name: 'edit',
 	  data(){
       return{
-        preference: this.$store.state.preference
+        currentPreference: this.$store.state.preference,
+        preference: new Preference()
       }
 	  },
 	  components:{
@@ -81,13 +82,16 @@
           Notification.success({
             message: '修改偏好成功！'
           })
-
+					that.currentPreference.render(response.data.data)
           that.$router.go(-1)
         })
       }
 	  },
 	  mounted(){
-
+      let that = this
+			this.preference.httpFetch(function () {
+				that.preference.editMode = true
+      })
 	  }
   }
 </script>

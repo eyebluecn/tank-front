@@ -40,7 +40,6 @@ export default class Preference extends BaseEntity {
   }
 
   validate(){
-
     return super.validate()
   }
 

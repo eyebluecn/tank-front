@@ -45,7 +45,7 @@ export default class Matter extends BaseEntity {
   getFilters() {
     return [
       new Filter(Filter.prototype.Type.INPUT, '父级菜单uuid', 'puuid', null, null, false),
-      new Filter(Filter.prototype.Type.HTTP_INPUT_SELECTION, '用户', 'userUuid', null, User, true, UserInputSelection),
+      new Filter(Filter.prototype.Type.HTTP_INPUT_SELECTION, '用户', 'userUuid', null, User, false, UserInputSelection),
       new Filter(Filter.prototype.Type.INPUT, '关键字', 'name'),
       new Filter(Filter.prototype.Type.CHECK, '文件夹', 'dir'),
       new Filter(Filter.prototype.Type.SORT, '文件夹', 'orderDir'),

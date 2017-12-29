@@ -88,7 +88,7 @@
         matter: new Matter(),
         //准备新建的文件。
         newMatter: new Matter(),
-	      //目标文件夹，用于移动操作
+        //目标文件夹，用于移动操作
         targetMatter: new Matter(),
         //准备上传的一系列文件
         uploadMatters: [],
@@ -274,7 +274,7 @@
       //批量移动
       moveBatch (createElement) {
         let that = this
-	      let newMatter = new Matter()
+        let newMatter = new Matter()
         let dom = createElement(MoveBatchPanel, {
           props: {
             targetMatter: this.targetMatter
@@ -293,7 +293,7 @@
               let uuids = that.temporaryMatterUuids.join(',')
               that.matter.httpMove(uuids, this.targetMatter.uuid, function (response) {
                 Message.success('移动成功！')
-	              that.targetMatter.render(new Matter())
+                that.targetMatter.render(new Matter())
                 that.refresh()
               })
             }
@@ -329,6 +329,12 @@
         this.pager.setFilterValue('puuid', puuid)
       } else {
         this.pager.setFilterValue('puuid', 'root')
+      }
+
+      if (this.user.role === 'ADMINISTRATOR') {
+        this.pager.getFilter('userUuid').visible = true
+      } else {
+        this.pager.setFilterValue('userUuid', this.user.uuid)
       }
 
       //如果所有的排序都没有设置，那么默认以时间降序。
