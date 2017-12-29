@@ -7,7 +7,7 @@
 
 
         <router-link to="/">
-          <img class="logo" :src="logoUrl"/>
+          <img class="logo" :src="logoUrl+'?imageProcess=resize&imageResizeM=fill&imageResizeW=100&imageResizeH=100'"/>
           <span class="title">{{preference.name}}</span>
         </router-link>
 
@@ -26,8 +26,6 @@
 
   let defaultLogoPath = require("../../assets/img/logo.png");
 
-  console.log("defaultLogoPath:")
-  console.log(defaultLogoPath)
   export default {
     data() {
       return {
@@ -67,6 +65,10 @@
     right: 0;
     z-index: 10;
     padding-left: @sidebar-width;
+
+    .navbar {
+      border: none;
+    }
 
     //手机屏幕
     @media (max-width: @screen-xs-max) {

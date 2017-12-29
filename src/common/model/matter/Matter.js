@@ -60,6 +60,7 @@ export default class Matter extends BaseEntity {
   static URL_MATTER_DELETE = '/matter/delete'
   static URL_MATTER_DELETE_BATCH = '/matter/delete/batch'
   static URL_MATTER_RENAME = '/matter/rename'
+  static URL_CHANGE_PRIVACY = '/matter/change/privacy'
   static URL_MATTER_MOVE = '/matter/move'
   static URL_MATTER_DOWNLOAD = '/matter/download'
   static URL_MATTER_UPLOAD = '/matter/upload'
@@ -126,6 +127,16 @@ export default class Matter extends BaseEntity {
     let that = this
     this.httpPost(Matter.URL_MATTER_RENAME, {'uuid': this.uuid, 'name': this.name}, function (response) {
       that.render(response.data.data)
+      typeof successCallback === 'function' && successCallback(response)
+    }, errorCallback)
+  }
+
+  httpChangePrivacy(privacy, successCallback, errorCallback) {
+    let that = this
+    this.httpPost(Matter.URL_CHANGE_PRIVACY, {'uuid': this.uuid, 'privacy': privacy}, function (response) {
+
+      that.privacy = privacy
+
       typeof successCallback === 'function' && successCallback(response)
     }, errorCallback)
   }
@@ -281,6 +292,7 @@ export default class Matter extends BaseEntity {
     formData.append('puuid', that.puuid)
     formData.append('file', that.file)
     formData.append('alien', that.alien)
+    formData.append('privacy', that.privacy)
 
 
     //闭包

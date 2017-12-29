@@ -71,6 +71,7 @@
         matter.maxSize = 1024 * 1024
         matter.uploadHint = "图片最大不超过1M"
         matter.filter = "image"
+        matter.privacy = false
 
         matter.dir = false
         matter.alien = true
@@ -85,9 +86,6 @@
         matter.httpUpload(function () {
 
           that.$emit("input", matter.getDownloadUrl())
-
-          console.log("发射：")
-          console.log(matter.getDownloadUrl())
 
         })
 

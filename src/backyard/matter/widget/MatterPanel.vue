@@ -17,13 +17,17 @@
                v-on:keyup.13="enterTrigger()"/>
       </span>
       <span class="matter-name" :class="{'alien':matter.alien}" v-else>
-        {{matter.name}}
+        {{matter.name}} <i class="fa fa-unlock" v-if="!matter.dir && !matter.privacy" title="公有文件，任何人可以访问"></i>
       </span>
 
     </div>
     <div class="right-part" v-if="matter.uuid">
 
       <span class="matter-operation">
+
+        <i class="fa fa-lock btn-action text-primary" v-if="!matter.dir && matter.privacy" title="设置为公有文件" @click.stop.prevent="matter.httpChangePrivacy(false)"></i>
+        <i class="fa fa-unlock btn-action text-primary"  v-if="!matter.dir && !matter.privacy" title="设置为私有文件" @click.stop.prevent="matter.httpChangePrivacy(true)"></i>
+
         <i class="fa fa-pencil btn-action text-primary" title="重命名" @click.stop.prevent="prepareRename"></i>
         <i class="fa fa-download btn-action text-primary" title="下载" v-if="!matter.dir"
            @click.stop.prevent="download"></i>
