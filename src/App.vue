@@ -23,9 +23,7 @@
     mounted () {
 
       let that = this
-      this.preference.httpFetch(function () {
-        document.title = that.preference.name
-      })
+      this.preference.httpFetch()
 
     }
   }
