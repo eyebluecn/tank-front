@@ -34,6 +34,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         target: 'http://tank.eyeblue.cn',
+        //target: 'http://localhost:6010',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'

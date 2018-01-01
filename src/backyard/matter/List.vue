@@ -342,6 +342,11 @@
         this.pager.setFilterValue('orderCreateTime', 'DESC')
       }
 
+      //如果没有设置用户的话，那么默认显示当前登录用户的资料
+      if (!this.pager.getFilterValue('userUuid')) {
+        this.pager.setFilterValue('userUuid', this.user.uuid)
+      }
+
       this.refresh()
 
     }
