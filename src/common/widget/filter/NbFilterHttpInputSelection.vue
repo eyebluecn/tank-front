@@ -1,9 +1,9 @@
 <template>
-	<div class="nb-filter-http-input-selection" v-show="filter.visible">
+  <div class="nb-filter-http-input-selection" v-show="filter.visible">
 
-		<component v-bind:is="filter.component" :activeItem="activeItem"/>
+    <component v-bind:is="filter.component" :activeItem="activeItem"/>
 
-	</div>
+  </div>
 
 </template>
 
@@ -14,7 +14,7 @@
   import NbPager from '../NbPager.vue'
 
   export default {
-    data () {
+    data() {
       return {
         show: false,
         activeItem: new (this.filter.Clazz)()
@@ -44,7 +44,8 @@
       NbPager
     },
     watch: {
-      'activeItem.uuid' (newVal, oldVal) {
+      'activeItem.uuid'(newVal, oldVal) {
+
         if (newVal) {
           this.filter.value = this.activeItem.uuid
 
@@ -54,20 +55,28 @@
 
           this.callback && this.callback()
         }
+      },
+      'filter.value'(newVal, oldVal) {
+
+        if (newVal && newVal === this.activeItem.uuid) {
+          //inner change. ignore
+        } else {
+          //outer change.
+          this.activeItem.uuid = newVal
+        }
       }
     },
     computed: {},
     methods: {},
-    mounted () {
+    mounted() {
     }
   }
 </script>
 
 <style lang="less" rel="stylesheet/less">
 
-	.nb-filter-http-input-selection {
+  .nb-filter-http-input-selection {
 
-
-	}
+  }
 
 </style>

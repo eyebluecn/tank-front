@@ -5,7 +5,7 @@
 
       <div class="menu-header" @click="goToProfile">
         <div class="logo-area">
-          <img alt="image" class="img-circle w80" :src="user.getAvatarUrl()"/>
+          <img alt="image" class="img-circle w80" :src="user.avatarUrl ? user.getAvatarUrl() + '?imageProcess=resize&imageResizeM=fill&imageResizeW=100&imageResizeH=100'  : user.getAvatarUrl()"/>
         </div>
         <div class="text-area">
           <div class="nickname">
@@ -54,7 +54,7 @@
         if (this.user.role === 'GUEST') {
           this.$router.push("/user/login");
         } else {
-          this.$router.push("/user/profile/" + this.user.uuid);
+          this.$router.push("/user/detail/" + this.user.uuid);
         }
 
 
@@ -79,7 +79,6 @@
     },
     mounted() {
       let that = this;
-
       this.updateBody();
     }
   }

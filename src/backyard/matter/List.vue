@@ -7,17 +7,25 @@
 				<div>
 					<NbFilter :pager="pager" :callback="search">
 
-						<button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length !== pager.data.length" @click.stop.prevent="checkAll">
+						<button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length !== pager.data.length"
+						        @click.stop.prevent="checkAll">
 							<i class="fa fa-check-square"></i>
 							全选
 						</button>
-						<button class="btn btn-primary btn-sm" v-if="pager.data.length && temporaryMatterUuids.length === pager.data.length" @click.stop.prevent="checkNone">
+						<button class="btn btn-primary btn-sm"
+						        v-if="pager.data.length && temporaryMatterUuids.length === pager.data.length"
+						        @click.stop.prevent="checkNone">
 							<i class="fa fa-square-o"></i>
 							取消全选
 						</button>
 						<button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length" @click.stop.prevent="deleteBatch">
 							<i class="fa fa-trash"></i>
 							删除
+						</button>
+						<button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length"
+						        @click.stop.prevent="moveBatch($createElement)">
+							<i class="fa fa-arrows"></i>
+							移动
 						</button>
 
 						<span class="btn btn-primary btn-sm btn-file">
@@ -62,7 +70,7 @@
 <script>
   import MatterPanel from './widget/MatterPanel'
   import UploadMatterPanel from './widget/UploadMatterPanel'
-
+  import MoveBatchPanel from './widget/MoveBatchPanel'
   import NbSlidePanel from '../../common/widget/NbSlidePanel.vue'
   import NbExpanding from '../../common/widget/NbExpanding.vue'
   import NbCheckbox from '../../common/widget/NbCheckbox.vue'
@@ -80,6 +88,8 @@
         matter: new Matter(),
         //准备新建的文件。
         newMatter: new Matter(),
+        //目标文件夹，用于移动操作
+        targetMatter: new Matter(),
         //准备上传的一系列文件
         uploadMatters: [],
         //临时暂存区，用于文件的相关操作
@@ -88,12 +98,14 @@
         user: this.$store.state.user,
         breadcrumbs: this.$store.state.breadcrumbs,
         director: new Director()
+
       }
     },
     components: {
-      NbCheckbox,
       MatterPanel,
       UploadMatterPanel,
+      MoveBatchPanel,
+      NbCheckbox,
       NbFilter,
       NbPager,
       NbSlidePanel,
@@ -125,8 +137,8 @@
 
         let that = this
 
-	      //清空暂存区
-        this.temporaryMatterUuids.splice(0,this.temporaryMatterUuids.length)
+        //清空暂存区
+        this.temporaryMatterUuids.splice(0, this.temporaryMatterUuids.length)
 
         let uuid = that.pager.getFilterValue('puuid')
 
@@ -240,8 +252,8 @@
         }
         return true
       },
-	    //批量删除
-      deleteBatch(){
+      //批量删除
+      deleteBatch () {
         let that = this
         MessageBox.confirm('此操作将永久删除这些文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -250,7 +262,7 @@
           callback: function (action, instance) {
             if (action === 'confirm') {
               let uuids = that.temporaryMatterUuids.join(',')
-              that.matter.httpDeleteBatch(uuids,function (response) {
+              that.matter.httpDeleteBatch(uuids, function (response) {
                 Message.success('删除成功！')
                 that.refresh()
               })
@@ -258,7 +270,35 @@
 
           }
         })
+      },
+      //批量移动
+      moveBatch (createElement) {
+        let that = this
+        let newMatter = new Matter()
+        let dom = createElement(MoveBatchPanel, {
+          props: {
+            targetMatter: this.targetMatter
+          }
+        })
 
+        MessageBox({
+          title: '移动到',
+          message: dom,
+          customClass: 'wp50',
+          confirmButtonText: '确定',
+          showCancelButton: true,
+          cancelButtonText: '关闭',
+          callback: (action, instance) => {
+            if (action === 'confirm') {
+              let uuids = that.temporaryMatterUuids.join(',')
+              that.matter.httpMove(uuids, this.targetMatter.uuid, function (response) {
+                Message.success('移动成功！')
+                that.targetMatter.render(new Matter())
+                that.refresh()
+              })
+            }
+          }
+        })
       }
     },
     watch: {
@@ -277,7 +317,12 @@
 
     },
     created () {
-
+      /*初始化inputSelection*/
+      if (this.user.role === 'ADMINISTRATOR') {
+        this.pager.getFilter('userUuid').visible = true
+      } else {
+        this.pager.setFilterValue('userUuid', this.user.uuid)
+      }
     },
     mounted () {
 
@@ -291,9 +336,15 @@
         this.pager.setFilterValue('puuid', 'root')
       }
 
+
       //如果所有的排序都没有设置，那么默认以时间降序。
       if (!this.pager.getFilterValue('orderDir') && !this.pager.getFilterValue('orderCreateTime') && !this.pager.getFilterValue('orderSize') && !this.pager.getFilterValue('orderName')) {
         this.pager.setFilterValue('orderCreateTime', 'DESC')
+      }
+
+      //如果没有设置用户的话，那么默认显示当前登录用户的资料
+      if (!this.pager.getFilterValue('userUuid')) {
+        this.pager.setFilterValue('userUuid', this.user.uuid)
       }
 
       this.refresh()

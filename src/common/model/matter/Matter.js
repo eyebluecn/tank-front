@@ -1,9 +1,11 @@
 import BaseEntity from '../base/BaseEntity'
 import Filter from '../base/Filter'
+import { Notification,Message } from 'element-ui'
 import {getMimeType, MimeUtil} from '../../util/MimeUtil'
 import {containStr, endWith, getExtension, startWith} from '../../filter/str'
 import User from '../user/User'
 import UserInputSelection from '../../../backyard/user/widget/UserInputSelection'
+import Vue from "vue"
 
 export default class Matter extends BaseEntity {
   constructor(args) {
@@ -11,18 +13,20 @@ export default class Matter extends BaseEntity {
     this.puuid = null
     this.userUuid = null
     this.dir = false
+    this.alien = false
     this.name = null
     this.md5 = null
     this.size = 0
     this.privacy = true
     this.path = null
 
-    //本地操作变量
-    this.check = false      //作为勾选变量
 
     /*
     这部分是辅助UI的字段信息
      */
+    //作为勾选变量
+    this.check = false
+
     //允许用户选择的文件类型
     this.filter = "*"
     //本地字段
@@ -42,7 +46,7 @@ export default class Matter extends BaseEntity {
   getFilters() {
     return [
       new Filter(Filter.prototype.Type.INPUT, '父级菜单uuid', 'puuid', null, null, false),
-      new Filter(Filter.prototype.Type.HTTP_INPUT_SELECTION, '用户', 'userUuid', null, User, true, UserInputSelection),
+      new Filter(Filter.prototype.Type.HTTP_INPUT_SELECTION, '用户', 'userUuid', null, User, false, UserInputSelection),
       new Filter(Filter.prototype.Type.INPUT, '关键字', 'name'),
       new Filter(Filter.prototype.Type.CHECK, '文件夹', 'dir'),
       new Filter(Filter.prototype.Type.SORT, '文件夹', 'orderDir'),
@@ -57,6 +61,7 @@ export default class Matter extends BaseEntity {
   static URL_MATTER_DELETE = '/matter/delete'
   static URL_MATTER_DELETE_BATCH = '/matter/delete/batch'
   static URL_MATTER_RENAME = '/matter/rename'
+  static URL_CHANGE_PRIVACY = '/matter/change/privacy'
   static URL_MATTER_MOVE = '/matter/move'
   static URL_MATTER_DOWNLOAD = '/matter/download'
   static URL_MATTER_UPLOAD = '/matter/upload'
@@ -123,6 +128,15 @@ export default class Matter extends BaseEntity {
     let that = this
     this.httpPost(Matter.URL_MATTER_RENAME, {'uuid': this.uuid, 'name': this.name}, function (response) {
       that.render(response.data.data)
+      typeof successCallback === 'function' && successCallback(response)
+    }, errorCallback)
+  }
+
+  httpChangePrivacy(privacy, successCallback, errorCallback) {
+    let that = this
+    this.httpPost(Matter.URL_CHANGE_PRIVACY, {'uuid': this.uuid, 'privacy': privacy}, function (response) {
+      that.privacy = privacy
+      Message.success(response.data.msg)
       typeof successCallback === 'function' && successCallback(response)
     }, errorCallback)
   }
@@ -277,6 +291,8 @@ export default class Matter extends BaseEntity {
     formData.append('userUuid', that.userUuid)
     formData.append('puuid', that.puuid)
     formData.append('file', that.file)
+    formData.append('alien', that.alien)
+    formData.append('privacy', that.privacy)
 
 
     //闭包
@@ -284,7 +300,6 @@ export default class Matter extends BaseEntity {
     let lastSize = 0
     that.httpPost(Matter.URL_MATTER_UPLOAD, formData, function (response) {
 
-      //上传到tank服务器成功了，更新matterUuid.
       that.uuid = response.data.data.uuid
 
       if (typeof successCallback === "function") {
@@ -293,8 +308,6 @@ export default class Matter extends BaseEntity {
 
     }, function (response) {
 
-      console.log("上传到tank服务器失败", response.data)
-      console.log(response)
 
       that.errorMessage = '上传出错，请稍后重试'
       that.clear()
@@ -343,6 +356,10 @@ export default class Matter extends BaseEntity {
     //TODO:如果还正在上传东西，那么停止请求。
 
 
+  }
+
+  getDownloadUrl() {
+    return Vue.http.options.root + '/alien/download/' + this.uuid + '/' + this.name
   }
 
 }

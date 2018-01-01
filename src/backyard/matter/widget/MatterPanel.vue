@@ -1,13 +1,13 @@
 <template>
-	<div class="widget-matter-panel clearfix" @click.stop.prevent="clickRow">
-		<div class="left-part">
+  <div class="widget-matter-panel clearfix" @click.stop.prevent="clickRow">
+    <div class="left-part">
       <span>
         <NbCheckbox v-model="matter.check"/>
       </span>
-			<span>
+      <span>
         <img class="matter-icon" :src="matter.getIcon()"/>
       </span>
-			<span class="matter-name-edit" v-if="matter.editMode">
+      <span class="matter-name-edit" v-if="matter.editMode">
 
         <input ref="editInput" class="form-control"
                :class="matter.uuid"
@@ -16,34 +16,38 @@
                @blur="blurTrigger()"
                v-on:keyup.13="enterTrigger()"/>
       </span>
-			<span class="matter-name" v-else>
-        {{matter.name}}
+      <span class="matter-name" :class="{'alien':matter.alien}" v-else>
+        {{matter.name}} <i class="fa fa-unlock" v-if="!matter.dir && !matter.privacy" title="公有文件，任何人可以访问"></i>
       </span>
 
-		</div>
-		<div class="right-part" v-if="matter.uuid">
+    </div>
+    <div class="right-part" v-if="matter.uuid">
 
       <span class="matter-operation">
+
+        <i class="fa fa-lock btn-action text-primary" v-if="!matter.dir && matter.privacy" title="设置为公有文件" @click.stop.prevent="matter.httpChangePrivacy(false)"></i>
+        <i class="fa fa-unlock btn-action text-primary"  v-if="!matter.dir && !matter.privacy" title="设置为私有文件" @click.stop.prevent="matter.httpChangePrivacy(true)"></i>
+
         <i class="fa fa-pencil btn-action text-primary" title="重命名" @click.stop.prevent="prepareRename"></i>
         <i class="fa fa-download btn-action text-primary" title="下载" v-if="!matter.dir"
            @click.stop.prevent="download"></i>
         <i class="fa fa-trash btn-action text-danger" title="删除" @click.stop.prevent="deleteMatter"></i>
       </span>
-			<span class="matter-size" v-if="matter.dir">
+      <span class="matter-size" v-if="matter.dir">
         -
       </span>
-			<span class="matter-size" v-else>
+      <span class="matter-size" v-else>
         {{matter.size | humanFileSize}}
       </span>
 
-			<span class="matter-date">
+      <span class="matter-date">
         {{matter.modifyTime | simpleDateHourMinute}}
       </span>
 
-		</div>
+    </div>
 
 
-	</div>
+  </div>
 </template>
 <script>
   import Matter from '../../../common/model/matter/Matter'
@@ -51,11 +55,11 @@
   import Vue from 'vue'
   import $ from 'jquery'
   import Director from './Director'
-  import { Message, MessageBox, Notification } from 'element-ui'
-  import { setInputSelection } from '../../../common/util/Utils'
+  import {Message, MessageBox, Notification} from 'element-ui'
+  import {setInputSelection} from '../../../common/util/Utils'
 
   export default {
-    data () {
+    data() {
       return {
         //正在向服务器提交rename的请求
         renamingLoading: false
@@ -76,12 +80,12 @@
 
     },
     watch: {
-      'matter.check' (newVal, oldVal) {
+      'matter.check'(newVal, oldVal) {
         this.$emit('checkMatter', {matterUuid: this.matter.uuid, checkStatus: newVal})
       }
     },
     methods: {
-      clickRow () {
+      clickRow() {
         let that = this
 
         if (this.director.isEditing()) {
@@ -96,15 +100,15 @@
         }
 
       },
-      download () {
+      download() {
         if (this.director.isEditing()) {
           console.log('导演正忙着，不予执行')
           return
         }
 
-        window.open(Vue.http.options.root + '/alien/download/' + this.matter.uuid + '/' + this.matter.name)
+        window.open(this.matter.getDownloadUrl())
       },
-      deleteMatter () {
+      deleteMatter() {
         let that = this
         MessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -121,7 +125,7 @@
           }
         })
       },
-      prepareRename () {
+      prepareRename() {
         let that = this
 
         if (this.director.isEditing()) {
@@ -144,7 +148,7 @@
         }, 100)
 
       },
-      finishRename () {
+      finishRename() {
         let that = this
         //有可能按enter的时候和blur同时了。
         if (that.renamingLoading) {
@@ -168,7 +172,7 @@
         })
 
       },
-      finishCreateDirectory () {
+      finishCreateDirectory() {
         let that = this
         that.matter.httpCreateDirectory(function () {
           that.director.createMode = false
@@ -182,7 +186,7 @@
           Message.error(response.data.msg)
         })
       },
-      blurTrigger () {
+      blurTrigger() {
         let that = this
         if (that.matter.editMode) {
           if (that.director.createMode) {
@@ -192,91 +196,98 @@
           }
         }
       },
-      enterTrigger () {
+      enterTrigger() {
         $(this.$refs.editInput).blur()
       },
-      highLight () {
+      highLight() {
         $(this.$refs.editInput).select()
       }
     },
-    created () {
+    created() {
     },
-    mounted () {
+    mounted() {
 
     }
   }
 
 </script>
 <style lang="less" rel="stylesheet/less">
-	.widget-matter-panel {
 
-		border-top: 1px solid #eee;
-		background-color: white;
+  @import "../../../assets/css/global/variables";
 
-		@base-height: 48px;
-		padding-left: 10px;
+  .widget-matter-panel {
 
-		.left-part, .right-part {
-			height: @base-height;
-			display: inline-block;
-			> span {
-				display: inline-block;
-				vertical-align: middle;
-				line-height: @base-height;
-				margin-right: 10px;
-			}
-		}
+    border-top: 1px solid #eee;
+    background-color: white;
 
-		.left-part {
+    @base-height: 48px;
+    padding-left: 10px;
 
-			.matter-icon {
-				width: 24px;
-			}
-			.matter-name-edit {
-				input {
-					width: 200px;
-					height: 26px;
-					display: inline-block;
-					padding: 6px;
-				}
-			}
-			.matter-name {
-			}
-		}
-		.right-part {
-			float: right;
+    .left-part, .right-part {
+      height: @base-height;
+      display: inline-block;
+      > span {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: @base-height;
+        margin-right: 10px;
+      }
+    }
 
-			.matter-operation {
-				visibility: hidden;
-				i {
-					font-size: 16px;
-					margin-right: 5px;
+    .left-part {
 
-					&:hover {
+      .matter-icon {
+        width: 24px;
+      }
+      .matter-name-edit {
+        input {
+          width: 200px;
+          height: 26px;
+          display: inline-block;
+          padding: 6px;
+        }
+      }
+      .matter-name {
 
-					}
-				}
-			}
+        &.alien {
+          color: @brand-primary;
+        }
+      }
+    }
+    .right-part {
+      float: right;
 
-			.matter-size {
-				display: inline-block;
-				width: 80px;
-				text-align: left;
-				margin-left: 20px;
-			}
-			.matter-date {
+      .matter-operation {
+        visibility: hidden;
+        i {
+          font-size: 16px;
+          margin-right: 5px;
 
-			}
-		}
+          &:hover {
 
-		&:hover {
-			background-color: aliceblue;
-			cursor: pointer;
+          }
+        }
+      }
 
-			.matter-operation {
-				visibility: visible;
-			}
-		}
+      .matter-size {
+        display: inline-block;
+        width: 80px;
+        text-align: left;
+        margin-left: 20px;
+      }
+      .matter-date {
 
-	}
+      }
+    }
+
+    &:hover {
+      background-color: aliceblue;
+      cursor: pointer;
+
+      .matter-operation {
+        visibility: visible;
+      }
+    }
+
+  }
 </style>

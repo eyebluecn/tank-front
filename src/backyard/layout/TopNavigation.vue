@@ -26,8 +26,6 @@
 
   let defaultLogoPath = require("../../assets/img/logo.png");
 
-  console.log("defaultLogoPath:")
-  console.log(defaultLogoPath)
   export default {
     data() {
       return {
@@ -39,7 +37,7 @@
       //logo可以使用自定义的。
       logoUrl() {
         if (this.preference.logoUrl) {
-          return this.preference.logoUrl
+          return this.preference.logoUrl + '?imageProcess=resize&imageResizeM=fill&imageResizeW=100&imageResizeH=100'
         } else {
           return defaultLogoPath
         }
@@ -67,6 +65,10 @@
     right: 0;
     z-index: 10;
     padding-left: @sidebar-width;
+
+    .navbar {
+      border: none;
+    }
 
     //手机屏幕
     @media (max-width: @screen-xs-max) {

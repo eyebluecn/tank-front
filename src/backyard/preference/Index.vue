@@ -15,7 +15,7 @@
 		</div>
 		<div class="mt10 bg-white br4 border">
 			<div class="row p10 border-bottom">
-				<div class="col-md-2 col-sm-2 col-xs-4">
+				<div class="col-md-2 col-sm-2 col-xs-4 bold">
 					网站名称
 				</div>
 				<div class="col-md-10 col-sm-10 col-xs-8">
@@ -24,20 +24,38 @@
 			</div>
 
 			<div class="row p10 border-bottom">
-				<div class="col-md-2 col-sm-2 col-xs-4">
+				<div class="col-md-2 col-sm-2 col-xs-4 bold">
 					logo
 				</div>
 				<div class="col-md-10 col-sm-10 col-xs-8">
-					<img :src="preference.logoUrl" alt="logo" class="tankImg">
+					<img v-if="preference.logoUrl" :src="preference.logoUrl" alt="logo" class="tankImg">
 				</div>
 			</div>
 
 			<div class="row p10 border-bottom">
-				<div class="col-md-2 col-sm-2 col-xs-4">
+				<div class="col-md-2 col-sm-2 col-xs-4 bold">
 					favicon
 				</div>
 				<div class="col-md-10 col-sm-10 col-xs-8">
-					<img :src="preference.faviconUrl" alt="favicon" class="tankImg">
+					<img v-if="preference.faviconUrl" :src="preference.faviconUrl" alt="favicon" class="tankImg">
+				</div>
+			</div>
+
+			<div class="row p10 border-bottom">
+				<div class="col-md-2 col-sm-2 col-xs-4 bold">
+					底部第一行文字
+				</div>
+				<div class="col-md-10 col-sm-10 col-xs-8">
+					{{preference.footerLine1}}
+				</div>
+			</div>
+
+			<div class="row p10 border-bottom">
+				<div class="col-md-2 col-sm-2 col-xs-4 bold">
+					底部第二行文字
+				</div>
+				<div class="col-md-10 col-sm-10 col-xs-8">
+					<span v-html="preference.footerLine2"></span>
 				</div>
 			</div>
 
@@ -66,7 +84,7 @@
 <style lang="less" rel="stylesheet/less">
 	.backyard-preference{
 		.tankImg{
-			max-height: 100px
+			max-height: 100px;
 		}
 	}
 </style>

@@ -22,13 +22,16 @@ MenuManager.refreshMenus = function (user) {
     let matterListMenu = new Menu('全部文件', '/', false, 'fa fa-th')
     menus.push(matterListMenu)
 
-    //网站设置
-    let preferenceMenu = new Menu('网站偏好', '/preference', false, 'fa fa-dashboard')
-    menus.push(preferenceMenu)
+    if(user.role === 'ADMINISTRATOR'){
+      //网站设置
+      let preferenceMenu = new Menu('网站偏好', '/preference', false, 'fa fa-dashboard')
+      menus.push(preferenceMenu)
 
-    //用户列表
-    let userMenu = new Menu('用户列表', '/user/list', false, 'fa fa-user')
-    menus.push(userMenu)
+      //用户列表
+      let userMenu = new Menu('用户列表', '/user/list', false, 'fa fa-user')
+      menus.push(userMenu)
+    }
+
 
     //退出登录
     let logoutMenu = new Menu('退出登录', '/user/login', false, 'fa fa-power-off')
