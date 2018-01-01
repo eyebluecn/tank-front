@@ -28,7 +28,7 @@
 					logo
 				</div>
 				<div class="col-md-10 col-sm-10 col-xs-8">
-					<img :src="preference.logoUrl" alt="logo" class="tankImg">
+					<img v-if="preference.logoUrl" :src="preference.logoUrl" alt="logo" class="tankImg">
 				</div>
 			</div>
 
@@ -37,7 +37,7 @@
 					favicon
 				</div>
 				<div class="col-md-10 col-sm-10 col-xs-8">
-					<img :src="preference.faviconUrl" alt="favicon" class="tankImg">
+					<img v-if="preference.faviconUrl" :src="preference.faviconUrl" alt="favicon" class="tankImg">
 				</div>
 			</div>
 

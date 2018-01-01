@@ -1,4 +1,4 @@
-export function startWith (str, prefix) {
+export function startWith(str, prefix) {
   if (typeof prefix === 'undefined' || prefix === null || prefix === '' || typeof str === 'undefined' || str === null || str.length === 0 || prefix.length > str.length) {
     return false
   }
@@ -6,7 +6,7 @@ export function startWith (str, prefix) {
   return str.substr(0, prefix.length) === prefix
 }
 
-export function endWith (str, suffix) {
+export function endWith(str, suffix) {
   if (suffix === null || suffix === '' || str === null || str.length === 0 || suffix.length > str.length) {
     return false
   }
@@ -15,7 +15,7 @@ export function endWith (str, suffix) {
 }
 
 //获取文件后缀名
-export function getExtension (filename) {
+export function getExtension(filename) {
 
   if (filename === null || filename === '') {
     return ''
@@ -29,7 +29,7 @@ export function getExtension (filename) {
 }
 
 //一个字符串包含子字符串
-export function containStr (father, child) {
+export function containStr(father, child) {
 
   if (father === null || father === '') {
     return false
@@ -39,8 +39,8 @@ export function containStr (father, child) {
 
 //把一个大小转变成方便读的格式
 //human readable file size
-export function humanFileSize (bytes, si = false) {
-  let thresh = si ? 1024 : 1000
+export function humanFileSize(bytes, si = false) {
+  let thresh = si ? 1000 : 1024
   if (Math.abs(bytes) < thresh) {
     return bytes + ' B'
   }
@@ -56,7 +56,7 @@ export function humanFileSize (bytes, si = false) {
 }
 
 //把数字转换成中文大写金额
-export function numberCapital (num) {
+export function numberCapital(num) {
   let strOutput = ''
   let strUnit = '仟佰拾亿仟佰拾万仟佰拾元角分'
   num += '00'
@@ -74,7 +74,7 @@ export function numberCapital (num) {
 }
 
 //转换成首字母小写的驼峰法
-export function lowerCamel (str) {
+export function lowerCamel(str) {
 
   if (!str) {
     console.error('不能转换空的驼峰字符串。')
@@ -87,7 +87,7 @@ export function lowerCamel (str) {
 }
 
 //转换成全部小写的使用 /分隔的字符串
-export function lowerSlash (str) {
+export function lowerSlash(str) {
   return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
     return '/' + letter.toLowerCase()
   }).replace(/\s+/g, '')
@@ -106,7 +106,7 @@ export function lowerSlash (str) {
  4.以辅音字母+y结尾的名词,将y改变为i,再加-es.
  元音字母+y结尾的名词则直接加s
  */
-export function toPlural (singular) {
+export function toPlural(singular) {
 
   if (!singular) {
     console.error('不能转换空字符为复数形式。')

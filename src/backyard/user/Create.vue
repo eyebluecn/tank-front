@@ -52,7 +52,7 @@
 						</div>
 
 						<div class="row mt10">
-							<label class="col-md-2 control-label mt5">单文件限制(单位：byte) 当前大小：{{currentUser.sizeLimit | humanFileSize}} </label>
+							<label class="col-md-2 control-label mt5">单文件限制(单位：byte，负数表示无限制) 当前大小：{{currentUser.sizeLimit | humanFileSize}} </label>
 							<div class="col-md-10">
 								<input type="number" class="form-control" v-model="currentUser.sizeLimit">
 							</div>

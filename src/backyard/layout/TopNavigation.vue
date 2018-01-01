@@ -7,7 +7,7 @@
 
 
         <router-link to="/">
-          <img class="logo" :src="logoUrl+'?imageProcess=resize&imageResizeM=fill&imageResizeW=100&imageResizeH=100'"/>
+          <img class="logo" :src="logoUrl"/>
           <span class="title">{{preference.name}}</span>
         </router-link>
 
@@ -37,7 +37,7 @@
       //logo可以使用自定义的。
       logoUrl() {
         if (this.preference.logoUrl) {
-          return this.preference.logoUrl
+          return this.preference.logoUrl + '?imageProcess=resize&imageResizeM=fill&imageResizeW=100&imageResizeH=100'
         } else {
           return defaultLogoPath
         }
