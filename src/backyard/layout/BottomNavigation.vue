@@ -1,15 +1,15 @@
 <template>
-	<div class="bottom-navigation text-right">
-		<span class="mr10" style="max-width: 300px">
-			{{preference.footerLine1}}
+	<div class="bottom-navigation text-center">
+		<span class="mr10">
+			<span v-html="preference.footerLine1"></span>
 		</span>
-		<span class="mr10" style="max-width: 300px">
+		<span class="mr10">
 			<span v-html="preference.footerLine2"></span>
 		</span>
 		<!-- 版本号：cn.eyeblue.tank:1.0.0 -->
 		<!-- 开源不易，请不要移除掉这里的代码，蓝眼云盘谢谢您 ^_^ -->
 		<span>
-			Powered by<a href="#"><img class="w30" src="../../assets/img/logo.png"/> 蓝眼云盘</a>
+			Powered by <a target="_blank" href="https://github.com/eyebluecn/tank"><img class="w30" src="../../assets/img/logo.png"/> 蓝眼云盘</a>
 		</span>
 	</div>
 </template>

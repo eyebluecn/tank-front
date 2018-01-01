@@ -20,26 +20,26 @@
 			<div class="row mt10">
 				<label class="col-md-2 control-label mt5">云盘logo</label>
 				<div class="col-md-10">
-					<MatterImage v-model="preference.logoUrl"/>
+					<MatterImage v-model="preference.logoUrl" uploadHint="logo请使用正方形图片，否则在显示时会裁剪成正方形"/>
 				</div>
 			</div>
 
 			<div class="row mt10">
 				<label class="col-md-2 control-label mt5">favicon</label>
 				<div class="col-md-10">
-					<MatterImage v-model="preference.faviconUrl"/>
+					<MatterImage v-model="preference.faviconUrl" filter=".ico" uploadHint="只允许上传.ico图标"/>
 				</div>
 			</div>
 
 			<div class="row mt10">
-				<label class="col-md-2 control-label mt5">底部第一行文字</label>
+				<label class="col-md-2 control-label mt5">底部第一行文字(可使用html)</label>
 				<div class="col-md-10">
 					<input type="text" class="form-control" v-model="preference.footerLine1">
 				</div>
 			</div>
 
 			<div class="row mt10">
-				<label class="col-md-2 control-label mt5">底部第二行文字</label>
+				<label class="col-md-2 control-label mt5">底部第二行文字(可使用html)</label>
 				<div class="col-md-10">
 					<input type="text" class="form-control" v-model="preference.footerLine2">
 				</div>

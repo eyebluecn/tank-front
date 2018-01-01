@@ -15,7 +15,7 @@
 		</div>
 		<div class="mt10 bg-white br4 border">
 			<div class="row p10 border-bottom">
-				<div class="col-md-2 col-sm-2 col-xs-4">
+				<div class="col-md-2 col-sm-2 col-xs-4 bold">
 					网站名称
 				</div>
 				<div class="col-md-10 col-sm-10 col-xs-8">
@@ -24,7 +24,7 @@
 			</div>
 
 			<div class="row p10 border-bottom">
-				<div class="col-md-2 col-sm-2 col-xs-4">
+				<div class="col-md-2 col-sm-2 col-xs-4 bold">
 					logo
 				</div>
 				<div class="col-md-10 col-sm-10 col-xs-8">
@@ -33,7 +33,7 @@
 			</div>
 
 			<div class="row p10 border-bottom">
-				<div class="col-md-2 col-sm-2 col-xs-4">
+				<div class="col-md-2 col-sm-2 col-xs-4 bold">
 					favicon
 				</div>
 				<div class="col-md-10 col-sm-10 col-xs-8">
@@ -42,7 +42,7 @@
 			</div>
 
 			<div class="row p10 border-bottom">
-				<div class="col-md-2 col-sm-2 col-xs-4">
+				<div class="col-md-2 col-sm-2 col-xs-4 bold">
 					底部第一行文字
 				</div>
 				<div class="col-md-10 col-sm-10 col-xs-8">
@@ -51,7 +51,7 @@
 			</div>
 
 			<div class="row p10 border-bottom">
-				<div class="col-md-2 col-sm-2 col-xs-4">
+				<div class="col-md-2 col-sm-2 col-xs-4 bold">
 					底部第二行文字
 				</div>
 				<div class="col-md-10 col-sm-10 col-xs-8">

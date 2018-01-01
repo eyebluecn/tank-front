@@ -8,13 +8,17 @@
     </div>
 
     <div>
-        <span class="btn btn-primary btn-sm btn-file">
+
+      <span class="btn btn-primary btn-sm btn-file">
           <slot name="button">
             <i class="fa fa-cloud-upload"></i>
             <span>{{value?'重新上传':'上传图片'}}</span>
           </slot>
           <input ref="refFile" type="file" @change.prevent.stop="triggerUpload"/>
         </span>
+      <div class="italic" v-if="uploadHint">
+        {{uploadHint}}
+      </div>
     </div>
     <div>
       <UploadMatterPanel :matter="matter"/>
@@ -57,6 +61,22 @@
       value: {
         type: String | null,
         required: true
+      },
+      //filter.
+      filter: {
+        type: String,
+        required: false,
+        "default": "image"
+      },
+      maxSize: {
+        type: Number,
+        required: false,
+        "default": 1024 * 1024
+      },
+      uploadHint: {
+        type: String,
+        required: false,
+        "default": "图片最大不超过1M"
       }
     },
     methods: {
@@ -68,9 +88,9 @@
         let that = this
 
         let matter = that.matter;
-        matter.maxSize = 1024 * 1024
-        matter.uploadHint = "图片最大不超过1M"
-        matter.filter = "image"
+        matter.maxSize = that.maxSize
+        matter.uploadHint = that.uploadHint
+        matter.filter = that.filter
         matter.privacy = false
 
         matter.dir = false
