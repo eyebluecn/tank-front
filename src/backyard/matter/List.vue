@@ -130,8 +130,14 @@
       },
       goToDirectory(uuid) {
         this.pager.setFilterValue('puuid', uuid)
-        this.search()
-        this.refreshBreadcrumbs()
+        this.pager.page = 0
+        let query = this.pager.getParams()
+
+        this.$router.push({
+          path: '/',
+          query: query
+        })
+
       },
       refreshBreadcrumbs() {
 
@@ -329,6 +335,7 @@
           this.pager.setFilterValue('puuid', 'root')
         }
 
+        console.log("$route changed.")
         this.refresh()
 
       }
