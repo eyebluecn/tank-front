@@ -133,6 +133,7 @@
         this.pager.page = 0
         let query = this.pager.getParams()
 
+
         //采用router去管理路由，否则浏览器的回退按钮出现意想不到的问题。
         this.$router.push({
           path: '/',
