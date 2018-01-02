@@ -1,4 +1,4 @@
-![蓝眼云盘logo](https://raw.githubusercontent.com/eyebluecn/tank/dev/build/doc/logo.png)
+![蓝眼云盘logo](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/logo.png)
 
 # 蓝眼云盘前端
 
