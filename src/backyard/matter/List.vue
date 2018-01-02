@@ -1,34 +1,34 @@
 <template>
-	<div class="backyard-matter-list">
-		<div class="row">
+  <div class="backyard-matter-list">
+    <div class="row">
 
-			<div class="col-md-12">
+      <div class="col-md-12">
 
-				<div>
-					<NbFilter :pager="pager" :callback="search">
+        <div>
+          <NbFilter :pager="pager" :callback="search">
 
-						<button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length !== pager.data.length"
-						        @click.stop.prevent="checkAll">
-							<i class="fa fa-check-square"></i>
-							全选
-						</button>
-						<button class="btn btn-primary btn-sm"
-						        v-if="pager.data.length && temporaryMatterUuids.length === pager.data.length"
-						        @click.stop.prevent="checkNone">
-							<i class="fa fa-square-o"></i>
-							取消全选
-						</button>
-						<button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length" @click.stop.prevent="deleteBatch">
-							<i class="fa fa-trash"></i>
-							删除
-						</button>
-						<button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length"
-						        @click.stop.prevent="moveBatch($createElement)">
-							<i class="fa fa-arrows"></i>
-							移动
-						</button>
+            <button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length !== pager.data.length"
+                    @click.stop.prevent="checkAll">
+              <i class="fa fa-check-square"></i>
+              全选
+            </button>
+            <button class="btn btn-primary btn-sm"
+                    v-if="pager.data.length && temporaryMatterUuids.length === pager.data.length"
+                    @click.stop.prevent="checkNone">
+              <i class="fa fa-square-o"></i>
+              取消全选
+            </button>
+            <button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length" @click.stop.prevent="deleteBatch">
+              <i class="fa fa-trash"></i>
+              删除
+            </button>
+            <button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length"
+                    @click.stop.prevent="moveBatch($createElement)">
+              <i class="fa fa-arrows"></i>
+              移动
+            </button>
 
-						<span class="btn btn-primary btn-sm btn-file">
+            <span class="btn btn-primary btn-sm btn-file">
               <slot name="button">
                 <i class="fa fa-cloud-upload"></i>
                 <span>上传文件</span>
@@ -36,36 +36,36 @@
               <input ref="refFile" type="file" @change.prevent.stop="triggerUpload"/>
 				    </span>
 
-						<button class="btn btn-sm btn-primary" @click.stop.prevent="createDirectory">
-							<i class="fa fa-plus"></i>
-							创建文件夹
-						</button>
-					</NbFilter>
+            <button class="btn btn-sm btn-primary" @click.stop.prevent="createDirectory">
+              <i class="fa fa-plus"></i>
+              创建文件夹
+            </button>
+          </NbFilter>
 
-				</div>
+        </div>
 
-				<div v-for="m in uploadMatters">
-					<UploadMatterPanel :matter="m"/>
-				</div>
+        <div v-for="m in uploadMatters">
+          <UploadMatterPanel :matter="m"/>
+        </div>
 
-				<div v-if="director.createMode">
-					<MatterPanel ref="newMatterPanel" @createDirectorySuccess="refresh()" :matter="newMatter"
-					             :director="director"/>
-				</div>
-				<div v-for="matter in pager.data">
-					<MatterPanel @goToDirectory="goToDirectory" @deleteSuccess="refresh()" :matter="matter" :director="director"
-					             @checkMatter="checkMatter"/>
-				</div>
+        <div v-if="director.createMode">
+          <MatterPanel ref="newMatterPanel" @createDirectorySuccess="refresh()" :matter="newMatter"
+                       :director="director"/>
+        </div>
+        <div v-for="matter in pager.data">
+          <MatterPanel @goToDirectory="goToDirectory" @deleteSuccess="refresh()" :matter="matter" :director="director"
+                       @checkMatter="checkMatter"/>
+        </div>
 
-				<div>
-					<NbPager :pager="pager" :callback="refresh" emptyHint="该目录下暂无任何内容"/>
-				</div>
-			</div>
+        <div>
+          <NbPager :pager="pager" :callback="refresh" emptyHint="该目录下暂无任何内容"/>
+        </div>
+      </div>
 
 
-		</div>
+    </div>
 
-	</div>
+  </div>
 </template>
 <script>
   import MatterPanel from './widget/MatterPanel'
@@ -79,10 +79,10 @@
   import Matter from '../../common/model/matter/Matter'
   import Pager from '../../common/model/base/Pager'
   import Director from './widget/Director'
-  import { Message, MessageBox, Notification } from 'element-ui'
+  import {Message, MessageBox, Notification} from 'element-ui'
 
   export default {
-    data () {
+    data() {
       return {
         //当前文件夹信息。
         matter: new Matter(),
@@ -112,28 +112,28 @@
       NbExpanding
     },
     methods: {
-      reset () {
+      reset() {
         this.pager.page = 0
         this.pager.resetFilter()
         this.pager.enableHistory()
       },
-      search () {
+      search() {
         this.pager.page = 0
         this.refresh()
       },
-      refresh () {
+      refresh() {
 
         //刷新面包屑
         this.refreshBreadcrumbs()
 
         this.pager.httpFastPage()
       },
-      goToDirectory (uuid) {
+      goToDirectory(uuid) {
         this.pager.setFilterValue('puuid', uuid)
         this.search()
         this.refreshBreadcrumbs()
       },
-      refreshBreadcrumbs () {
+      refreshBreadcrumbs() {
 
         let that = this
 
@@ -192,7 +192,7 @@
           })
         }
       },
-      createDirectory () {
+      createDirectory() {
         let that = this
         that.newMatter.name = '新建文件夹'
         that.newMatter.dir = true
@@ -208,13 +208,22 @@
           that.$refs.newMatterPanel.highLight()
         }, 100)
       },
-      triggerUpload () {
+      triggerUpload() {
         let that = this
 
         let m = new Matter()
         m.dir = false
         m.puuid = that.matter.uuid
-        m.userUuid = that.user.uuid
+
+
+        //指定为当前选择的用户。
+        //如果没有设置用户的话，那么默认显示当前登录用户的资料
+        if (!that.pager.getFilterValue('userUuid')) {
+          m.userUuid = that.user.uuid
+        } else {
+          m.userUuid = that.pager.getFilterValue('userUuid')
+        }
+
 
         let value = that.$refs['refFile'].value
         if (!value) {
@@ -231,19 +240,19 @@
       },
 
       //全选
-      checkAll () {
+      checkAll() {
         this.pager.data.forEach(function (i, index) {
           i.check = true
         })
       },
       //取消全选
-      checkNone () {
+      checkNone() {
         this.pager.data.forEach(function (i, index) {
           i.check = false
         })
       },
       //选择文件时放入暂存区等待操作
-      checkMatter (val) {
+      checkMatter(val) {
         if (val.checkStatus && this.temporaryMatterUuids.indexOf(val.matterUuid) === -1) {
           this.temporaryMatterUuids.push(val.matterUuid)
         } else if (!val.checkStatus && this.temporaryMatterUuids.indexOf(val.matterUuid) !== -1) {
@@ -253,7 +262,7 @@
         return true
       },
       //批量删除
-      deleteBatch () {
+      deleteBatch() {
         let that = this
         MessageBox.confirm('此操作将永久删除这些文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -272,7 +281,7 @@
         })
       },
       //批量移动
-      moveBatch (createElement) {
+      moveBatch(createElement) {
         let that = this
         let newMatter = new Matter()
         let dom = createElement(MoveBatchPanel, {
@@ -302,7 +311,7 @@
       }
     },
     watch: {
-      '$route' (newVal, oldVal) {
+      '$route'(newVal, oldVal) {
 
         let puuid = this.$route.query.puuid
         if (puuid) {
@@ -316,7 +325,7 @@
       }
 
     },
-    created () {
+    created() {
       /*初始化inputSelection*/
       if (this.user.role === 'ADMINISTRATOR') {
         this.pager.getFilter('userUuid').visible = true
@@ -324,7 +333,7 @@
         this.pager.setFilterValue('userUuid', this.user.uuid)
       }
     },
-    mounted () {
+    mounted() {
 
       let that = this
       this.pager.enableHistory()
@@ -353,9 +362,9 @@
   }
 </script>
 <style lang="less" rel="stylesheet/less">
-	@import "../../assets/css/global/variables";
+  @import "../../assets/css/global/variables";
 
-	.backyard-matter-list {
+  .backyard-matter-list {
 
-	}
+  }
 </style>
