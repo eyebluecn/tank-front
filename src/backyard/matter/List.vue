@@ -201,7 +201,16 @@
         if (!that.newMatter.puuid) {
           that.newMatter.puuid = 'root'
         }
-        that.newMatter.userUuid = that.user.uuid
+
+
+        //指定为当前选择的用户。
+        //如果没有设置用户的话，那么默认显示当前登录用户的资料
+        if (!that.pager.getFilterValue('userUuid')) {
+          that.newMatter.userUuid = that.user.uuid
+        } else {
+          that.newMatter.userUuid = that.pager.getFilterValue('userUuid')
+        }
+
         that.director.createMode = true
 
         setTimeout(function () {
