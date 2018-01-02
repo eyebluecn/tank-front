@@ -16,7 +16,7 @@
 
 如果您觉得蓝眼云盘对您有帮助，请不要吝惜您的star :smile:
 
-###技术栈
+### 技术栈
 
 vue2.0 + vue-router + vuex + vue-resource + webpack + es6 + less
 
@@ -38,12 +38,10 @@ npm run build
  打包的结果在`dist`文件夹下，将该文件夹下的内容放置在[后端tank](https://github.com/eyebluecn/tank)的`build/html`文件夹下即可。
 
 
-###配套后端
+### 配套后端
 此项目有配套后端项目，对golang感兴趣的同学可以猛戳 [配套后端tank](https://github.com/eyebluecn/tank)
 
-##### 更多详细配置请参考[后端说明](https://github.com/eyebluecn/tank)
-
-###总结
+### 总结
 1、 蓝眼的宗旨是专注于开源精致而优雅的软件，所以在代码的构建过程中我们不停地思考与迭代，追求最优质的代码。
 
 2、 蓝眼云盘前端代码的构建完全面向对象，可扩展能力强，涉及多用户，多权限功能。
@@ -56,12 +54,12 @@ npm run build
 
 如果您也想参与进来，请尽情的fork, star, post issue, pull requests
 
-###部分截图
+### 部分截图
 ![蓝眼云盘登录页面](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/login.png)
 
 ![蓝眼云盘主要页面](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/matters.png)
 
-###项目布局
+### 项目布局
 
 ```
 ├── build                                          // webpack配置文件
