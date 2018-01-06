@@ -86,7 +86,7 @@ export function lowerCamel(str) {
   }).replace(/\s+/g, '')
 }
 
-//转换成全部小写的使用 /分隔的字符串
+//转换成全部小写的使用 /分隔的字符串. 比如uploadToken会得到 /upload/token
 export function lowerSlash(str) {
   return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
     return '/' + letter.toLowerCase()
