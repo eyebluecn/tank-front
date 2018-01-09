@@ -88,9 +88,6 @@
         matter: new Matter(),
         //准备新建的文件。
         newMatter: new Matter(),
-        //目标文件夹，用于移动操作
-        targetMatter: new Matter(),
-
         //准备上传的一系列文件
         uploadMatters: [],
         //当前选中的文件
@@ -309,18 +306,21 @@
       moveBatch(createElement) {
         let that = this
 
-        let targetMatter = new Matter()
-
-        //限制目标文件夹的用户。
-        targetMatter.userUuid = this.selectedMatters[0].userUuid
-
+        let targetMatterUuid = null
         let dom = createElement(MoveBatchPanel, {
           props: {
-            targetMatter: targetMatter
+            userUuid: that.selectedMatters[0].userUuid,
+            callback: function (matter) {
+
+
+              if (matter.uuid) {
+                targetMatterUuid = matter.uuid
+              } else {
+                targetMatterUuid = "root"
+              }
+            }
           }
         })
-
-        console.log(dom)
 
         MessageBox({
           title: '移动到',
@@ -340,9 +340,8 @@
                 }
               })
 
-              that.matter.httpMove(uuids, targetMatter.uuid, function (response) {
+              that.matter.httpMove(uuids, targetMatterUuid, function (response) {
                 Message.success('移动成功！')
-                targetMatter.render(new Matter())
                 that.refresh()
               })
             }

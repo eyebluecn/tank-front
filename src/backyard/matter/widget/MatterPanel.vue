@@ -89,7 +89,7 @@
         let that = this
 
         if (this.director.isEditing()) {
-          console.log('导演正忙着，不予执行')
+          console.error('导演正忙着，不予执行')
           return
         }
 
@@ -102,7 +102,7 @@
       },
       download() {
         if (this.director.isEditing()) {
-          console.log('导演正忙着，不予执行')
+          console.error('导演正忙着，不予执行')
           return
         }
 
@@ -129,7 +129,7 @@
         let that = this
 
         if (this.director.isEditing()) {
-          console.log('导演正忙着，不予执行')
+          console.error('导演正忙着，不予执行')
           return
         }
         //告诉导演，自己正在编辑

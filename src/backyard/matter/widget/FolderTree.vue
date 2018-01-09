@@ -19,7 +19,8 @@
     <NbExpanding>
       <div v-if="pager.data.length && showSubFolder" class="pl20">
         <div v-for="(child, index) in pager.data">
-          <FolderTree :matter="child" :targetMatter="targetMatter"></FolderTree>
+          <FolderTree :matter="child" :targetMatter="targetMatter" :userUuid="userUuid"
+                      :callback="callback" :showSubFolderInit="false"/>
         </div>
       </div>
     </NbExpanding>
@@ -33,8 +34,8 @@
   import Matter from '../../../common/model/matter/Matter'
 
   export default {
-    name: 'FolderTree',
 
+    name: "FolderTree",
     data() {
       return {
         showSubFolder: false,
@@ -54,26 +55,38 @@
         type: Boolean,
         required: false,
         default: false
+      },
+      userUuid: {
+        type: String,
+        required: true
+      },
+      //选择了一个文件夹后回掉，参数matter
+      callback: {
+        type: Function,
+        required: true
       }
     },
-
+    watch: {
+      //有可能外面世界的userUuid发生了变化
+      'userUuid'(newVal, oldVal) {
+        this.refresh()
+      }
+    },
     methods: {
       clickItem() {
         this.showSubFolder = !this.showSubFolder
         if (this.targetMatter.uuid !== this.matter.uuid) {
           this.targetMatter.render(this.matter)
-        }
-      },
-      setUserUuid() {
-        //限制选择的范围。文件和目标文件夹必须是同一主人
-        if (this.targetMatter.userUuid) {
-          this.pager.setFilterValue('userUuid', this.targetMatter.userUuid)
-        } else {
-          console.error("目标文件夹的userUuid必须指定！")
+
+          if (typeof this.callback === "function") {
+            this.callback(this.targetMatter)
+          }
+
         }
       },
       refresh() {
-        console.log("FolderTree mounted!")
+
+        this.showSubFolder = this.showSubFolderInit
 
         if (!this.matter.uuid) {
           this.pager.setFilterValue('puuid', 'root')
@@ -82,11 +95,9 @@
         }
 
         //限制选择的范围。文件和目标文件夹必须是同一主人
-        this.setUserUuid()
+        this.pager.setFilterValue('userUuid', this.userUuid)
 
-        if (this.showSubFolderInit) {
-          this.showSubFolder = true
-        }
+
 
         this.pager.setFilterValue('dir', true)
         this.pager.httpFastPage()

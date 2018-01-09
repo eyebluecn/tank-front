@@ -1,6 +1,7 @@
 <template>
   <div class="move-batch-panel h300">
-    <FolderTree ref="folderTree" :matter="matter" :targetMatter="targetMatter" :deepFolderInit="true"/>
+    <FolderTree ref="folderTree" :matter="matter" :targetMatter="targetMatter" :userUuid="userUuid" :callback="callback"
+                :showSubFolderInit="true"/>
   </div>
 </template>
 
@@ -9,26 +10,26 @@
   import Matter from '../../../common/model/matter/Matter'
 
   export default {
-    name: 'move-batch-panel',
     data() {
       return {
-        //当前matter
-        matter: new Matter()
+        //当前matter，这一级为 root.
+        matter: new Matter(),
+        //最终选择的那个matter
+        targetMatter: new Matter()
       }
     },
     watch: {
-      'targetMatter.userUuid'(newVal, oldVal) {
 
-        console.log("move-batch-panel 听到变化")
-        console.log(oldVal + "=>" + newVal)
-
-        this.$refs.folderTree.refresh()
-
-      }
     },
     props: {
-      targetMatter: {
-        type: Matter,
+      //寻找该用户的合适文件夹
+      userUuid: {
+        type: String,
+        required: true
+      },
+      //选择了一个文件夹后回掉，参数matter
+      callback: {
+        type: Function,
         required: true
       }
     },
@@ -36,8 +37,6 @@
       FolderTree
     },
     mounted() {
-
-      console.log("MoveBatchPanel mounted.")
 
     }
   }
