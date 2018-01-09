@@ -80,13 +80,11 @@ npm run build
 │   │   │   ├── app.less                           // less入口文件
 │   │   ├── img                                    // 静态图片存放目录
 │   ├── backyard                                   // 组件目录
-│   │   ├── index                                  // 首页
-│   │   │   ├── Index.vue                          // 首页组件
 │   │   ├── layout                                 // 布局  
-│   │   │   ├── BottomNavigation.vue               // 尾部布局组件
-│   │   │   ├── SideMenu.vue                       // 侧边栏菜单组件
-│   │   │   ├── SideNavigation.vue                 // 侧边栏布局组件
-│   │   │   ├── TopNavigation.vue                  // 头部布局组件
+│   │   │   ├── BottomNavigation.vue               // 尾部布局
+│   │   │   ├── SideMenu.vue                       // 侧边栏菜单
+│   │   │   ├── SideNavigation.vue                 // 侧边栏布局
+│   │   │   ├── TopNavigation.vue                  // 头部布局
 │   │   ├── matter                                 // 文件
 │   │   │   ├── widget                                                
 │   │   │   │   ├── Director.js                    // 单个文件的导演类      
@@ -95,22 +93,22 @@ npm run build
 │   │   │   │   ├── MatterPanel.vue                // 单文件或文件夹个体     
 │   │   │   │   ├── MoveBatchPanel.vue             // 批量文件移动组件      
 │   │   │   │   ├── UploadMatterPanel.vue          // 文件上传组件 
-│   │   │   ├── List.vue                           // 文件列表组件
+│   │   │   ├── List.vue                           // 文件列表
 │   │   ├── preference                             // 个性化
-│   │   │   ├── Edit.vue                           // 个性化编辑组件
-│   │   │   ├── Index.vue                          // 个性化显示组件
+│   │   │   ├── Edit.vue                           // 个性化编辑
+│   │   │   ├── Index.vue                          // 个性化显示
 │   │   ├── user                                   // 用户
 │   │   │   ├── widget                               
 │   │   │   │   ├── UserInputSelection.vue         // 异步用户模糊单选组件      
-│   │   │   ├── ChangePassword.vue                 // 用户修改密码组件
-│   │   │   ├── Create.vue                         // 创建用户组件
-│   │   │   ├── Detail.vue                         // 用户详情组件
-│   │   │   ├── List.vue                           // 用户列表组件
-│   │   │   ├── Login.vue                          // 用户登录组件
+│   │   │   ├── ChangePassword.vue                 // 用户修改密码
+│   │   │   ├── Create.vue                         // 创建用户
+│   │   │   ├── Detail.vue                         // 用户详情
+│   │   │   ├── List.vue                           // 用户列表
+│   │   │   ├── Login.vue                          // 用户登录
 │   │   ├── widget                                 // 与页面有关的公用组件
 │   │   │   ├── CreateSaveButton.vue               // 保存创建按钮组件
 │   │   │   ├── LoadingFrame.vue                   // 框架加载组件
-│   │   ├── Frame.vue                              // 大框架组件
+│   │   ├── Frame.vue                              // 大框架
 │   ├── common                                     // 公共目录
 │   │   ├── directive                              // 自定义指令
 │   │   │   ├── directive.js                       // 验证规则指令
@@ -163,8 +161,8 @@ npm run build
 │   │   │   ├── NbSlidePanel.vue                   // 动画组件
 │   │   │   ├── NbSwitcher.vue                     // 开关按钮组件
 │   ├── App.vue                                    // 页面入口文件
-│   ├── main.js                                    // js入口文件
-
+│   ├── main.js                                    // Js入口文件
+├── index.html                                     // 入口Html文件
 
 ```
 

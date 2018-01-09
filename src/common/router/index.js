@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import ByIndexView from '../../backyard/index/Index.vue'
 import ByFrameView from '../../backyard/Frame.vue'
 import MatterList from '../../backyard/matter/List'
 import UserLogin from '../../backyard/user/Login.vue'
