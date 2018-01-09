@@ -13,7 +13,6 @@ export default class BaseEntity extends Base {
     this.sort = null
     this.createTime = null
     this.modifyTime = null
-    this.deleted = false
 
     //表单验证专用
     this.validatorSchema = null
@@ -23,8 +22,8 @@ export default class BaseEntity extends Base {
   render(obj, one2one = false) {
 
     super.render(obj)
-    this.createTime = str2Date(this.createTime)
-    this.modifyTime = str2Date(this.modifyTime)
+    this.renderEntity('createTime', Date)
+    this.renderEntity('modifyTime', Date)
 
   }
 
