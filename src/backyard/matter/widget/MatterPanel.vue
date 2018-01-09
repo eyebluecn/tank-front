@@ -81,7 +81,7 @@
     },
     watch: {
       'matter.check'(newVal, oldVal) {
-        this.$emit('checkMatter', {matterUuid: this.matter.uuid, checkStatus: newVal})
+        this.$emit('checkMatter', this.matter)
       }
     },
     methods: {

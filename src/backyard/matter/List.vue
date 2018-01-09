@@ -7,22 +7,22 @@
         <div>
           <NbFilter :pager="pager" :callback="search">
 
-            <button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length !== pager.data.length"
+            <button class="btn btn-primary btn-sm" v-if="selectedMatters.length !== pager.data.length"
                     @click.stop.prevent="checkAll">
               <i class="fa fa-check-square"></i>
               全选
             </button>
             <button class="btn btn-primary btn-sm"
-                    v-if="pager.data.length && temporaryMatterUuids.length === pager.data.length"
+                    v-if="pager.data.length && selectedMatters.length === pager.data.length"
                     @click.stop.prevent="checkNone">
               <i class="fa fa-square-o"></i>
               取消全选
             </button>
-            <button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length" @click.stop.prevent="deleteBatch">
+            <button class="btn btn-primary btn-sm" v-if="selectedMatters.length" @click.stop.prevent="deleteBatch">
               <i class="fa fa-trash"></i>
               删除
             </button>
-            <button class="btn btn-primary btn-sm" v-if="temporaryMatterUuids.length"
+            <button class="btn btn-primary btn-sm" v-if="selectedMatters.length"
                     @click.stop.prevent="moveBatch($createElement)">
               <i class="fa fa-arrows"></i>
               移动
@@ -90,10 +90,11 @@
         newMatter: new Matter(),
         //目标文件夹，用于移动操作
         targetMatter: new Matter(),
+
         //准备上传的一系列文件
         uploadMatters: [],
-        //临时暂存区，用于文件的相关操作
-        temporaryMatterUuids: [],
+        //当前选中的文件
+        selectedMatters: [],
         pager: new Pager(Matter, 50),
         user: this.$store.state.user,
         breadcrumbs: this.$store.state.breadcrumbs,
@@ -146,7 +147,7 @@
         let that = this
 
         //清空暂存区
-        this.temporaryMatterUuids.splice(0, this.temporaryMatterUuids.length)
+        this.selectedMatters.splice(0, this.selectedMatters.length)
 
         let uuid = that.pager.getFilterValue('puuid')
 
@@ -269,12 +270,12 @@
         })
       },
       //选择文件时放入暂存区等待操作
-      checkMatter(val) {
-        if (val.checkStatus && this.temporaryMatterUuids.indexOf(val.matterUuid) === -1) {
-          this.temporaryMatterUuids.push(val.matterUuid)
-        } else if (!val.checkStatus && this.temporaryMatterUuids.indexOf(val.matterUuid) !== -1) {
-          let index = this.temporaryMatterUuids.indexOf(val.matterUuid)
-          this.temporaryMatterUuids.splice(index, 1)
+      checkMatter(matter) {
+        if (matter.check && this.selectedMatters.indexOf(matter) === -1) {
+          this.selectedMatters.push(matter)
+        } else if (!matter.check && this.selectedMatters.indexOf(matter) !== -1) {
+          let index = this.selectedMatters.indexOf(matter)
+          this.selectedMatters.splice(index, 1)
         }
         return true
       },
@@ -287,7 +288,14 @@
           type: 'warning',
           callback: function (action, instance) {
             if (action === 'confirm') {
-              let uuids = that.temporaryMatterUuids.join(',')
+              let uuids = ""
+              that.selectedMatters.forEach(function (item, index) {
+                if (index === 0) {
+                  uuids = item.uuid
+                } else {
+                  uuids = uuids + "," + item.uuid
+                }
+              })
               that.matter.httpDeleteBatch(uuids, function (response) {
                 Message.success('删除成功！')
                 that.refresh()
@@ -300,12 +308,19 @@
       //批量移动
       moveBatch(createElement) {
         let that = this
-        let newMatter = new Matter()
+
+        let targetMatter = new Matter()
+
+        //限制目标文件夹的用户。
+        targetMatter.userUuid = this.selectedMatters[0].userUuid
+
         let dom = createElement(MoveBatchPanel, {
           props: {
-            targetMatter: this.targetMatter
+            targetMatter: targetMatter
           }
         })
+
+        console.log(dom)
 
         MessageBox({
           title: '移动到',
@@ -316,10 +331,18 @@
           cancelButtonText: '关闭',
           callback: (action, instance) => {
             if (action === 'confirm') {
-              let uuids = that.temporaryMatterUuids.join(',')
-              that.matter.httpMove(uuids, this.targetMatter.uuid, function (response) {
+              let uuids = ""
+              that.selectedMatters.forEach(function (item, index) {
+                if (index === 0) {
+                  uuids = item.uuid
+                } else {
+                  uuids = uuids + "," + item.uuid
+                }
+              })
+
+              that.matter.httpMove(uuids, targetMatter.uuid, function (response) {
                 Message.success('移动成功！')
-                that.targetMatter.render(new Matter())
+                targetMatter.render(new Matter())
                 that.refresh()
               })
             }
