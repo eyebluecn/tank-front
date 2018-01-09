@@ -337,7 +337,6 @@
           this.pager.setFilterValue('puuid', 'root')
         }
 
-        console.log("$route changed.")
         this.refresh()
 
       }
