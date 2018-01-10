@@ -1,5 +1,4 @@
 import BaseEntity from '../base/BaseEntity'
-import MenuManager from '../../frontend/MenuManager'
 import Filter from '../base/Filter'
 import {readLocalStorage, removeLocalStorage, saveToLocalStorage} from "../../util/Utils";
 import UserInputSelection from '../../../backyard/user/widget/UserInputSelection'
@@ -84,7 +83,6 @@ export default class User extends BaseEntity {
 
     //local fields
     this.isLogin = false
-    this.menus = []         //不同角色的用户看到的菜单不一样
 
     //登录的密码，服务器返回字段中没有密码
     this.localPassword = null
@@ -151,11 +149,6 @@ export default class User extends BaseEntity {
     }
   }
 
-  //刷新菜单
-  refreshMenus() {
-    this.menus = MenuManager.refreshMenus(this)
-  }
-
   //将用户信息存储在本地。
   renderFromLocalStorage() {
 
@@ -165,8 +158,6 @@ export default class User extends BaseEntity {
       if (userString) {
         let json = JSON.parse(userString)
         this.render(json)
-        //从本地加载member之后，可以去访问后台菜单了
-        this.refreshMenus()
       }
 
     } catch (e) {
@@ -244,9 +235,6 @@ export default class User extends BaseEntity {
 
     this.render(new User())
 
-    /*//菜单刷新一次。
-    this.refreshMenus()
-*/
     this.clearLocalStorage()
 
   }
@@ -256,8 +244,6 @@ export default class User extends BaseEntity {
     this.errorMessage = null
     this.render(response.data.data)
     this.isLogin = true
-    //用户登陆后我们认为可以去访问后台菜单了
-    this.refreshMenus()
 
     //登录成功后去本地保存一下用户的简单信息，方便下次自动填入个别字段。
     this.saveToLocalStorage(response.data.data)

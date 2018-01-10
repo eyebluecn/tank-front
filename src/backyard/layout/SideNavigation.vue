@@ -5,7 +5,8 @@
 
       <div class="menu-header" @click="goToProfile">
         <div class="logo-area">
-          <img alt="image" class="img-circle w80" :src="user.avatarUrl ? user.getAvatarUrl() + '?imageProcess=resize&imageResizeM=fill&imageResizeW=100&imageResizeH=100'  : user.getAvatarUrl()"/>
+          <img alt="image" class="img-circle w80"
+               :src="user.avatarUrl ? user.getAvatarUrl() + '?imageProcess=resize&imageResizeM=fill&imageResizeW=100&imageResizeH=100'  : user.getAvatarUrl()"/>
         </div>
         <div class="text-area">
           <div class="nickname">
@@ -16,7 +17,42 @@
 
 
       <ul class="nav mt20">
-        <SideMenu v-for="(menu,index) in user.menus" :key="index" :menu="menu"/>
+
+        <li class="nav-item nav-first-level" v-if="user.role === 'GUEST'">
+          <router-link to="/user/login">
+            <i class="w14 fa fa-user-circle-o"></i>
+            <span class="nav-label">登录</span>
+          </router-link>
+        </li>
+
+        <li class="nav-item nav-first-level" v-if="user.role !== 'GUEST'">
+          <router-link to="/">
+            <i class="w14 fa fa fa-th"></i>
+            <span class="nav-label">全部文件</span>
+          </router-link>
+        </li>
+
+        <li class="nav-item nav-first-level" v-if="user.role !== 'GUEST'">
+          <router-link to="/preference">
+            <i class="w14 fa fa-dashboard"></i>
+            <span class="nav-label">网站偏好</span>
+          </router-link>
+        </li>
+
+        <li class="nav-item nav-first-level" v-if="user.role !== 'GUEST'">
+          <router-link to="/user/list">
+            <i class="w14 fa fa-user"></i>
+            <span class="nav-label">用户列表</span>
+          </router-link>
+        </li>
+
+        <li class="nav-item nav-first-level" v-if="user.role !== 'GUEST'">
+          <router-link to="/user/login">
+            <i class="w14 fa fa-power-off"></i>
+            <span class="nav-label">退出登录</span>
+          </router-link>
+        </li>
+
 
       </ul>
 
@@ -24,8 +60,6 @@
   </nav>
 </template>
 <script>
-  import SideMenu from "./SideMenu.vue"
-
 
 
   export default {
@@ -46,7 +80,6 @@
     },
 
     components: {
-      SideMenu
     },
     methods: {
       goToProfile() {
@@ -177,14 +210,6 @@
     .nav {
       li {
 
-        &.active {
-
-          //只有紧接的这一层a才会高亮。
-          > a {
-            color: @font-highlight-color;
-          }
-        }
-
         a {
 
           color: @nav-text-color;
@@ -202,36 +227,8 @@
       }
 
       .nav-first-level {
-        &.active {
-        }
-        &.current {
+        .router-link-exact-active {
           background-color: black;
-        }
-      }
-      &.nav-second-level {
-
-        > li {
-
-          > a {
-            padding-left: 43px;
-          }
-          &.active {
-            border: none;
-          }
-          &.current {
-            background-color: black;
-          }
-        }
-      }
-      &.nav-third-level {
-
-        > li {
-          > a {
-            padding-left: 57px;
-          }
-          &.current {
-            background-color: black;
-          }
         }
       }
     }

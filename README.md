@@ -119,9 +119,6 @@ npm run build
 │   │   │   ├── time.js                            // 时间格式过滤器
 │   │   │   ├── validate.js                        // 正则表达式
 │   │   ├── fork                                   // 引用外部插件
-│   │   ├── frontend                               // 菜单
-│   │   │   ├── Menu.js                            // 菜单类
-│   │   │   ├── MenuManager.js                     // 菜单管理
 │   │   ├── model                                  // 类模型目录
 │   │   │   ├── base                               // 基
 │   │   │   │   ├── Base.js                        // 基类
