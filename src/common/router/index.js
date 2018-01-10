@@ -9,6 +9,7 @@ import UserChangePassword from '../../backyard/user/ChangePassword'
 import UserCreate from '../../backyard/user/Create'
 import PreferenceIndex from '../../backyard/preference/Index'
 import PreferenceEdit from '../../backyard/preference/Edit'
+import NotFound from '../../backyard/layout/NotFound'
 import store from '../vuex/index.js'
 
 Vue.use(Router)
@@ -49,21 +50,6 @@ const router = new Router({
             breadcrumbs: []
           }
         },
-        /*{
-          path: 'user/profile/:uuid',
-          name: 'UserProfile',
-          component: UserDetail,
-          meta: {
-            title: '用户详情',
-            requiresAuth: true,
-            breadcrumbs: [
-              {
-                name: 'UserProfile',
-                title: '用户详情'
-              }
-            ]
-          }
-        },*/
         {
           path: 'user/list',
           name: 'UserList',
@@ -186,6 +172,12 @@ const router = new Router({
               }
             ]
           }
+        },
+        //未被上面处理的route被视为404
+        {
+          path: '*',
+          component: NotFound,
+          meta: {requiresAuth: false}
         }
       ]
     }
