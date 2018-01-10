@@ -2,7 +2,6 @@ import BaseEntity from '../base/BaseEntity'
 import Filter from '../base/Filter'
 import {readLocalStorage, removeLocalStorage, saveToLocalStorage} from "../../util/Utils";
 import UserInputSelection from '../../../backyard/user/widget/UserInputSelection'
-import {str2Date} from "../../filter/time";
 
 let Role = {
   USER_ROLE_GUEST: 'GUEST',

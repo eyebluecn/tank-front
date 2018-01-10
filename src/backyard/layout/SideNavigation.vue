@@ -15,41 +15,40 @@
         </div>
       </div>
 
-
       <ul class="nav mt20">
 
-        <li class="nav-item nav-first-level" v-if="user.role === 'GUEST'">
+        <li v-if="user.role === 'GUEST'">
           <router-link to="/user/login">
             <i class="w14 fa fa-user-circle-o"></i>
-            <span class="nav-label">登录</span>
+            <span>登录</span>
           </router-link>
         </li>
 
-        <li class="nav-item nav-first-level" v-if="user.role !== 'GUEST'">
+        <li v-if="user.role !== 'GUEST'">
           <router-link to="/">
             <i class="w14 fa fa fa-th"></i>
-            <span class="nav-label">全部文件</span>
+            <span>全部文件</span>
           </router-link>
         </li>
 
-        <li class="nav-item nav-first-level" v-if="user.role !== 'GUEST'">
+        <li v-if="user.role === 'ADMINISTRATOR'">
           <router-link to="/preference">
             <i class="w14 fa fa-dashboard"></i>
-            <span class="nav-label">网站偏好</span>
+            <span>网站偏好</span>
           </router-link>
         </li>
 
-        <li class="nav-item nav-first-level" v-if="user.role !== 'GUEST'">
+        <li v-if="user.role === 'ADMINISTRATOR'">
           <router-link to="/user/list">
             <i class="w14 fa fa-user"></i>
-            <span class="nav-label">用户列表</span>
+            <span>用户列表</span>
           </router-link>
         </li>
 
-        <li class="nav-item nav-first-level" v-if="user.role !== 'GUEST'">
+        <li v-if="user.role !== 'GUEST'">
           <router-link to="/user/login">
             <i class="w14 fa fa-power-off"></i>
-            <span class="nav-label">退出登录</span>
+            <span>退出登录</span>
           </router-link>
         </li>
 
@@ -79,8 +78,7 @@
 
     },
 
-    components: {
-    },
+    components: {},
     methods: {
       goToProfile() {
 
@@ -223,14 +221,13 @@
           i {
             margin-right: 6px;
           }
+
+          &.router-link-exact-active {
+            background-color: black;
+          }
         }
       }
 
-      .nav-first-level {
-        .router-link-exact-active {
-          background-color: black;
-        }
-      }
     }
   }
 
