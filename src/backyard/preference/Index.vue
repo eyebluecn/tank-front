@@ -65,7 +65,6 @@
 </template>
 
 <script>
-	import Preference from '../../common/model/preference/Preference'
   export default {
     name: 'index',
 	  data(){
