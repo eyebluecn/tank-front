@@ -174,11 +174,6 @@ export default class User extends BaseEntity {
     saveToLocalStorage(this.getTAG(), JSON.stringify(rawUserObject))
   }
 
-  //清除本地的member信息
-  clearLocalStorage() {
-    removeLocalStorage(this.getTAG())
-  }
-
   //更新本地持久化了的个别字段。
   updateLocalStorage(opt = {}) {
     try {
@@ -234,7 +229,7 @@ export default class User extends BaseEntity {
 
     this.render(new User())
 
-    this.clearLocalStorage()
+    removeLocalStorage(this.getTAG())
 
   }
 

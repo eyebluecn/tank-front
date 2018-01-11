@@ -5,7 +5,6 @@
 
       <div class="navbar-title">
 
-
         <router-link to="/">
           <img class="logo" :src="logoUrl"/>
           <span class="title">{{preference.name}}</span>

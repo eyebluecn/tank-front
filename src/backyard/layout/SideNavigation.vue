@@ -92,25 +92,13 @@
       },
       eatClick() {
 
-      },
-      updateBody() {
-        if (this.showDrawer && this.mobile) {
-        } else {
-        }
       }
     },
     watch: {
-      "showDrawer"(newVal, oldVal) {
-        this.updateBody();
-      },
-      "mobile"(newVal, oldVal) {
-        this.updateBody();
-      }
 
     },
     mounted() {
       let that = this;
-      this.updateBody();
     }
   }
 </script>
