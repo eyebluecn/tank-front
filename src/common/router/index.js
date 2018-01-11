@@ -184,15 +184,18 @@ const router = new Router({
   ]
 })
 
-//add global interceptor.
-router.beforeEach((to, from, next) => {
-
+//装填面包屑
+function fillBreadcrumbs(to) {
   //清空数组
   store.state.breadcrumbs.splice(0, store.state.breadcrumbs.length);
   if (to.meta.breadcrumbs) {
     //追加一个数组
     store.state.breadcrumbs.push.apply(store.state.breadcrumbs, to.meta.breadcrumbs)
   }
+}
+
+//add global interceptor.
+router.beforeEach((to, from, next) => {
 
   //handle auth feature.
   if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -204,9 +207,13 @@ router.beforeEach((to, from, next) => {
         query: {redirect: to.fullPath}
       })
     } else {
+
+      fillBreadcrumbs(to);
       next()
     }
   } else {
+
+    fillBreadcrumbs(to);
     next()
   }
 })
