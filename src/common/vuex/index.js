@@ -19,10 +19,10 @@ const state = {
 
   //当前版本信息。
   version: {
-    identifier: 'cn.zicla.blog',
+    identifier: 'cn.eyeblue.tank',
     platform: 'WEB',
-    versionCode: '1',
-    versionName: '1.0'
+    versionCode: '2',
+    versionName: '1.0.1'
   },
 
   //当前用户，即使没有登录依然有游客的用户在。
