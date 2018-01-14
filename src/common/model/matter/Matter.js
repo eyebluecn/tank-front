@@ -93,7 +93,7 @@ export default class Matter extends BaseEntity {
       return "/static/img/file/text.svg"
     } else if (startWith(mimeType, 'image')) {
       return "/static/img/file/image.svg"
-    } else if (endWith(this.name, 'zip') || endWith(this.name, 'rar') || endWith(this.name, 'rar') || endWith(this.name, '7z') || endWith(this.name, 'tar') || endWith(this.name, 'gz')) {
+    } else if (endWith(this.name, 'zip') || endWith(this.name, 'rar') || endWith(this.name, '7z') || endWith(this.name, 'tar') || endWith(this.name, 'tar') || endWith(this.name, 'gz')) {
       return "/static/img/file/archive.svg"
     } else {
       return "/static/img/file/file.svg"
