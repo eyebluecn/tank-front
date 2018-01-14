@@ -52,7 +52,6 @@
 <script>
   import Matter from '../../../common/model/matter/Matter'
   import NbCheckbox from '../../../common/widget/NbCheckbox'
-  import Vue from 'vue'
   import $ from 'jquery'
   import Director from './Director'
   import {Message, MessageBox, Notification} from 'element-ui'

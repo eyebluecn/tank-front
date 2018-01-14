@@ -620,6 +620,7 @@ export function getExtension(filename) {
   }
 }
 
+//根据一个文件名（带后缀的），获取对应的文件类型。
 export function getMimeType(filename) {
   let extension = getExtension(filename);
   if (MimeUtil[extension]) {

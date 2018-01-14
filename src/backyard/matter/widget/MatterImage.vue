@@ -30,13 +30,8 @@
 </template>
 <script>
   import Matter from '../../../common/model/matter/Matter'
-  import NbExpanding from "../../../common/widget/NbExpanding"
   import UploadMatterPanel from "./UploadMatterPanel"
-  import Vue from "vue"
-  import $ from "jquery"
-  import Director from "./Director";
-  import {Message, MessageBox, Notification} from 'element-ui'
-  import {setInputSelection} from "../../../common/util/Utils";
+
 
 
   export default {
@@ -47,8 +42,7 @@
       }
     },
     components: {
-      UploadMatterPanel,
-      NbExpanding
+      UploadMatterPanel
     },
     props: {
       preview: {

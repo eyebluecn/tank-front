@@ -40,7 +40,6 @@
 </template>
 
 <script>
-  import {Notification} from 'element-ui'
   import SideNavigation from './layout/SideNavigation.vue'
   import TopNavigation from './layout/TopNavigation.vue'
   import BottomNavigation from './layout/BottomNavigation.vue'

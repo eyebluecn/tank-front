@@ -79,7 +79,7 @@
   import Matter from '../../common/model/matter/Matter'
   import Pager from '../../common/model/base/Pager'
   import Director from './widget/Director'
-  import {Message, MessageBox, Notification} from 'element-ui'
+  import {Message, MessageBox} from 'element-ui'
 
   export default {
     data() {

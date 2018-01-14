@@ -16,7 +16,7 @@
 	/**
 	 * 该控件是提供用户的超链接的。
 	 */
-	import Base from "../../common/model/base/Base";
+
 
 	export default{
 		data(){

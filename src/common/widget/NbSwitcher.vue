@@ -8,7 +8,6 @@
 </template>
 
 <script>
-	import $ from "jquery"
 	export default{
 		//这个值代表的是开或者关的状态。
 		model: {
