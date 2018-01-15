@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="pedia-navigation">
-					<span class="item active">文章列表</span>
+					<span class="item active">用户列表</span>
 				</div>
 			</div>
 

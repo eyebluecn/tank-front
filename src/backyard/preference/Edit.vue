@@ -67,7 +67,7 @@
     name: 'edit',
     data() {
       return {
-        currentPreference: this.$store.state.preference,
+        globalPreference: this.$store.state.preference,
         preference: new Preference()
       }
     },
@@ -77,14 +77,14 @@
     },
     methods: {
       save() {
-        let that = this
+        let that = this;
         this.preference.httpSave(function (response) {
 
           Notification.success({
             message: '修改偏好成功！'
           });
 
-          that.currentPreference.render(response.data.data);
+          that.globalPreference.render(response.data.data);
 
           that.preference.updateTitleAndFavicon();
 
