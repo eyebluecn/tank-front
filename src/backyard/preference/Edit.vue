@@ -94,9 +94,7 @@
     },
     mounted() {
       let that = this;
-      this.preference.httpFetch(function () {
-        that.preference.editMode = true
-      })
+      this.preference.httpFetch()
     }
   }
 </script>
