@@ -82,18 +82,18 @@
 
           Notification.success({
             message: '修改偏好成功！'
-          })
+          });
 
-          that.currentPreference.render(response.data.data)
+          that.currentPreference.render(response.data.data);
 
-          that.preference.updateTitleAndFavicon()
+          that.preference.updateTitleAndFavicon();
 
-          that.$router.go(-1)
+          that.$router.go(-1);
         })
       }
     },
     mounted() {
-      let that = this
+      let that = this;
       this.preference.httpFetch(function () {
         that.preference.editMode = true
       })

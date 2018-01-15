@@ -28,7 +28,7 @@
 					logo
 				</div>
 				<div class="col-md-10 col-sm-10 col-xs-8">
-					<img v-if="preference.logoUrl" :src="preference.logoUrl" alt="logo" class="tankImg">
+					<img v-if="preference.logoUrl" :src="preference.logoUrl" alt="logo" class="max-height-100">
 				</div>
 			</div>
 
@@ -37,7 +37,7 @@
 					favicon
 				</div>
 				<div class="col-md-10 col-sm-10 col-xs-8">
-					<img v-if="preference.faviconUrl" :src="preference.faviconUrl" alt="favicon" class="tankImg">
+					<img v-if="preference.faviconUrl" :src="preference.faviconUrl" alt="favicon" class="max-height-100">
 				</div>
 			</div>
 
@@ -82,7 +82,7 @@
 
 <style lang="less" rel="stylesheet/less">
 	.backyard-preference{
-		.tankImg{
+		.max-height-100{
 			max-height: 100px;
 		}
 	}
