@@ -92,7 +92,7 @@
 
                 <div class="row">
 
-                  <div class="col-md-12 text-right">
+                  <div class="col-md-12 text-right" v-if="user.username!=='demo'">
                     <button class="btn btn-sm btn-primary mb5" v-if="user.role === 'ADMINISTRATOR'"
                             @click.stop.prevent="resetPassword">
                       重置密码
