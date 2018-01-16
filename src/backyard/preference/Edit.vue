@@ -27,7 +27,7 @@
       <div class="row mt10">
         <label class="col-md-2 control-label mt5">favicon</label>
         <div class="col-md-10">
-          <MatterImage v-model="preference.faviconUrl" filter=".ico" uploadHint="只允许上传.ico图标"/>
+          <MatterImage v-model="preference.faviconUrl" filter=".ico" uploadHint="只允许上传.ico图标" :previewWidth="60"/>
         </div>
       </div>
 

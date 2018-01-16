@@ -2,7 +2,7 @@
   <div class="nb-matter-image">
 
     <div class="tiny-block">
-      <div class="w200 p10 mb10 bg-white br5 border" v-show="preview && value">
+      <div class="p10 mb10 bg-white br5 border" :style="'width:'+previewWidth+'px'" v-show="preview && value">
         <img class="wp100" :src="value"/>
       </div>
     </div>
@@ -50,6 +50,11 @@
         type: Boolean,
         required: false,
         'default': true
+      },
+      previewWidth: {
+        type: Number,
+        required: false,
+        'default': 200
       },
       //图片的url.
       value: {
