@@ -19,7 +19,7 @@
     <NbExpanding>
       <div v-if="pager.data.length && showSubFolder" class="pl20">
         <div v-for="(child, index) in pager.data">
-          <FolderTree :matter="child" :targetMatter="targetMatter" :userUuid="userUuid"
+          <FolderTree :matter="child" :targetMatter="targetMatter" :userUuid="userUuid" :version="version"
                       :callback="callback" :showSubFolderInit="false"/>
         </div>
       </div>
@@ -60,6 +60,11 @@
         type: String,
         required: true
       },
+      //为了让Tree在每次点开的时候都更新
+      version: {
+        type: Number,
+        required: true
+      },
       //选择了一个文件夹后回掉，参数matter
       callback: {
         type: Function,
@@ -70,7 +75,12 @@
       //有可能外面世界的userUuid发生了变化
       'userUuid'(newVal, oldVal) {
         this.refresh()
+      },
+      //有可能外面世界的version发生了变化
+      'version'(newVal, oldVal) {
+        this.refresh()
       }
+
     },
     methods: {
       clickItem() {
@@ -96,7 +106,6 @@
 
         //限制选择的范围。文件和目标文件夹必须是同一主人
         this.pager.setFilterValue('userUuid', this.userUuid)
-
 
 
         this.pager.setFilterValue('dir', true)

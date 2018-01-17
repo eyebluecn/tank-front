@@ -309,10 +309,9 @@
         let targetMatterUuid = null
         let dom = createElement(MoveBatchPanel, {
           props: {
+            version: (new Date()).getTime(),
             userUuid: that.selectedMatters[0].userUuid,
             callback: function (matter) {
-
-
               if (matter.uuid) {
                 targetMatterUuid = matter.uuid
               } else {
