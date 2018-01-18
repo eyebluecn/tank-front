@@ -52,6 +52,13 @@
           </router-link>
         </li>
 
+        <li class="about-menu">
+          <a href="javascript:void(0)" @click.stop.prevent="showAbout">
+            <i class="w14 fa fa-info-circle"></i>
+            <span>关于</span>
+          </a>
+        </li>
+
 
       </ul>
 
@@ -59,13 +66,14 @@
   </nav>
 </template>
 <script>
-
+  import {Message, MessageBox, Notification} from 'element-ui'
 
   export default {
 
     data() {
       return {
-        user: this.$store.state.user
+        user: this.$store.state.user,
+        preference: this.$store.state.preference
       }
     },
     computed: {
@@ -88,15 +96,30 @@
           this.$router.push("/user/detail/" + this.user.uuid);
         }
 
-
       },
       eatClick() {
 
+      },
+      showAbout() {
+
+        let html = '<div class="text-center">' + this.preference.footerLine1 + "<br/>" + this.preference.footerLine2 + "<br/>" + 'Powered by <a target="_blank" href="https://github.com/eyebluecn/tank"><img class="w30" src="../../assets/img/logo.png"/> 蓝眼云盘</a>' + '</div>'
+        MessageBox({
+          title: '关于',
+          message: html,
+          dangerouslyUseHTMLString: true,
+          confirmButtonText: '确定',
+          showCancelButton: false,
+          cancelButtonText: '关闭',
+          callback: (action, instance) => {
+            if (action === 'confirm') {
+
+            }
+          }
+        })
+
       }
     },
-    watch: {
-
-    },
+    watch: {},
     mounted() {
       let that = this;
     }
@@ -133,7 +156,7 @@
     left: -@sidebar-width;
     top: 0;
     bottom: 0;
-    z-index: 2000;
+    z-index: 1000;
 
     background: darken(@nav-bg, 3%);
 
@@ -204,6 +227,7 @@
           &:hover, &:focus {
             color: @font-highlight-color;
             background-color: transparent;
+            outline: none;
           }
 
           i {
@@ -214,6 +238,18 @@
             background-color: black;
           }
         }
+      }
+
+    }
+
+    .about-menu {
+      //大屏幕
+      @media (min-width: @screen-sm-min) {
+        display: none;
+      }
+      //手机屏幕
+      @media (max-width: @screen-xs-max) {
+
       }
 
     }

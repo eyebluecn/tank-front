@@ -5,6 +5,7 @@
     <div>
       <SideNavigation/>
       <div id="page-wrapper" :class="{'show-drawer':$store.state.config.showDrawer}" @click="blankClick">
+
         <div>
 
           <div class="mb10">
@@ -30,8 +31,10 @@
         </div>
 
 
-        <TopNavigation/>
       </div>
+      <TopNavigation/>
+
+      <!--手机上不显示bottomNavigation，而采用弹出的形式-->
       <BottomNavigation />
     </div>
   </div>
@@ -105,6 +108,7 @@
     bottom: @power-footer-height;
     overflow-y: auto;
     overflow-x: hidden;
+    z-index: 10;
 
     padding: 10px;
 
@@ -122,6 +126,7 @@
     //小屏幕
     @media (max-width: @screen-xs-max) {
       left: 0;
+      bottom: 0;
     }
 
     &.show-drawer {
@@ -133,6 +138,7 @@
       //小屏幕
       @media (max-width: @screen-xs-max) {
         left: 0;
+        bottom: 0;
       }
     }
   }

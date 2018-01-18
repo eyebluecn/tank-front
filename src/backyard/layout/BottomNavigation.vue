@@ -16,7 +16,6 @@
 
 <script>
   export default {
-    name: 'bottom-navigation',
 	  data(){
       return{
         preference: this.$store.state.preference
@@ -32,6 +31,7 @@
 		position: fixed;
 		height: @power-footer-height;
 		line-height: @power-footer-height;
+    background-color: white;
 		bottom: 0;
 		right: 0;
 		left: @sidebar-width;
@@ -44,6 +44,7 @@
 		//小屏幕
 		@media (max-width: @screen-xs-max) {
 			left: 0;
+      display: none;
 		}
 
 		&.show-drawer {
@@ -55,6 +56,7 @@
 			//小屏幕
 			@media (max-width: @screen-xs-max) {
 				left: 0;
+        display: none;
 			}
 		}
 	}
