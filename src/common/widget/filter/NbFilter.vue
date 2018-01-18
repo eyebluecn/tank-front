@@ -1,9 +1,11 @@
 <template>
 
 	<div class="clearfix">
-		<div class="text-right mb10">
-			<slot></slot>
-			<button class="btn btn-sm btn-primary" @click="show=!show">
+		<div class="text-right">
+      <span class="">
+        <slot></slot>
+      </span>
+			<button class="btn btn-sm btn-primary mb10" @click="show=!show">
 				<i class="fa fa-filter"></i>
 				<span v-if="show">
             收起筛选

@@ -7,10 +7,9 @@
         </div>
       </div>
 
-
       <div class="col-md-12">
         <NbFilter :pager="pager" :callback="search">
-          <router-link class="btn btn-primary btn-sm" to="/user/create">
+          <router-link class="btn btn-primary btn-sm mb10" to="/user/create">
             <i class="fa fa-plus"></i>
             创建用户
           </router-link>

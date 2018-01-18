@@ -1,58 +1,76 @@
 <template>
-  <div class="widget-matter-panel clearfix" @click.stop.prevent="clickRow">
-    <div class="left-part">
-      <span>
-        <NbCheckbox v-model="matter.check"/>
-      </span>
-      <span>
-        <img class="matter-icon" :src="matter.getIcon()"/>
-      </span>
-      <span class="matter-name-edit" v-if="matter.editMode">
+  <div>
 
-        <input ref="editInput" class="form-control"
-               :class="matter.uuid"
-               v-model="matter.name"
-               placeholder="请输入名称"
-               @blur="blurTrigger()"
-               v-on:keyup.13="enterTrigger()"/>
-      </span>
-      <span class="matter-name" :class="{'alien':matter.alien}" v-else>
+    <div class="matter-panel" @click.stop.prevent="clickRow">
+
+      <div class="media">
+
+        <div class="pull-left">
+          <div class="left-part">
+            <span class="basic-span">
+            <NbCheckbox v-model="matter.check"/>
+            </span>
+            <span class="basic-span">
+              <img class="matter-icon" :src="matter.getIcon()"/>
+            </span>
+          </div>
+        </div>
+        <div class="pull-right">
+          <div class="right-part" v-if="matter.uuid">
+
+            <span class="matter-operation">
+
+              <i class="fa fa-lock btn-action text-primary" v-if="!matter.dir && matter.privacy" title="设置为公有文件"
+                 @click.stop.prevent="matter.httpChangePrivacy(false)"></i>
+              <i class="fa fa-unlock btn-action text-primary" v-if="!matter.dir && !matter.privacy" title="设置为私有文件"
+                 @click.stop.prevent="matter.httpChangePrivacy(true)"></i>
+
+              <i class="fa fa-pencil btn-action text-primary" title="重命名" @click.stop.prevent="prepareRename"></i>
+              <i class="fa fa-link btn-action text-primary" title="复制下载链接" v-if="!matter.dir"
+                 @click.stop.prevent="clipboard"></i>
+              <i class="fa fa-download btn-action text-primary" title="下载" v-if="!matter.dir"
+                 @click.stop.prevent="download"></i>
+
+              <i class="fa fa-trash btn-action text-danger" title="删除" @click.stop.prevent="deleteMatter"></i>
+            </span>
+            <span class="matter-size" v-if="matter.dir">
+              -
+            </span>
+            <span class="matter-size" v-else>
+              {{matter.size | humanFileSize}}
+            </span>
+
+            <span class="matter-date">
+              {{matter.modifyTime | simpleDateHourMinute}}
+            </span>
+
+          </div>
+        </div>
+        <div class="media-body">
+
+          <div class="middle-part">
+
+            <span class="matter-name-edit" v-if="matter.editMode">
+
+              <input ref="editInput" class="form-control"
+                     :class="matter.uuid"
+                     v-model="matter.name"
+                     placeholder="请输入名称"
+                     @blur="blurTrigger()"
+                     v-on:keyup.13="enterTrigger()"/>
+            </span>
+            <span class="matter-name" :class="{'alien':matter.alien}" v-else>
         {{matter.name}} <i class="fa fa-unlock" v-if="!matter.dir && !matter.privacy" title="公有文件，任何人可以访问"></i>
       </span>
 
-    </div>
-    <div class="right-part" v-if="matter.uuid">
-
-      <span class="matter-operation">
-
-        <i class="fa fa-lock btn-action text-primary" v-if="!matter.dir && matter.privacy" title="设置为公有文件"
-           @click.stop.prevent="matter.httpChangePrivacy(false)"></i>
-        <i class="fa fa-unlock btn-action text-primary" v-if="!matter.dir && !matter.privacy" title="设置为私有文件"
-           @click.stop.prevent="matter.httpChangePrivacy(true)"></i>
-
-        <i class="fa fa-pencil btn-action text-primary" title="重命名" @click.stop.prevent="prepareRename"></i>
-        <i class="fa fa-link btn-action text-primary" title="复制下载链接" v-if="!matter.dir"
-           @click.stop.prevent="clipboard"></i>
-        <i class="fa fa-download btn-action text-primary" title="下载" v-if="!matter.dir"
-           @click.stop.prevent="download"></i>
-
-        <i class="fa fa-trash btn-action text-danger" title="删除" @click.stop.prevent="deleteMatter"></i>
-      </span>
-      <span class="matter-size" v-if="matter.dir">
-        -
-      </span>
-      <span class="matter-size" v-else>
-        {{matter.size | humanFileSize}}
-      </span>
-
-      <span class="matter-date">
-        {{matter.modifyTime | simpleDateHourMinute}}
-      </span>
+          </div>
+        </div>
+      </div>
 
     </div>
-
 
   </div>
+
 </template>
 <script>
   import Matter from '../../../common/model/matter/Matter'
@@ -182,6 +200,8 @@
           that.director.createMode = false
           that.editMode = false
 
+          that.matter.render(new Matter())
+
           that.$emit('createDirectorySuccess', that.matter)
 
         }, function (response) {
@@ -230,6 +250,87 @@
 <style lang="less" rel="stylesheet/less">
 
   @import "../../../assets/css/global/variables";
+
+  .matter-panel {
+
+    @base-height: 48px;
+    padding-left: 10px;
+    border-top: 1px solid #eee;
+    background-color: white;
+
+    .basic-span {
+      display: inline-block;
+      vertical-align: middle;
+      line-height: @base-height;
+      margin-right: 10px;
+    }
+
+    .matter-icon {
+      width: 24px;
+    }
+
+    .middle-part {
+
+      height: @base-height;
+      overflow: hidden;
+
+      .matter-name-edit {
+        .basic-span;
+
+        width: 90%;
+        input {
+          width: 100%;
+          height: 26px;
+          display: inline-block;
+          padding: 6px;
+        }
+      }
+
+      .matter-name {
+        .basic-span;
+        width: 100%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+
+    .right-part {
+
+      .matter-operation {
+        .basic-span;
+        display: none;
+        i {
+          font-size: 16px;
+          margin-right: 5px;
+
+          &:hover {
+
+          }
+        }
+      }
+      .matter-size {
+        .basic-span;
+        display: inline-block;
+        width: 80px;
+        text-align: left;
+        margin-left: 20px;
+      }
+      .matter-date {
+        .basic-span;
+      }
+    }
+
+    &:hover {
+      background-color: aliceblue;
+      cursor: pointer;
+
+      .matter-operation {
+        display: inline-block;
+      }
+    }
+
+  }
 
   .widget-matter-panel {
 
