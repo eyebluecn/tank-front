@@ -25,12 +25,17 @@
 
       <span class="matter-operation">
 
-        <i class="fa fa-lock btn-action text-primary" v-if="!matter.dir && matter.privacy" title="设置为公有文件" @click.stop.prevent="matter.httpChangePrivacy(false)"></i>
-        <i class="fa fa-unlock btn-action text-primary"  v-if="!matter.dir && !matter.privacy" title="设置为私有文件" @click.stop.prevent="matter.httpChangePrivacy(true)"></i>
+        <i class="fa fa-lock btn-action text-primary" v-if="!matter.dir && matter.privacy" title="设置为公有文件"
+           @click.stop.prevent="matter.httpChangePrivacy(false)"></i>
+        <i class="fa fa-unlock btn-action text-primary" v-if="!matter.dir && !matter.privacy" title="设置为私有文件"
+           @click.stop.prevent="matter.httpChangePrivacy(true)"></i>
 
         <i class="fa fa-pencil btn-action text-primary" title="重命名" @click.stop.prevent="prepareRename"></i>
+        <i class="fa fa-link btn-action text-primary" title="复制下载链接" v-if="!matter.dir"
+           @click.stop.prevent="clipboard"></i>
         <i class="fa fa-download btn-action text-primary" title="下载" v-if="!matter.dir"
            @click.stop.prevent="download"></i>
+
         <i class="fa fa-trash btn-action text-danger" title="删除" @click.stop.prevent="deleteMatter"></i>
       </span>
       <span class="matter-size" v-if="matter.dir">
@@ -200,6 +205,18 @@
       },
       highLight() {
         $(this.$refs.editInput).select()
+      },
+      clipboard() {
+
+        let $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val(location.protocol + "//" + location.host + this.matter.getDownloadUrl()).select();
+        document.execCommand("copy");
+        $temp.remove();
+
+        Message.success('已复制！');
+
+
       }
     },
     created() {
