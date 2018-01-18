@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="widget-matter-panel">
 
-    <div class="matter-panel" @click.stop.prevent="clickRow">
+    <div @click.stop.prevent="clickRow">
 
       <div class="media">
 
@@ -15,7 +15,9 @@
             </span>
           </div>
         </div>
-        <div class="pull-right">
+
+        <!--在大屏下的操作栏-->
+        <div class="pull-right hidden-sm hidden-xs">
           <div class="right-part" v-if="matter.uuid">
 
             <span class="matter-operation">
@@ -46,6 +48,14 @@
 
           </div>
         </div>
+
+        <!--在小屏幕下的操作栏-->
+        <div class="pull-right hidden-lg hidden-md">
+          <span class="more-btn" @click.stop.prevent="showMore = !showMore">
+            <i class="fa fa-ellipsis-h btn-action" title="重命名"></i>
+          </span>
+        </div>
+
         <div class="media-body">
 
           <div class="middle-part">
@@ -69,12 +79,63 @@
 
     </div>
 
+    <NbExpanding>
+      <div class="hidden-lg hidden-md more-panel" v-if="showMore">
+        <div class="cell-btn" style="border: none">
+          <span>
+            {{matter.modifyTime | simpleDateHourMinute}}
+          </span>
+
+          <span v-if="!matter.dir">
+              {{matter.size | humanFileSize}}
+          </span>
+        </div>
+
+        <div class="cell-btn" v-if="!matter.dir && matter.privacy" title="设置为公有文件"
+             @click.stop.prevent="matter.httpChangePrivacy(false)">
+          <i class="fa fa-lock"></i>
+          设置为公有文件
+        </div>
+
+        <div class="cell-btn" v-if="!matter.dir && !matter.privacy" title="设置为私有文件"
+             @click.stop.prevent="matter.httpChangePrivacy(true)">
+          <i class="fa fa-unlock"></i>
+          设置为私有文件
+        </div>
+
+        <div class="cell-btn" title="重命名" @click.stop.prevent="prepareRename">
+          <i class="fa fa-pencil"></i>
+          重命名
+        </div>
+
+        <div class="cell-btn" title="复制下载链接" v-if="!matter.dir"
+             @click.stop.prevent="clipboard">
+          <i class="fa fa-link"></i>
+          复制下载链接
+        </div>
+
+
+        <div class="cell-btn" title="下载" v-if="!matter.dir"
+             @click.stop.prevent="download">
+          <i class="fa fa-download"></i>
+          下载
+        </div>
+
+        <div class="cell-btn text-danger" title="删除" @click.stop.prevent="deleteMatter">
+          <i class="fa fa-trash"></i>
+          删除
+        </div>
+
+      </div>
+    </NbExpanding>
+
   </div>
 
 </template>
 <script>
   import Matter from '../../../common/model/matter/Matter'
   import NbCheckbox from '../../../common/widget/NbCheckbox'
+  import NbExpanding from '../../../common/widget/NbExpanding'
   import $ from 'jquery'
   import Director from './Director'
   import {Message, MessageBox, Notification} from 'element-ui'
@@ -84,10 +145,12 @@
     data() {
       return {
         //正在向服务器提交rename的请求
-        renamingLoading: false
+        renamingLoading: false,
+        showMore: false
       }
     },
     components: {
+      NbExpanding,
       NbCheckbox
     },
     props: {
@@ -251,24 +314,34 @@
 
   @import "../../../assets/css/global/variables";
 
-  .matter-panel {
+  @base-height: 48px;
+  @inner-cell-height: 36px;
 
-    @base-height: 48px;
-    padding-left: 10px;
+  .basic-span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: @base-height;
+    margin-right: 5px;
+  }
+
+  .widget-matter-panel {
+
     border-top: 1px solid #eee;
     background-color: white;
 
-    .basic-span {
-      display: inline-block;
-      vertical-align: middle;
-      line-height: @base-height;
-      margin-right: 10px;
+    .media {
+      > .pull-left {
+        padding-right: 1px;
+      }
     }
 
     .matter-icon {
       width: 24px;
     }
 
+    .left-part {
+      margin-left: 10px;
+    }
     .middle-part {
 
       height: @base-height;
@@ -321,80 +394,11 @@
       }
     }
 
-    &:hover {
-      background-color: aliceblue;
-      cursor: pointer;
-
-      .matter-operation {
-        display: inline-block;
-      }
-    }
-
-  }
-
-  .widget-matter-panel {
-
-    border-top: 1px solid #eee;
-    background-color: white;
-
-    @base-height: 48px;
-    padding-left: 10px;
-
-    .left-part, .right-part {
-      height: @base-height;
+    .more-btn {
       display: inline-block;
-      > span {
-        display: inline-block;
-        vertical-align: middle;
-        line-height: @base-height;
-        margin-right: 10px;
-      }
-    }
-
-    .left-part {
-
-      .matter-icon {
-        width: 24px;
-      }
-      .matter-name-edit {
-        input {
-          width: 200px;
-          height: 26px;
-          display: inline-block;
-          padding: 6px;
-        }
-      }
-      .matter-name {
-
-        &.alien {
-          color: @brand-primary;
-        }
-      }
-    }
-    .right-part {
-      float: right;
-
-      .matter-operation {
-        visibility: hidden;
-        i {
-          font-size: 16px;
-          margin-right: 5px;
-
-          &:hover {
-
-          }
-        }
-      }
-
-      .matter-size {
-        display: inline-block;
-        width: 80px;
-        text-align: left;
-        margin-left: 20px;
-      }
-      .matter-date {
-
-      }
+      vertical-align: middle;
+      line-height: @base-height;
+      padding: 0 15px;
     }
 
     &:hover {
@@ -402,9 +406,21 @@
       cursor: pointer;
 
       .matter-operation {
-        visibility: visible;
+        display: inline-block;
       }
     }
 
+    .more-panel {
+      border-top: 1px solid #eee;
+      padding-left: 35px;
+      .info {
+      }
+      .cell-btn {
+        border-top: 1px solid #eee;
+        line-height: @inner-cell-height;
+        vertical-align: middle;
+      }
+    }
   }
+
 </style>
