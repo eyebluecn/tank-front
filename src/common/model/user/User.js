@@ -89,11 +89,11 @@ export default class User extends BaseEntity {
     this.validatorSchema = {
       username: {
         rules: [
-          {required: true, message: '用户名必填'},
+          {required: true, message: '昵称必填'},
           {
             type: 'string',
             pattern: /^[0-9a-zA-Z_]+$/,
-            message: '用户名只能包含字母，数字和"_"'
+            message: '昵称只能包含字母，数字和"_"'
           }],
         error: null
       },
@@ -134,6 +134,7 @@ export default class User extends BaseEntity {
       new Filter(Filter.prototype.Type.HTTP_INPUT_SELECTION, '用户', 'username', null, User, true, UserInputSelection),
       new Filter(Filter.prototype.Type.INPUT, '邮箱', 'email'),
       new Filter(Filter.prototype.Type.INPUT, '手机号', 'phone'),
+      new Filter(Filter.prototype.Type.SELECTION, '状态', 'status', this.getStatusList()),
       new Filter(Filter.prototype.Type.SORT, '最新更新时间', 'orderLastTime'),
       new Filter(Filter.prototype.Type.SORT, '创建时间', 'orderCreateTime')
     ]
@@ -320,7 +321,7 @@ export default class User extends BaseEntity {
     }, errorCallback)
   }
 
-  httpUserChangeStatus(successCallback, errorCallback) {
+  httpChangeStatus(successCallback, errorCallback) {
     let that = this
     if (this.status === 'OK') {
       this.httpPost(User.URL_USER_DISABLE, {'uuid': this.uuid}, function (response) {

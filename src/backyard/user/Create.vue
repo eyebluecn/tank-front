@@ -31,7 +31,7 @@
 						</div>
 
 						<div class="row mt10" v-validator="currentUser.validatorSchema.username.error">
-							<label class="col-md-2 control-label mt5 compulsory">用户名</label>
+							<label class="col-md-2 control-label mt5 compulsory">昵称</label>
 							<div class="col-md-10 validate">
 								<input type="text" class="form-control" v-model="currentUser.username">
 							</div>

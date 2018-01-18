@@ -158,7 +158,7 @@
       }
     }
 
-    //放头像和用户名的地方。
+    //放头像和昵称的地方。
     .menu-header {
       cursor: pointer;
       .logo-area {

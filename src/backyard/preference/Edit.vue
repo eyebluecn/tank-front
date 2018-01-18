@@ -94,6 +94,8 @@
     },
     mounted() {
       let that = this;
+      //为了让按钮的文字显示为“保存”
+      this.preference.editMode = true
       this.preference.httpFetch()
     }
   }
