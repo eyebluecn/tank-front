@@ -68,6 +68,8 @@
 <script>
   import {Message, MessageBox, Notification} from 'element-ui'
 
+  let logoPath = require("../../assets/img/logo.png")
+
   export default {
 
     data() {
@@ -102,7 +104,7 @@
       },
       showAbout() {
 
-        let html = '<div class="text-center">' + this.preference.footerLine1 + "<br/>" + this.preference.footerLine2 + "<br/>" + 'Powered by <a target="_blank" href="https://github.com/eyebluecn/tank"><img class="w30" src="../../assets/img/logo.png"/> 蓝眼云盘</a>' + '</div>'
+        let html = '<div class="text-center">' + this.preference.footerLine1 + "<br/>" + this.preference.footerLine2 + "<br/>" + 'Powered by <a target="_blank" href="https://github.com/eyebluecn/tank"><img class="w30" src="' + logoPath + '"/> 蓝眼云盘</a>' + '</div>'
         MessageBox({
           title: '关于',
           message: html,
