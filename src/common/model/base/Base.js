@@ -423,9 +423,8 @@ export default class Base {
     return 'default'
   };
 
-  //We use this method to get the full js Object.
-  //对于一对一的情况，会出现无穷递归，我们使用 one2one 参数来标识这个字段是否是另外一个对象的one2one字段。
-  render(obj, one2one = false) {
+
+  render(obj) {
     if (obj) {
       $.extend(this, obj)
     }
@@ -433,8 +432,8 @@ export default class Base {
 
   //如果自己仅仅是作为一个列表中的属性渲染的话，那么我们只关心个别关键词段。
   //比如在SpaceApply中SpaceSeats，这个如果使用render的话，那么页面加载速度将非常慢。
-  simpleRender(obj, one2one = false) {
-    this.render(obj, one2one)
+  simpleRender(obj) {
+    this.render(obj)
   }
 
   /**
@@ -473,7 +472,7 @@ export default class Base {
   }
 
   //直接render出一个Entity. field字段名，Clazz类名。
-  renderEntity(field, Clazz, one2one = false) {
+  renderEntity(field, Clazz) {
 
     let obj = this[field]
     if (!obj) {
@@ -501,7 +500,7 @@ export default class Base {
       }
 
       if (obj !== null) {
-        bean.render(obj, one2one)
+        bean.render(obj)
         this[field] = bean
       }
 

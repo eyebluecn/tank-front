@@ -17,7 +17,7 @@ export default class BaseEntity extends Base {
   }
 
   //This is just a intermedia method.
-  render(obj, one2one = false) {
+  render(obj) {
     super.render(obj)
     this.renderEntity('createTime', Date)
     this.renderEntity('modifyTime', Date)
