@@ -3,6 +3,7 @@ import Vue from 'vue'
 import {Notification} from 'element-ui'
 import {lowerCamel, lowerSlash, startWith, toPlural} from '../../filter/str'
 import {str2Date} from '../../filter/time'
+import {functionName} from "../../util/Utils";
 
 export default class Base {
 
@@ -688,10 +689,16 @@ export default class Base {
 
   }
 
+
   //获取到当前类的单数标签。比如 Project便得到 project
   getTAG() {
 
     let className = this.constructor.name
+
+    //IE无法直接通过this.constructor.name获取到相应名称
+    if (!className) {
+      className = functionName(this.constructor)
+    }
 
     return lowerCamel(className)
   }
