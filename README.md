@@ -55,10 +55,19 @@ npm run build
 
 如果您也想参与进来，请尽情的fork, star, post issue, pull requests
 
-### 部分截图
-![蓝眼云盘登录页面](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/login.png)
+### 软件截图
 
-![蓝眼云盘主要页面](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/matters.png)
+#### PC端截图
+
+![](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/tank0.png)
+
+![](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/tank1.png)
+
+![](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/tank2.png)
+
+#### 手机端截图
+
+![](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/mobile.png)
 
 ### 项目布局
 
