@@ -25,28 +25,28 @@
         </li>
 
         <li v-if="user.role !== 'GUEST'">
-          <router-link to="/">
+          <router-link to="/" :class="{'custom-active':isCustomActive('/')}">
             <i class="w14 fa fa fa-th"></i>
             <span>全部文件</span>
           </router-link>
         </li>
 
         <li v-if="user.role === 'ADMINISTRATOR'">
-          <router-link to="/preference">
+          <router-link to="/preference" :class="{'custom-active':isCustomActive('/preference')}">
             <i class="w14 fa fa-dashboard"></i>
             <span>网站偏好</span>
           </router-link>
         </li>
 
         <li v-if="user.role === 'ADMINISTRATOR'">
-          <router-link to="/user/list">
+          <router-link to="/user/list" :class="{'custom-active':isCustomActive('/user/list')}">
             <i class="w14 fa fa-user"></i>
             <span>用户列表</span>
           </router-link>
         </li>
 
         <li v-if="user.role !== 'GUEST'">
-          <router-link to="/user/login">
+          <router-link to="/user/login" :class="{'custom-active':isCustomActive('/user/login')}">
             <i class="w14 fa fa-power-off"></i>
             <span>退出登录</span>
           </router-link>
@@ -90,6 +90,9 @@
 
     components: {},
     methods: {
+      isCustomActive(path) {
+        return this.$route.path === path
+      },
       goToProfile() {
 
         if (this.user.role === 'GUEST') {
@@ -236,7 +239,11 @@
             margin-right: 6px;
           }
 
-          &.router-link-exact-active {
+          //为什么要用custom-active? 因为 is-link-exact-active 不能匹配 /user/list 和 /user/list?page=0
+          // is-link-active 会将 / 和 /preference 进行匹配。
+          //所以用 is-link-exact-active 的话就会出现刷新列表页面时不高亮
+          //用 is-link-active 时会两个高亮。
+          &.custom-active {
             background-color: black;
           }
         }
