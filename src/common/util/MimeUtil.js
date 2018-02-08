@@ -606,7 +606,7 @@ let MimeUtil = {
   '.zip': 'application/zip'
 }
 
-//根据一个文件名，获取其后缀名，如果没有后缀名，那么返回""
+//根据一个文件名，获取其后缀名(一律使用小写)，如果没有后缀名，那么返回""
 export function getExtension(filename) {
 
   if (filename == null) {
@@ -616,7 +616,7 @@ export function getExtension(filename) {
   if (dotIndex === -1) {
     return "";
   } else {
-    return filename.substring(dotIndex);
+    return filename.substring(dotIndex).toLowerCase();
   }
 }
 
