@@ -1,20 +1,9 @@
 # 蓝眼云盘
 
-## 注意事项
-每次版本升级时需要修改以下内容。
-
-1. build/pack/build.bat
-    set VERSION_NAME=tank-x.x.x
-
-2. build/pack/build.sh
-    VERSION_NAME=tank-x.x.x
-
-3. rest/config.go
-    VERSION = x.x.x
-
-4. tank-front 修改 vuex/index.js
-    versionName: 'x.x.x'
-
+2018-04-12
+tank-1.0.3
+1. 添加了多文件同时上传的功能.
+2. 开发情况下有可能上传的文件路径没有权限，添加了更多提示.
 
 2018-01-19
 tank-1.0.2

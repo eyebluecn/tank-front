@@ -33,7 +33,7 @@
                 <i class="fa fa-cloud-upload"></i>
                 <span>上传文件</span>
               </slot>
-              <input ref="refFile" type="file" @change.prevent.stop="triggerUpload"/>
+              <input ref="refFile" type="file" multiple="multiple" @change.prevent.stop="triggerUpload"/>
 				    </span>
 
             <button class="btn btn-sm btn-primary mb10" @click.stop.prevent="createDirectory">
@@ -226,31 +226,41 @@
       triggerUpload() {
         let that = this
 
-        let m = new Matter()
-        m.dir = false
-        m.puuid = that.matter.uuid
 
-
-        //指定为当前选择的用户。
-        //如果没有设置用户的话，那么默认显示当前登录用户的资料
-        if (!that.pager.getFilterValue('userUuid')) {
-          m.userUuid = that.user.uuid
-        } else {
-          m.userUuid = that.pager.getFilterValue('userUuid')
+        let domFiles = that.$refs['refFile'].files;
+        if (!domFiles || !domFiles.length) {
+          console.error(domFiles)
+          console.error("没有选择文件")
+          return;
         }
 
 
-        let value = that.$refs['refFile'].value
-        if (!value) {
-          return
+        for (let i = 0; i < domFiles.length; i++) {
+          let domFile = domFiles[i];
+          let m = new Matter()
+          m.dir = false
+          m.puuid = that.matter.uuid
+
+
+          //指定为当前选择的用户。
+          //如果没有设置用户的话，那么默认显示当前登录用户的资料
+          if (!that.pager.getFilterValue('userUuid')) {
+            m.userUuid = that.user.uuid
+          } else {
+            m.userUuid = that.pager.getFilterValue('userUuid')
+          }
+
+
+
+          m.file = domFile
+
+          m.httpUpload(function () {
+            that.refresh()
+          })
+
+          that.uploadMatters.push(m)
         }
-        m.file = that.$refs['refFile'].files[0]
 
-        m.httpUpload(function () {
-          that.refresh()
-        })
-
-        that.uploadMatters.push(m)
 
       },
 
