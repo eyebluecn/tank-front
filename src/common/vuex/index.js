@@ -21,8 +21,8 @@ const state = {
   version: {
     identifier: 'cn.eyeblue.tank',
     platform: 'WEB',
-    versionCode: '3',
-    versionName: '1.0.3'
+    versionCode: '4',
+    versionName: '1.0.4'
   },
 
   //当前用户，即使没有登录依然有游客的用户在。
