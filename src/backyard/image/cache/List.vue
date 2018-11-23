@@ -1,20 +1,15 @@
 <template>
-  <div class="backyard-user-list animated fadeIn">
+  <div class="backyard-image-cache-list animated fadeIn">
     <div class="row">
 
       <div class="col-md-12">
         <div class="pedia-navigation">
-          <span class="item active">用户列表</span>
+          <span class="item active">缓存图片列表</span>
         </div>
       </div>
 
       <div class="col-md-12">
-        <NbFilter :filters="pager.filters" @change="search">
-          <router-link class="btn btn-primary btn-sm" to="/user/create">
-            <i class="fa fa-plus"></i>
-            创建用户
-          </router-link>
-        </NbFilter>
+        <NbFilter :filters="pager.filters" @change="search"></NbFilter>
       </div>
 
       <div class="col-md-12" v-for="(userItem,index) in pager.data">
@@ -91,29 +86,18 @@
 </template>
 
 <script>
-  import NbFilter from '../../common/widget/filter/NbFilter.vue'
-  import NbPager from '../../common/widget/NbPager.vue'
-  import Pager from '../../common/model/base/Pager'
-  import User from '../../common/model/user/User'
-  import {UserGender, UserGenderList, UserGenderMap} from "../../common/model/user/UserGender";
-  import {UserRole, UserRoleList, UserRoleMap} from "../../common/model/user/UserRole";
-  import {UserStatus, UserStatusList, UserStatusMap} from "../../common/model/user/UserStatus";
+  import NbFilter from '../../../common/widget/filter/NbFilter.vue'
+  import NbPager from '../../../common/widget/NbPager.vue'
+  import Pager from '../../../common/model/base/Pager'
+  import User from '../../../common/model/user/User'
+  import ImageCache from "../../../common/model/image/cache/ImageCache";
 
   export default {
 
     data() {
       return {
-        UserGender,
-        UserGenderList,
-        UserGenderMap,
-        UserRole,
-        UserRoleList,
-        UserRoleMap,
-        UserStatus,
-        UserStatusList,
-        UserStatusMap,
 
-        pager: new Pager(User),
+        pager: new Pager(ImageCache),
         user: this.$store.state.user
       }
     },
@@ -144,7 +128,7 @@
 </script>
 
 <style lang="less" rel="stylesheet/less">
-  .backyard-user-list {
+  .backyard-image-cache-list {
 
   }
 </style>
