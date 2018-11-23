@@ -2,83 +2,37 @@ import BaseEntity from '../base/BaseEntity'
 import Filter from '../base/Filter'
 import {readLocalStorage, removeLocalStorage, saveToLocalStorage} from "../../util/Utils";
 import UserInputSelection from '../../../backyard/user/widget/UserInputSelection'
+import {UserRole} from "./UserRole";
+import {UserStatus, UserStatusList} from "./UserStatus";
+import {UserGender} from "./UserGender";
+import {FilterType} from "../base/FilterType";
 
-let Role = {
-  USER_ROLE_GUEST: 'GUEST',
-  USER_ROLE_USER: 'USER',
-  USER_ROLE_ADMINISTRATOR: 'ADMINISTRATOR'
-}
-
-let RoleMap = {
-  USER_ROLE_GUEST: {
-    name: '游客身份',
-    value: 'GUEST'
-  },
-  USER_ROLE_USER: {
-    name: '普通注册用户',
-    value: 'USER'
-  },
-  USER_ROLE_ADMINISTRATOR: {
-    name: '管理员',
-    value: 'ADMINISTRATOR'
-  }
-}
-
-let Gender = {
-  USER_GENDER_MALE: 'MALE',
-  USER_GENDER_FEMALE: 'FEMALE',
-  USER_GENDER_UNKNOWN: 'UNKNOWN'
-}
-
-let GenderMap = {
-  USER_GENDER_MALE: {
-    name: '男',
-    value: 'MALE'
-  },
-  USER_GENDER_FEMALE: {
-    name: '女',
-    value: 'FEMALE'
-  },
-  USER_GENDER_UNKNOWN: {
-    name: '未知',
-    value: 'UNKNOWN'
-  }
-}
-
-let Status = {
-  USER_STATUS_OK: 'OK',
-  USER_STATUS_DISABLED: 'DISABLED'
-}
-
-let StatusMap = {
-  USER_STATUS_OK: {
-    name: '激活',
-    value: 'OK',
-    style: 'primary'
-  },
-  USER_STATUS_DISABLED: {
-    name: '未激活',
-    value: 'DISABLED',
-    style: 'danger'
-  }
-}
 
 export default class User extends BaseEntity {
+
+  static LOCAL_STORAGE_KEY = "user";
+  static URL_LOGIN = '/api/user/login'
+  static URL_LOGOUT = '/api/user/logout'
+  static URL_USER_CHANGE_PASSWORD = '/api/user/change/password'
+  static URL_USER_RESET_PASSWORD = '/api/user/reset/password'
+  static URL_USER_DISABLE = '/api/user/disable'
+  static URL_USER_ENABLE = '/api/user/enable'
+
   constructor(args) {
     super(args)
-    this.role = Role.USER_ROLE_GUEST
+    this.role = UserRole.GUEST
     this.username = null
     this.password = null
     this.email = null
     this.phone = null
-    this.gender = Gender.USER_GENDER_MALE
+    this.gender = UserGender.MALE
     this.city = null
     this.avatarUrl = null
     this.lastIp = null
     this.lastTime = null
     //默认大小限制100Mb.
     this.sizeLimit = 104857600
-    this.status = Status.USER_STATUS_OK
+    this.status = UserStatus.OK
 
     //local fields
     this.isLogin = false
@@ -117,13 +71,6 @@ export default class User extends BaseEntity {
     }
   }
 
-  static URL_LOGIN = '/user/login'
-  static URL_LOGOUT = '/user/logout'
-  static URL_USER_CHANGE_PASSWORD = '/user/change/password'
-  static URL_USER_RESET_PASSWORD = '/user/reset/password'
-  static URL_USER_DISABLE = '/user/disable'
-  static URL_USER_ENABLE = '/user/enable'
-
   render(obj) {
     super.render(obj)
     this.renderEntity('lastTime', Date)
@@ -131,12 +78,12 @@ export default class User extends BaseEntity {
 
   getFilters() {
     return [
-      new Filter(Filter.prototype.Type.HTTP_INPUT_SELECTION, '用户', 'username', null, User, true, UserInputSelection),
-      new Filter(Filter.prototype.Type.INPUT, '邮箱', 'email'),
-      new Filter(Filter.prototype.Type.INPUT, '手机号', 'phone'),
-      new Filter(Filter.prototype.Type.SELECTION, '状态', 'status', this.getStatusList()),
-      new Filter(Filter.prototype.Type.SORT, '最新更新时间', 'orderLastTime'),
-      new Filter(Filter.prototype.Type.SORT, '创建时间', 'orderCreateTime')
+      new Filter(FilterType.HTTP_INPUT_SELECTION, '用户', 'username', null, User, true, UserInputSelection),
+      new Filter(FilterType.INPUT, '邮箱', 'email'),
+      new Filter(FilterType.INPUT, '手机号', 'phone'),
+      new Filter(FilterType.SELECTION, '状态', 'status', UserStatusList),
+      new Filter(FilterType.SORT, '最新更新时间', 'orderLastTime'),
+      new Filter(FilterType.SORT, '创建时间', 'orderCreateTime')
     ]
   }
 
@@ -149,48 +96,58 @@ export default class User extends BaseEntity {
     }
   }
 
+
   //将用户信息存储在本地。
   renderFromLocalStorage() {
 
     try {
-      let userString = readLocalStorage(this.getTAG())
+      let userString = readLocalStorage(User.LOCAL_STORAGE_KEY)
 
       if (userString) {
         let json = JSON.parse(userString)
         this.render(json)
+
       }
 
     } catch (e) {
-      removeLocalStorage(this.getTAG())
+      removeLocalStorage(User.LOCAL_STORAGE_KEY)
     }
   }
 
   //将用户信息存储在本地。
   saveToLocalStorage(rawUserObject = null) {
 
-    if (rawUserObject) {
-      rawUserObject.isLogin = true
-    }
+    //有可能rawUserObject直接就是一个user对象，那么我们需要删掉一些无用的信息。
+    delete rawUserObject['validatorSchema']
+    delete rawUserObject['userProfile']
+    delete rawUserObject['avatar']
 
-    saveToLocalStorage(this.getTAG(), JSON.stringify(rawUserObject))
+    saveToLocalStorage(User.LOCAL_STORAGE_KEY, JSON.stringify(rawUserObject))
+  }
+
+  //清除本地的user信息
+  clearLocalStorage() {
+
+    removeLocalStorage(User.LOCAL_STORAGE_KEY)
   }
 
   //更新本地持久化了的个别字段。
   updateLocalStorage(opt = {}) {
     try {
-      let userString = readLocalStorage(this.getTAG())
+      let userString = readLocalStorage(User.LOCAL_STORAGE_KEY)
 
       if (userString) {
         let json = JSON.parse(userString)
         $.extend(json, opt)
 
-        saveToLocalStorage(this.getTAG(), JSON.stringify(json))
+        saveToLocalStorage(User.LOCAL_STORAGE_KEY, JSON.stringify(json))
       }
 
     } catch (e) {
-      removeLocalStorage(this.getTAG())
+      removeLocalStorage(User.LOCAL_STORAGE_KEY)
     }
   }
+
 
   getForm() {
     let form = {
@@ -336,7 +293,3 @@ export default class User extends BaseEntity {
   }
 
 }
-/*User.registerStatusEnum(StatusMap)*/
-User.registerEnum('Status', StatusMap)
-User.registerEnum('Role', RoleMap)
-User.registerEnum('Gender', GenderMap)

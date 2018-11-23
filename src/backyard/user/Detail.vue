@@ -93,7 +93,7 @@
                 <div class="row">
 
                   <div class="col-md-12 text-right" v-if="user.username!=='demo'">
-                    <button class="btn btn-sm btn-primary mb5" v-if="user.role === 'ADMINISTRATOR'"
+                    <button class="btn btn-sm btn-primary mb5" v-if="user.role === UserRole.ADMINISTRATOR"
                             @click.stop.prevent="resetPassword">
                       重置密码
                     </button>
@@ -129,10 +129,22 @@
   import NbExpanding from '../../common/widget/NbExpanding.vue'
   import User from '../../common/model/user/User'
   import {MessageBox, Notification} from 'element-ui'
+  import {UserGender, UserGenderList, UserGenderMap} from "../../common/model/user/UserGender";
+  import {UserRole, UserRoleList, UserRoleMap} from "../../common/model/user/UserRole";
+  import {UserStatus, UserStatusList, UserStatusMap} from "../../common/model/user/UserStatus";
 
   export default {
     data() {
       return {
+        UserGender,
+        UserGenderList,
+        UserGenderMap,
+        UserRole,
+        UserRoleList,
+        UserRoleMap,
+        UserStatus,
+        UserStatusList,
+        UserStatusMap,
         user: this.$store.state.user,
         currentUser: new User(),
         breadcrumbs: this.$store.state.breadcrumbs
@@ -177,7 +189,7 @@
       }
     },
     created() {
-      if (this.user.role !== 'ADMINISTRATOR') {
+      if (this.user.role !== UserRole.ADMINISTRATOR) {
         this.breadcrumbs.splice(0, this.breadcrumbs.length)
         this.breadcrumbs.push({
           title: '个人详情'

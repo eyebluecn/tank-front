@@ -43,7 +43,7 @@
             </span>
 
             <span class="matter-date">
-              {{matter.modifyTime | simpleDateHourMinute}}
+              {{matter.updateTime | simpleDateHourMinute}}
             </span>
 
           </div>
@@ -83,7 +83,7 @@
       <div class="hidden-lg hidden-md more-panel" v-if="showMore">
         <div class="cell-btn" style="border: none">
           <span>
-            {{matter.modifyTime | simpleDateHourMinute}}
+            {{matter.updateTime | simpleDateHourMinute}}
           </span>
 
           <span v-if="!matter.dir">

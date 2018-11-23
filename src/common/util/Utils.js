@@ -1,4 +1,6 @@
 //check whether an obj is number.
+import {startWith} from "../filter/str";
+
 export function isInteger(obj) {
   return typeof obj === 'number' && obj % 1 === 0
 }
@@ -19,6 +21,22 @@ export function isIOS() {
   return !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 }
 
+
+//判断当前是否是微信浏览器
+export function isWeixinBrowser() {
+  let ua = navigator.userAgent.toLowerCase();
+  if (ua) {
+    if (ua.toLowerCase().indexOf("micromessenger") !== -1) {
+      return true;
+    }
+  }
+}
+
+//判断当前是否是往测试数据库写内容
+export function isProductionEnv() {
+  let host = window.location.host;
+  return startWith(host, "erhua.howimetmrright.com");
+}
 
 //check whether an obj is empty
 export function isEmptyObject(obj) {
@@ -93,7 +111,6 @@ export function functionName(func) {
   return result ? result[1] : '' // for an anonymous function there won't be a match
 }
 
-
 /*
 高亮部分文字
 
@@ -123,4 +140,28 @@ export function setInputSelection(input, startPos, endPos) {
   }
 }
 
+//在字符串a后面追加字符串b
+export function appendString(a, b, seperator = "") {
 
+  if (a === null || typeof a !== "string") {
+    return b;
+  } else {
+    return a + seperator + b;
+  }
+}
+
+//获取当前的host
+export function currentHost() {
+  return window.location.protocol + "//" + window.location.host;
+}
+
+
+//调用某个函数，安全的调用
+export function safeCallback(callback) {
+  if (typeof callback === "function") {
+    return callback
+  } else {
+    return function () {
+    }
+  }
+}

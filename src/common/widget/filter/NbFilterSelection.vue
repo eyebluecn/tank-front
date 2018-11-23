@@ -42,10 +42,12 @@
 					return true;
 				}
 			},
-			callback: {
-				type: Function,
-				required: false
-			}
+      //TODO:完成禁用状态。
+      disabled: {
+        type: Boolean,
+        required: false,
+        "default": false
+      }
 		},
 		computed: {
 			current(){
@@ -70,8 +72,7 @@
 			select(index){
 				this.filter.active = index;
 				this.filter.value = this.current.value;
-
-				this.callback && this.callback();
+        this.$emit("change");
 
 			}
 		}

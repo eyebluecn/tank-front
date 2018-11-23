@@ -5,30 +5,30 @@
       <div class="col-md-12">
 
         <div>
-          <NbFilter :pager="pager" :callback="search">
+          <NbFilter :filters="pager.filters" @change="search">
 
-            <button class="btn btn-primary btn-sm mb10" v-if="selectedMatters.length !== pager.data.length"
+            <button class="btn btn-primary btn-sm " v-if="selectedMatters.length !== pager.data.length"
                     @click.stop.prevent="checkAll">
               <i class="fa fa-check-square"></i>
               全选
             </button>
-            <button class="btn btn-primary btn-sm mb10"
+            <button class="btn btn-primary btn-sm "
                     v-if="pager.data.length && selectedMatters.length === pager.data.length"
                     @click.stop.prevent="checkNone">
               <i class="fa fa-square-o"></i>
               取消全选
             </button>
-            <button class="btn btn-primary btn-sm mb10" v-if="selectedMatters.length" @click.stop.prevent="deleteBatch">
+            <button class="btn btn-primary btn-sm " v-if="selectedMatters.length" @click.stop.prevent="deleteBatch">
               <i class="fa fa-trash"></i>
               删除
             </button>
-            <button class="btn btn-primary btn-sm mb10" v-if="selectedMatters.length"
+            <button class="btn btn-primary btn-sm " v-if="selectedMatters.length"
                     @click.stop.prevent="moveBatch($createElement)">
               <i class="fa fa-arrows"></i>
               移动
             </button>
 
-            <span class="btn btn-primary btn-sm btn-file mb10">
+            <span class="btn btn-primary btn-sm btn-file ">
               <slot name="button">
                 <i class="fa fa-cloud-upload"></i>
                 <span>上传文件</span>
@@ -36,7 +36,7 @@
               <input ref="refFile" type="file" multiple="multiple" @change.prevent.stop="triggerUpload"/>
 				    </span>
 
-            <button class="btn btn-sm btn-primary mb10" @click.stop.prevent="createDirectory">
+            <button class="btn btn-sm btn-primary " @click.stop.prevent="createDirectory">
               <i class="fa fa-plus"></i>
               创建文件夹
             </button>
@@ -80,6 +80,7 @@
   import Pager from '../../common/model/base/Pager'
   import Director from './widget/Director'
   import {Message, MessageBox} from 'element-ui'
+  import {UserRole} from "../../common/model/user/UserRole";
 
   export default {
     data() {
@@ -375,7 +376,7 @@
     },
     created() {
       /*初始化inputSelection*/
-      if (this.user.role === 'ADMINISTRATOR') {
+      if (this.user.role === UserRole.ADMINISTRATOR) {
         this.pager.getFilter('userUuid').visible = true
       } else {
         this.pager.setFilterValue('userUuid', this.user.uuid)

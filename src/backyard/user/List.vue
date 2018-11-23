@@ -8,7 +8,7 @@
       </div>
 
       <div class="col-md-12">
-        <NbFilter :pager="pager" :callback="search">
+        <NbFilter :filters="pager.filters" @change="search">
           <router-link class="btn btn-primary btn-sm mb10" to="/user/create">
             <i class="fa fa-plus"></i>
             创建用户
@@ -29,8 +29,10 @@
 							<span class="f16">
 								<router-link class="black" :to="'/user/detail/'+userItem.uuid">
 
-                  <span >
-                    {{userItem.username}} <span v-if="userItem.status === 'DISABLED'" class="label label-danger">已禁用</span>
+                  <span>
+                    {{userItem.username}}
+                    <span v-if="userItem.status === UserStatus.DISABLED"
+                          class="label label-danger">已禁用</span>
                   </span>
 
 										<span v-if="userItem.uuid === user.uuid"
@@ -40,7 +42,7 @@
               </div>
               <div>
                 <div class="mt5">
-                  {{userItem.getRoleName()}}
+                  {{UserRoleMap[user.role].name}}
                 </div>
                 <div class="mt5">
                   <i class="fa fa-envelope text-success" v-if="userItem.email"></i>
@@ -61,10 +63,13 @@
 									<router-link :to="'/user/edit/'+userItem.uuid">
 										<i class="fa fa-pencil text-info f18"></i>
 									</router-link>
-									<a href="javascript:void(0)" v-if="userItem.status === 'OK' && user.uuid!==userItem.uuid" title="禁用该用户" @click.stop.prevent="changeStatus(userItem)">
+									<a href="javascript:void(0)" v-if="userItem.status === UserStatus.OK && user.uuid!==userItem.uuid"
+                     title="禁用该用户" @click.stop.prevent="changeStatus(userItem)">
                     <i class="fa fa-close text-danger f18"></i>
 									</a>
-                  <a href="javascript:void(0)" v-if="userItem.status === 'DISABLED' && user.uuid!==userItem.uuid" title="激活该用户" @click.stop.prevent="changeStatus(userItem)">
+                  <a href="javascript:void(0)"
+                     v-if="userItem.status === UserStatus.DISABLED && user.uuid!==userItem.uuid"
+                     title="激活该用户" @click.stop.prevent="changeStatus(userItem)">
                     <i class="fa fa-check text-success f18"></i>
 									</a>
 
@@ -89,11 +94,24 @@
   import NbPager from '../../common/widget/NbPager.vue'
   import Pager from '../../common/model/base/Pager'
   import User from '../../common/model/user/User'
+  import {UserGender, UserGenderList, UserGenderMap} from "../../common/model/user/UserGender";
+  import {UserRole, UserRoleList, UserRoleMap} from "../../common/model/user/UserRole";
+  import {UserStatus, UserStatusList, UserStatusMap} from "../../common/model/user/UserStatus";
 
   export default {
-    name: 'list',
+
     data() {
       return {
+        UserGender,
+        UserGenderList,
+        UserGenderMap,
+        UserRole,
+        UserRoleList,
+        UserRoleMap,
+        UserStatus,
+        UserStatusList,
+        UserStatusMap,
+
         pager: new Pager(User),
         user: this.$store.state.user
       }

@@ -1,12 +1,11 @@
 <template>
 
-	<div class="pt5" v-show="filter.visible">
-		<span class="mr20" v-for="(option, index) in filter.options">
-			<NbCheckbox :val="option.value" v-model="filter.value"></NbCheckbox>
+	<span class="pt5" v-show="filter.visible">
+		<span class="mr20 inline-block mb10" v-for="(option, index) in filter.options">
+			<NbCheckbox :val="option.value" v-model="filter.value" :disabled="disabled"></NbCheckbox>
 			<span :class="'label label-'+option.style">{{option.name}}</span>
 		</span>
-
-	</div>
+	</span>
 
 </template>
 
@@ -16,11 +15,12 @@
   import NbCheckbox from '../NbCheckbox.vue'
 
   export default {
-    data () {
+    data() {
       return {
         courses: []
       }
     },
+
     props: {
       filter: {
         type: Filter,
@@ -39,9 +39,15 @@
           return true
         }
       },
-      callback: {
-        type: Function,
-        required: false
+      disabled: {
+        type: Boolean,
+        required: false,
+        "default": false
+      }
+    },
+    watch: {
+      "filter.value"() {
+        this.$emit("change");
       }
     },
     computed: {},

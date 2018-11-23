@@ -17,35 +17,35 @@
 
       <ul class="nav mt20">
 
-        <li v-if="user.role === 'GUEST'">
+        <li v-if="user.role === UserRole.GUEST">
           <router-link to="/user/login">
             <i class="w14 fa fa-user-circle-o"></i>
             <span>登录</span>
           </router-link>
         </li>
 
-        <li v-if="user.role !== 'GUEST'">
+        <li v-if="user.role !== UserRole.GUEST">
           <router-link to="/" :class="{'custom-active':isCustomActive('/')}">
             <i class="w14 fa fa fa-th"></i>
             <span>全部文件</span>
           </router-link>
         </li>
 
-        <li v-if="user.role === 'ADMINISTRATOR'">
+        <li v-if="user.role === UserRole.ADMINISTRATOR">
           <router-link to="/preference" :class="{'custom-active':isCustomActive('/preference')}">
             <i class="w14 fa fa-dashboard"></i>
             <span>网站偏好</span>
           </router-link>
         </li>
 
-        <li v-if="user.role === 'ADMINISTRATOR'">
+        <li v-if="user.role === UserRole.ADMINISTRATOR">
           <router-link to="/user/list" :class="{'custom-active':isCustomActive('/user/list')}">
             <i class="w14 fa fa-user"></i>
             <span>用户列表</span>
           </router-link>
         </li>
 
-        <li v-if="user.role !== 'GUEST'">
+        <li v-if="user.role !== UserRole.GUEST">
           <router-link to="/user/login" :class="{'custom-active':isCustomActive('/user/login')}">
             <i class="w14 fa fa-power-off"></i>
             <span>退出登录</span>
@@ -67,6 +67,7 @@
 </template>
 <script>
   import {Message, MessageBox, Notification} from 'element-ui'
+  import {UserRole} from "../../common/model/user/UserRole";
 
   let logoPath = require("../../assets/img/logo.png")
 
@@ -74,6 +75,7 @@
 
     data() {
       return {
+        UserRole,
         user: this.$store.state.user,
         preference: this.$store.state.preference
       }

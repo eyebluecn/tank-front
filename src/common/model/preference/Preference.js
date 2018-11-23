@@ -23,7 +23,7 @@ export default class Preference extends BaseEntity {
     }
   }
 
-  static URL_API_PREFERENCE_FETCH = '/preference/fetch'
+  static URL_API_PREFERENCE_FETCH = '/api/preference/fetch'
 
   render(obj) {
     super.render(obj)

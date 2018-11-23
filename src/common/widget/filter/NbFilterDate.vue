@@ -2,15 +2,15 @@
   <span class="nb-filter-datetime" v-show="filter.visible">
     <el-date-picker
 	    v-model="date"
-	    type="datetime"
-	    placeholder="选择日期时间">
+	    type="date"
+	    placeholder="选择日期">
 		</el-date-picker>
   </span>
 </template>
 
 <script>
 	import Filter from "../../model/base/Filter";
-	import {simpleDateTime, str2Date} from "../../filter/time";
+  import {simpleDate, simpleDateTime, str2Date} from "../../filter/time";
 	export default {
 		data(){
 			return {
@@ -49,8 +49,8 @@
 				if (newVal) {
 
 					//自己主动变化
-					if (this.filter.value !== simpleDateTime(newVal)) {
-						this.filter.value = simpleDateTime(newVal);
+					if (this.filter.value !== simpleDate(newVal)) {
+						this.filter.value = simpleDate(newVal);
 
             this.$emit("change");
 					}

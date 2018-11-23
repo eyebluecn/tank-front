@@ -1,7 +1,7 @@
 import Base from './Base'
 import Filter from './Filter'
 import {MessageBox, Notification as NotificationBox} from 'element-ui'
-import Schema from '../../../../node_modules/async-validator'
+import Schema from 'async-validator'
 
 export default class BaseEntity extends Base {
 
@@ -10,7 +10,7 @@ export default class BaseEntity extends Base {
     this.uuid = null
     this.sort = null
     this.createTime = null
-    this.modifyTime = null
+    this.updateTime = null
 
     //表单验证专用
     this.validatorSchema = null
@@ -20,7 +20,7 @@ export default class BaseEntity extends Base {
   render(obj) {
     super.render(obj)
     this.renderEntity('createTime', Date)
-    this.renderEntity('modifyTime', Date)
+    this.renderEntity('updateTime', Date)
 
   }
 

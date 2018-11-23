@@ -1,429 +1,28 @@
 import $ from 'jquery'
 import Vue from 'vue'
-import {Notification} from 'element-ui'
+import {Message} from 'element-ui'
 import {lowerCamel, lowerSlash, startWith, toPlural} from '../../filter/str'
 import {str2Date} from '../../filter/time'
 import {functionName} from "../../util/Utils";
+import {parseList} from "../../util/JsonUtils";
+import {ResultCode} from "./ResultCode";
 
 export default class Base {
 
   constructor(args) {
-    //local fields. Used in UI.
+
+    //错误信息提示。
     this.errorMessage = null
+    //是否处于编辑状态。区别于展示和编辑。
     this.editMode = false
+    //是否处于创建状态。区别于创建和编辑。
+    this.createMode = false
+
     this.loading = false
 
     //加载详情时的loading，这是一种特殊的loading状态，只有详情加载好了，我们才展示整个页面，在LoadingFrame中有用到
     this.detailLoading = false
   }
-
-  getStatusList() {
-
-    if (!this.StatusMap) {
-      console.error(this.getTAG() + '错误！未指定StatusMap!')
-      return []
-    }
-
-    let list = []
-    for (let key in this.StatusMap) {
-
-      if (this.StatusMap.hasOwnProperty(key)) {
-        list.push(this.StatusMap[key])
-      }
-
-    }
-
-    if (list.length === 0) {
-      console.error(this.getTAG() + 'StatusList为空，请检查')
-    }
-
-    return list
-
-  }
-
-  getStatusMap() {
-    if (!this.StatusMap) {
-      console.error(this.getTAG() + '错误！未指定StatusMap!')
-      return {}
-    } else {
-      return this.StatusMap
-    }
-
-  }
-
-  getStatusItem(status) {
-    if (!this.StatusMap) {
-      console.error(this.getTAG() + '错误！未指定StatusMap!')
-      return {
-        name: '未知状态',
-        value: null,
-        style: 'danger',
-        icon: 'ban'
-      }
-    } else {
-      let item = this.StatusMap[status]
-      if (item) {
-        return item
-      } else {
-        return {
-          name: '未知状态',
-          value: null,
-          style: 'danger',
-          icon: 'ban'
-        }
-      }
-    }
-  }
-
-  getStatusName() {
-    if (this.status && this.StatusMap) {
-      let item = this.StatusMap[this.status]
-      if (item) {
-        return item.name
-      }
-
-      console.error('没有定义 ' + this.status)
-    } else {
-      console.error('没有定义 status')
-
-    }
-
-    return '未知状态'
-  };
-
-  getStatusStyle() {
-
-    if (this.status && this.StatusMap) {
-      let item = this.StatusMap[this.status]
-      if (item) {
-        return item.style
-      }
-      console.error(this.getTAG() + '没有定义 ' + this.status)
-    } else {
-      console.error(this.getTAG() + '没有定义 status')
-    }
-
-    return 'default'
-  };
-
-  getStatusIcon() {
-
-    if (this.status && this.StatusMap) {
-      let item = this.StatusMap[this.status]
-      if (item) {
-        return item.icon
-      }
-      console.error(this.getTAG() + '没有定义 ' + this.status)
-    } else {
-      console.error(this.getTAG() + '没有定义 status')
-    }
-
-    return 'ban'
-  };
-
-  getTypeList() {
-
-    if (!this.TypeMap) {
-      console.error(this.getTAG() + '错误！未指定TypeMap!')
-      return []
-    }
-
-    let list = []
-    for (let key in this.TypeMap) {
-
-      if (this.TypeMap.hasOwnProperty(key)) {
-        list.push(this.TypeMap[key])
-      }
-
-    }
-
-    if (list.length === 0) {
-      console.error(this.getTAG() + ' TypeList为空，请检查')
-    }
-
-    return list
-
-  }
-
-  getTypeMap() {
-    if (!this.TypeMap) {
-      console.error(this.getTAG() + '错误！未指定TypeMap!')
-      return {}
-    } else {
-      return this.TypeMap
-    }
-
-  }
-
-  getTypeItem(type) {
-    if (!this.TypeMap) {
-      console.error(this.getTAG() + '错误！未指定TypeMap!')
-      return {
-        name: '未知状态',
-        value: null,
-        style: 'danger',
-        icon: 'ban'
-      }
-    } else {
-      let item = this.TypeMap[type]
-      if (item) {
-        return item
-      } else {
-        return {
-          name: '未知状态',
-          value: null,
-          style: 'danger',
-          icon: 'ban'
-        }
-      }
-    }
-  }
-
-  getTypeName() {
-    if (this.type && this.TypeMap) {
-      let item = this.TypeMap[this.type]
-      if (item) {
-        return item.name
-      }
-
-      console.error('没有定义 ' + this.type)
-    } else {
-      console.error('没有定义 type')
-    }
-
-    return '未知类型'
-  };
-
-  getTypeStyle() {
-    if (this.type && this.TypeMap) {
-      let item = this.TypeMap[this.type]
-      if (item) {
-        return item.style
-      }
-
-      console.error('没有定义 ' + this.type)
-    } else {
-
-      console.error('没有定义 type')
-    }
-
-    return 'default'
-  };
-
-  getTypeIcon() {
-    if (this.type && this.TypeMap) {
-      let item = this.TypeMap[this.type]
-      if (item) {
-        return item.icon
-      }
-
-      console.error('没有定义 ' + this.type)
-    } else {
-
-      console.error('没有定义 type')
-    }
-
-    return 'default'
-  };
-
-  //注册Status的枚举变量。只能Clazz来调用这个方法，谁调用this就是谁。
-  static registerStatusEnum(StatusMap) {
-
-    let Clazz = this
-    let Status = {}
-    let StatusList = []
-    for (let key in StatusMap) {
-      if (StatusMap.hasOwnProperty(key)) {
-        Status[key] = key
-        StatusList.push(StatusMap[key])
-      }
-    }
-    Clazz.prototype.Status = Status
-    Clazz.prototype.StatusList = StatusList
-    Clazz.prototype.StatusMap = StatusMap
-  }
-
-  //注册Type的枚举变量。只能Clazz来调用这个方法，谁调用this就是谁。
-  static registerTypeEnum(TypeMap) {
-    let Clazz = this
-    let Type = {}
-    let TypeList = []
-    for (let key in TypeMap) {
-      if (TypeMap.hasOwnProperty(key)) {
-        Type[key] = key
-        TypeList.push(TypeMap[key])
-      }
-    }
-    Clazz.prototype.Type = Type
-    Clazz.prototype.TypeList = TypeList
-    Clazz.prototype.TypeMap = TypeMap
-  }
-
-  //往某个实体的prototype中注册某个枚举类型。以Category为例，会注册以下属性和方法
-  //Category CategoryMap CategoryList getCategoryList() getCategoryMap()
-  // getCategoryItem() getCategoryStyle() getCategoryName() getCategoryIcon()
-  static registerEnum(EnumName, EnumMap) {
-    let Clazz = this
-    if (!EnumName || !EnumMap) {
-      console.error('注册枚举变量时参数错误！')
-      return
-    }
-
-    //首字母小写的键。
-    let enumName = EnumName.replace(/(\w)/, function (v) {
-      return v.toLowerCase()
-    })
-    let Enum = {}
-    let EnumList = []
-    for (let key in EnumMap) {
-      let item = EnumMap[key]
-      Enum[key] = item.value
-      EnumList.push(EnumMap[key])
-    }
-
-    Clazz.prototype[EnumName] = Enum
-
-    Clazz.prototype[EnumName + 'Map'] = EnumMap
-    Clazz.prototype['get' + EnumName + 'Map'] = function () {
-      return EnumMap
-    }
-    Clazz.prototype[EnumName + 'List'] = EnumList
-    Clazz.prototype['get' + EnumName + 'List'] = function () {
-      return EnumList
-    }
-    Clazz.prototype['get' + EnumName + 'Item'] = function () {
-      let itemValue = this[enumName]
-      if (itemValue !== null && typeof itemValue !== "undefined") {
-
-        let item = null
-
-        for (let k in EnumMap) {
-
-          if (EnumMap.hasOwnProperty(k)) {
-            let temp = EnumMap[k];
-            if (temp.value === itemValue) {
-              item = temp
-              break
-            }
-          }
-
-        }
-
-        if (item) {
-          return item
-        }
-        console.error('没有定义 ' + itemValue)
-      } else {
-
-        console.error('没有定义 enum')
-      }
-      return {
-        name: '未知枚举类型',
-        value: null,
-        style: 'danger',
-        icon: 'ban'
-      }
-    }
-    Clazz.prototype['get' + EnumName + 'Style'] = function () {
-
-
-      let itemValue = this[enumName]
-      if (itemValue !== null && typeof itemValue !== "undefined") {
-
-
-        let item = null
-
-        for (let k in EnumMap) {
-
-          if (EnumMap.hasOwnProperty(k)) {
-            let temp = EnumMap[k];
-            if (temp.value === itemValue) {
-              item = temp
-              break
-            }
-          }
-
-        }
-
-        if (item) {
-          return item.style
-        }
-
-        console.error('没有定义 ' + itemValue)
-      } else {
-
-        console.error('没有定义 enum')
-      }
-
-      return 'default'
-    }
-    Clazz.prototype['get' + EnumName + 'Name'] = function () {
-
-      let itemValue = this[enumName]
-
-
-      if (itemValue !== null && typeof itemValue !== "undefined") {
-        let item = null
-
-        for (let k in EnumMap) {
-
-          if (EnumMap.hasOwnProperty(k)) {
-            let temp = EnumMap[k];
-            if (temp.value === itemValue) {
-              item = temp
-              break
-            }
-          }
-
-        }
-
-
-        if (item) {
-          return item.name
-        }
-
-        console.error('没有定义 ' + itemValue)
-      } else {
-
-        console.error('没有定义 enum')
-      }
-
-      return '未知枚举类型'
-    }
-    Clazz.prototype['get' + EnumName + 'Icon'] = function () {
-      let itemValue = this[enumName]
-      if (itemValue !== null && typeof itemValue !== "undefined") {
-
-        let item = null
-
-        for (let k in EnumMap) {
-
-          if (EnumMap.hasOwnProperty(k)) {
-            let temp = EnumMap[k];
-            if (temp.value === itemValue) {
-              item = temp
-              break
-            }
-          }
-
-        }
-
-        if (item) {
-          return item.icon
-        }
-
-        console.error('没有定义 ' + itemValue)
-      } else {
-
-        console.error('没有定义 enum')
-      }
-
-      return 'ban'
-    }
-
-    return 'default'
-  };
-
 
   render(obj) {
     if (obj) {
@@ -445,9 +44,16 @@ export default class Base {
    */
   renderList(field, Clazz, simpleRender = true) {
 
+    //如果我们要转换成字符串的数组形式，那么this[field]应该是一个字符串才对。
+    if (Clazz === String) {
+      this[field] = parseList(this[field]);
+      return
+    }
+
+    //下面就是转换实体数组了。
     let beans = this[field]
     if (!beans) {
-      //维持默认值
+      //服务器返回这个字段为空 维持构造函数中的默认值（一般而言是一个[]）
       this[field] = (new this.constructor())[field]
       return
     }
@@ -491,8 +97,6 @@ export default class Base {
       this[field] = str2Date(obj)
     } else if (Clazz.prototype instanceof Base) {
 
-
-
       //可能此处的该项属性做了特殊处理的。
       //1024*1024 以及 "图片尺寸不超过1M"用let bean = new Clazz(); 就无法反映出来。因为父类render的时候已经将avatar给变成了Object.
       let bean = (new this.constructor())[field]
@@ -517,11 +121,11 @@ export default class Base {
     let msg = this.getErrorMessage(response)
 
     if (typeof errorCallback === 'function') {
-      errorCallback(response)
+      errorCallback(msg, response)
     } else {
-      Notification.error({
-        title: '错误',
-        message: msg
+      Message.error({
+        message: msg,
+        center: true
       })
     }
   }
@@ -531,10 +135,10 @@ export default class Base {
 
     let temp = response['data']
     if (temp !== null && typeof temp === 'object') {
-      if (temp['code'] === -400) {
+      if (temp['code'] === ResultCode.LOGIN) {
 
         //如果当前本身就是登录页面，自然没有必要提示
-        if (Vue.store.state.route.path === "/user/login") {
+        if (Vue.store.state.route.path === Vue.store.state.loginPage) {
           return true
         }
         //这个问题不能报的太频繁，比如一个页面请求了两个接口，两个接口都报没有登录。
@@ -544,7 +148,8 @@ export default class Base {
           Vue.store.state.lastLoginErrorTimestamp = (new Date().getTime());
         }
 
-        Notification.error({
+
+        Message.error({
           message: '您已退出，请登录后再访问。'
         })
 
@@ -552,9 +157,31 @@ export default class Base {
         Vue.store.state.user.innerLogout()
 
         Vue.router.push({
-          path: '/user/login',
+          path: Vue.store.state.loginPage,
           query: {redirect: Vue.store.state.route.fullPath}
         })
+
+        return true
+
+      }
+    }
+
+    return false
+
+  }
+
+  //专门捕捉没有认证手机这种错误。return true -> 有错误（已经处理掉了）  false -> 没错误 （什么都没干）
+  phoneValidateErrorHandler(response) {
+
+    let temp = response['data']
+    if (temp !== null && typeof temp === 'object') {
+      if (temp['code'] === ResultCode.REQUIRE_PHONE) {
+
+        Message.error({
+          message: '请认证手机后再操作'
+        })
+
+        Vue.$popupPhoneValidation.show(Vue.store.state.user)
 
         return true
 
@@ -601,16 +228,12 @@ export default class Base {
   httpGet(url, params = {}, successCallback, errorCallback, opts = {}) {
 
     let that = this
-    let fullUrl = url
-    if (!startWith(url, 'http')) {
-      fullUrl = Vue.http.options.root + url
-    }
 
     let options = $.extend({}, opts)
     options['params'] = params
 
     this.loading = true
-    Vue.http.get(fullUrl, options).then(function (response) {
+    Vue.http.get(url, options).then(function (response) {
 
       that.loading = false;
       (typeof successCallback === 'function') && successCallback(response)
@@ -628,9 +251,14 @@ export default class Base {
         return
       }
 
+      //对于没有认证手机的错误直接弹出手机认证框
+      if (that.phoneValidateErrorHandler(response)) {
+        return
+      }
+
       //有传入错误处理方法，就按你的执行
       if (typeof errorCallback === 'function') {
-        errorCallback(response)
+        errorCallback(that.getErrorMessage(response), response)
       } else {
         //没有传入错误处理的方法就采用默认处理方法：toast弹出该错误信息。
         that.defaultErrorHandler(response)
@@ -646,10 +274,6 @@ export default class Base {
   httpPost(url, params, successCallback, errorCallback, opts = {}) {
     let that = this
 
-    let fullUrl = url
-    if (!startWith(url, 'http')) {
-      fullUrl = Vue.http.options.root + url
-    }
 
     let options = $.extend({}, opts)
 
@@ -659,7 +283,7 @@ export default class Base {
     options['emulateJSON'] = true
 
     this.loading = true
-    Vue.http.post(fullUrl, params, options).then(function (response) {
+    Vue.http.post(url, params, options).then(function (response) {
       that.loading = false
 
       typeof successCallback === 'function' && successCallback(response)
@@ -676,9 +300,14 @@ export default class Base {
         return
       }
 
+      //对于没有认证手机的错误直接弹出手机认证框
+      if (that.phoneValidateErrorHandler(response)) {
+        return
+      }
+
       //有传入错误处理方法，就按你的执行
       if (typeof errorCallback === 'function') {
-        errorCallback(response)
+        errorCallback(that.getErrorMessage(response), response)
       } else {
         //没有传入错误处理的方法就采用默认处理方法：toast弹出该错误信息。
         that.defaultErrorHandler(response)
@@ -686,9 +315,7 @@ export default class Base {
 
     })
 
-
   }
-
 
   //获取到当前类的单数标签。比如 Project便得到 project
   getTAG() {
@@ -711,7 +338,18 @@ export default class Base {
 
   //获取到当前实体的url前缀。
   getUrlPrefix() {
-    return lowerSlash(this.getTAG())
+    return "/api" + lowerSlash(this.getTAG())
   }
+
+  //调用某个函数，如果函数有问题，那么打印出来。
+  safeCallback(callback) {
+    if (typeof callback === "function") {
+      return callback
+    } else {
+      return function () {
+      }
+    }
+  }
+
 
 }

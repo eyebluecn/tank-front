@@ -2,8 +2,12 @@ import Base from './Base'
 import Vue from 'vue'
 import $ from 'jquery'
 import {isInteger} from '../../util/Utils'
+import Filter from "./Filter";
+import {FilterType} from "./FilterType";
 
 export default class Pager extends Base {
+
+  static MAX_PAGE_SIZE = 500
 
   constructor(Clazz, pageSize = 10, page = 0) {
     super()
@@ -19,6 +23,9 @@ export default class Pager extends Base {
 
     //供nb-pager使用的
     this.offset = 3
+
+    //是否去服务器请求过。主要用来判断hasMore.
+    this.hasRequested = false
 
     //list attributes.
     if (Clazz && (Clazz.prototype instanceof Base)) {
@@ -45,33 +52,56 @@ export default class Pager extends Base {
       if (Clazz.prototype.getFilters) {
 
         //这个地方的Filter不能用同一个，会出问题的。
-        this.FILTERS = Clazz.prototype.getFilters()
+        this.filters = Clazz.prototype.getFilters()
 
       } else {
         console.error('The Clazz MUST define a prototype method named \'getFilters\'')
       }
 
     } else {
-      console.error('You MUST specify a Clazz extended Base')
+      console.error('You MUST specify a Clazz extended Base', Clazz)
+    }
+
+  }
+
+  //hasMore
+  hasMore() {
+
+    if (this.hasRequested) {
+
+      return this.totalPages > this.page + 1;
+
+    } else {
+      return true
     }
 
   }
 
   //重置Filter。
   resetFilter() {
-    for (let i = 0; i < this.FILTERS.length; i++) {
-      let filter = this.FILTERS[i]
+    for (let i = 0; i < this.filters.length; i++) {
+      let filter = this.filters[i]
       filter.reset()
+    }
+  };
+
+  //重置Filter。
+  resetSortFilters() {
+    for (let i = 0; i < this.filters.length; i++) {
+      let filter = this.filters[i]
+      if (filter.type === FilterType.SORT) {
+        filter.reset()
+      }
     }
   };
 
   //手动设置过滤器的值
   setFilterValue(key, value) {
-    if (!this.FILTERS || !this.FILTERS.length) {
+    if (!this.filters || !this.filters.length) {
       return
     }
-    for (let i = 0; i < this.FILTERS.length; i++) {
-      let filter = this.FILTERS[i]
+    for (let i = 0; i < this.filters.length; i++) {
+      let filter = this.filters[i]
       if (filter.key === key) {
         filter.putValue(value)
       }
@@ -80,13 +110,13 @@ export default class Pager extends Base {
 
   //根据key来删除某个Filter
   removeFilter(key) {
-    if (!this.FILTERS || !this.FILTERS.length) {
+    if (!this.filters || !this.filters.length) {
       return
     }
-    for (let i = 0; i < this.FILTERS.length; i++) {
-      let filter = this.FILTERS[i]
+    for (let i = 0; i < this.filters.length; i++) {
+      let filter = this.filters[i]
       if (filter.key === key) {
-        this.FILTERS.splice(i, 1)
+        this.filters.splice(i, 1)
         break
       }
     }
@@ -94,11 +124,11 @@ export default class Pager extends Base {
 
   //隐藏某个Filter，实际上我们可以根据这个filter来筛选，只不过不出现在NbFilter中而已。
   showFilter(key, visible = true) {
-    if (!this.FILTERS || !this.FILTERS.length) {
+    if (!this.filters || !this.filters.length) {
       return
     }
-    for (let i = 0; i < this.FILTERS.length; i++) {
-      let filter = this.FILTERS[i]
+    for (let i = 0; i < this.filters.length; i++) {
+      let filter = this.filters[i]
       if (filter.key === key) {
         filter.visible = visible
         break
@@ -107,27 +137,41 @@ export default class Pager extends Base {
   };
 
   showAllFilter(visible = true) {
-    if (!this.FILTERS || !this.FILTERS.length) {
+    if (!this.filters || !this.filters.length) {
       return
     }
-    for (let i = 0; i < this.FILTERS.length; i++) {
-      let filter = this.FILTERS[i]
+    for (let i = 0; i < this.filters.length; i++) {
+      let filter = this.filters[i]
       filter.visible = visible
     }
   }
 
   //根据一个key来获取某个filter
   getFilter(key) {
-    if (!this.FILTERS || !this.FILTERS.length) {
+    if (!this.filters || !this.filters.length) {
       return null
     }
-    for (let i = 0; i < this.FILTERS.length; i++) {
-      let filter = this.FILTERS[i]
+    for (let i = 0; i < this.filters.length; i++) {
+      let filter = this.filters[i]
       if (filter.key === key) {
         return filter
       }
     }
   };
+
+  //获取当前进行sort的那个filter
+  getCurrentSortFilter() {
+    if (!this.filters || !this.filters.length) {
+      return null
+    }
+    for (let i = 0; i < this.filters.length; i++) {
+      let filter = this.filters[i]
+      if (filter.type === FilterType.SORT && !filter.isEmpty()) {
+        return filter
+      }
+    }
+    return null
+  }
 
   //根据一个key来获取某个filter
   getFilterValue(key) {
@@ -147,12 +191,12 @@ export default class Pager extends Base {
       page: this.page,
       pageSize: this.pageSize
     }
-    if (!this.FILTERS || !this.FILTERS.length) {
+    if (!this.filters || !this.filters.length) {
       return params
     }
 
-    for (let i = 0; i < this.FILTERS.length; i++) {
-      let filter = this.FILTERS[i]
+    for (let i = 0; i < this.filters.length; i++) {
+      let filter = this.filters[i]
 
       if (filter.getParam() !== null && filter.getParam() !== '') {
         params[filter.key] = filter.getParam()
@@ -175,8 +219,8 @@ export default class Pager extends Base {
 
   }
 
-  //该方法是在地址栏添加上query参数，参数就是FILTERS中的key和value.
-  //同时地址栏上有的参数也会自动读取到FILTERS中去
+  //该方法是在地址栏添加上query参数，参数就是filters中的key和value.
+  //同时地址栏上有的参数也会自动读取到filters中去
   //因此，启用该方法后返回时可以停留在之前的页码中。
   enableHistory() {
     this.history = true
@@ -198,14 +242,14 @@ export default class Pager extends Base {
     }
 
     //try to fill the filters by query.
-    for (let i = 0; i < this.FILTERS.length; i++) {
-      let filter = this.FILTERS[i]
+    for (let i = 0; i < this.filters.length; i++) {
+      let filter = this.filters[i]
 
       if (typeof query[filter.key] !== 'undefined') {
 
         let value = query[filter.key]
         //check类型的要转成boolean.
-        if (filter.type === filter.Type.CHECK) {
+        if (filter.type === FilterType.CHECK) {
           if (value === 'true') {
             value = true
           } else if (value === 'false') {
@@ -231,18 +275,20 @@ export default class Pager extends Base {
       history.replaceState({}, '', Vue.store.state.route.path + '?' + $.param(params))
     }
 
+    //是否请求过的标志位变更。
+    this.hasRequested = true
     this.httpGet(url, params, function (response) {
       that.loading = false
 
       that.render(response.data.data)
 
-      successCallback && successCallback(response)
+      that.safeCallback(successCallback)(response)
 
     }, errorCallback)
 
   };
 
-  //use default FILTERS as parameters..
+  //use default filters as parameters..
   httpFastPage(successCallback, errorCallback) {
 
     if (!isInteger(this.page)) {
@@ -253,7 +299,19 @@ export default class Pager extends Base {
       this.pageSize = 10
     }
 
-    let params = this.getParams()
+    let params = {
+      page: this.page,
+      pageSize: this.pageSize
+    }
+
+    for (let i = 0; i < this.filters.length; i++) {
+      let filter = this.filters[i]
+
+      if (filter.getParam() !== null && filter.getParam() !== '') {
+        params[filter.key] = filter.getParam()
+      }
+    }
+
 
     this.httpCustomPage(this.URL_PAGE, params, successCallback, errorCallback)
 

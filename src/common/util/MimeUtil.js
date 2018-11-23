@@ -1,4 +1,4 @@
-let MimeUtil = {
+let MimeType = {
   '.323': 'text/h323',
   '.3g2': 'video/3gpp2',
   '.3gp': 'video/3gpp',
@@ -606,7 +606,7 @@ let MimeUtil = {
   '.zip': 'application/zip'
 }
 
-//根据一个文件名，获取其后缀名(一律使用小写)，如果没有后缀名，那么返回""
+//根据一个文件名，获取其后缀名，如果没有后缀名，那么返回""
 export function getExtension(filename) {
 
   if (filename == null) {
@@ -616,18 +616,17 @@ export function getExtension(filename) {
   if (dotIndex === -1) {
     return "";
   } else {
-    return filename.substring(dotIndex).toLowerCase();
+    return filename.substring(dotIndex);
   }
 }
 
-//根据一个文件名（带后缀的），获取对应的文件类型。
 export function getMimeType(filename) {
   let extension = getExtension(filename);
-  if (MimeUtil[extension]) {
-    return MimeUtil[extension];
+  if (MimeType[extension]) {
+    return MimeType[extension];
   } else {
     return "application/octet-stream";
   }
 }
 
-export {MimeUtil}
+export {MimeType}

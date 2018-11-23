@@ -6,6 +6,7 @@ import {containStr, endWith, getExtension, startWith} from '../../filter/str'
 import User from '../user/User'
 import UserInputSelection from '../../../backyard/user/widget/UserInputSelection'
 import Vue from "vue"
+import {FilterType} from "../base/FilterType";
 
 export default class Matter extends BaseEntity {
   constructor(args) {
@@ -45,26 +46,26 @@ export default class Matter extends BaseEntity {
 
   getFilters() {
     return [
-      new Filter(Filter.prototype.Type.INPUT, '父级菜单uuid', 'puuid', null, null, false),
-      new Filter(Filter.prototype.Type.HTTP_INPUT_SELECTION, '用户', 'userUuid', null, User, false, UserInputSelection),
-      new Filter(Filter.prototype.Type.INPUT, '关键字', 'name'),
-      new Filter(Filter.prototype.Type.CHECK, '文件夹', 'dir'),
-      new Filter(Filter.prototype.Type.SORT, '文件夹', 'orderDir'),
-      new Filter(Filter.prototype.Type.SORT, '创建时间', 'orderCreateTime'),
-      new Filter(Filter.prototype.Type.SORT, '大小', 'orderSize'),
-      new Filter(Filter.prototype.Type.SORT, '名称', 'orderName'),
-      new Filter(Filter.prototype.Type.INPUT, '后缀名', 'extensions')
+      new Filter(FilterType.INPUT, '父级菜单uuid', 'puuid', null, null, false),
+      new Filter(FilterType.HTTP_INPUT_SELECTION, '用户', 'userUuid', null, User, false, UserInputSelection),
+      new Filter(FilterType.INPUT, '关键字', 'name'),
+      new Filter(FilterType.CHECK, '文件夹', 'dir'),
+      new Filter(FilterType.SORT, '文件夹', 'orderDir'),
+      new Filter(FilterType.SORT, '创建时间', 'orderCreateTime'),
+      new Filter(FilterType.SORT, '大小', 'orderSize'),
+      new Filter(FilterType.SORT, '名称', 'orderName'),
+      new Filter(FilterType.INPUT, '后缀名', 'extensions')
     ]
   }
 
-  static URL_MATTER_CREATE_DIRECTORY = '/matter/create/directory'
-  static URL_MATTER_DELETE = '/matter/delete'
-  static URL_MATTER_DELETE_BATCH = '/matter/delete/batch'
-  static URL_MATTER_RENAME = '/matter/rename'
-  static URL_CHANGE_PRIVACY = '/matter/change/privacy'
-  static URL_MATTER_MOVE = '/matter/move'
-  static URL_MATTER_DOWNLOAD = '/matter/download'
-  static URL_MATTER_UPLOAD = '/matter/upload'
+  static URL_MATTER_CREATE_DIRECTORY = '/api/matter/create/directory'
+  static URL_MATTER_DELETE = '/api/matter/delete'
+  static URL_MATTER_DELETE_BATCH = '/api/matter/delete/batch'
+  static URL_MATTER_RENAME = '/api/matter/rename'
+  static URL_CHANGE_PRIVACY = '/api/matter/change/privacy'
+  static URL_MATTER_MOVE = '/api/matter/move'
+  static URL_MATTER_DOWNLOAD = '/api/matter/download'
+  static URL_MATTER_UPLOAD = '/api/matter/upload'
 
   render(obj) {
     super.render(obj)
