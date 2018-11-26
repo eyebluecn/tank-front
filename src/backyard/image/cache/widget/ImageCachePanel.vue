@@ -11,7 +11,7 @@
               <NbCheckbox v-model="imageCache.check"/>
             </span>
             <span class="basic-span">
-              <img class="image-cache-icon" src="/static/img/file/file.svg"/>
+              <img class="image-cache-icon" :src="handleImageUrl(imageCache.getOriginUrl(),false,100,100)"/>
             </span>
           </div>
         </div>
@@ -83,6 +83,7 @@
   import NbCheckbox from '../../../../common/widget/NbCheckbox'
   import NbExpanding from '../../../../common/widget/NbExpanding'
   import {Message, MessageBox} from 'element-ui'
+  import {handleImageUrl} from "../../../../common/util/ImageUtil";
 
   export default {
     data() {
@@ -109,19 +110,11 @@
       }
     },
     methods: {
+      handleImageUrl,
       clickRow() {
         let that = this
+        this.$photoSwipePlugin.showPhoto(this.imageCache.getResizeUrl())
 
-        if (this.imageCache.dir) {
-          this.$emit('goToDirectory', that.imageCache.uuid)
-        } else {
-          this.download()
-        }
-
-      },
-      download() {
-
-        window.open(this.imageCache.getDownloadUrl())
       },
       deleteImageCache() {
         let that = this

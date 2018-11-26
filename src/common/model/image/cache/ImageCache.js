@@ -48,13 +48,26 @@ export default class ImageCache extends BaseEntity {
     }
   }
 
+  getMatterName() {
+    let quotePosition = this.uri.indexOf("?")
+    let path = this.uri.substr(0, quotePosition)
+    return path.substr(path.lastIndexOf("/") + 1)
+  }
+
   getName() {
     let quotePosition = this.uri.indexOf("?")
     let query = this.uri.substr(quotePosition + 1)
     let path = this.uri.substr(0, quotePosition)
     let imageName = path.substr(path.lastIndexOf("/") + 1)
-
     return imageName + "?" + query
+  }
+
+  getResizeUrl(){
+    return '/api/alien/download/' + this.matterUuid + '/' + this.getName()
+  }
+
+  getOriginUrl() {
+    return '/api/alien/download/' + this.matterUuid + '/' + this.getMatterName()
   }
 
 
