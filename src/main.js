@@ -4,6 +4,9 @@ import "babel-polyfill";
 //custom directive.
 import "./common/directive/directive"
 
+//自定义文本框插件
+import CopyPlugin from "./common/plugin/copy/CopyPlugin";
+
 import Vue from 'vue'
 import App from './App.vue'
 import store from './common/vuex'
@@ -25,9 +28,10 @@ Vue.store = store;
 Vue.router = router;
 sync(store, router)
 Vue.use(VueResource)
-Vue.http.options.root = store.state.host;
 Vue.use(NProgress)
 
+//使用自定义插件
+Vue.use(new CopyPlugin())
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {

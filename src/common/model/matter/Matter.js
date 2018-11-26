@@ -7,6 +7,7 @@ import User from '../user/User'
 import UserInputSelection from '../../../backyard/user/widget/UserInputSelection'
 import Vue from "vue"
 import {FilterType} from "../base/FilterType";
+import {handleImageUrl} from "../../util/ImageUtil";
 
 export default class Matter extends BaseEntity {
 
@@ -33,7 +34,6 @@ export default class Matter extends BaseEntity {
     this.privacy = true
     this.path = null
 
-
     /*
     这部分是辅助UI的字段信息
      */
@@ -53,6 +53,7 @@ export default class Matter extends BaseEntity {
     this.progress = 0
     //实时上传速度 byte/s
     this.speed = 0
+
 
   }
 
@@ -96,7 +97,10 @@ export default class Matter extends BaseEntity {
     } else if (startWith(mimeType, 'text')) {
       return "/static/img/file/text.svg"
     } else if (startWith(mimeType, 'image')) {
-      return "/static/img/file/image.svg"
+
+      //对于图片，使用其缩略图
+      return handleImageUrl(this.getDownloadUrl(), false, 100, 100)
+
     } else if (endWith(this.name, 'zip') || endWith(this.name, 'rar') || endWith(this.name, '7z') || endWith(this.name, 'tar') || endWith(this.name, 'tar') || endWith(this.name, 'gz')) {
       return "/static/img/file/archive.svg"
     } else {
@@ -128,20 +132,25 @@ export default class Matter extends BaseEntity {
     }, errorCallback)
   }
 
-  httpRename(successCallback, errorCallback) {
+
+  httpRename(name, successCallback, errorCallback) {
     let that = this
-    this.httpPost(Matter.URL_MATTER_RENAME, {'uuid': this.uuid, 'name': this.name}, function (response) {
+    this.httpPost(Matter.URL_MATTER_RENAME, {'uuid': this.uuid, 'name': name}, function (response) {
       that.render(response.data.data)
       typeof successCallback === 'function' && successCallback(response)
     }, errorCallback)
   }
 
+
   httpChangePrivacy(privacy, successCallback, errorCallback) {
     let that = this
     this.httpPost(Matter.URL_CHANGE_PRIVACY, {'uuid': this.uuid, 'privacy': privacy}, function (response) {
       that.privacy = privacy
-      Message.success(response.data.msg)
-      typeof successCallback === 'function' && successCallback(response)
+      if (typeof successCallback === "function") {
+        successCallback(response)
+      } else {
+        Message.success(response.data.msg)
+      }
     }, errorCallback)
   }
 
@@ -363,7 +372,7 @@ export default class Matter extends BaseEntity {
   }
 
   getDownloadUrl() {
-    return Vue.http.options.root + '/alien/download/' + this.uuid + '/' + this.name
+    return '/api/alien/download/' + this.uuid + '/' + this.name
   }
 
 }

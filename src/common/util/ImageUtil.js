@@ -27,7 +27,7 @@ export function handleImageUrl(url = null, origin = false, width = 200, height =
     if (origin) {
       return url;
     } else {
-      return url + "?imageProcess=resize&imageResizeM=fill&imageResizeW=" + width + "&imageResizeH=" + height
+      return url + "?ir=fill_" + width + "_" + height
     }
   } else {
     if (NumberUtil.fractionEqual(1, 1, width, height)) {

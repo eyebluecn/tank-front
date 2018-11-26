@@ -15,8 +15,6 @@ const state = {
   },
   debug: true,
 
-  host: '/api',
-
   //当前版本信息。
   version: {
     identifier: 'cn.eyeblue.tank',

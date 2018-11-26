@@ -61,17 +61,16 @@
           <div class="middle-part">
 
             <span class="matter-name-edit" v-if="matter.editMode">
-
               <input ref="editInput" class="form-control"
                      :class="matter.uuid"
-                     v-model="matter.name"
+                     v-model="renameMatterName"
                      placeholder="请输入名称"
                      @blur="blurTrigger()"
                      v-on:keyup.13="enterTrigger()"/>
             </span>
             <span class="matter-name" :class="{'alien':matter.alien}" v-else>
-        {{matter.name}} <i class="fa fa-unlock" v-if="!matter.dir && !matter.privacy" title="公有文件，任何人可以访问"></i>
-      </span>
+              {{matter.name}} <i class="fa fa-unlock" v-if="!matter.dir && !matter.privacy" title="公有文件，任何人可以访问"></i>
+            </span>
 
           </div>
         </div>
@@ -139,14 +138,17 @@
   import $ from 'jquery'
   import Director from './Director'
   import {Message, MessageBox, Notification} from 'element-ui'
-  import {setInputSelection} from '../../../common/util/Utils'
+  import {currentHost, setInputSelection} from '../../../common/util/Utils'
+  import PhotoSwipeHelper from "../../../common/plugin/photoswipe/PhotoSwipeHelper";
 
   export default {
     data() {
       return {
         //正在向服务器提交rename的请求
         renamingLoading: false,
-        showMore: false
+        showMore: false,
+        //正在重命名的临时字段
+        renameMatterName: null
       }
     },
     components: {
@@ -181,7 +183,8 @@
         if (this.matter.dir) {
           this.$emit('goToDirectory', that.matter.uuid)
         } else {
-          this.download()
+          PhotoSwipeHelper.showPhoto(that.matter.getDownloadUrl())
+          //this.download()
         }
 
       },
@@ -220,12 +223,14 @@
         //告诉导演，自己正在编辑
         this.director.renameMode = true
         this.matter.editMode = true
+        this.renameMatterName = this.matter.name
 
+        //稍作延迟，vue的组件才能加载出来
         setTimeout(function () {
 
           let dotIndex = that.matter.name.lastIndexOf('.')
           if (dotIndex === -1) {
-            setInputSelection(that.$refs.editInput, 0, that.matter.name.length)
+            setInputSelection(that.$refs.editInput, 0, that.renameMatterName)
           } else {
             setInputSelection(that.$refs.editInput, 0, dotIndex)
           }
@@ -239,17 +244,18 @@
         if (that.renamingLoading) {
           return
         }
+
         that.renamingLoading = true
-        this.matter.httpRename(function () {
+        this.matter.httpRename(that.renameMatterName, function () {
           that.renamingLoading = false
-          Message.info('重命名成功！')
+          Message.success('重命名成功！')
           //告诉导演，自己编辑完毕
           that.director.renameMode = false
           that.matter.editMode = false
 
-        }, function (response) {
+        }, function (errorMessage) {
           that.renamingLoading = false
-          Message.error(response.data.msg)
+          Message.error(errorMessage)
           //告诉导演，自己编辑完毕
           that.director.renameMode = false
           that.matter.editMode = false
@@ -267,10 +273,10 @@
 
           that.$emit('createDirectorySuccess', that.matter)
 
-        }, function (response) {
+        }, function (errorMessage) {
           that.director.createMode = false
           that.editMode = false
-          Message.error(response.data.msg)
+          Message.error(errorMessage)
         })
       },
       blurTrigger() {
@@ -291,14 +297,13 @@
       },
       clipboard() {
 
-        let $temp = $("<input>");
-        $("body").append($temp);
-        $temp.val(location.protocol + "//" + location.host + this.matter.getDownloadUrl()).select();
-        document.execCommand("copy");
-        $temp.remove();
-
-        Message.success('已复制！');
-
+        let textToCopy = currentHost() + this.matter.getDownloadUrl();
+        this.$copyPlguin.copy(textToCopy, function () {
+          Message.success({
+            message: "复制成功!",
+            center: true
+          })
+        })
 
       }
     },

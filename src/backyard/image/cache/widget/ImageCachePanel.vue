@@ -151,10 +151,10 @@
 
           that.$emit('createDirectorySuccess', that.imageCache)
 
-        }, function (response) {
+        }, function (errorMessage) {
           that.director.createMode = false
           that.editMode = false
-          Message.error(response.data.msg)
+          Message.error(errorMessage)
         })
       }
     },
