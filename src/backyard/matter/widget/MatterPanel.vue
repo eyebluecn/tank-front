@@ -139,7 +139,6 @@
   import Director from './Director'
   import {Message, MessageBox, Notification} from 'element-ui'
   import {currentHost, setInputSelection} from '../../../common/util/Utils'
-  import PhotoSwipePlugin from "../../../common/plugin/photoswipe/PhotoSwipePlugin";
 
   export default {
     data() {
@@ -183,14 +182,19 @@
         if (this.matter.dir) {
           this.$emit('goToDirectory', that.matter.uuid)
         } else {
+          //图片进行预览操作
           if (that.matter.isImage()) {
             that.$photoSwipePlugin.showPhoto(that.matter.getDownloadUrl())
+          } else if (that.matter.isPdf()) {
+
+            this.$previewer.previewPdf(that.matter.name, that.matter.getDownloadUrl())
+
           } else {
             this.download()
           }
         }
-
       },
+
       download() {
         if (this.director.isEditing()) {
           console.error('导演正忙着，不予执行')

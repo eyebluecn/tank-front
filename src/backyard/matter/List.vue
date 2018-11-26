@@ -7,6 +7,12 @@
         <div>
           <NbFilter :filters="pager.filters" @change="search">
 
+            <button class="btn btn-primary btn-sm "
+                    @click.stop.prevent="textDialog">
+              <i class="fa fa-check-square"></i>
+              测试弹出框
+            </button>
+
             <button class="btn btn-primary btn-sm " v-if="selectedMatters.length !== pager.data.length"
                     @click.stop.prevent="checkAll">
               <i class="fa fa-check-square"></i>
@@ -263,7 +269,12 @@
 
 
       },
-
+      //测试弹出框
+      textDialog() {
+        this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', 'HTML 片段', {
+          dangerouslyUseHTMLString: true
+        });
+      },
       //全选
       checkAll() {
         this.pager.data.forEach(function (i, index) {

@@ -8,6 +8,7 @@ import UserInputSelection from '../../../backyard/user/widget/UserInputSelection
 import Vue from "vue"
 import {FilterType} from "../base/FilterType";
 import {handleImageUrl} from "../../util/ImageUtil";
+import {currentHost} from "../../util/Utils";
 
 export default class Matter extends BaseEntity {
 
@@ -78,6 +79,11 @@ export default class Matter extends BaseEntity {
   isImage() {
     let mimeType = getMimeType(this.name)
     return startWith(mimeType, 'image');
+  }
+
+  isPdf() {
+    let mimeType = getMimeType(this.name)
+    return startWith(mimeType, 'application/pdf');
   }
 
   getIcon() {
@@ -377,7 +383,7 @@ export default class Matter extends BaseEntity {
   }
 
   getDownloadUrl() {
-    return '/api/alien/download/' + this.uuid + '/' + this.name
+    return currentHost() + '/api/alien/download/' + this.uuid + '/' + this.name
   }
 
 }
