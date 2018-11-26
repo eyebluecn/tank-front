@@ -163,7 +163,6 @@
         type: Director,
         required: true
       }
-
     },
     watch: {
       'matter.check'(newVal, oldVal) {
@@ -187,7 +186,11 @@
             that.$photoSwipePlugin.showPhoto(that.matter.getDownloadUrl())
           } else if (that.matter.isPdf()) {
 
-            this.$previewer.previewPdf(that.matter.name, that.matter.getDownloadUrl())
+            this.$previewer.previewPdf(that.matter.name, that.matter.getDownloadUrl(), that.matter.size)
+
+          } else if (that.matter.isText()) {
+
+            this.$previewer.previewText(that.matter.name, that.matter.getDownloadUrl(), that.matter.size)
 
           } else {
             this.download()

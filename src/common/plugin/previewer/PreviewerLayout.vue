@@ -4,6 +4,8 @@
 
 <script>
   import PdfPanel from "./panels/PdfPanel"
+  import TextPanel from "./panels/TextPanel"
+  import {humanFileSize} from "../../filter/str";
 
 
   let CLASS_NAME = " previewer-mode"
@@ -27,24 +29,15 @@
         if (position !== -1) {
           document.body.className = bodyClassName.substr(0, position) + bodyClassName.substr(position + bodyClassName.length)
         }
-
       },
-      previewPdf(name, url, successCallback) {
+      preview(name, url, size, vNode) {
         let that = this;
-        const h = this.$createElement;
-
-        let dom = h(PdfPanel, {
-          props: {
-            name: name,
-            url: url
-          }
-        });
 
         that.bodyAddClass()
 
         that.$msgbox({
-          title: name,
-          message: dom,
+          title: name + "(" + humanFileSize(size) + ")",
+          message: vNode,
           center: true,
           showCancelButton: false,
           showConfirmButton: false,
@@ -61,8 +54,38 @@
           //关闭了对话框
           that.bodyRemoveClass()
         });
+      },
+      previewPdf(name, url, size) {
 
+        let that = this
+
+        const h = this.$createElement;
+
+        let vNode = h(PdfPanel, {
+          props: {
+            name: name,
+            url: url
+          }
+        });
+
+        this.preview(name, url, size, vNode)
+      },
+      previewText(name, url, size) {
+
+        let that = this
+
+        const h = this.$createElement;
+
+        let vNode = h(TextPanel, {
+          props: {
+            name: name,
+            url: url
+          }
+        });
+
+        this.preview(name, url, size, vNode)
       }
+
     },
     mounted() {
 
@@ -78,6 +101,15 @@
 
     .el-message-box {
       width: 95%;
+      height: 95%;
+
+      .el-message-box__content {
+        height: 95%;
+
+        .el-message-box__message {
+          height: 100%;
+        }
+      }
 
     }
 

@@ -26,8 +26,12 @@ export default class Previewer {
     })
   }
 
-  previewPdf(name, url, successCallback) {
-    this.$vm.previewPdf(name, url, successCallback);
+  previewPdf(name, url, size) {
+    this.$vm.previewPdf(name, url, size);
+  }
+
+  previewText(name, url, size) {
+    this.$vm.previewText(name, url, size);
   }
 
 }

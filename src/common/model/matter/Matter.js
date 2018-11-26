@@ -86,6 +86,11 @@ export default class Matter extends BaseEntity {
     return startWith(mimeType, 'application/pdf');
   }
 
+  isText() {
+    let mimeType = getMimeType(this.name)
+    return startWith(mimeType, 'text');
+  }
+
   getIcon() {
 
     if (this.dir) {
@@ -93,7 +98,7 @@ export default class Matter extends BaseEntity {
     }
 
     let mimeType = getMimeType(this.name)
-    if (startWith(mimeType, 'application/pdf')) {
+    if (this.isPdf()) {
       return "/static/img/file/pdf.svg"
     } else if (startWith(mimeType, 'application/msword') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
       return "/static/img/file/doc.svg"
@@ -105,9 +110,9 @@ export default class Matter extends BaseEntity {
       return "/static/img/file/audio.svg"
     } else if (startWith(mimeType, 'video')) {
       return "/static/img/file/video.svg"
-    } else if (startWith(mimeType, 'text')) {
+    } else if (this.isText()) {
       return "/static/img/file/text.svg"
-    } else if (startWith(mimeType, 'image')) {
+    } else if (this.isImage()) {
 
       //对于图片，使用其缩略图
       return handleImageUrl(this.getDownloadUrl(), false, 100, 100)

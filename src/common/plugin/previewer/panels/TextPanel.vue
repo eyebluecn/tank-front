@@ -1,6 +1,6 @@
 <template>
 
-  <iframe class="previewer-pdf-panel" width="100%" height="100%" :src="url"></iframe>
+  <iframe class="previewer-text-panel" width="100%" height="100%" :src="url"></iframe>
 
 </template>
 
@@ -29,11 +29,13 @@
     }
   }
 </script>
+
 <style lang="less" rel="stylesheet/less">
   @import "../../../../assets/css/global/variables";
 
-  .previewer-pdf-panel {
+  .previewer-text-panel {
     border: 1px solid #eeeeee;
   }
 </style>
+
 
