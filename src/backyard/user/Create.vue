@@ -71,7 +71,7 @@
               <label class="col-md-2 control-label mt5">性别</label>
               <div class="col-md-10">
 
-                <span v-for="gender in currentUser.getGenderList()" class="mr10">
+                <span v-for="gender in UserGenderList" class="mr10">
                   <NbRadio v-model="currentUser.gender" :val="gender.value" name="gender"></NbRadio>
                   <label>{{gender.name}}</label>
                 </span>

@@ -12,69 +12,8 @@
         <NbFilter :filters="pager.filters" @change="search"></NbFilter>
       </div>
 
-      <div class="col-md-12" v-for="(userItem,index) in pager.data">
-        <div class="bg-white border br4 p10 mb10">
-          <div class="media">
-            <div class="pull-left">
-              <router-link :to="'/user/detail/'+userItem.uuid">
-                <img class="img-circle img-md" :src="userItem.getAvatarUrl()">
-              </router-link>
-            </div>
-            <div class="media-body">
-              <div>
-							<span class="f16">
-								<router-link class="black" :to="'/user/detail/'+userItem.uuid">
-
-                  <span>
-                    {{userItem.username}}
-                    <span v-if="userItem.status === UserStatus.DISABLED"
-                          class="label label-danger">已禁用</span>
-                  </span>
-
-										<span v-if="userItem.uuid === user.uuid"
-                          class="text-danger">(It's you)</span>
-								</router-link>
-							</span>
-              </div>
-              <div>
-                <div class="mt5">
-                  {{UserRoleMap[user.role].name}}
-                </div>
-                <div class="mt5">
-                  <i class="fa fa-envelope text-success" v-if="userItem.email"></i>
-                  {{userItem.email}}
-
-                  <i class="fa fa-phone text-info" v-if="userItem.phone"></i>
-                  {{userItem.phone}}
-                </div>
-              </div>
-              <div class="mv5 text-muted one-line">
-                {{userItem.description}}
-              </div>
-              <div>
-                <span class="mr10">上次登录: {{userItem.lastTime | humanTime}}</span>
-                <span class="mr10">上次IP: {{userItem.lastIp}}</span>
-
-                <span class="pull-right action-buttons">
-									<router-link :to="'/user/edit/'+userItem.uuid">
-										<i class="fa fa-pencil text-info f18"></i>
-									</router-link>
-									<a href="javascript:void(0)" v-if="userItem.status === UserStatus.OK && user.uuid!==userItem.uuid"
-                     title="禁用该用户" @click.stop.prevent="changeStatus(userItem)">
-                    <i class="fa fa-close text-danger f18"></i>
-									</a>
-                  <a href="javascript:void(0)"
-                     v-if="userItem.status === UserStatus.DISABLED && user.uuid!==userItem.uuid"
-                     title="激活该用户" @click.stop.prevent="changeStatus(userItem)">
-                    <i class="fa fa-check text-success f18"></i>
-									</a>
-
-							</span>
-
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="col-md-12" v-for="(imageCache,index) in pager.data">
+        {{imageCache.uri}}
       </div>
 
       <div class="col-md-12 mt20">
@@ -89,14 +28,12 @@
   import NbFilter from '../../../common/widget/filter/NbFilter.vue'
   import NbPager from '../../../common/widget/NbPager.vue'
   import Pager from '../../../common/model/base/Pager'
-  import User from '../../../common/model/user/User'
   import ImageCache from "../../../common/model/image/cache/ImageCache";
 
   export default {
 
     data() {
       return {
-
         pager: new Pager(ImageCache),
         user: this.$store.state.user
       }

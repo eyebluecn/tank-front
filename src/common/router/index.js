@@ -7,6 +7,7 @@ import UserList from '../../backyard/user/List'
 import UserDetail from '../../backyard/user/Detail'
 import UserChangePassword from '../../backyard/user/ChangePassword'
 import UserCreate from '../../backyard/user/Create'
+import ImageCacheList from '../../backyard/image/cache/List'
 import PreferenceIndex from '../../backyard/preference/Index'
 import PreferenceEdit from '../../backyard/preference/Edit'
 import NotFound from '../../backyard/layout/NotFound'
@@ -135,6 +136,22 @@ const router = new Router({
               {
                 name: 'UserEdit',
                 title: '编辑用户'
+              }
+            ]
+          }
+        },
+
+        {
+          path: 'image/cache/list',
+          name: 'ImageCacheList',
+          component: ImageCacheList,
+          meta: {
+            title: '图片缓存',
+            requiresAuth: true,
+            breadcrumbs: [
+              {
+                name: 'ImageCacheList',
+                title: '图片缓存'
               }
             ]
           }
