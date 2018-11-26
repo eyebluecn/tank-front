@@ -13,7 +13,7 @@
       </div>
 
       <div class="col-md-12" v-for="(imageCache,index) in pager.data">
-        {{imageCache.uri}}
+        <ImageCachePanel :imageCache="imageCache"/>
       </div>
 
       <div class="col-md-12 mt20">
@@ -29,6 +29,7 @@
   import NbPager from '../../../common/widget/NbPager.vue'
   import Pager from '../../../common/model/base/Pager'
   import ImageCache from "../../../common/model/image/cache/ImageCache";
+  import ImageCachePanel from "./widget/ImageCachePanel"
 
   export default {
 
@@ -40,7 +41,8 @@
     },
     components: {
       NbFilter,
-      NbPager
+      NbPager,
+      ImageCachePanel
     },
     methods: {
       search() {

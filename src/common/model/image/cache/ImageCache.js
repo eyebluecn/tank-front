@@ -15,7 +15,6 @@ export default class ImageCache extends BaseEntity {
     this.md5 = null;
     this.size = 0;
     this.path = 0;
-
     this.user = new User()
     this.matter = new Matter()
   }
@@ -37,6 +36,15 @@ export default class ImageCache extends BaseEntity {
     return {
       uuid: this.uuid ? this.uuid : null
     }
+  }
+
+  getName() {
+    let quotePosition = this.uri.indexOf("?")
+    let query = this.uri.substr(quotePosition + 1)
+    let path = this.uri.substr(0, quotePosition)
+    let imageName = path.substr(path.lastIndexOf("/") + 1)
+
+    return imageName + "?" + query
   }
 
 }
