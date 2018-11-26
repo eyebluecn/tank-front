@@ -22,7 +22,7 @@
           <div class="media">
             <div class="pull-left">
               <router-link :to="'/user/detail/'+userItem.uuid">
-                <img class="img-circle img-md" :src="userItem.getAvatarUrl()">
+                <img class="img-circle img-md" :src="handleImageUrl(userItem.avatarUrl)">
               </router-link>
             </div>
             <div class="media-body">
@@ -98,6 +98,7 @@
   import {UserGender, UserGenderList, UserGenderMap} from "../../common/model/user/UserGender";
   import {UserRole, UserRoleList, UserRoleMap} from "../../common/model/user/UserRole";
   import {UserStatus, UserStatusList, UserStatusMap} from "../../common/model/user/UserStatus";
+  import {handleImageUrl} from "../../common/util/ImageUtil";
 
   export default {
 
@@ -122,6 +123,7 @@
       NbPager
     },
     methods: {
+      handleImageUrl,
       search() {
         this.pager.page = 0
         this.refresh()

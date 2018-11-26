@@ -6,7 +6,7 @@
       <div class="menu-header" @click="goToProfile">
         <div class="logo-area">
           <img alt="image" class="img-circle w80"
-               :src="user.getAvatarUrl()"/>
+               :src="handleImageUrl(user.avatarUrl)"/>
         </div>
         <div class="text-area">
           <div class="nickname">
@@ -75,6 +75,7 @@
 <script>
   import {Message, MessageBox, Notification} from 'element-ui'
   import {UserRole} from "../../common/model/user/UserRole";
+  import {handleImageUrl} from "../../common/util/ImageUtil";
 
   let logoPath = require("../../assets/img/logo.png")
 
@@ -99,6 +100,7 @@
 
     components: {},
     methods: {
+      handleImageUrl,
       isCustomActive(path) {
         return this.$route.path === path
       },

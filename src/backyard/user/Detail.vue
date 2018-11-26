@@ -16,7 +16,7 @@
             <div class="mr20" :class="{'pull-left':!$store.state.config.mobile}">
               <img class="img-container"
                    :class="{'img-blg':!$store.state.config.mobile,'img-lg':$store.state.config.mobile}"
-                   :src="currentUser.getAvatarUrl()">
+                   :src="handleImageUrl(currentUser.avatarUrl)">
             </div>
             <div class="media-body">
               <div class="cell-title">
@@ -132,6 +132,7 @@
   import {UserGender, UserGenderList, UserGenderMap} from "../../common/model/user/UserGender";
   import {UserRole, UserRoleList, UserRoleMap} from "../../common/model/user/UserRole";
   import {UserStatus, UserStatusList, UserStatusMap} from "../../common/model/user/UserStatus";
+  import {handleImageUrl} from "../../common/util/ImageUtil";
 
   export default {
     data() {
@@ -154,6 +155,7 @@
       NbExpanding
     },
     methods: {
+      handleImageUrl,
       currentUserUpdate(uuid) {
         if (uuid) {
           this.currentUser.uuid = uuid

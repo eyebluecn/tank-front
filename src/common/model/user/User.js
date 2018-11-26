@@ -87,16 +87,6 @@ export default class User extends BaseEntity {
     ]
   }
 
-  //获取用户头像的url.
-  getAvatarUrl() {
-    if (this.avatarUrl) {
-      return this.avatarUrl + '?imageProcess=resize&imageResizeM=fill&imageResizeW=200&imageResizeH=200'
-    } else {
-      return require('../../../assets/img/avatar.png')
-    }
-  }
-
-
   //将用户信息存储在本地。
   renderFromLocalStorage() {
 
