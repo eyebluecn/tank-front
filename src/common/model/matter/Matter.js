@@ -75,6 +75,11 @@ export default class Matter extends BaseEntity {
     super.render(obj)
   }
 
+  isImage() {
+    let mimeType = getMimeType(this.name)
+    return startWith(mimeType, 'image');
+  }
+
   getIcon() {
 
     if (this.dir) {

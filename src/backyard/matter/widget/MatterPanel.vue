@@ -139,7 +139,7 @@
   import Director from './Director'
   import {Message, MessageBox, Notification} from 'element-ui'
   import {currentHost, setInputSelection} from '../../../common/util/Utils'
-  import PhotoSwipeHelper from "../../../common/plugin/photoswipe/PhotoSwipeHelper";
+  import PhotoSwipePlugin from "../../../common/plugin/photoswipe/PhotoSwipePlugin";
 
   export default {
     data() {
@@ -183,8 +183,11 @@
         if (this.matter.dir) {
           this.$emit('goToDirectory', that.matter.uuid)
         } else {
-          PhotoSwipeHelper.showPhoto(that.matter.getDownloadUrl())
-          //this.download()
+          if (that.matter.isImage()) {
+            that.$photoSwipePlugin.showPhoto(that.matter.getDownloadUrl())
+          } else {
+            this.download()
+          }
         }
 
       },

@@ -1,5 +1,4 @@
 import PhotoSwipeLayout from "./PhotoSwipeLayout";
-import Vue from 'vue'
 import PhotoSwipe from 'x-photoswipe/dist/photoswipe'
 import PhotoSwipeUIDefault from 'x-photoswipe/dist/photoswipe-ui-default'
 //PhotoSwipe的样式
@@ -10,27 +9,38 @@ import "x-photoswipe/dist/default-skin/default-skin.css";
  *
  * 图片预览控件，主要提供给H5端使用。
  */
-export default class PhotoSwipeHelper {
+export default class PhotoSwipePlugin {
 
   constructor() {
+
+
+    this.$vm = null;
 
     //核心
     this.photoSwipe = null;
 
-    //小本本记住，动态创建Vue组件。
-    let ComponentClass = Vue.extend(PhotoSwipeLayout)
-    this.vueInstance = new ComponentClass()
-
-    this.init()
   }
 
-  //初始化工作一口气做完
-  init() {
-    //挂载组件，非常重要。否则$el就不会出现。
-    this.vueInstance.$mount()
-    document.body.appendChild(this.vueInstance.$el)
-  }
 
+  install(Vue, options) {
+
+    const PhotoSwipePluginComponent = Vue.extend(PhotoSwipeLayout)
+    if (!this.$vm) {
+      this.$vm = new PhotoSwipePluginComponent({
+        el: document.createElement('div'),
+        propsData: {}
+      })
+      document.body.appendChild(this.$vm.$el)
+    }
+
+    Vue.$photoSwipePlugin = this;
+
+    Vue.mixin({
+      created: function () {
+        this.$photoSwipePlugin = Vue.$photoSwipePlugin
+      }
+    })
+  }
 
   //展示一张图片
   showSinglePhoto(url, width = 0, height = 0) {
@@ -54,7 +64,7 @@ export default class PhotoSwipeHelper {
       //当前从第0张展示。
       index: 0
     };
-    this.photoSwipe = new PhotoSwipe(this.vueInstance.$el, PhotoSwipeUIDefault, items, options);
+    this.photoSwipe = new PhotoSwipe(this.$vm.$el, PhotoSwipeUIDefault, items, options);
 
     this.photoSwipe.listen('gettingData', function (index, item) {
       if (!item.w || !item.h || item.w < 1 || item.h < 1) {
@@ -70,10 +80,8 @@ export default class PhotoSwipeHelper {
     this.photoSwipe.init();
 
     this.photoSwipe.listen('close', () => {
-      console.log("photoSwipe事件：close")
     })
     this.photoSwipe.listen('afterChange', (a, b) => {
-      console.log("photoSwipe事件：afterChange")
     })
   }
 
@@ -102,7 +110,7 @@ export default class PhotoSwipeHelper {
       //当前从第0张展示。
       index: index
     };
-    this.photoSwipe = new PhotoSwipe(this.vueInstance.$el, PhotoSwipeUIDefault, items, options);
+    this.photoSwipe = new PhotoSwipe(this.$vm.$el, PhotoSwipeUIDefault, items, options);
 
     this.photoSwipe.listen('gettingData', function (index, item) {
       if (!item.w || !item.h || item.w < 1 || item.h < 1) {
@@ -125,26 +133,16 @@ export default class PhotoSwipeHelper {
     })
   }
 
-  //单例，为了只有一个实例
-  static singleton = null;
-
-  //使用懒加载
-  static getSingleton() {
-    if (!PhotoSwipeHelper.singleton) {
-      PhotoSwipeHelper.singleton = new PhotoSwipeHelper();
-    }
-    return PhotoSwipeHelper.singleton;
-  }
 
   //展示一张图片。
-  static showPhoto(url) {
-    PhotoSwipeHelper.getSingleton().showSinglePhoto(url);
+  showPhoto(url) {
+    this.showSinglePhoto(url);
   }
 
 
   //展示一系列图片
-  static showPhotos(urls, index = 0) {
-    PhotoSwipeHelper.getSingleton().showMultiPhoto(urls, index);
+  showPhotos(urls, index = 0) {
+    this.showMultiPhoto(urls, index);
   }
 
 }

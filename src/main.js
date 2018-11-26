@@ -6,6 +6,7 @@ import "./common/directive/directive"
 
 //自定义文本框插件
 import CopyPlugin from "./common/plugin/copy/CopyPlugin";
+import PhotoSwipePlugin from "./common/plugin/photoswipe/PhotoSwipePlugin";
 
 import Vue from 'vue'
 import App from './App.vue'
@@ -32,6 +33,7 @@ Vue.use(NProgress)
 
 //使用自定义插件
 Vue.use(new CopyPlugin())
+Vue.use(new PhotoSwipePlugin())
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {
