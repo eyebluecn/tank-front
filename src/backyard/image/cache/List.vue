@@ -9,11 +9,31 @@
       </div>
 
       <div class="col-md-12">
-        <NbFilter :filters="pager.filters" @change="search"></NbFilter>
+        <NbFilter :filters="pager.filters" @change="search">
+          <button class="btn btn-primary btn-sm " v-if="selectedImageCaches.length !== pager.data.length"
+                  @click.stop.prevent="checkAll">
+            <i class="fa fa-check-square"></i>
+            全选
+          </button>
+          <button class="btn btn-primary btn-sm "
+                  v-if="pager.data.length && selectedImageCaches.length === pager.data.length"
+                  @click.stop.prevent="checkNone">
+            <i class="fa fa-square-o"></i>
+            取消全选
+          </button>
+          <button class="btn btn-primary btn-sm " v-if="selectedImageCaches.length" @click.stop.prevent="deleteBatch">
+            <i class="fa fa-trash"></i>
+            删除
+          </button>
+        </NbFilter>
       </div>
 
       <div class="col-md-12" v-for="(imageCache,index) in pager.data">
-        <ImageCachePanel :imageCache="imageCache"/>
+        <ImageCachePanel
+          :imageCache="imageCache"
+          @deleteSuccess="refresh"
+          @checkImageCache="checkImageCache"
+        />
       </div>
 
       <div class="col-md-12 mt20">
@@ -30,13 +50,15 @@
   import Pager from '../../../common/model/base/Pager'
   import ImageCache from "../../../common/model/image/cache/ImageCache";
   import ImageCachePanel from "./widget/ImageCachePanel"
+  import {MessageBox, Message} from "element-ui"
 
   export default {
 
     data() {
       return {
         pager: new Pager(ImageCache),
-        user: this.$store.state.user
+        user: this.$store.state.user,
+        selectedImageCaches: []
       }
     },
     components: {
@@ -52,10 +74,58 @@
       refresh() {
         this.pager.httpFastPage()
       },
-      changeStatus(user) {
+      checkImageCache(imageCache) {
+
         let that = this
-        user.httpChangeStatus(function () {
-          that.refresh()
+        //统计所有的勾选
+        this.selectedImageCaches.splice(0, this.selectedImageCaches.length)
+        this.pager.data.forEach(function (imageCache, index) {
+          if (imageCache.check) {
+            that.selectedImageCaches.push(imageCache)
+          }
+        })
+
+
+      },
+      //全选
+      checkAll() {
+        this.pager.data.forEach(function (i, index) {
+          i.check = true
+        })
+        this.checkImageCache()
+      },
+      //取消全选
+      checkNone() {
+        this.pager.data.forEach(function (i, index) {
+          i.check = false
+        })
+
+        this.checkImageCache()
+      },
+      deleteBatch() {
+        let that = this
+        MessageBox.confirm('此操作将永久删除这些文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          callback: function (action, instance) {
+            if (action === 'confirm') {
+              let uuids = ""
+              that.selectedImageCaches.forEach(function (item, index) {
+                if (index === 0) {
+                  uuids = item.uuid
+                } else {
+                  uuids = uuids + "," + item.uuid
+                }
+              })
+              let imageCache = new ImageCache()
+              imageCache.httpDeleteBatch(uuids, function (response) {
+                Message.success('删除成功！')
+                that.refresh()
+              })
+            }
+
+          }
         })
       }
     },

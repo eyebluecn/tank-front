@@ -9,6 +9,18 @@ import Vue from "vue"
 import {FilterType} from "../base/FilterType";
 
 export default class Matter extends BaseEntity {
+
+
+  static URL_MATTER_CREATE_DIRECTORY = '/api/matter/create/directory'
+  static URL_MATTER_DELETE = '/api/matter/delete'
+  static URL_MATTER_DELETE_BATCH = '/api/matter/delete/batch'
+  static URL_MATTER_RENAME = '/api/matter/rename'
+  static URL_CHANGE_PRIVACY = '/api/matter/change/privacy'
+  static URL_MATTER_MOVE = '/api/matter/move'
+  static URL_MATTER_DOWNLOAD = '/api/matter/download'
+  static URL_MATTER_UPLOAD = '/api/matter/upload'
+
+
   constructor(args) {
     super(args)
     this.puuid = null
@@ -57,15 +69,6 @@ export default class Matter extends BaseEntity {
       new Filter(FilterType.INPUT, '后缀名', 'extensions')
     ]
   }
-
-  static URL_MATTER_CREATE_DIRECTORY = '/api/matter/create/directory'
-  static URL_MATTER_DELETE = '/api/matter/delete'
-  static URL_MATTER_DELETE_BATCH = '/api/matter/delete/batch'
-  static URL_MATTER_RENAME = '/api/matter/rename'
-  static URL_CHANGE_PRIVACY = '/api/matter/change/privacy'
-  static URL_MATTER_MOVE = '/api/matter/move'
-  static URL_MATTER_DOWNLOAD = '/api/matter/download'
-  static URL_MATTER_UPLOAD = '/api/matter/upload'
 
   render(obj) {
     super.render(obj)

@@ -252,7 +252,6 @@
           }
 
 
-
           m.file = domFile
 
           m.httpUpload(function () {
@@ -270,22 +269,26 @@
         this.pager.data.forEach(function (i, index) {
           i.check = true
         })
+        this.checkMatter()
       },
       //取消全选
       checkNone() {
         this.pager.data.forEach(function (i, index) {
           i.check = false
         })
+        this.checkMatter()
       },
       //选择文件时放入暂存区等待操作
       checkMatter(matter) {
-        if (matter.check && this.selectedMatters.indexOf(matter) === -1) {
-          this.selectedMatters.push(matter)
-        } else if (!matter.check && this.selectedMatters.indexOf(matter) !== -1) {
-          let index = this.selectedMatters.indexOf(matter)
-          this.selectedMatters.splice(index, 1)
-        }
-        return true
+        let that = this
+        //统计所有的勾选
+        this.selectedMatters.splice(0, this.selectedMatters.length)
+        this.pager.data.forEach(function (matter, index) {
+          if (matter.check) {
+            that.selectedMatters.push(matter)
+          }
+        })
+
       },
       //批量删除
       deleteBatch() {

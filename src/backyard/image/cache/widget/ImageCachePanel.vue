@@ -8,6 +8,9 @@
         <div class="pull-left">
           <div class="left-part">
             <span class="basic-span">
+              <NbCheckbox v-model="imageCache.check"/>
+            </span>
+            <span class="basic-span">
               <img class="image-cache-icon" src="/static/img/file/file.svg"/>
             </span>
           </div>
@@ -100,15 +103,14 @@
       }
 
     },
-    watch: {},
+    watch: {
+      'imageCache.check'(newVal, oldVal) {
+        this.$emit('checkImageCache', this.imageCache)
+      }
+    },
     methods: {
       clickRow() {
         let that = this
-
-        if (this.director.isEditing()) {
-          console.error('导演正忙着，不予执行')
-          return
-        }
 
         if (this.imageCache.dir) {
           this.$emit('goToDirectory', that.imageCache.uuid)
@@ -118,10 +120,6 @@
 
       },
       download() {
-        if (this.director.isEditing()) {
-          console.error('导演正忙着，不予执行')
-          return
-        }
 
         window.open(this.imageCache.getDownloadUrl())
       },

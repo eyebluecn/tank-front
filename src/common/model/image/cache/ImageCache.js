@@ -6,6 +6,9 @@ import Matter from "../../matter/Matter";
 
 export default class ImageCache extends BaseEntity {
 
+  static URL_DELETE = '/api/image/cache/delete'
+  static URL_DELETE_BATCH = '/api/image/cache/delete/batch'
+
   constructor(args) {
     super(args)
 
@@ -15,6 +18,13 @@ export default class ImageCache extends BaseEntity {
     this.md5 = null;
     this.size = 0;
     this.path = 0;
+
+    /*
+      这部分是辅助UI的字段信息
+     */
+    //作为勾选变量
+    this.check = false
+
     this.user = new User()
     this.matter = new Matter()
   }
@@ -46,5 +56,19 @@ export default class ImageCache extends BaseEntity {
 
     return imageName + "?" + query
   }
+
+
+  httpDelete(successCallback, errorCallback) {
+    this.httpPost(ImageCache.URL_DELETE, {'uuid': this.uuid}, function (response) {
+      typeof successCallback === 'function' && successCallback(response)
+    }, errorCallback)
+  }
+
+  httpDeleteBatch(uuids, successCallback, errorCallback) {
+    this.httpPost(ImageCache.URL_DELETE_BATCH, {'uuids': uuids}, function (response) {
+      typeof successCallback === 'function' && successCallback(response)
+    }, errorCallback)
+  }
+
 
 }
