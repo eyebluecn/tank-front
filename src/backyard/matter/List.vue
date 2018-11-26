@@ -7,11 +7,6 @@
         <div>
           <NbFilter :filters="pager.filters" @change="search">
 
-            <button class="btn btn-primary btn-sm "
-                    @click.stop.prevent="textDialog">
-              <i class="fa fa-check-square"></i>
-              测试弹出框
-            </button>
 
             <button class="btn btn-primary btn-sm " v-if="selectedMatters.length !== pager.data.length"
                     @click.stop.prevent="checkAll">
@@ -55,12 +50,18 @@
         </div>
 
         <div v-if="director.createMode">
-          <MatterPanel ref="newMatterPanel" @createDirectorySuccess="refresh()" :matter="newMatter"
+          <MatterPanel ref="newMatterPanel" @createDirectorySuccess="refresh()"
+                       :matter="newMatter"
                        :director="director"/>
         </div>
         <div v-for="matter in pager.data">
-          <MatterPanel @goToDirectory="goToDirectory" @deleteSuccess="refresh()" :matter="matter" :director="director"
-                       @checkMatter="checkMatter"/>
+          <MatterPanel @goToDirectory="goToDirectory"
+                       @deleteSuccess="refresh()"
+                       :matter="matter"
+                       :director="director"
+                       @checkMatter="checkMatter"
+                       @previewImage="previewImage"
+          />
         </div>
 
         <div>
@@ -269,11 +270,24 @@
 
 
       },
-      //测试弹出框
-      textDialog() {
-        this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', 'HTML 片段', {
-          dangerouslyUseHTMLString: true
-        });
+
+      previewImage(matter) {
+        let that = this;
+
+        //从matter开始预览图片
+        let imageArray = []
+        let startIndex = -1;
+        this.pager.data.forEach(function (item, index) {
+          if (item.isImage()) {
+            imageArray.push(item.getDownloadUrl())
+            if (item.uuid === matter.uuid) {
+              startIndex = imageArray.length - 1
+            }
+          }
+        })
+
+        that.$photoSwipePlugin.showPhotos(imageArray, startIndex)
+
       },
       //全选
       checkAll() {

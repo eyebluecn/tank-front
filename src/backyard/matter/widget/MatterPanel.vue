@@ -183,7 +183,9 @@
         } else {
           //图片进行预览操作
           if (that.matter.isImage()) {
-            that.$photoSwipePlugin.showPhoto(that.matter.getDownloadUrl())
+
+            this.$emit("previewImage", that.matter)
+
           } else if (that.matter.isPdf()) {
 
             this.$previewer.previewPdf(that.matter.name, that.matter.getDownloadUrl(), that.matter.size)

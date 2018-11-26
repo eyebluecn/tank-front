@@ -33,6 +33,7 @@
           :imageCache="imageCache"
           @deleteSuccess="refresh"
           @checkImageCache="checkImageCache"
+          @previewImageCache="previewImageCache"
         />
       </div>
 
@@ -101,6 +102,23 @@
         })
 
         this.checkImageCache()
+      },
+      previewImageCache(imageCache) {
+
+        let that = this;
+
+        //从matter开始预览图片
+        let imageArray = []
+        let startIndex = -1;
+        this.pager.data.forEach(function (item, index) {
+          imageArray.push(item.getResizeUrl())
+          if (item.uuid === imageCache.uuid) {
+            startIndex = imageArray.length - 1
+          }
+        })
+
+        that.$photoSwipePlugin.showPhotos(imageArray, startIndex)
+
       },
       deleteBatch() {
         let that = this

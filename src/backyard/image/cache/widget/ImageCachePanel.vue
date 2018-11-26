@@ -113,8 +113,7 @@
       handleImageUrl,
       clickRow() {
         let that = this
-        this.$photoSwipePlugin.showPhoto(this.imageCache.getResizeUrl())
-
+        this.$emit('previewImageCache', this.imageCache)
       },
       deleteImageCache() {
         let that = this
