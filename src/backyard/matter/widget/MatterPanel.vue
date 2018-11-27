@@ -198,12 +198,28 @@
 
             this.$previewer.previewText(that.matter.name, that.matter.getPreviewUrl(), that.matter.size)
 
+          } else if (that.matter.isAudio()) {
+
+            this.$previewer.previewAudio(that.matter.name, that.matter.getPreviewUrl(), that.matter.size)
+
+          } else if (that.matter.isVideo()) {
+
+            this.$previewer.previewVideo(that.matter.name, that.matter.getPreviewUrl(), that.matter.size)
+
           } else {
-            this.download()
+            this.preview()
           }
         }
       },
 
+      preview() {
+        if (this.director.isEditing()) {
+          console.error('导演正忙着，不予执行')
+          return
+        }
+
+        window.open(this.matter.getPreviewUrl())
+      },
       download() {
         if (this.director.isEditing()) {
           console.error('导演正忙着，不予执行')

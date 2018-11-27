@@ -7,7 +7,7 @@ import {FilterType} from "./FilterType";
 
 export default class Pager extends Base {
 
-  static MAX_PAGE_SIZE = 500
+  static MAX_PAGE_SIZE = 100
 
   constructor(Clazz, pageSize = 10, page = 0) {
     super()

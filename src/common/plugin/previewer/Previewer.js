@@ -38,4 +38,12 @@ export default class Previewer {
     this.$vm.previewOffice(name, url, size);
   }
 
+  previewAudio(name, url, size) {
+    this.$vm.previewAudio(name, url, size);
+  }
+
+  previewVideo(name, url, size) {
+    this.$vm.previewVideo(name, url, size);
+  }
+
 }

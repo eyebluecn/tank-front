@@ -14,7 +14,7 @@ export default class ImageCache extends BaseEntity {
 
     this.userUuid = null;
     this.matterUuid = null;
-    this.uri = null;
+    this.mode = null;
     this.md5 = null;
     this.size = 0;
     this.path = 0;
@@ -49,17 +49,12 @@ export default class ImageCache extends BaseEntity {
   }
 
   getMatterName() {
-    let quotePosition = this.uri.indexOf("?")
-    let path = this.uri.substr(0, quotePosition)
-    return path.substr(path.lastIndexOf("/") + 1)
+
+    return this.path.substr(this.path.lastIndexOf("/") + 1)
   }
 
   getName() {
-    let quotePosition = this.uri.indexOf("?")
-    let query = this.uri.substr(quotePosition + 1)
-    let path = this.uri.substr(0, quotePosition)
-    let imageName = path.substr(path.lastIndexOf("/") + 1)
-    return imageName + "?" + query
+    return this.getMatterName() + "?" + this.mode
   }
 
   getResizeUrl(){

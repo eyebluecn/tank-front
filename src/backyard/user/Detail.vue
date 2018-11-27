@@ -29,7 +29,7 @@
                 <div class="row f14">
                   <div class="mt5 col-md-12">
                     <div>
-                      <span class="bold">角色：</span>{{currentUser.getRoleName()}}
+                      <span class="bold">角色：</span>{{UserRoleMap[currentUser.role].name}}
                     </div>
                   </div>
                   <div class="mt5 col-md-12">
@@ -47,7 +47,7 @@
                       </div>
                       <div class="mt5 col-md-12">
                         <div>
-                          <span class="bold">性别：</span>{{currentUser.getGenderName()}}
+                          <span class="bold">性别：</span>{{UserGenderMap[currentUser.gender].name}}
                         </div>
                       </div>
                       <div class="mt5 col-md-12" v-if="currentUser.city">
@@ -71,7 +71,7 @@
 
                       <div class="mt5 col-md-12">
                         <div>
-                          <span class="bold">状态：</span>{{currentUser.getStatusName()}}
+                          <span class="bold">状态：</span>{{UserStatusMap[currentUser.status].name}}
                         </div>
                       </div>
 

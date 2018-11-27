@@ -57,7 +57,7 @@
 
     data() {
       return {
-        pager: new Pager(ImageCache),
+        pager: new Pager(ImageCache, Pager.MAX_PAGE_SIZE),
         user: this.$store.state.user,
         selectedImageCaches: []
       }

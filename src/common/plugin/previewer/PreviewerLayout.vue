@@ -6,14 +6,17 @@
   import PdfPanel from "./panels/PdfPanel"
   import TextPanel from "./panels/TextPanel"
   import OfficePanel from "./panels/OfficePanel"
+  import AudioPanel from "./panels/AudioPanel"
+  import VideoPanel from "./panels/VideoPanel"
   import {humanFileSize} from "../../filter/str";
 
 
   let CLASS_NAME = " previewer-mode"
-  //这个组件主要用于提供dom元素。
   export default {
     data() {
-      return {}
+      return {
+
+      }
     },
     computed: {},
     props: {},
@@ -31,10 +34,19 @@
           document.body.className = bodyClassName.substr(0, position) + bodyClassName.substr(position + bodyClassName.length)
         }
       },
+
       preview(name, url, size, vNode) {
         let that = this;
 
         that.bodyAddClass()
+
+        //需要给vue一点点时间去挂载这个vNode
+        setTimeout(function () {
+          if (vNode.componentInstance && vNode.componentInstance.show) {
+            vNode.componentInstance.show()
+          }
+        }, 100)
+
 
         that.$msgbox({
           title: name + "(" + humanFileSize(size) + ")",
@@ -46,12 +58,16 @@
           beforeClose: (action, instance, done) => {
 
             that.bodyRemoveClass()
+
+            //如果有定义close函数，那么去调用。主要是音频和视频需要停止
+            if (vNode.componentInstance && vNode.componentInstance.close) {
+              vNode.componentInstance.close()
+            }
+
             done();
           }
         }).then(action => {
-          console.log("then method ")
         }).catch((e) => {
-          console.log("catch method ")
           //关闭了对话框
           that.bodyRemoveClass()
         });
@@ -59,10 +75,7 @@
       previewPdf(name, url, size) {
 
         let that = this
-
-        const h = this.$createElement;
-
-        let vNode = h(PdfPanel, {
+        let vNode = this.$createElement(PdfPanel, {
           props: {
             name: name,
             url: url
@@ -74,10 +87,7 @@
       previewText(name, url, size) {
 
         let that = this
-
-        const h = this.$createElement;
-
-        let vNode = h(TextPanel, {
+        let vNode = this.$createElement(TextPanel, {
           props: {
             name: name,
             url: url
@@ -89,12 +99,33 @@
       previewOffice(name, url, size) {
 
         let that = this
+        let vNode = this.$createElement(OfficePanel, {
+          props: {
+            name: name,
+            url: url
+          }
+        });
 
-        const h = this.$createElement;
+        this.preview(name, url, size, vNode)
+      },
+      previewAudio(name, url, size) {
 
-        console.log("这里");
+        let that = this
 
-        let vNode = h(OfficePanel, {
+        let vNode = this.$createElement(AudioPanel, {
+          props: {
+            name: name,
+            url: url
+          }
+        });
+
+        this.preview(name, url, size, vNode)
+      },
+      previewVideo(name, url, size) {
+
+        let that = this
+
+        let vNode = this.$createElement(VideoPanel, {
           props: {
             name: name,
             url: url

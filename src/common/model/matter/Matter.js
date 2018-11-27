@@ -106,6 +106,16 @@ export default class Matter extends BaseEntity {
     return startWith(mimeType, 'application/vnd.ms-excel') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   }
 
+  isAudio() {
+    let mimeType = getMimeType(this.name)
+    return startWith(mimeType, 'audio');
+  }
+
+  isVideo() {
+    let mimeType = getMimeType(this.name)
+    return startWith(mimeType, 'video');
+  }
+
   getIcon() {
 
     if (this.dir) {
@@ -121,9 +131,9 @@ export default class Matter extends BaseEntity {
       return "/static/img/file/ppt.svg"
     } else if (this.isXls()) {
       return "/static/img/file/xls.svg"
-    } else if (startWith(mimeType, 'audio')) {
+    } else if (this.isAudio()) {
       return "/static/img/file/audio.svg"
-    } else if (startWith(mimeType, 'video')) {
+    } else if (this.isVideo()) {
       return "/static/img/file/video.svg"
     } else if (this.isText()) {
       return "/static/img/file/text.svg"

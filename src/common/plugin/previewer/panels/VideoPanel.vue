@@ -1,6 +1,8 @@
 <template>
 
-  <iframe class="previewer-text-panel" width="100%" height="100%" :src="url"></iframe>
+  <div class="previewer-video-panel" v-if="showFlag">
+    <iframe width="100%" height="100%" :src="url"></iframe>
+  </div>
 
 </template>
 
@@ -8,7 +10,9 @@
 
   export default {
     data() {
-      return {}
+      return {
+        showFlag: true
+      }
     },
     computed: {},
     props: {
@@ -24,7 +28,12 @@
     },
     watch: {},
     methods: {
-
+      show() {
+        this.showFlag = true
+      },
+      close() {
+        this.showFlag = false
+      }
     },
     mounted() {
     }
@@ -34,8 +43,14 @@
 <style lang="less" rel="stylesheet/less">
   @import "../../../../assets/css/global/variables";
 
-  .previewer-text-panel {
-    border: 1px solid #eeeeee;
+  .previewer-video-panel {
+    width: 100%;
+    height: 100%;
+
+    iframe {
+      border: 1px solid #eeeeee;
+    }
+
   }
 </style>
 
