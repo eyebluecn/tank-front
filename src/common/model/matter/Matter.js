@@ -91,6 +91,21 @@ export default class Matter extends BaseEntity {
     return startWith(mimeType, 'text');
   }
 
+  isDoc() {
+    let mimeType = getMimeType(this.name)
+    return startWith(mimeType, 'application/msword') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+  }
+
+  isPpt() {
+    let mimeType = getMimeType(this.name)
+    return startWith(mimeType, 'application/vnd.ms-powerpoint') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.presentationml.presentation');
+  }
+
+  isXls() {
+    let mimeType = getMimeType(this.name)
+    return startWith(mimeType, 'application/vnd.ms-excel') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  }
+
   getIcon() {
 
     if (this.dir) {
@@ -100,11 +115,11 @@ export default class Matter extends BaseEntity {
     let mimeType = getMimeType(this.name)
     if (this.isPdf()) {
       return "/static/img/file/pdf.svg"
-    } else if (startWith(mimeType, 'application/msword') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+    } else if (this.isDoc()) {
       return "/static/img/file/doc.svg"
-    } else if (startWith(mimeType, 'application/vnd.ms-powerpoint') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.presentationml.presentation')) {
+    } else if (this.isPpt()) {
       return "/static/img/file/ppt.svg"
-    } else if (startWith(mimeType, 'application/vnd.ms-excel') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+    } else if (this.isXls()) {
       return "/static/img/file/xls.svg"
     } else if (startWith(mimeType, 'audio')) {
       return "/static/img/file/audio.svg"
@@ -115,7 +130,7 @@ export default class Matter extends BaseEntity {
     } else if (this.isImage()) {
 
       //对于图片，使用其缩略图
-      return handleImageUrl(this.getDownloadUrl(), false, 100, 100)
+      return handleImageUrl(this.getPreviewUrl(), false, 100, 100)
 
     } else if (endWith(this.name, 'zip') || endWith(this.name, 'rar') || endWith(this.name, '7z') || endWith(this.name, 'tar') || endWith(this.name, 'tar') || endWith(this.name, 'gz')) {
       return "/static/img/file/archive.svg"
@@ -389,6 +404,10 @@ export default class Matter extends BaseEntity {
 
   getDownloadUrl() {
     return currentHost() + '/api/alien/download/' + this.uuid + '/' + this.name
+  }
+
+  getPreviewUrl() {
+    return currentHost() + '/api/alien/preview/' + this.uuid + '/' + this.name
   }
 
 }

@@ -34,4 +34,8 @@ export default class Previewer {
     this.$vm.previewText(name, url, size);
   }
 
+  previewOffice(name, url, size) {
+    this.$vm.previewOffice(name, url, size);
+  }
+
 }

@@ -279,7 +279,7 @@
         let startIndex = -1;
         this.pager.data.forEach(function (item, index) {
           if (item.isImage()) {
-            imageArray.push(item.getDownloadUrl())
+            imageArray.push(item.getPreviewUrl())
             if (item.uuid === matter.uuid) {
               startIndex = imageArray.length - 1
             }

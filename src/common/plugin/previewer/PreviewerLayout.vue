@@ -5,6 +5,7 @@
 <script>
   import PdfPanel from "./panels/PdfPanel"
   import TextPanel from "./panels/TextPanel"
+  import OfficePanel from "./panels/OfficePanel"
   import {humanFileSize} from "../../filter/str";
 
 
@@ -77,6 +78,23 @@
         const h = this.$createElement;
 
         let vNode = h(TextPanel, {
+          props: {
+            name: name,
+            url: url
+          }
+        });
+
+        this.preview(name, url, size, vNode)
+      },
+      previewOffice(name, url, size) {
+
+        let that = this
+
+        const h = this.$createElement;
+
+        console.log("这里");
+
+        let vNode = h(OfficePanel, {
           props: {
             name: name,
             url: url

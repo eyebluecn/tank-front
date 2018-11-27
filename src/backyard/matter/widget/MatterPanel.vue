@@ -188,11 +188,15 @@
 
           } else if (that.matter.isPdf()) {
 
-            this.$previewer.previewPdf(that.matter.name, that.matter.getDownloadUrl(), that.matter.size)
+            this.$previewer.previewPdf(that.matter.name, that.matter.getPreviewUrl(), that.matter.size)
+
+          } else if (that.matter.isDoc() || that.matter.isPpt() || that.matter.isXls()) {
+
+            this.$previewer.previewOffice(that.matter.name, that.matter.getPreviewUrl(), that.matter.size)
 
           } else if (that.matter.isText()) {
 
-            this.$previewer.previewText(that.matter.name, that.matter.getDownloadUrl(), that.matter.size)
+            this.$previewer.previewText(that.matter.name, that.matter.getPreviewUrl(), that.matter.size)
 
           } else {
             this.download()
@@ -309,7 +313,7 @@
       },
       clipboard() {
 
-        let textToCopy = currentHost() + this.matter.getDownloadUrl();
+        let textToCopy = this.matter.getDownloadUrl();
         this.$copyPlguin.copy(textToCopy, function () {
           Message.success({
             message: "复制成功!",

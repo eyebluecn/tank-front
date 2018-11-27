@@ -32,8 +32,6 @@
   import Matter from '../../../common/model/matter/Matter'
   import UploadMatterPanel from "./UploadMatterPanel"
 
-
-
   export default {
     data() {
       return {
@@ -104,7 +102,7 @@
 
         matter.httpUpload(function () {
 
-          that.$emit("input", matter.getDownloadUrl())
+          that.$emit("input", matter.getPreviewUrl())
 
         })
 
