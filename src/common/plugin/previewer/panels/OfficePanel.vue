@@ -1,22 +1,42 @@
 <template>
 
-  <iframe :src='finalUrl'
-          class="previewer-doc-panel" width="100%" height="100%">
-    This is an embedded
-    <a target='_blank' href='http://office.com'>Microsoft Office</a>
-    document, powered by
-    <a target='_blank' href='http://office.com/webapps'>Office Online</a>.
-  </iframe>
+  <div class="previewer-doc-panel">
+    <iframe v-if="canPreview" :src='finalUrl'
+            width="100%" height="100%">
+      This is an embedded
+      <a target='_blank' href='http://office.com'>Microsoft Office</a>
+      document, powered by
+      <a target='_blank' href='http://office.com/webapps'>Office Online</a>.
+    </iframe>
+    <div class="fallback" v-else>
+      <h3>
+        无法预览
+      </h3>
+      <p>
+        Office预览是借助了<a target='_blank' href='http://office.com'>Microsoft Office</a>在线预览功能，
+        由于微软服务器无法拉取到 <a target="_blank" :href="url">{{name}}</a> ，因此本地部署的蓝眼云盘无法预览Office文件
+      </p>
+    </div>
+  </div>
+
 
 </template>
 
 <script>
+
+  import {startWith} from "../../../filter/str";
 
   export default {
     data() {
       return {}
     },
     computed: {
+      canPreview() {
+        return !startWith(this.url, "http://localhost") &&
+          !startWith(this.url, "https://localhost") &&
+          !startWith(this.url, "http://127.0.0.1") &&
+          !startWith(this.url, "https://127.0.0.1")
+      },
       finalUrl() {
         return "https://view.officeapps.live.com/op/embed.aspx?src=" + this.url;
       }
@@ -44,7 +64,17 @@
   @import "../../../../assets/css/global/variables";
 
   .previewer-doc-panel {
-    border: 1px solid #eeeeee;
+    width: 100%;
+    height: 100%;
+
+    iframe {
+      border: 1px solid #eeeeee;
+    }
+    .fallback {
+      border: 1px solid #eeeeee;
+      padding: 20px;
+    }
+
   }
 </style>
 
