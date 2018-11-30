@@ -46,6 +46,13 @@
         </li>
 
         <li v-if="user.role === UserRole.ADMINISTRATOR">
+          <router-link to="/dashboard/index" :class="{'custom-active':isCustomActive('/dashboard/index')}">
+            <i class="w14 fa fa-dashboard"></i>
+            <span>监控统计</span>
+          </router-link>
+        </li>
+
+        <li v-if="user.role === UserRole.ADMINISTRATOR">
           <router-link to="/user/list" :class="{'custom-active':isCustomActive('/user/list')}">
             <i class="w14 fa fa-user"></i>
             <span>用户列表</span>

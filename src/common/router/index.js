@@ -8,6 +8,7 @@ import UserDetail from '../../backyard/user/Detail'
 import UserChangePassword from '../../backyard/user/ChangePassword'
 import UserCreate from '../../backyard/user/Create'
 import ImageCacheList from '../../backyard/image/cache/List'
+import DashboardIndex from '../../backyard/dashboard/Index'
 import PreferenceIndex from '../../backyard/preference/Index'
 import PreferenceEdit from '../../backyard/preference/Edit'
 import NotFound from '../../backyard/layout/NotFound'
@@ -20,8 +21,6 @@ const router = new Router({
   linkActiveClass: 'is-link-active',
   scrollBehavior: () => ({y: 0}),
   routes: [
-
-
     {
       path: '/',
       component: ByFrameView,
@@ -140,7 +139,6 @@ const router = new Router({
             ]
           }
         },
-
         {
           path: 'image/cache/list',
           name: 'ImageCacheList',
@@ -152,6 +150,21 @@ const router = new Router({
               {
                 name: 'ImageCacheList',
                 title: '图片缓存'
+              }
+            ]
+          }
+        },
+        {
+          path: 'dashboard/index',
+          name: 'DashboardIndex',
+          component: DashboardIndex,
+          meta: {
+            title: '监控统计',
+            requiresAuth: true,
+            breadcrumbs: [
+              {
+                name: 'DashboardIndex',
+                title: '监控统计'
               }
             ]
           }
