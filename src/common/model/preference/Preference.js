@@ -50,7 +50,8 @@ export default class Preference extends BaseEntity {
 
       that.updateTitleAndFavicon()
 
-      typeof successCallback === 'function' && successCallback(response)
+      that.safeCallback(successCallback)(response)
+
     }, errorCallback)
   }
 
