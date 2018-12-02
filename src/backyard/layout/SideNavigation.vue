@@ -39,13 +39,6 @@
         </li>
 
         <li v-if="user.role === UserRole.ADMINISTRATOR">
-          <router-link to="/image/cache/list" :class="{'custom-active':isCustomActive('/image/cache/list')}">
-            <i class="w14 fa fa-image"></i>
-            <span>图片缓存</span>
-          </router-link>
-        </li>
-
-        <li v-if="user.role === UserRole.ADMINISTRATOR">
           <router-link to="/dashboard/index" :class="{'custom-active':isCustomActive('/dashboard/index')}">
             <i class="w14 fa fa-dashboard"></i>
             <span>监控统计</span>

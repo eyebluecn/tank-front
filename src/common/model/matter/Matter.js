@@ -36,6 +36,8 @@ export default class Matter extends BaseEntity {
     this.path = null
     this.times = 0;
 
+    this.parent = null;
+
     /*
     这部分是辅助UI的字段信息
      */
@@ -76,7 +78,9 @@ export default class Matter extends BaseEntity {
 
   render(obj) {
     super.render(obj)
+    super.renderEntity("parent", Matter)
   }
+
 
   isImage() {
     let mimeType = getMimeType(this.name)
@@ -150,6 +154,45 @@ export default class Matter extends BaseEntity {
       return "/static/img/file/file.svg"
     }
 
+  }
+
+  //下载文件
+  download() {
+
+    window.open(this.getDownloadUrl())
+  }
+
+  //预览文件
+  preview() {
+    let that = this;
+
+    if (that.isImage()) {
+
+      Vue.$photoSwipePlugin.showPhoto(that.getPreviewUrl())
+
+    } else if (that.isPdf()) {
+
+      Vue.$previewer.previewPdf(that.name, that.getPreviewUrl(), that.size)
+
+    } else if (that.isDoc() || that.isPpt() || that.isXls()) {
+
+      Vue.$previewer.previewOffice(that.name, that.getPreviewUrl(), that.size)
+
+    } else if (that.isText()) {
+
+      Vue.$previewer.previewText(that.name, that.getPreviewUrl(), that.size)
+
+    } else if (that.isAudio()) {
+
+      Vue.$previewer.previewAudio(that.name, that.getPreviewUrl(), that.size)
+
+    } else if (that.isVideo()) {
+
+      Vue.$previewer.previewVideo(that.name, that.getPreviewUrl(), that.size)
+
+    } else {
+      window.open(this.getPreviewUrl())
+    }
   }
 
 

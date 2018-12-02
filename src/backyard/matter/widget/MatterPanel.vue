@@ -27,11 +27,14 @@
               <i class="fa fa-unlock btn-action text-primary" v-if="!matter.dir && !matter.privacy" title="设置为私有文件"
                  @click.stop.prevent="matter.httpChangePrivacy(true)"></i>
 
+              <i class="fa fa-info-circle btn-action text-primary" v-if="!matter.dir" title="文件详情"
+                 @click.stop.prevent="$router.push('/matter/detail/'+matter.uuid)"></i>
+
               <i class="fa fa-pencil btn-action text-primary" title="重命名" @click.stop.prevent="prepareRename"></i>
               <i class="fa fa-link btn-action text-primary" title="复制下载链接" v-if="!matter.dir"
                  @click.stop.prevent="clipboard"></i>
               <i class="fa fa-download btn-action text-primary" title="下载" v-if="!matter.dir"
-                 @click.stop.prevent="download"></i>
+                 @click.stop.prevent="matter.download()"></i>
 
               <i class="fa fa-trash btn-action text-danger" title="删除" @click.stop.prevent="deleteMatter"></i>
             </span>
@@ -68,9 +71,9 @@
                      @blur="blurTrigger()"
                      v-on:keyup.13="enterTrigger()"/>
               </span>
-              <span class="matter-name"
-                    :title="matter.alien?'该文件是应用数据，存放的是头像，logo，图标等文件':matter.name"
-                    :class="{alien:matter.alien}" v-else>
+            <span class="matter-name"
+                  :title="matter.alien?'该文件是应用数据，存放的是头像，logo，图标等文件':matter.name"
+                  :class="{alien:matter.alien}" v-else>
                 {{matter.name}} <i class="fa fa-unlock" v-if="!matter.dir && !matter.privacy" title="公有文件，任何人可以访问"></i>
               </span>
 
@@ -104,6 +107,11 @@
           设置为私有文件
         </div>
 
+        <div class="cell-btn" title="文件详情" @click.stop.prevent="$router.push('/matter/detail/'+matter.uuid)">
+          <i class="fa fa-info-circle"></i>
+          文件详情
+        </div>
+
         <div class="cell-btn" title="重命名" @click.stop.prevent="prepareRename">
           <i class="fa fa-pencil"></i>
           重命名
@@ -117,7 +125,7 @@
 
 
         <div class="cell-btn" title="下载" v-if="!matter.dir"
-             @click.stop.prevent="download">
+             @click.stop.prevent="matter.download()">
           <i class="fa fa-download"></i>
           下载
         </div>
@@ -188,47 +196,10 @@
 
             this.$emit("previewImage", that.matter)
 
-          } else if (that.matter.isPdf()) {
-
-            this.$previewer.previewPdf(that.matter.name, that.matter.getPreviewUrl(), that.matter.size)
-
-          } else if (that.matter.isDoc() || that.matter.isPpt() || that.matter.isXls()) {
-
-            this.$previewer.previewOffice(that.matter.name, that.matter.getPreviewUrl(), that.matter.size)
-
-          } else if (that.matter.isText()) {
-
-            this.$previewer.previewText(that.matter.name, that.matter.getPreviewUrl(), that.matter.size)
-
-          } else if (that.matter.isAudio()) {
-
-            this.$previewer.previewAudio(that.matter.name, that.matter.getPreviewUrl(), that.matter.size)
-
-          } else if (that.matter.isVideo()) {
-
-            this.$previewer.previewVideo(that.matter.name, that.matter.getPreviewUrl(), that.matter.size)
-
           } else {
-            this.preview()
+            that.matter.preview()
           }
         }
-      },
-
-      preview() {
-        if (this.director.isEditing()) {
-          console.error('导演正忙着，不予执行')
-          return
-        }
-
-        window.open(this.matter.getPreviewUrl())
-      },
-      download() {
-        if (this.director.isEditing()) {
-          console.error('导演正忙着，不予执行')
-          return
-        }
-
-        window.open(this.matter.getDownloadUrl())
       },
       deleteMatter() {
         let that = this
