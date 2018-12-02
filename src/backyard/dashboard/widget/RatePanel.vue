@@ -34,7 +34,6 @@
         } else {
           let v1 = this.compareValue - this.standardValue
           let v2 = v1 / this.standardValue
-          console.log(this.compareValue, this.standardValue, v2, v2.toFixed(2))
           return (v2 * 100).toFixed(0)
         }
       }

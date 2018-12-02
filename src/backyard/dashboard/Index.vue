@@ -65,7 +65,7 @@
             </div>
           </div>
           <div class="lower">
-            昨日新增文件数：{{dashboard.fileSize | humanFileSize}}
+            昨日新增文件：{{dashboard.fileSize | humanFileSize}}
           </div>
         </div>
       </div>
