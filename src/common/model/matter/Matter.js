@@ -34,6 +34,7 @@ export default class Matter extends BaseEntity {
     this.size = 0
     this.privacy = true
     this.path = null
+    this.times = 0;
 
     /*
     这部分是辅助UI的字段信息
@@ -60,12 +61,13 @@ export default class Matter extends BaseEntity {
 
   getFilters() {
     return [
+      ...super.getFilters(),
       new Filter(FilterType.INPUT, '父级菜单uuid', 'puuid', null, null, false),
       new Filter(FilterType.HTTP_INPUT_SELECTION, '用户', 'userUuid', null, User, false, UserInputSelection),
       new Filter(FilterType.INPUT, '关键字', 'name'),
       new Filter(FilterType.CHECK, '文件夹', 'dir'),
       new Filter(FilterType.SORT, '文件夹', 'orderDir'),
-      new Filter(FilterType.SORT, '创建时间', 'orderCreateTime'),
+      new Filter(FilterType.SORT, '下载次数', 'orderTimes'),
       new Filter(FilterType.SORT, '大小', 'orderSize'),
       new Filter(FilterType.SORT, '名称', 'orderName'),
       new Filter(FilterType.INPUT, '后缀名', 'extensions')

@@ -67,10 +67,12 @@
                      placeholder="请输入名称"
                      @blur="blurTrigger()"
                      v-on:keyup.13="enterTrigger()"/>
-            </span>
-            <span class="matter-name" :class="{'alien':matter.alien}" v-else>
-              {{matter.name}} <i class="fa fa-unlock" v-if="!matter.dir && !matter.privacy" title="公有文件，任何人可以访问"></i>
-            </span>
+              </span>
+              <span class="matter-name"
+                    :title="matter.alien?'该文件是应用数据，存放的是头像，logo，图标等文件':matter.name"
+                    :class="{alien:matter.alien}" v-else>
+                {{matter.name}} <i class="fa fa-unlock" v-if="!matter.dir && !matter.privacy" title="公有文件，任何人可以访问"></i>
+              </span>
 
           </div>
         </div>
@@ -402,6 +404,10 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+        &.alien {
+          color: @brand-primary;
+          font-weight: bold;
+        }
       }
     }
 

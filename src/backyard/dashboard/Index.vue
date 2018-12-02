@@ -10,14 +10,14 @@
         <div class="text-block">
           <div class="upper">
             <div class="indicator">总访问量</div>
-            <div class="amount">1265345</div>
+            <div class="amount">{{dashboard.totalInvokeNum}}</div>
             <div>
-              <span class="rate">周同比 12% <i class="fa fa-caret-down text-success"></i></span>
-              <span class="rate">日同比 11% <i class="fa fa-caret-up text-danger"></i></span>
+              <RatePanel name="周环比" :standardValue="standardWeekInvokeNum" :compareValue="compareWeekInvokeNum"/>
+              <RatePanel name="日同比" :standardValue="standardDayInvokeNum" :compareValue="compareDayInvokeNum"/>
             </div>
           </div>
           <div class="lower">
-            昨日访问量：13456
+            昨日访问量：{{dashboard.invokeNum}}
           </div>
         </div>
       </div>
@@ -25,14 +25,15 @@
         <div class="text-block">
           <div class="upper">
             <div class="indicator">总访问IP</div>
-            <div class="amount">1265345</div>
+            <div class="amount">{{dashboard.totalUv}}</div>
             <div>
-              <span class="rate">周同比 12% <i class="fa fa-caret-down text-success"></i></span>
-              <span class="rate">日同比 11% <i class="fa fa-caret-up text-danger"></i></span>
+              <RatePanel name="周环比" :standardValue="standardWeekUv" :compareValue="compareWeekUv"/>
+              <RatePanel name="日同比" :standardValue="standardDayUv" :compareValue="compareDayUv"/>
+
             </div>
           </div>
           <div class="lower">
-            昨日访IP：13456
+            昨日访IP：{{dashboard.uv}}
           </div>
         </div>
       </div>
@@ -40,14 +41,15 @@
         <div class="text-block">
           <div class="upper">
             <div class="indicator">文件总数</div>
-            <div class="amount">1265345</div>
+            <div class="amount">{{dashboard.totalMatterNum}}</div>
             <div>
-              <span class="rate">周同比 12% <i class="fa fa-caret-down text-success"></i></span>
-              <span class="rate">日同比 11% <i class="fa fa-caret-up text-danger"></i></span>
+              <RatePanel name="周环比" :standardValue="standardWeekMatterNum" :compareValue="compareWeekMatterNum"/>
+              <RatePanel name="日同比" :standardValue="standardDayMatterNum" :compareValue="compareDayMatterNum"/>
+
             </div>
           </div>
           <div class="lower">
-            昨日新增文件数：13456
+            昨日新增文件数：{{dashboard.matterNum}}
           </div>
         </div>
       </div>
@@ -55,21 +57,22 @@
         <div class="text-block">
           <div class="upper">
             <div class="indicator">文件总大小(包括缓存)</div>
-            <div class="amount">1265345 G</div>
+            <div class="amount">{{dashboard.totalFileSize | humanFileSize}}</div>
             <div>
-              <span class="rate">周同比 12% <i class="fa fa-caret-down text-success"></i></span>
-              <span class="rate">日同比 11% <i class="fa fa-caret-up text-danger"></i></span>
+              <RatePanel name="周环比" :standardValue="standardWeekSize" :compareValue="compareWeekSize"/>
+              <RatePanel name="日同比" :standardValue="standardDaySize" :compareValue="compareDaySize"/>
+
             </div>
           </div>
           <div class="lower">
-            昨日新增文件数：13456
+            昨日新增文件数：{{dashboard.fileSize | humanFileSize}}
           </div>
         </div>
       </div>
       <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="figure-block">
           <div class="title">
-            最近15日调用量/UV
+            最近{{days}}日调用量/UV
           </div>
           <figure>
             <ECharts
@@ -87,14 +90,15 @@
           <div class="title">
             文件下载量TOP10
           </div>
-          <figure>
-            <ECharts
-              ref="invokeListChart"
-              theme="ovilia-green"
-              :autoResize="true"
-              :initOptions="initOptions"
-              :options="invokeListOption"/>
-          </figure>
+          <div class="list-rank">
+            <ul>
+              <li v-for="(matter,index) in matterPager.data">
+                <span class="rank" :class="{top3:index<3}">{{index+1}}</span>
+                <router-link class="name" :to="'/'">{{matter.name}}</router-link>
+                <span class="info">{{matter.times}}</span>
+              </li>
+            </ul>
+          </div>
         </div>
 
       </div>
@@ -102,20 +106,20 @@
       <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="figure-block">
           <div class="title">
-            活跃用户TOP10
+            活跃IP TOP10
           </div>
-          <figure>
-            <ECharts
-              ref="invokeListChart"
-              theme="ovilia-green"
-              :autoResize="true"
-              :initOptions="initOptions"
-              :options="invokeListOption"/>
-          </figure>
+          <div class="list-rank">
+            <ul>
+              <li v-for="(item,index) in activeIpTop10">
+                <span class="rank" :class="{top3:index<3}">{{index+1}}</span>
+                <span class="name" :to="'/'">{{item.ip}}</span>
+                <span class="info">{{item.times}}</span>
+              </li>
+            </ul>
+          </div>
         </div>
 
       </div>
-
 
     </div>
 
@@ -147,16 +151,52 @@
   import theme from "./theme"
 
   import Dashboard from "../../common/model/dashboard/Dashboard";
+  import Pager from "../../common/model/base/Pager";
+  import {SortDirection} from "../../common/model/base/SortDirection";
+  import {simpleDate} from "../../common/filter/time";
+  import RatePanel from "./widget/RatePanel"
+  import Matter from "../../common/model/matter/Matter";
 
   //自定义主题
   ECharts.registerTheme('ovilia-green', theme)
-
 
   export default {
 
     data: function () {
       return {
+        days: 15,
+        //用来存放日期的，辅助x轴的生成
+        dateStrings: [],
+        //昨天的统计情况
         dashboard: new Dashboard(),
+        //调用量周同比
+        standardWeekInvokeNum: 0,
+        compareWeekInvokeNum: 0,
+        //调用量日同比
+        standardDayInvokeNum: 0,
+        compareDayInvokeNum: 0,
+        //UV周同比
+        standardWeekUv: 0,
+        compareWeekUv: 0,
+        //UV日同比
+        standardDayUv: 0,
+        compareDayUv: 0,
+        //文件总数周同比
+        standardWeekMatterNum: 0,
+        compareWeekMatterNum: 0,
+        //文件总数日同比
+        standardDayMatterNum: 0,
+        compareDayMatterNum: 0,
+        //文件大小周同比
+        standardWeekSize: 0,
+        compareWeekSize: 0,
+        //文件大小日同比
+        standardDaySize: 0,
+        compareDaySize: 0,
+
+        pager: new Pager(Dashboard, 15),
+        matterPager: new Pager(Matter, 10),
+        activeIpTop10: [],
         //图标加载中的样式
         loadingOption: {
           text: '加载中…',
@@ -181,41 +221,160 @@
           series: [{
             name: '调用量',
             type: 'bar',
-            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
           }, {
             name: 'UV',
             type: 'line',
-            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
           }]
         }
       }
     },
     components: {
-      ECharts
+      ECharts,
+      RatePanel
     },
     methods: {
-      //获取七日调用分时数据
-      refreshInvokeList() {
+      updateDateStrings() {
+        let that = this;
+        //更新横坐标 从昨天开始倒推
+        let arr = []
+        for (let d = that.days; d >= 1; d--) {
+          let thenDate = new Date((new Date()).getTime() - d * 24 * 60 * 60 * 1000)
+          arr.push(simpleDate(thenDate))
+        }
+        that.dateStrings = arr
+      },
+      //获取15日调用分时数据
+      refreshDashboardPager() {
         let that = this;
 
-        that.$refs.invokeListChart.showLoading()
-        this.dashboard.httpInvokeList(function (response) {
-          let list = response.data.data
-          //按照日期依次排序
-          list.sort((k1, k2) => k1.dt > k2.dt ? 1 : -1)
-          that.invokeListOption.xAxis.data = list.map((k) => k.dt.substr(5))
-          that.invokeListOption.series[0].data = list.map((k) => k.invokeNum)
-          that.invokeListOption.series[1].data = list.map((k) => k.uv)
-          that.$refs.invokeListChart.hideLoading()
-        }, function (errorMessage) {
-          that.$refs.invokeListChart.hideLoading()
-        });
+        this.pager.setFilterValue("orderDt", SortDirection.ASC)
 
+        that.$refs.invokeListChart.showLoading()
+        this.pager.httpFastPage(function (response) {
+
+          let list = that.pager.data
+
+          if (list.length > 0) {
+            that.dashboard.render(list[list.length - 1])
+          }
+
+          //数据转换成map，方便检索
+          let map = {}
+          for (let i = 0; i < list.length; i++) {
+            map[list[i].dt] = list[i]
+          }
+
+          let invokeNumData = []
+          let uvData = []
+          let matterNumData = []
+          let fileSizeData = []
+          for (let i = 0; i < that.days; i++) {
+            invokeNumData.push(0)
+            uvData.push(0)
+            matterNumData.push(0)
+            fileSizeData.push(0)
+          }
+
+          //按照日期对应。
+          for (let i = 0; i < that.dateStrings.length; i++) {
+            let item = map[that.dateStrings[i]];
+            if (item) {
+              invokeNumData[i] = item.invokeNum
+              uvData[i] = item.uv
+              matterNumData[i] = item.matterNum
+              fileSizeData[i] = item.fileSize
+
+            }
+          }
+
+          //同环比
+          that.standardWeekInvokeNum = 0
+          that.compareWeekInvokeNum = 0
+          //调用量日同比
+          that.standardDayInvokeNum = 0
+          that.compareDayInvokeNum = 0
+          //UV周同比
+          that.standardWeekUv = 0
+          that.compareWeekUv = 0
+          //UV日同比
+          that.standardDayUv = 0
+          that.compareDayUv = 0
+
+          //文件总数周同比
+          that.standardWeekMatterNum = 0
+          that.compareWeekMatterNum = 0
+          //文件总数日同比
+          that.standardDayMatterNum = 0
+          that.compareDayMatterNum = 0
+          //文件大小周同比
+          that.standardWeekSize = 0
+          that.compareWeekSize = 0
+          //文件大小日同比
+          that.standardDaySize = 0
+          that.compareDaySize = 0
+
+          for (let i = 0; i < that.days; i++) {
+            if (i >= 1 && i <= 7) {
+              that.standardWeekInvokeNum += invokeNumData[i]
+              that.standardWeekUv += uvData[i]
+              that.standardWeekMatterNum += matterNumData[i]
+              that.standardWeekSize += fileSizeData[i]
+
+            } else if (i >= 8 && i <= 14) {
+              that.compareWeekInvokeNum += invokeNumData[i]
+              that.compareWeekUv += uvData[i]
+              that.compareWeekMatterNum += matterNumData[i]
+              that.compareWeekSize += fileSizeData[i]
+            }
+            if (i === 13) {
+              that.standardDayInvokeNum = invokeNumData[i]
+              that.standardDayUv = uvData[i]
+              that.standardDayMatterNum = matterNumData[i]
+              that.standardDaySize = fileSizeData[i]
+
+            }
+            if (i === 14) {
+              that.compareDayInvokeNum = invokeNumData[i]
+              that.compareDayUv = uvData[i]
+              that.compareDayMatterNum = matterNumData[i]
+              that.compareDaySize = fileSizeData[i]
+            }
+          }
+
+
+          that.invokeListOption.xAxis.data = that.dateStrings.map((k) => k.substr(5))
+          that.invokeListOption.series[0].data = invokeNumData
+          that.invokeListOption.series[1].data = uvData
+
+
+          that.$refs.invokeListChart.hideLoading()
+        }, function () {
+
+          that.$refs.invokeListChart.hideLoading()
+        })
+
+      },
+      //获取下载前10的文件
+      refreshMatterPager() {
+        let that = this;
+        that.matterPager.setFilterValue("orderTimes", SortDirection.DESC)
+        that.matterPager.httpFastPage()
+      },
+      refreshActiveIpTop10() {
+        let that = this
+        that.dashboard.httpActiveIpTop10(function (response) {
+          that.activeIpTop10 = response.data.data
+        })
       }
     },
     mounted() {
       let that = this;
-      this.refreshInvokeList()
+      this.updateDateStrings()
+      this.refreshDashboardPager()
+      this.refreshMatterPager()
+      this.refreshActiveIpTop10()
     }
   }
 
@@ -287,5 +446,58 @@
 
     }
 
+    .list-rank {
+      padding: 0 20px 10px 20px;
+      ul {
+        list-style: none;
+        padding: 0;
+        li {
+          zoom: 1;
+          margin-top: 16px;
+          display: flex;
+          align-items: center;
+          .rank {
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 16px;
+            height: 20px;
+            line-height: 20px;
+            width: 20px;
+            text-align: center;
+            margin-top: 1.5px;
+
+            background-color: #f5f5f5;
+
+            &.top3 {
+              background-color: #314659;
+              color: #fff;
+            }
+          }
+          .name {
+
+            color: rgba(0, 0, 0, .65);
+            font-size: 14px;
+            line-height: 22px;
+            flex: 1 1;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin-right: 8px;
+
+            &:hover {
+              color: @brand-primary;
+            }
+          }
+          .info {
+            color: rgba(0, 0, 0, .65);
+            font-size: 14px;
+            line-height: 22px;
+          }
+        }
+      }
+
+    }
   }
 </style>

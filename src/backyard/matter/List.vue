@@ -88,6 +88,7 @@
   import Director from './widget/Director'
   import {Message, MessageBox} from 'element-ui'
   import {UserRole} from "../../common/model/user/UserRole";
+  import {SortDirection} from "../../common/model/base/SortDirection";
 
   export default {
     data() {
@@ -132,6 +133,7 @@
         //刷新面包屑
         this.refreshBreadcrumbs()
 
+        this.pager.setFilterValue("orderDir", SortDirection.DESC)
         this.pager.httpFastPage()
       },
       goToDirectory(uuid) {

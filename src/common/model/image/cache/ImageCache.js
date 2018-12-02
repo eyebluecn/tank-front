@@ -58,7 +58,7 @@ export default class ImageCache extends BaseEntity {
   }
 
   getResizeUrl(){
-    return '/api/alien/download/' + this.matterUuid + '/' + this.getName()
+    return '/api/alien/preview/' + this.matterUuid + '/' + this.getName()
   }
 
   getOriginUrl() {

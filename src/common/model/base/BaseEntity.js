@@ -2,6 +2,7 @@ import Base from './Base'
 import Filter from './Filter'
 import {MessageBox, Notification as NotificationBox} from 'element-ui'
 import Schema from 'async-validator'
+import {FilterType} from "./FilterType";
 
 export default class BaseEntity extends Base {
 
@@ -27,7 +28,9 @@ export default class BaseEntity extends Base {
   //获取过滤器，必须每次动态生成，否则会造成filter逻辑混乱。
   getFilters() {
     return [
-      new Filter('SORT', 'ID', 'orderId')
+      new Filter(FilterType.SORT, '排序', 'orderSort'),
+      new Filter(FilterType.SORT, '修改时间排序', 'orderUpdateTime'),
+      new Filter(FilterType.SORT, '创建时间排序', 'orderCreateTime')
     ]
   };
 
