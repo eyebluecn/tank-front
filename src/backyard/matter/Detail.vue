@@ -58,9 +58,19 @@
               <i class="fa fa-download"></i>
               下载
             </a>
-            <a title="预览" @click.stop.prevent="matter.preview()" v-if="!matter.dir">
+            <a class="mr15" title="预览" @click.stop.prevent="matter.preview()" v-if="!matter.dir">
               <i class="fa fa-eye"></i>
               预览
+            </a>
+            <a class="mr15" title="使用一次性链接下载后链接立即失效,可以分享这个链接给朋友，点击复制"
+               @click.stop.prevent="copyLink" v-if="!matter.dir && matter.privacy">
+              <i class="fa fa-link"></i>
+              一次性链接
+            </a>
+            <a class="mr15" title="共有文件的下载链接"
+               @click.stop.prevent="copyLink" v-if="!matter.dir && !matter.privacy">
+              <i class="fa fa-link"></i>
+              复制链接
             </a>
 
           </span>
@@ -85,11 +95,15 @@
 <script>
   import Matter from "../../common/model/matter/Matter";
   import ImageCacheList from "../image/cache/widget/ImageCacheList"
+  import DownloadToken from "../../common/model/download/token/DownloadToken";
+  import {Message} from "element-ui"
 
   export default {
     data() {
       return {
         matter: new Matter(),
+        //复制只能是同步进行，因此提前获取downloadToken
+        downloadToken: new DownloadToken(),
         preference: this.$store.state.preference
       }
     },
@@ -98,17 +112,41 @@
         let that = this
         let arr = []
         let item = that.matter;
-        console.log("这里1", item)
         while (item) {
           arr.unshift(item)
           item = item.parent
         }
 
-        console.log(arr)
         return arr;
       }
     },
-    methods: {},
+    methods: {
+      copyLink() {
+        let that = this;
+
+        if (that.matter.privacy) {
+
+          let textToCopy = that.matter.getDownloadUrl(that.downloadToken.uuid);
+          console.log("复制文字", textToCopy)
+          that.$copyPlguin.copy(textToCopy, function () {
+            Message.success({
+              message: "复制成功!",
+              center: true
+            })
+          })
+        } else {
+          let textToCopy = that.matter.getDownloadUrl();
+          console.log("复制文", textToCopy)
+          that.$copyPlguin.copy(textToCopy, function () {
+            Message.success({
+              message: "复制成功!",
+              center: true
+            })
+          })
+        }
+
+      }
+    },
     components: {
       ImageCacheList
     },
@@ -117,7 +155,7 @@
       this.matter.uuid = this.$store.state.route.params.uuid
       if (this.matter.uuid) {
         this.matter.httpDetail(function () {
-          console.log(that.matter)
+          that.downloadToken.httpFetchDownloadToken(that.matter.uuid)
         })
       }
     }

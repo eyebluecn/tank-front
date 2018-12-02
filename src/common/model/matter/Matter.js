@@ -9,6 +9,7 @@ import Vue from "vue"
 import {FilterType} from "../base/FilterType";
 import {handleImageUrl} from "../../util/ImageUtil";
 import {currentHost} from "../../util/Utils";
+import DownloadToken from "../download/token/DownloadToken";
 
 export default class Matter extends BaseEntity {
 
@@ -176,7 +177,16 @@ export default class Matter extends BaseEntity {
 
     } else if (that.isDoc() || that.isPpt() || that.isXls()) {
 
-      Vue.$previewer.previewOffice(that.name, that.getPreviewUrl(), that.size)
+      //如果是共有文件
+      if (this.privacy) {
+        let downloadToken = new DownloadToken()
+        downloadToken.httpFetchDownloadToken(that.uuid, function () {
+          Vue.$previewer.previewOffice(that.name, that.getPreviewUrl(downloadToken.uuid), that.size)
+        })
+      } else {
+        Vue.$previewer.previewOffice(that.name, that.getPreviewUrl(), that.size)
+      }
+
 
     } else if (that.isText()) {
 
@@ -457,12 +467,12 @@ export default class Matter extends BaseEntity {
 
   }
 
-  getDownloadUrl() {
-    return currentHost() + '/api/alien/download/' + this.uuid + '/' + this.name
+  getDownloadUrl(downloadTokenUuid = null) {
+    return currentHost() + '/api/alien/download/' + this.uuid + '/' + this.name + (downloadTokenUuid ? '?downloadTokenUuid=' + downloadTokenUuid : '')
   }
 
-  getPreviewUrl() {
-    return currentHost() + '/api/alien/preview/' + this.uuid + '/' + this.name
+  getPreviewUrl(downloadTokenUuid = null) {
+    return currentHost() + '/api/alien/preview/' + this.uuid + '/' + this.name + (downloadTokenUuid ? '?downloadTokenUuid=' + downloadTokenUuid : '')
   }
 
 }
