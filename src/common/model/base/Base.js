@@ -131,14 +131,14 @@ export default class Base {
   }
 
   //专门捕捉没有登录这种错误。return true -> 有错误（已经处理掉了）  false -> 没错误 （什么都没干）
-  loginErrorHandler(response) {
+  specialErrorHandler(response) {
 
     let temp = response['data']
     if (temp !== null && typeof temp === 'object') {
       if (temp['code'] === ResultCode.LOGIN) {
 
         //如果当前本身就是登录页面，自然没有必要提示
-        if (Vue.store.state.route.path === Vue.store.state.loginPage) {
+        if (Vue.store.state.route.path === "/user/login") {
           return true
         }
         //这个问题不能报的太频繁，比如一个页面请求了两个接口，两个接口都报没有登录。
@@ -157,10 +157,19 @@ export default class Base {
         Vue.store.state.user.innerLogout()
 
         Vue.router.push({
-          path: Vue.store.state.loginPage,
+          path: "/user/login",
           query: {redirect: Vue.store.state.route.fullPath}
         })
 
+        return true
+
+      } else if (temp['code'] === ResultCode.NOT_INSTALLED) {
+
+        //做一次退出。
+        Vue.store.state.user.innerLogout()
+
+        Vue.store.state.installed = false
+        Vue.router.push("/install/index")
         return true
 
       }
@@ -247,7 +256,7 @@ export default class Base {
       //that.errorMessage = that.getErrorMessage(response)
 
       //对于没有登录的错误直接跳转到登录页面
-      if (that.loginErrorHandler(response)) {
+      if (that.specialErrorHandler(response)) {
         return
       }
 
@@ -296,7 +305,7 @@ export default class Base {
       //that.errorMessage = that.getErrorMessage(response)
 
       //对于没有登录的错误直接跳转到登录页面
-      if (that.loginErrorHandler(response)) {
+      if (that.specialErrorHandler(response)) {
         return
       }
 

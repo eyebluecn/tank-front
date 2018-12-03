@@ -3,7 +3,7 @@
     <div class="sidebar-collapse">
 
 
-      <div class="menu-header" @click="goToProfile">
+      <div class="menu-header" @click="goToProfile" v-if="$store.state.installed">
         <div class="logo-area">
           <img alt="image" class="img-circle w80"
                :src="handleImageUrl(user.avatarUrl)"/>
@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <ul class="nav mt20">
+      <ul class="nav mt20" v-if="$store.state.installed">
 
         <li v-if="user.role === UserRole.GUEST">
           <router-link to="/user/login">
@@ -65,8 +65,21 @@
             <span>关于</span>
           </a>
         </li>
+      </ul>
 
+      <div class="menu-header" v-if="!$store.state.installed">
+        <div class="logo-area">
+          <img alt="image" class="img-circle w80" src="../../assets/img/logo.png"/>
+        </div>
+      </div>
 
+      <ul class="nav mt20" v-if="!$store.state.installed">
+        <li>
+          <router-link to="/install/index" :class="{'custom-active':isCustomActive('/install/index')}">
+            <i class="w14 fa fa-cogs"></i>
+            <span>安装网站</span>
+          </router-link>
+        </li>
       </ul>
 
     </div>

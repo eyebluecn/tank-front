@@ -11,6 +11,7 @@ import UserCreate from '../../backyard/user/Create'
 import ImageCacheList from '../../backyard/image/cache/List'
 import DashboardIndex from '../../backyard/dashboard/Index'
 import PreferenceIndex from '../../backyard/preference/Index'
+import InstallIndex from '../../backyard/install/Index'
 import PreferenceEdit from '../../backyard/preference/Edit'
 import NotFound from '../../backyard/layout/NotFound'
 import store from '../vuex/index.js'
@@ -188,6 +189,23 @@ const router = new Router({
             ]
           }
         },
+
+        {
+          path: 'install/index',
+          name: 'InstallIndex',
+          component: InstallIndex,
+          meta: {
+            title: '安装网站',
+            requiresAuth: false,
+            breadcrumbs: [
+              {
+                name: 'InstallIndex',
+                title: '安装网站'
+              }
+            ]
+          }
+        },
+
         {
           path: 'preference',
           name: 'PreferenceIndex',
@@ -203,6 +221,7 @@ const router = new Router({
             ]
           }
         },
+
         {
           path: 'preference/edit',
           name: 'PreferenceEdit',

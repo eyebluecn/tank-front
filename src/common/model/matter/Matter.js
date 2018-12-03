@@ -135,7 +135,7 @@ export default class Matter extends BaseEntity {
     } else if (this.isDoc()) {
       return "/static/img/file/doc.svg"
     } else if (this.isPpt()) {
-      return "/static/img/file/ppt1.svg"
+      return "/static/img/file/ppt.svg"
     } else if (this.isXls()) {
       return "/static/img/file/xls.svg"
     } else if (this.isAudio()) {

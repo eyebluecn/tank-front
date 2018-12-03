@@ -28,6 +28,9 @@ const state = {
 
   breadcrumbs: [],
 
+  //网站是否已经安装好
+  installed: true,
+
   //网站偏好设置
   preference: new Preference(),
   //上次报没有登录错误的时间戳，用于控制登录提示框的个数不能太频繁。

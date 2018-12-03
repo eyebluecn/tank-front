@@ -11,6 +11,8 @@ let ResultCode = {
   LOGIN: "LOGIN",
   UNAUTHORIZED: "UNAUTHORIZED",
   NOT_FOUND: "NOT_FOUND",
+  RANGE_NOT_SATISFIABLE: "RANGE_NOT_SATISFIABLE",
+  NOT_INSTALLED: "NOT_INSTALLED",
   UNKNOWN: "UNKNOWN"
 
 }
@@ -61,6 +63,15 @@ let ResultCodeMap = {
     name: "内容不存在",
     value: "NOT_FOUND"
   },
+  RANGE_NOT_SATISFIABLE: {
+    name: "范围错误",
+    value: "RANGE_NOT_SATISFIABLE"
+  },
+  NOT_INSTALLED: {
+    name: "尚未安装",
+    value: "NOT_INSTALLED"
+  },
+
   UNKNOWN: {
     name: "服务器未知错误",
     value: "UNKNOWN"
