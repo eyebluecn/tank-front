@@ -3,15 +3,16 @@ import BaseEntity from '../base/BaseEntity'
 export default class Install extends BaseEntity {
 
   static URL_VERIFY = '/api/install/verify'
+  static URL_TABLE_INFO_LIST = '/api/install/table/info/list'
 
   constructor(args) {
     super(args)
 
     //数据库名
-    this.mysqlPort = null
-    this.mysqlHost = null
-    this.mysqlSchema = null
-    this.mysqlUsername = null
+    this.mysqlPort = 3306
+    this.mysqlHost = "127.0.0.1"
+    this.mysqlSchema = "tank"
+    this.mysqlUsername = "tank"
     this.mysqlPassword = null
 
     this.validatorSchema = {
@@ -66,6 +67,16 @@ export default class Install extends BaseEntity {
     }
 
     this.httpPost(Install.URL_VERIFY, this.getForm(), function (response) {
+
+      that.safeCallback(successCallback)(response)
+
+    }, errorCallback)
+  }
+
+  httpTableInfoList(successCallback, errorCallback) {
+    let that = this
+
+    this.httpPost(Install.URL_TABLE_INFO_LIST, this.getForm(), function (response) {
 
       that.safeCallback(successCallback)(response)
 
