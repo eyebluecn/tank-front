@@ -41,12 +41,25 @@
           </div>
 
           <div class="row mt20">
+            <div class="col-md-12">
+              <div class="alert alert-info">
+                <div><i class="fa fa-bullhorn"></i> 注意：</div>
+                <ol class="pl30 m0">
+                  <li>如果数据库和蓝眼云盘安装在同一台服务器，Host可以直接填写 127.0.0.1。</li>
+                  <li>数据库账户的权限要求要能够创建表，否则第二步"创建表"操作会出错</li>
+                </ol>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
             <div class="col-md-12 text-right">
-              <button class="btn btn-success btn-sm" v-if="verified">
-                <i class="fa fa-check"></i>
+              <button class="btn btn-success btn-sm" v-if="install.verified">
+                <i class="fa fa-link"></i>
                 MySQL连接测试通过
               </button>
-              <button class="btn btn-info btn-sm" @click.stop.prevent="verify" v-if="!verified">
+              <button class="btn btn-info btn-sm" @click.stop.prevent="verify" v-if="!install.verified">
                 <i class="fa fa-unlink"></i>
                 测试MySQL连接
               </button>
@@ -59,16 +72,133 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="创建表" name="second" :disabled="!verified">
+      <el-tab-pane label="创建表" name="second" :disabled="!install.verified">
         <div class="install-block">
 
-          <h1>这里安装数据库表</h1>
+          <div class="mb15 border-bottom" v-for="(tableInfo,index) in install.tableInfoList">
+            <div class="f16">
+              {{tableInfo.name}}
+
+              <span class="label label-success" v-if="tableInfo.tableExist && !tableInfo.missingFields.length">
+                已安装
+              </span>
+              <span class="label label-danger" v-if="tableInfo.tableExist && tableInfo.missingFields.length">
+                已安装,字段缺失
+              </span>
+              <span class="label label-warning" v-if="!tableInfo.tableExist">
+                待安装
+              </span>
+
+            </div>
+
+            <div class="mt10">
+              所有字段: <span class="label label-default mr5 inline-block mb10" v-for="field in tableInfo.allFields">{{field.DBName}}</span>
+            </div>
+            <div class="mt10" v-if="tableInfo.tableExist && tableInfo.missingFields.length">
+              缺失字段: <span class="label label-default mr5 inline-block mb10"
+                          v-for="field in tableInfo.missingFields">{{field.DBName}}</span>
+            </div>
+
+          </div>
+
+          <div class="row mt20">
+            <div class="col-md-12">
+              <div class="alert alert-info">
+                <div><i class="fa fa-bullhorn"></i> 点击"一键建表"后会按照以下逻辑执行操作：</div>
+                <ol class="pl30 m0">
+                  <li>如果某表不存在，则直接创建表。</li>
+                  <li>如果某表存在并且字段齐全，那么不会对该表做任何操作</li>
+                  <li>如果某表存在但是部分字段缺失，那么会在该表中增加缺失字段。</li>
+                  <li>如果表中有多余的字段(多余字段即不是蓝眼云盘需要的字段)，不会做删除处理，而会维持原样。</li>
+                </ol>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 text-right">
+
+              <button class="btn btn-info btn-sm" v-if="!install.tableCreated()" @click.stop.prevent="createTable()">
+                <i class="fa fa-gavel"></i>
+                一键建表
+              </button>
+
+              <button class="btn btn-success btn-sm" v-if="install.tableCreated()">
+                <i class="fa fa-check"></i>
+                建表完成
+              </button>
+
+              <button class="btn btn-primary btn-sm" @click.stop.prevent="goTo('third')">
+                <i class="fa fa-arrow-right"></i>
+                下一步
+              </button>
+
+            </div>
+          </div>
+
         </div>
       </el-tab-pane>
-      <el-tab-pane label="设置管理员" name="third" :disabled="!tableCreated">
+      <el-tab-pane label="设置管理员" name="third" :disabled="!install.tableCreated()">
         <div class="install-block">
 
-          <h1>这里配置管理员</h1>
+          <div class="row" v-validator="install.adminValidatorSchema.adminUsername.error">
+            <label class="col-md-2 control-label mt5 compulsory">管理员昵称</label>
+            <div class="col-md-10 validate">
+              <input type="text" class="form-control" v-model="install.adminUsername">
+            </div>
+          </div>
+
+          <div class="row mt10" v-validator="install.adminValidatorSchema.adminEmail.error">
+            <label class="col-md-2 control-label mt5 compulsory">管理员邮箱</label>
+            <div class="col-md-10 validate">
+              <input type="text" class="form-control" v-model="install.adminEmail">
+            </div>
+          </div>
+
+          <div class="row mt10" v-validator="install.adminValidatorSchema.adminPassword.error">
+            <label class="col-md-2 control-label mt5 compulsory">管理员密码</label>
+            <div class="col-md-10 validate">
+              <input type="password" class="form-control" v-model="install.adminPassword">
+            </div>
+          </div>
+
+          <div class="row mt10" v-validator="install.adminValidatorSchema.adminRepassword.error">
+            <label class="col-md-2 control-label mt5 compulsory">再次输入密码</label>
+            <div class="col-md-10 validate">
+              <input type="password" class="form-control" v-model="install.adminRepassword">
+            </div>
+          </div>
+
+
+          <div class="row mt20">
+            <div class="col-md-12">
+              <div class="alert alert-info">
+                <div><i class="fa fa-bullhorn"></i> 注意：</div>
+                <ol class="pl30 m0">
+                  <li>由于昵称将作为文件上传的目录，因此只允许字母数字以及"_"。</li>
+                  <li>管理员邮箱将作为登录的用户名。</li>
+                  <li>点击"提交"后，如果成功将自动进入首页，安装程序将失效。</li>
+                  <li>如果conf/tank.conf丢失、结构破坏会导致蓝眼云盘重启时激活安装程序。</li>
+                </ol>
+
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-12 text-right">
+
+              <button class="btn btn-primary btn-sm" @click.stop.prevent="createAdmin()">
+                <i class="fa fa-send"></i>
+                提交
+              </button>
+
+            </div>
+          </div>
+
+
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -83,9 +213,8 @@
   export default {
     data() {
       return {
+
         activeName: 'first',
-        verified: false,
-        tableCreated: false,
         install: new Install()
       }
     },
@@ -96,32 +225,39 @@
     },
     watch: {
       mysqlUrl(newVal, oldVal) {
-        this.verified = false
+        this.install.verified = false
       }
     },
     methods: {
       verify() {
         let that = this;
         this.install.httpVerify(function () {
-          that.verified = true
+          that.install.verified = true
           that.$message.success("数据库连接可用！")
         })
       },
       fetchTableInfoList() {
         let that = this;
-        this.install.httpTableInfoList(function (response) {
-          console.log("获取到待安装表", response.data.data)
-        })
+        this.install.httpTableInfoList()
       },
+
       handleClick(tab, event) {
 
         let paneName = tab.paneName;
 
       },
+      createTable() {
+        //开始建表
+        let that = this;
+        this.install.httpCreateTable(function (response) {
+          that.$message.success("建表成功！")
+
+        })
+      },
       goTo(tabName) {
         if (tabName === "second") {
 
-          if (!this.verified) {
+          if (!this.install.verified) {
             this.$message.error("请首先验证数据库连接")
             return
           }
@@ -129,12 +265,20 @@
           this.fetchTableInfoList();
 
         } else if (tabName === "third") {
-          if (!this.tableCreated) {
+          if (!this.install.tableCreated()) {
             this.$message.error("请首先创建数据库表")
             return
           }
         }
         this.activeName = tabName
+      },
+      createAdmin() {
+        //开始创建管理员
+        let that = this;
+        this.install.httpCreateAdmin(function (response) {
+          that.$message.success("创建管理员成功！")
+
+        })
       }
     },
     mounted() {

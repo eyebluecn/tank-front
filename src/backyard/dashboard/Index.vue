@@ -94,7 +94,7 @@
             <ul>
               <li v-for="(matter,index) in matterPager.data">
                 <span class="rank" :class="{top3:index<3}">{{index+1}}</span>
-                <router-link class="name" :to="'/'">{{matter.name}}</router-link>
+                <router-link class="name" :to="'/matter/detail/'+matter.uuid">{{matter.name}}</router-link>
                 <span class="info">{{matter.times}}</span>
               </li>
             </ul>
