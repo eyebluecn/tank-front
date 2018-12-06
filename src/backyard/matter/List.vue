@@ -2,34 +2,29 @@
   <div class="backyard-matter-list">
     <div class="row">
 
-      <div class="col-md-12">
+      <div class="col-md-6 mb10">
+        <button class="btn btn-primary btn-sm " v-if="selectedMatters.length !== pager.data.length"
+                @click.stop.prevent="checkAll">
+          <i class="fa fa-check-square"></i>
+          全选
+        </button>
+        <button class="btn btn-primary btn-sm "
+                v-if="pager.data.length && selectedMatters.length === pager.data.length"
+                @click.stop.prevent="checkNone">
+          <i class="fa fa-square-o"></i>
+          取消全选
+        </button>
+        <button class="btn btn-primary btn-sm " v-if="selectedMatters.length" @click.stop.prevent="deleteBatch">
+          <i class="fa fa-trash"></i>
+          删除
+        </button>
+        <button class="btn btn-primary btn-sm " v-if="selectedMatters.length"
+                @click.stop.prevent="moveBatch($createElement)">
+          <i class="fa fa-arrows"></i>
+          移动
+        </button>
 
-        <div>
-          <NbFilter :filters="pager.filters" @change="search">
-
-
-            <button class="btn btn-primary btn-sm " v-if="selectedMatters.length !== pager.data.length"
-                    @click.stop.prevent="checkAll">
-              <i class="fa fa-check-square"></i>
-              全选
-            </button>
-            <button class="btn btn-primary btn-sm "
-                    v-if="pager.data.length && selectedMatters.length === pager.data.length"
-                    @click.stop.prevent="checkNone">
-              <i class="fa fa-square-o"></i>
-              取消全选
-            </button>
-            <button class="btn btn-primary btn-sm " v-if="selectedMatters.length" @click.stop.prevent="deleteBatch">
-              <i class="fa fa-trash"></i>
-              删除
-            </button>
-            <button class="btn btn-primary btn-sm " v-if="selectedMatters.length"
-                    @click.stop.prevent="moveBatch($createElement)">
-              <i class="fa fa-arrows"></i>
-              移动
-            </button>
-
-            <span class="btn btn-primary btn-sm btn-file ">
+        <span class="btn btn-primary btn-sm btn-file ">
               <slot name="button">
                 <i class="fa fa-cloud-upload"></i>
                 <span>上传文件</span>
@@ -37,13 +32,26 @@
               <input ref="refFile" type="file" multiple="multiple" @change.prevent.stop="triggerUpload"/>
 				    </span>
 
-            <button class="btn btn-sm btn-primary " @click.stop.prevent="createDirectory">
-              <i class="fa fa-plus"></i>
-              创建文件夹
-            </button>
-          </NbFilter>
+        <button class="btn btn-sm btn-primary " @click.stop.prevent="createDirectory">
+          <i class="fa fa-plus"></i>
+          创建文件夹
+        </button>
 
+      </div>
+
+      <div class="col-md-6 mb10">
+        <div class="input-group">
+          <input type="text" class="form-control" v-model="searchText" @keyup.enter="searchFile"  placeholder="搜索文件">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-primary" @click.prevent.stop="searchFile">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
         </div>
+      </div>
+
+      <div class="col-md-12">
+
 
         <div v-for="m in uploadMatters">
           <UploadMatterPanel :matter="m"/>
@@ -101,6 +109,8 @@
         uploadMatters: [],
         //当前选中的文件
         selectedMatters: [],
+        //搜索的文字
+        searchText: null,
         pager: new Pager(Matter, 50),
         user: this.$store.state.user,
         breadcrumbs: this.$store.state.breadcrumbs,
@@ -130,10 +140,37 @@
       },
       refresh() {
 
+
+        let puuid = this.$route.query.puuid
+        if (puuid) {
+          this.pager.setFilterValue('puuid', puuid)
+        } else {
+          this.pager.setFilterValue('puuid', 'root')
+        }
+
+
+        //如果所有的排序都没有设置，那么默认以时间降序。
+        if (!this.pager.getFilterValue('orderDir') &&
+          !this.pager.getFilterValue('orderCreateTime') &&
+          !this.pager.getFilterValue('orderSize') &&
+          !this.pager.getFilterValue('orderName')) {
+
+          this.pager.setFilterValue('orderCreateTime', SortDirection.DESC)
+          this.pager.setFilterValue("orderDir", SortDirection.DESC)
+
+        }
+
+        //如果没有设置用户的话，那么默认显示当前登录用户的资料
+        if (!this.pager.getFilterValue('userUuid')) {
+          this.pager.setFilterValue('userUuid', this.user.uuid)
+        }
+
+        this.pager.setFilterValue("name", null)
+
+
         //刷新面包屑
         this.refreshBreadcrumbs()
 
-        this.pager.setFilterValue("orderDir", SortDirection.DESC)
         this.pager.httpFastPage()
       },
       goToDirectory(uuid) {
@@ -387,20 +424,44 @@
             }
           }
         })
+      },
+      searchFile() {
+
+        let that = this;
+        if (that.searchText) {
+
+          //刷新面包屑
+          that.refreshBreadcrumbs()
+
+
+          that.pager.resetFilter()
+          that.pager.setFilterValue('puuid', null)
+          that.pager.setFilterValue("orderCreateTime", SortDirection.DESC)
+          that.pager.setFilterValue("name", that.searchText)
+
+          that.pager.httpFastPage()
+
+
+        } else {
+
+
+          that.refresh()
+
+        }
+
+
       }
     },
     watch: {
       '$route'(newVal, oldVal) {
 
-        let puuid = this.$route.query.puuid
-        if (puuid) {
-          this.pager.setFilterValue('puuid', puuid)
-        } else {
-          this.pager.setFilterValue('puuid', 'root')
-        }
-
         this.refresh()
 
+      },
+      'searchText'(newVal, oldVal) {
+        if (oldVal && !newVal) {
+          this.refresh()
+        }
       }
 
     },
@@ -416,24 +477,6 @@
 
       let that = this
       this.pager.enableHistory()
-
-      let puuid = this.$route.query.puuid
-      if (puuid) {
-        this.pager.setFilterValue('puuid', puuid)
-      } else {
-        this.pager.setFilterValue('puuid', 'root')
-      }
-
-
-      //如果所有的排序都没有设置，那么默认以时间降序。
-      if (!this.pager.getFilterValue('orderDir') && !this.pager.getFilterValue('orderCreateTime') && !this.pager.getFilterValue('orderSize') && !this.pager.getFilterValue('orderName')) {
-        this.pager.setFilterValue('orderCreateTime', 'DESC')
-      }
-
-      //如果没有设置用户的话，那么默认显示当前登录用户的资料
-      if (!this.pager.getFilterValue('userUuid')) {
-        this.pager.setFilterValue('userUuid', this.user.uuid)
-      }
 
       this.refresh()
 

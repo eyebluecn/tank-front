@@ -236,7 +236,8 @@ export default class User extends BaseEntity {
 
       that.innerLogin(response)
 
-      successCallback && successCallback(response)
+      that.safeCallback(successCallback)(response)
+
     }, errorCallback)
   }
 
@@ -248,7 +249,7 @@ export default class User extends BaseEntity {
 
     this.httpPost(User.URL_LOGOUT, {}, function (response) {
 
-      successCallback && successCallback(response)
+      that.safeCallback(successCallback)(response)
     }, errorCallback)
   }
 

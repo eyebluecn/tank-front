@@ -119,7 +119,7 @@ export default class BaseEntity extends Base {
 
       that.render(response.data.data)
 
-      successCallback && successCallback(response)
+      that.safeCallback(successCallback)(response)
 
     }, function (response) {
 
@@ -154,7 +154,7 @@ export default class BaseEntity extends Base {
 
       that.render(response.data.data)
 
-      successCallback && successCallback(response)
+      that.safeCallback(successCallback)(response)
 
     }, errorCallback)
 
@@ -179,7 +179,7 @@ export default class BaseEntity extends Base {
 
     this.httpPost(url, {}, function (response) {
 
-      successCallback && successCallback(response)
+      that.safeCallback(successCallback)(response)
 
     }, errorCallback)
 

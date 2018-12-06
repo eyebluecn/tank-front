@@ -30,7 +30,7 @@
               <i class="fa fa-info-circle btn-action text-primary" v-if="!matter.dir" title="文件详情"
                  @click.stop.prevent="$router.push('/matter/detail/'+matter.uuid)"></i>
 
-              <i class="fa fa-pencil btn-action text-primary" title="重命名" @click.stop.prevent="prepareRename"></i>
+              <i class="fa fa-font btn-action text-primary" title="重命名" @click.stop.prevent="prepareRename"></i>
               <i class="fa fa-link btn-action text-primary" title="复制下载链接" v-if="!matter.dir"
                  @click.stop.prevent="clipboard"></i>
               <i class="fa fa-download btn-action text-primary" title="下载" v-if="!matter.dir"
@@ -233,9 +233,10 @@
         //稍作延迟，vue的组件才能加载出来
         setTimeout(function () {
 
+          //如果是文件夹，全选中
           let dotIndex = that.matter.name.lastIndexOf('.')
           if (dotIndex === -1) {
-            setInputSelection(that.$refs.editInput, 0, that.renameMatterName)
+            setInputSelection(that.$refs.editInput, 0, that.renameMatterName.length)
           } else {
             setInputSelection(that.$refs.editInput, 0, dotIndex)
           }
