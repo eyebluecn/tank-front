@@ -4,8 +4,11 @@ export default class Install extends BaseEntity {
 
   static URL_VERIFY = '/api/install/verify'
   static URL_TABLE_INFO_LIST = '/api/install/table/info/list'
+  static URL_ADMIN_LIST = '/api/install/admin/list'
   static URL_CREATE_TABLE = '/api/install/create/table'
   static URL_CREATE_ADMIN = '/api/install/create/admin'
+  static URL_VALIDATE_ADMIN = '/api/install/validate/admin'
+  static URL_FINISH = '/api/install/finish'
 
   constructor(args) {
     super(args)
@@ -15,7 +18,7 @@ export default class Install extends BaseEntity {
     this.mysqlHost = "127.0.0.1"
     this.mysqlSchema = "tank"
     this.mysqlUsername = "tank"
-    this.mysqlPassword = null
+    this.mysqlPassword = "tank123"
 
     //管理员用户名
     this.adminUsername = null
@@ -23,11 +26,16 @@ export default class Install extends BaseEntity {
     this.adminPassword = null
     this.adminRepassword = null
 
-    //表原信息
+    //表元信息
     this.tableInfoList = []
+
+    //管理员列表
+    this.adminList = []
 
     //数据库连接是否可用
     this.verified = false
+    //管理员配置完毕
+    this.adminConfigured = false
 
 
     this.validatorSchema = {
@@ -183,6 +191,32 @@ export default class Install extends BaseEntity {
     }, errorCallback)
   }
 
+  //获取管理员列表
+  httpAdminList(successCallback, errorCallback) {
+    let that = this
+
+    if (!this.tableCreated()) {
+      this.defaultErrorHandler("请首先创建数据库表", errorCallback)
+      return
+    }
+
+
+    let form = this.getForm()
+
+
+    this.httpPost(Install.URL_ADMIN_LIST, form, function (response) {
+
+
+      that.adminList.splice(0, that.adminList.length);
+      that.adminList.push(...response.data.data)
+
+
+      that.safeCallback(successCallback)(response)
+
+    }, errorCallback)
+  }
+
+
   httpCreateAdmin(successCallback, errorCallback) {
     let that = this
 
@@ -211,6 +245,52 @@ export default class Install extends BaseEntity {
 
 
     this.httpPost(Install.URL_CREATE_ADMIN, form, function (response) {
+
+      that.adminConfigured = true
+      that.safeCallback(successCallback)(response)
+
+    }, errorCallback)
+  }
+
+
+  //验证管理员账号
+  httpValidateAdmin(successCallback, errorCallback) {
+    let that = this
+
+    if (!this.tableCreated()) {
+      this.defaultErrorHandler("请首先创建数据库表", errorCallback)
+      return
+    }
+
+    if (!this.adminEmail || !this.adminPassword) {
+      this.defaultErrorHandler("邮箱和密码必填", errorCallback)
+      return
+    }
+
+
+    let form = this.getForm()
+    form["adminEmail"] = this.adminEmail
+    form["adminPassword"] = this.adminPassword
+
+
+    this.httpPost(Install.URL_VALIDATE_ADMIN, form, function (response) {
+
+      that.adminConfigured = true
+      that.safeCallback(successCallback)(response)
+
+    }, errorCallback)
+  }
+
+
+  //完成安装过程
+  httpFinish(successCallback, errorCallback) {
+    let that = this
+
+
+    let form = this.getForm()
+
+    this.httpPost(Install.URL_FINISH, form, function (response) {
+
 
       that.safeCallback(successCallback)(response)
 

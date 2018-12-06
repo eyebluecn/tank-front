@@ -129,6 +129,11 @@
                 建表完成
               </button>
 
+              <button class="btn btn-primary btn-sm" @click.stop.prevent="goTo('first')">
+                <i class="fa fa-arrow-left"></i>
+                上一步
+              </button>
+
               <button class="btn btn-primary btn-sm" @click.stop.prevent="goTo('third')">
                 <i class="fa fa-arrow-right"></i>
                 下一步
@@ -142,65 +147,181 @@
       <el-tab-pane label="设置管理员" name="third" :disabled="!install.tableCreated()">
         <div class="install-block">
 
-          <div class="row" v-validator="install.adminValidatorSchema.adminUsername.error">
-            <label class="col-md-2 control-label mt5 compulsory">管理员昵称</label>
-            <div class="col-md-10 validate">
-              <input type="text" class="form-control" v-model="install.adminUsername">
-            </div>
+          <div class="text-center" v-show="phase===-1">
+            <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
           </div>
 
-          <div class="row mt10" v-validator="install.adminValidatorSchema.adminEmail.error">
-            <label class="col-md-2 control-label mt5 compulsory">管理员邮箱</label>
-            <div class="col-md-10 validate">
-              <input type="text" class="form-control" v-model="install.adminEmail">
-            </div>
-          </div>
+          <NbExpanding>
+            <div v-show="phase===0">
+              <div>
+                检测到系统中已经存在有以下管理员：
+              </div>
+              <div class="mv10 bold" v-for="admin in install.adminList">
+                {{admin.email}}
+              </div>
+              <div>
+                你可以使用其中一位管理员的邮箱密码进行验证，或者创建一位个的管理员账户
+              </div>
 
-          <div class="row mt10" v-validator="install.adminValidatorSchema.adminPassword.error">
-            <label class="col-md-2 control-label mt5 compulsory">管理员密码</label>
-            <div class="col-md-10 validate">
-              <input type="password" class="form-control" v-model="install.adminPassword">
-            </div>
-          </div>
+              <div>
+                <div class="text-right">
 
-          <div class="row mt10" v-validator="install.adminValidatorSchema.adminRepassword.error">
-            <label class="col-md-2 control-label mt5 compulsory">再次输入密码</label>
-            <div class="col-md-10 validate">
-              <input type="password" class="form-control" v-model="install.adminRepassword">
-            </div>
-          </div>
+                  <button class="btn btn-primary btn-sm" @click.stop.prevent="phase = 1">
+                    <i class="fa fa-user-o"></i>
+                    验证管理员账户
+                  </button>
+
+                  <button class="btn btn-primary btn-sm" @click.stop.prevent="phase = 2">
+                    <i class="fa fa-user-plus"></i>
+                    创建管理员账户
+                  </button>
 
 
-          <div class="row mt20">
-            <div class="col-md-12">
-              <div class="alert alert-info">
-                <div><i class="fa fa-bullhorn"></i> 注意：</div>
-                <ol class="pl30 m0">
-                  <li>由于昵称将作为文件上传的目录，因此只允许字母数字以及"_"。</li>
-                  <li>管理员邮箱将作为登录的用户名。</li>
-                  <li>点击"提交"后，如果成功将自动进入首页，安装程序将失效。</li>
-                  <li>如果conf/tank.conf丢失、结构破坏会导致蓝眼云盘重启时激活安装程序。</li>
-                </ol>
+                  <button class="btn btn-primary btn-sm" @click.stop.prevent="goTo('second')">
+                    <i class="fa fa-arrow-left"></i>
+                    上一步
+                  </button>
 
+                </div>
               </div>
             </div>
-          </div>
+          </NbExpanding>
 
 
-          <div class="row">
-            <div class="col-md-12 text-right">
+          <NbExpanding>
+            <div v-show="phase===1">
 
-              <button class="btn btn-primary btn-sm" @click.stop.prevent="createAdmin()">
-                <i class="fa fa-send"></i>
-                提交
-              </button>
+
+              <div class="bold f20 text-center">
+                验证管理员账号
+              </div>
+
+              <div class="row mt10" v-validator="install.adminValidatorSchema.adminEmail.error">
+                <label class="col-md-2 control-label mt5 compulsory">管理员邮箱</label>
+                <div class="col-md-10 validate">
+                  <input type="text" class="form-control" v-model="install.adminEmail">
+                </div>
+              </div>
+
+              <div class="row mt10" v-validator="install.adminValidatorSchema.adminPassword.error">
+                <label class="col-md-2 control-label mt5 compulsory">管理员密码</label>
+                <div class="col-md-10 validate">
+                  <input type="password" class="form-control" v-model="install.adminPassword">
+                </div>
+              </div>
+
+              <div class="row mt10">
+                <div class="col-md-12 text-right">
+
+                  <button class="btn btn-primary btn-sm" @click.stop.prevent="phase = 0">
+                    <i class="fa fa-arrow-left"></i>
+                    上一步
+                  </button>
+
+
+                  <button class="btn btn-primary btn-sm" @click.stop.prevent="validateAdmin()">
+                    <i class="fa fa-send"></i>
+                    提交
+                  </button>
+
+                </div>
+              </div>
+            </div>
+          </NbExpanding>
+
+
+          <NbExpanding>
+            <div v-show="phase===2">
+
+              <div class="bold f20 text-center">
+                创建管理员账号
+              </div>
+
+              <div class="row mt10" v-validator="install.adminValidatorSchema.adminUsername.error">
+                <label class="col-md-2 control-label mt5 compulsory">管理员昵称</label>
+                <div class="col-md-10 validate">
+                  <input type="text" class="form-control" v-model="install.adminUsername">
+                </div>
+              </div>
+
+              <div class="row mt10" v-validator="install.adminValidatorSchema.adminEmail.error">
+                <label class="col-md-2 control-label mt5 compulsory">管理员邮箱</label>
+                <div class="col-md-10 validate">
+                  <input type="text" class="form-control" v-model="install.adminEmail">
+                </div>
+              </div>
+
+              <div class="row mt10" v-validator="install.adminValidatorSchema.adminPassword.error">
+                <label class="col-md-2 control-label mt5 compulsory">管理员密码</label>
+                <div class="col-md-10 validate">
+                  <input type="password" class="form-control" v-model="install.adminPassword">
+                </div>
+              </div>
+
+              <div class="row mt10" v-validator="install.adminValidatorSchema.adminRepassword.error">
+                <label class="col-md-2 control-label mt5 compulsory">再次输入密码</label>
+                <div class="col-md-10 validate">
+                  <input type="password" class="form-control" v-model="install.adminRepassword">
+                </div>
+              </div>
+
+
+              <div class="row mt20">
+                <div class="col-md-12">
+                  <div class="alert alert-info">
+                    <div><i class="fa fa-bullhorn"></i> 注意：</div>
+                    <ol class="pl30 m0">
+                      <li>由于昵称将作为文件上传的目录，因此只允许字母数字以及"_"。</li>
+                      <li>管理员邮箱将作为登录的用户名。</li>
+                    </ol>
+
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-md-12 text-right">
+
+                  <button class="btn btn-primary btn-sm" @click.stop.prevent="preStep">
+                    <i class="fa fa-arrow-left"></i>
+                    上一步
+                  </button>
+
+                  <button class="btn btn-primary btn-sm" @click.stop.prevent="createAdmin()">
+                    <i class="fa fa-send"></i>
+                    提交
+                  </button>
+
+                </div>
+              </div>
+
 
             </div>
-          </div>
-
+          </NbExpanding>
 
         </div>
       </el-tab-pane>
+      <el-tab-pane label="完成" name="forth" :disabled="!install.adminConfigured">
+        <div class="install-block">
+
+          <div class="text-center">
+            <img src="../../assets/img/success.svg" class="w50"/>
+          </div>
+          <div class="text-center mt10">
+            恭喜，安装成功！
+          </div>
+          <div class="text-center mv20">
+            <button class="btn btn-primary btn-sm" @click.stop.prevent="finish">
+              <i class="fa fa-home">
+                点击进入首页
+              </i>
+            </button>
+          </div>
+
+        </div>
+      </el-tab-pane>
+
     </el-tabs>
 
 
@@ -209,11 +330,14 @@
 
 <script>
   import Install from "../../common/model/install/Install";
+  import NbExpanding from "../../common/widget/NbExpanding";
 
   export default {
     data() {
       return {
 
+        //用来决定该如何验证管理员
+        phase: -1,
         activeName: 'first',
         install: new Install()
       }
@@ -227,6 +351,9 @@
       mysqlUrl(newVal, oldVal) {
         this.install.verified = false
       }
+    },
+    components: {
+      NbExpanding
     },
     methods: {
       verify() {
@@ -266,20 +393,73 @@
 
         } else if (tabName === "third") {
           if (!this.install.tableCreated()) {
-            this.$message.error("请首先创建数据库表")
+            this.$message.error("请首先点击'一键建表'")
+            return
+          }
+
+          //获取管理员列表
+          this.adminList()
+
+        } else if (tabName === "forth") {
+          if (!this.install.adminConfigured) {
+            this.$message.error("请首先配置管理员信息")
             return
           }
         }
         this.activeName = tabName
+      },
+      adminList() {
+        //开始创建管理员
+        let that = this;
+        this.install.httpAdminList(function (response) {
+          if (that.install.adminList.length) {
+            that.phase = 0
+          } else {
+            that.phase = 2
+          }
+        })
       },
       createAdmin() {
         //开始创建管理员
         let that = this;
         this.install.httpCreateAdmin(function (response) {
           that.$message.success("创建管理员成功！")
+          that.goTo("forth")
+        })
+      },
+      validateAdmin() {
+        //开始创建管理员
+        let that = this;
+        this.install.httpValidateAdmin(function (response) {
+          that.$message.success("验证管理员成功！")
+
+          that.goTo("forth")
+        })
+      },
+      //创建管理员时的上一步
+      preStep() {
+        let that = this
+        if (that.install.adminList.length) {
+          that.phase = 0
+        } else {
+          that.goTo("second")
+        }
+
+      },
+      finish() {
+        let that = this;
+
+        that.install.httpFinish(function (response) {
+
+          that.$store.state.installed = true
+          that.$store.state.preference.httpFetch(function () {
+            that.$router.push("/")
+          })
+
 
         })
       }
+
     },
     mounted() {
 
