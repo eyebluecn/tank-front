@@ -18,7 +18,7 @@ export default class Install extends BaseEntity {
     this.mysqlHost = "127.0.0.1"
     this.mysqlSchema = "tank"
     this.mysqlUsername = "tank"
-    this.mysqlPassword = "tank123"
+    this.mysqlPassword = null
 
     //管理员用户名
     this.adminUsername = null
