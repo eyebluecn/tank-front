@@ -43,7 +43,7 @@
               </div>
               <div>
                 <div class="mt5">
-                  {{UserRoleMap[user.role].name}}
+                  {{UserRoleMap[userItem.role].name}}
                 </div>
                 <div class="mt5">
                   <i class="fa fa-envelope text-success" v-if="userItem.email"></i>
@@ -57,13 +57,27 @@
                 {{userItem.description}}
               </div>
               <div>
+                <span class="mr10">
+                  文件限制:
+                    <span v-if="userItem.sizeLimit >= 0">
+                            {{userItem.sizeLimit | humanFileSize}}
+                          </span>
+                    <span v-else>
+                            无限制
+                          </span>
+                </span>
                 <span class="mr10">上次登录: {{userItem.lastTime | humanTime}}</span>
                 <span class="mr10">上次IP: {{userItem.lastIp}}</span>
 
                 <span class="pull-right action-buttons">
-									<router-link :to="'/user/edit/'+userItem.uuid">
+									<router-link :to="'/?userUuid=' + userItem.uuid" title="TA的文件">
+										<i class="fa fa-file-word-o text-success f18"></i>
+									</router-link>
+
+                  <router-link :to="'/user/edit/'+userItem.uuid" title="修改用户资料">
 										<i class="fa fa-pencil text-info f18"></i>
 									</router-link>
+
 									<a href="javascript:void(0)" v-if="userItem.status === UserStatus.OK && user.uuid!==userItem.uuid"
                      title="禁用该用户" @click.stop.prevent="changeStatus(userItem)">
                     <i class="fa fa-close text-danger f18"></i>

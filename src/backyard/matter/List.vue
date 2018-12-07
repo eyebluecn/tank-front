@@ -41,7 +41,7 @@
 
       <div class="col-md-6 mb10">
         <div class="input-group">
-          <input type="text" class="form-control" v-model="searchText" @keyup.enter="searchFile"  placeholder="搜索文件">
+          <input type="text" class="form-control" v-model="searchText" @keyup.enter="searchFile" placeholder="搜索文件">
           <span class="input-group-btn">
             <button type="button" class="btn btn-primary" @click.prevent.stop="searchFile">
               <i class="fa fa-search"></i>
@@ -97,6 +97,7 @@
   import {Message, MessageBox} from 'element-ui'
   import {UserRole} from "../../common/model/user/UserRole";
   import {SortDirection} from "../../common/model/base/SortDirection";
+  import {humanFileSize} from "../../common/filter/str";
 
   export default {
     data() {
@@ -148,17 +149,9 @@
           this.pager.setFilterValue('puuid', 'root')
         }
 
-
         //如果所有的排序都没有设置，那么默认以时间降序。
-        if (!this.pager.getFilterValue('orderDir') &&
-          !this.pager.getFilterValue('orderCreateTime') &&
-          !this.pager.getFilterValue('orderSize') &&
-          !this.pager.getFilterValue('orderName')) {
-
-          this.pager.setFilterValue('orderCreateTime', SortDirection.DESC)
-          this.pager.setFilterValue("orderDir", SortDirection.DESC)
-
-        }
+        this.pager.setFilterValue('orderCreateTime', SortDirection.DESC)
+        this.pager.setFilterValue("orderDir", SortDirection.DESC)
 
         //如果没有设置用户的话，那么默认显示当前登录用户的资料
         if (!this.pager.getFilterValue('userUuid')) {
@@ -288,13 +281,20 @@
           m.dir = false
           m.puuid = that.matter.uuid
 
-
           //指定为当前选择的用户。
           //如果没有设置用户的话，那么默认显示当前登录用户的资料
           if (!that.pager.getFilterValue('userUuid')) {
             m.userUuid = that.user.uuid
           } else {
             m.userUuid = that.pager.getFilterValue('userUuid')
+          }
+
+          //判断文件大小。
+          if (that.user.sizeLimit >= 0) {
+            if (domFile.size > that.user.sizeLimit) {
+              that.$message.error("文件大小超过了限制 " + humanFileSize(domFile.size) + " > " + humanFileSize(that.user.sizeLimit))
+              continue
+            }
           }
 
 

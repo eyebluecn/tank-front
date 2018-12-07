@@ -12,11 +12,11 @@
       </div>
 
       <div class="col-md-12">
-        <div class="bg-white br4 border p10">
+        <div class="user-block">
           <div>
 
             <div class="row mt10">
-              <label class="col-md-2 control-label mt5 compulsory">头像</label>
+              <label class="col-md-2 control-label mt5">头像</label>
               <div class="col-md-10">
                 <MatterImage v-model="currentUser.avatarUrl"/>
               </div>
@@ -33,7 +33,9 @@
             <div class="row mt10" v-validator="currentUser.validatorSchema.username.error">
               <label class="col-md-2 control-label mt5 compulsory">昵称</label>
               <div class="col-md-10 validate">
-                <input type="text" class="form-control" v-model="currentUser.username">
+                <input type="text" class="form-control"
+                       :disabled="currentUser.editMode"
+                       v-model="currentUser.username">
               </div>
             </div>
 
@@ -52,16 +54,29 @@
             </div>
 
             <div class="row mt10">
-              <label class="col-md-2 control-label mt5">单文件限制(单位：byte，负数表示无限制) 当前大小：{{currentUser.sizeLimit |
-                humanFileSize}} </label>
+              <label class="col-md-2 control-label mt5">文件限制(B) </label>
               <div class="col-md-10">
-                <input type="number" class="form-control" v-model="currentUser.sizeLimit">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <input type="number" class="form-control"
+                           :disabled="user.role !== UserRole.ADMINISTRATOR"
+                           v-model="currentUser.sizeLimit">
+                  </div>
+                  <div class="col-xs-6" style="line-height:30px;">
+                    当前值：
+                    <span v-if="currentUser.sizeLimit < 0">无限制</span>
+                    <span v-else>{{currentUser.sizeLimit | humanFileSize}}</span>
+                  </div>
+                </div>
+
               </div>
+
             </div>
 
             <div class="row mt10">
               <label class="col-md-2 control-label mt5">手机号</label>
               <div class="col-md-10">
+
                 <input type="text" class="form-control" v-model="currentUser.phone">
               </div>
             </div>
@@ -85,19 +100,34 @@
                 <input type="text" class="form-control" v-model="currentUser.city">
               </div>
             </div>
+
+            <div class="alert alert-info mt20">
+              <div class="bold">
+                <i class="fa fa-bullhorn"></i> 说明
+              </div>
+              <div>
+                <ol>
+                  <li>登录时，使用邮箱和密码进行登录</li>
+                  <li>因为昵称会作为用户上传文件的存储目录，因此只能使用数字和字母</li>
+                  <li>文件限制指用户上传的每个文件的最大值，-1表示对上传大小不做任何限制</li>
+                </ol>
+              </div>
+
+            </div>
           </div>
+
+
+          <div class="mt10 text-right">
+            <button class="btn btn-sm btn-primary mr10" @click.stop.prevent="$router.go(-1)">
+              <span class="fa fa-reply"></span>
+              返回
+            </button>
+            <CreateSaveButton :entity="currentUser" :callback="save"></CreateSaveButton>
+          </div>
+
         </div>
       </div>
 
-      <div class="col-md-12">
-        <div class="mt10">
-          <button class="btn btn-sm btn-primary" @click.stop.prevent="$router.go(-1)">
-            <span class="fa fa-reply"></span>
-            返回
-          </button>
-          <CreateSaveButton :entity="currentUser" :callback="save"></CreateSaveButton>
-        </div>
-      </div>
 
     </div>
 
@@ -186,6 +216,15 @@
 
 <style lang="less" rel="stylesheet/less">
   .backyard-user-edit {
+
+    .user-block {
+      background-color: white;
+      box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+      border-radius: 5px;
+      padding: 20px 15px 10px 15px;
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
 
   }
 </style>

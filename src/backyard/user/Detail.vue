@@ -9,8 +9,8 @@
         </div>
       </div>
 
-      <div class="col-md-10 col-md-offset-1">
-        <div class="bg-white br4 p10">
+      <div class="col-md-12">
+        <div class="user-block">
           <div class="media">
 
             <div class="mr20" :class="{'pull-left':!$store.state.config.mobile}">
@@ -26,66 +26,80 @@
 
               <div>
 
-                <div class="row f14">
-                  <div class="mt5 col-md-12">
-                    <div>
-                      <span class="bold">角色：</span>{{UserRoleMap[currentUser.role].name}}
-                    </div>
+
+
+
+                <div class="row">
+
+                  <div class="col-md-12 form-info">
+                    <span>角色：</span>
+                    <span>
+                      {{UserRoleMap[currentUser.role].name}}
+                    </span>
                   </div>
-                  <div class="mt5 col-md-12">
-                    <div>
-                      <span class="bold">邮箱：</span>{{currentUser.email}}
-                    </div>
+
+                  <div class="col-md-12 form-info">
+                    <span>邮箱：</span>
+                    <span>
+                      {{currentUser.email}}
+                    </span>
                   </div>
 
-                  <div class="mt5 col-md-12">
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div>
-                          <span class="bold">手机号：</span>{{currentUser.phone}}
-                        </div>
-                      </div>
-                      <div class="mt5 col-md-12">
-                        <div>
-                          <span class="bold">性别：</span>{{UserGenderMap[currentUser.gender].name}}
-                        </div>
-                      </div>
-                      <div class="mt5 col-md-12" v-if="currentUser.city">
-                        <div>
-                          <span class="bold">城市：</span>{{currentUser.city}}
-                        </div>
-                      </div>
+                  <div class="col-md-12 form-info">
+                    <span>手机号：</span>
+                    <span>
+                      {{currentUser.phone}}
+                    </span>
+                  </div>
 
-                      <div class="mt5 col-md-12">
-                        <div>
-                          <span class="bold">单文件限制：</span>
+                  <div class="col-md-12 form-info">
+                    <span>性别：</span>
+                    <span>
+                      {{UserGenderMap[currentUser.gender].name}}
+                    </span>
+                  </div>
 
-                          <span v-if="currentUser.sizeLimit >= 0">
+
+                  <div class="col-md-12 form-info">
+                    <span>城市：</span>
+                    <span>
+                     {{currentUser.city}}
+                    </span>
+                  </div>
+
+
+                  <div class="col-md-12 form-info">
+                    <span>单文件限制：</span>
+                    <span v-if="currentUser.sizeLimit >= 0">
                             {{currentUser.sizeLimit | humanFileSize}}
                           </span>
-                          <span v-else>
+                    <span v-else>
                             无限制
                           </span>
-                        </div>
-                      </div>
+                  </div>
 
-                      <div class="mt5 col-md-12">
-                        <div>
-                          <span class="bold">状态：</span>{{UserStatusMap[currentUser.status].name}}
-                        </div>
-                      </div>
+                  <div class="col-md-12 form-info">
+                    <span>状态：</span>
+                    <span>
+                     {{UserStatusMap[currentUser.status].name}}
+                    </span>
+                  </div>
 
-                      <div class="mt5 col-md-12" v-if="currentUser.lastIp">
-                        <div>
-                          <span class="bold">上次登录IP：</span>{{currentUser.lastIp}}
-                        </div>
-                      </div>
-                      <div class="mt5 col-md-12" v-if="currentUser.lastTime">
-                        <div>
-                          <span class="bold">上次登录时间：</span>{{currentUser.lastTime | simpleDateTime}}
-                        </div>
-                      </div>
-                    </div>
+
+                  <div class="col-md-12 form-info">
+                    <span>上次登录IP：</span>
+                    <span>
+                     {{currentUser.lastIp}}
+                    </span>
+                  </div>
+
+
+
+                  <div class="col-md-12 form-info">
+                    <span>上次登录时间：</span>
+                    <span>
+                     {{currentUser.lastTime | simpleDateTime}}
+                    </span>
                   </div>
 
                 </div>
@@ -95,18 +109,22 @@
                   <div class="col-md-12 text-right" v-if="user.username!=='demo'">
                     <button class="btn btn-sm btn-primary mb5" v-if="user.role === UserRole.ADMINISTRATOR"
                             @click.stop.prevent="resetPassword">
+                      <i class="fa fa-lock"></i>
                       重置密码
                     </button>
                     <button class="btn btn-sm btn-primary mb5" v-if="currentUser.uuid === user.uuid"
                             @click.stop.prevent="changePassword">
+                      <i class="fa fa-lock"></i>
                       修改密码
                     </button>
                     <button class="btn btn-sm btn-primary mb5"
                             @click.stop.prevent="$router.push('/?userUuid=' + currentUser.uuid)">
+                      <i class="fa fa-file-word-o"></i>
                       {{currentUser.uuid === user.uuid ? '我的文件' : '他的文件'}}
                     </button>
                     <button class="btn btn-sm btn-primary mb5"
                             @click.stop.prevent="$router.push('/user/edit/' + currentUser.uuid)">
+                      <i class="fa fa-pencil"></i>
                       {{currentUser.uuid === user.uuid ? '编辑个人资料' : '编辑他的资料'}}
                     </button>
                   </div>
@@ -206,7 +224,16 @@
 
 </script>
 <style lang="less" rel="stylesheet/less">
-  .user-profile {
+  .backyard-user-detail {
+
+    .user-block {
+      background-color: white;
+      box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+      border-radius: 5px;
+      padding: 20px 15px 10px 15px;
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
 
   }
 </style>

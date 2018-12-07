@@ -33,7 +33,7 @@
 
         <li v-if="user.role === UserRole.ADMINISTRATOR">
           <router-link to="/preference" :class="{'custom-active':isCustomActive('/preference')}">
-            <i class="w14 fa fa-dashboard"></i>
+            <i class="w14 fa fa-cog"></i>
             <span>网站偏好</span>
           </router-link>
         </li>
@@ -119,7 +119,7 @@
       },
       goToProfile() {
 
-        if (this.user.role === 'GUEST') {
+        if (this.user.role === UserRole.GUEST) {
           this.$router.push("/user/login");
         } else {
           this.$router.push("/user/detail/" + this.user.uuid);

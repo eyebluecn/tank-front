@@ -10,7 +10,7 @@ let UserRoleMap = {
     value: 'GUEST'
   },
   USER: {
-    name: '普通注册用户',
+    name: '注册用户',
     value: 'USER'
   },
   ADMINISTRATOR: {

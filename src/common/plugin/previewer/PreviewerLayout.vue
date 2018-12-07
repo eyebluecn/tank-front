@@ -11,12 +11,10 @@
   import {humanFileSize} from "../../filter/str";
 
 
-  let CLASS_NAME = " previewer-mode"
+  let CLASS_NAME = "previewer-mode"
   export default {
     data() {
-      return {
-
-      }
+      return {}
     },
     computed: {},
     props: {},
@@ -24,7 +22,7 @@
     methods: {
 
       bodyAddClass() {
-        document.body.className += CLASS_NAME
+        document.body.className += " " + CLASS_NAME
       },
       bodyRemoveClass() {
         let bodyClassName = document.body.className
