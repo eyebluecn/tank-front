@@ -48,8 +48,6 @@ export default class Matter extends BaseEntity {
     //允许用户选择的文件类型
     this.filter = "*"
     //本地字段
-    //允许上传的最大大小。
-    this.maxSize = 1024 * 1024 * 1024
     //给用户的提示文字
     this.uploadHint = null
     //浏览器中选择好的原生file，未作任何处理。
@@ -281,12 +279,6 @@ export default class Matter extends BaseEntity {
       return false
     }
 
-
-    if (this.file.size > this.maxSize) {
-      this.errorMessage = '文件超出指定大小'
-      return false
-    }
-
     this.size = this.file.size
 
     this.errorMessage = null
@@ -459,11 +451,7 @@ export default class Matter extends BaseEntity {
     matter.privacy = this.privacy
     matter.errorMessage = this.errorMessage
     matter.uploadHint = this.uploadHint
-    matter.maxSize = this.maxSize
     this.render(matter)
-
-    //TODO:如果还正在上传东西，那么停止请求。
-
 
   }
 

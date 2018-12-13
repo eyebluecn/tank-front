@@ -31,6 +31,7 @@
 <script>
   import Matter from '../../../common/model/matter/Matter'
   import UploadMatterPanel from "./UploadMatterPanel"
+  import {humanFileSize} from "../../../common/filter/str";
 
   export default {
     data() {
@@ -65,11 +66,6 @@
         required: false,
         "default": "image"
       },
-      maxSize: {
-        type: Number,
-        required: false,
-        "default": 1024 * 1024
-      },
       uploadHint: {
         type: String,
         required: false,
@@ -85,7 +81,6 @@
         let that = this
 
         let matter = that.matter;
-        matter.maxSize = that.maxSize
         matter.uploadHint = that.uploadHint
         matter.filter = that.filter
         matter.privacy = false
@@ -99,6 +94,16 @@
           return
         }
         matter.file = that.$refs['refFile'].files[0]
+
+
+        //判断文件大小。
+        if (that.user.sizeLimit >= 0) {
+          if (matter.file.size > that.user.sizeLimit) {
+            that.$message.error("文件大小超过了限制 " + humanFileSize(matter.file.size) + " > " + humanFileSize(that.user.sizeLimit))
+            return;
+          }
+        }
+
 
         matter.httpUpload(function () {
 
