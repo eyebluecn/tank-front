@@ -121,6 +121,11 @@ export default class Matter extends BaseEntity {
     return startWith(mimeType, 'video');
   }
 
+  isPsd() {
+    let extension = getExtension(this.name)
+    return extension === '.psd';
+  }
+
   getIcon() {
 
     if (this.dir) {
@@ -138,10 +143,12 @@ export default class Matter extends BaseEntity {
       return "/static/img/file/xls.svg"
     } else if (this.isAudio()) {
       return "/static/img/file/audio.svg"
-    } else if (this.isVideo()) {
+    } else if (this.isVideo() || getExtension(this.name) === ".mkv") {
       return "/static/img/file/video.svg"
     } else if (this.isText()) {
       return "/static/img/file/text.svg"
+    } else if (this.isPsd()) {
+      return "/static/img/file/psd.svg"
     } else if (this.isImage()) {
 
       //对于图片，使用其缩略图

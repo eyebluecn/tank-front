@@ -5,16 +5,17 @@
       <div class="col-md-12">
         <div class="pedia-navigation">
           <span class="item active">用户列表</span>
+          <span class="tool">
+            <router-link class="btn btn-primary btn-sm" to="/user/create">
+              <i class="fa fa-plus"></i>
+              创建用户
+            </router-link>
+          </span>
         </div>
       </div>
 
       <div class="col-md-12">
-        <NbFilter :filters="pager.filters" @change="search">
-          <router-link class="btn btn-primary btn-sm" to="/user/create">
-            <i class="fa fa-plus"></i>
-            创建用户
-          </router-link>
-        </NbFilter>
+        <NbPlainFilter :filters="pager.filters" @change="search"/>
       </div>
 
       <div class="col-md-12" v-for="(userItem,index) in pager.data">
@@ -105,7 +106,7 @@
 </template>
 
 <script>
-  import NbFilter from '../../common/widget/filter/NbFilter.vue'
+  import NbPlainFilter from '../../common/widget/filter/NbPlainFilter.vue'
   import NbPager from '../../common/widget/NbPager.vue'
   import Pager from '../../common/model/base/Pager'
   import User from '../../common/model/user/User'
@@ -133,7 +134,7 @@
       }
     },
     components: {
-      NbFilter,
+      NbPlainFilter,
       NbPager
     },
     methods: {

@@ -1,6 +1,7 @@
 //应用的占位图片，到处都要用到。 生成网址：http://png-pixel.com/
 //rgb(240,240,240)
 import NumberUtil from "./NumberUtil";
+import {getExtension} from "./MimeUtil";
 
 export var IMAGE_PLACEHOLDER_10_10 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAEUlEQVR42mP88J8BAzAOZUEAoc4TYb5Mv7IAAAAASUVORK5CYII=";
 
@@ -22,12 +23,18 @@ export var IMAGE_PLACEHOLDER_2_1 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
  * @returns
  */
 export function handleImageUrl(url = null, origin = false, width = 200, height = 200) {
-
   if (url) {
     if (origin) {
       return url;
     } else {
-      return url + "?ir=fill_" + width + "_" + height
+      //目前支持这几种格式的处理。 jpg jpeg png tif tiff bmp gif
+      let supportExtensions = [".jpg", ".jpeg", ".png", ".tif", ".tiff", ".bmp", ".gif"];
+      let extension = getExtension(url);
+      if (supportExtensions.indexOf(extension) === -1) {
+        return url;
+      } else {
+        return url + "?ir=fill_" + width + "_" + height
+      }
     }
   } else {
     if (NumberUtil.fractionEqual(1, 1, width, height)) {

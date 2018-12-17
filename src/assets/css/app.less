@@ -101,22 +101,28 @@ p {
 .pedia-navigation {
   margin-bottom: 10px;
   border-bottom: 1px solid #E6E6E6;
+  position: relative;
 
-  .item, a {
+  .item {
     font-size: 16px;
     color: #778195;
     margin-top: 15px;
-    margin-right: 10px;
+    margin-right: 20px;
     display: inline-block;
     box-sizing: content-box;
     line-height: 30px;
-    cursor: pointer;
 
     &:hover, &.is-link-active, &.active {
       color: @brand-primary;
 
       border-bottom: 2px solid @brand-primary;
     }
+  }
+  .tool {
+    position: absolute;
+    right: 0;
+    bottom: 5px;
+    display: inline-block;
   }
 }
 

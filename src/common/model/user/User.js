@@ -81,7 +81,7 @@ export default class User extends BaseEntity {
       ...super.getFilters(),
       new Filter(FilterType.HTTP_INPUT_SELECTION, '用户', 'username', null, User, true, UserInputSelection),
       new Filter(FilterType.INPUT, '邮箱', 'email'),
-      new Filter(FilterType.INPUT, '手机号', 'phone'),
+      new Filter(FilterType.INPUT, '手机号', 'phone', null, null, false),
       new Filter(FilterType.SELECTION, '状态', 'status', UserStatusList),
       new Filter(FilterType.SORT, '最新更新时间', 'orderLastTime')
     ]

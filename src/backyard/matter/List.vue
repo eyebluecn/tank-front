@@ -266,8 +266,6 @@
       triggerUpload() {
         let that = this
 
-        console.log("触发上传文件")
-
         let domFiles = that.$refs['refFile'].files;
         if (!domFiles || !domFiles.length) {
           console.error(domFiles)
@@ -275,16 +273,11 @@
           return;
         }
 
-        console.log(domFiles)
-
-
         for (let i = 0; i < domFiles.length; i++) {
           let domFile = domFiles[i];
           let m = new Matter()
           m.dir = false
           m.puuid = that.matter.uuid
-
-          console.log("第", i, domFile)
 
           //指定为当前选择的用户。
           //如果没有设置用户的话，那么默认显示当前登录用户的资料
@@ -302,10 +295,7 @@
             }
           }
 
-
           m.file = domFile
-
-          console.log("开始上传走起", m)
 
           m.httpUpload(function () {
             that.refresh()

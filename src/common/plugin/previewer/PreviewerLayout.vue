@@ -9,6 +9,7 @@
   import AudioPanel from "./panels/AudioPanel"
   import VideoPanel from "./panels/VideoPanel"
   import {humanFileSize} from "../../filter/str";
+  import {isIE} from "../../util/Utils";
 
 
   let CLASS_NAME = "previewer-mode"
@@ -71,8 +72,15 @@
         });
       },
       previewPdf(name, url, size) {
-
         let that = this
+
+        //IE浏览器不支持pdf的预览功能。
+        if (isIE()) {
+          window.open(url)
+          return;
+        }
+
+
         let vNode = this.$createElement(PdfPanel, {
           props: {
             name: name,
@@ -110,6 +118,13 @@
 
         let that = this
 
+        //IE浏览器不支持音频的预览功能。
+        if (isIE()) {
+          window.open(url)
+          return;
+        }
+
+
         let vNode = this.$createElement(AudioPanel, {
           props: {
             name: name,
@@ -122,6 +137,13 @@
       previewVideo(name, url, size) {
 
         let that = this
+
+        //IE浏览器不支持视频的预览功能。
+        if (isIE()) {
+          window.open(url)
+          return;
+        }
+
 
         let vNode = this.$createElement(VideoPanel, {
           props: {

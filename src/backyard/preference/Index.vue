@@ -3,13 +3,14 @@
 
     <div class="pedia-navigation">
       <span class="item active">网站偏好</span>
+      <span class="tool">
+        <router-link class="btn btn-sm btn-primary" to="/preference/edit">
+          <i class="fa fa-pencil"></i>
+          修改
+        </router-link>
+      </span>
     </div>
-    <div class="text-right">
-      <router-link class="btn btn-sm btn-primary" to="/preference/edit">
-        <i class="fa fa-pencil"></i>
-        修改
-      </router-link>
-    </div>
+
 
     <div class="preference-block">
       <div class="row">

@@ -271,6 +271,7 @@
       },
       finishCreateDirectory() {
         let that = this
+        that.matter.name = that.renameMatterName
         that.matter.httpCreateDirectory(function () {
           that.director.createMode = false
           that.editMode = false
@@ -353,6 +354,7 @@
     .left-part {
       margin-left: 10px;
     }
+
     .middle-part {
 
       height: @base-height;
@@ -362,6 +364,7 @@
         .basic-span;
 
         width: 90%;
+
         input {
           width: 100%;
           height: 26px;
@@ -376,6 +379,7 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+
         &.alien {
           color: @brand-primary;
           font-weight: bold;
@@ -388,6 +392,7 @@
       .matter-operation {
         .basic-span;
         display: none;
+
         i {
           font-size: 16px;
           margin-right: 5px;
@@ -397,6 +402,7 @@
           }
         }
       }
+
       .matter-size {
         .basic-span;
         display: inline-block;
@@ -404,6 +410,7 @@
         text-align: left;
         margin-left: 20px;
       }
+
       .matter-date {
         .basic-span;
       }
@@ -428,8 +435,10 @@
     .more-panel {
       border-top: 1px solid #eee;
       padding-left: 35px;
+
       .info {
       }
+
       .cell-btn {
         border-top: 1px solid #eee;
         line-height: @inner-cell-height;

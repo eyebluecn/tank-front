@@ -127,7 +127,7 @@
         if (that.matter.privacy) {
 
           let textToCopy = that.matter.getDownloadUrl(that.downloadToken.uuid);
-          console.log("复制文字", textToCopy)
+
           that.$copyPlguin.copy(textToCopy, function () {
             Message.success({
               message: "复制成功!",
@@ -136,7 +136,7 @@
           })
         } else {
           let textToCopy = that.matter.getDownloadUrl();
-          console.log("复制文", textToCopy)
+
           that.$copyPlguin.copy(textToCopy, function () {
             Message.success({
               message: "复制成功!",
