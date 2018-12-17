@@ -249,7 +249,7 @@
       refreshDashboardPager() {
         let that = this;
 
-        this.pager.setFilterValue("orderDt", SortDirection.ASC)
+        this.pager.setFilterValue("orderDt", SortDirection.DESC)
 
         that.$refs.invokeListChart.showLoading()
         this.pager.httpFastPage(function (response) {
@@ -398,6 +398,7 @@
       border-radius: 5px;
       padding: 20px 15px 10px 15px;
       margin-bottom: 30px;
+
       .upper {
 
         .indicator {
@@ -406,6 +407,7 @@
           line-height: 22px;
           height: 22px;
         }
+
         .amount {
           overflow: hidden;
           text-overflow: ellipsis;
@@ -419,10 +421,12 @@
           height: 38px;
 
         }
+
         .rate {
           margin-right: 15px;
         }
       }
+
       .lower {
         margin-top: 10px;
         padding-top: 10px;
@@ -430,6 +434,7 @@
         font-size: 14px;
       }
     }
+
     .figure-block {
       background-color: white;
       box-shadow: 0 0 5px rgba(0, 0, 0, .2);
@@ -448,14 +453,17 @@
 
     .list-rank {
       padding: 0 20px 10px 20px;
+
       ul {
         list-style: none;
         padding: 0;
+
         li {
           zoom: 1;
           margin-top: 16px;
           display: flex;
           align-items: center;
+
           .rank {
             border-radius: 20px;
             display: inline-block;
@@ -475,6 +483,7 @@
               color: #fff;
             }
           }
+
           .name {
 
             color: rgba(0, 0, 0, .65);
@@ -490,6 +499,7 @@
               color: @brand-primary;
             }
           }
+
           .info {
             color: rgba(0, 0, 0, .65);
             font-size: 14px;
