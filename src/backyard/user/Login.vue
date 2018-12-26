@@ -80,7 +80,7 @@
           //登录成功啦。
         }, function (err) {
 
-          Notification.error({
+          that.$message.error({
             title: '错误',
             message: err.data.msg
           })

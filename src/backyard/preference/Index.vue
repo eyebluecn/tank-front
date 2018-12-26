@@ -43,6 +43,11 @@
           <span v-html="preference.footerLine2"></span>
         </div>
 
+        <div class="col-md-12 form-info">
+          <span>是否显示应用数据：</span>
+          <NbSwitcher :disabled="true" v-model="preference.showAlien"/>
+        </div>
+
       </div>
     </div>
 
@@ -50,6 +55,8 @@
 </template>
 
 <script>
+  import NbSwitcher from "../../common/widget/NbSwitcher"
+
   export default {
     data() {
       return {
@@ -57,6 +64,9 @@
       }
     },
     methods: {},
+    components: {
+      NbSwitcher
+    },
     mounted() {
     }
   }
@@ -67,6 +77,7 @@
     .max-height-100 {
       max-height: 100px;
     }
+
     .preference-block {
       background-color: white;
       box-shadow: 0 0 5px rgba(0, 0, 0, .2);

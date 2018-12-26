@@ -14,6 +14,9 @@ export default class Preference extends BaseEntity {
     this.footerLine1 = null
     this.footerLine2 = null
 
+    //是否显示应用数据
+    this.showAlien = true
+
 
     this.validatorSchema = {
       name: {
@@ -35,7 +38,8 @@ export default class Preference extends BaseEntity {
       logoUrl: this.logoUrl,
       faviconUrl: this.faviconUrl,
       footerLine1: this.footerLine1,
-      footerLine2: this.footerLine2
+      footerLine2: this.footerLine2,
+      showAlien: this.showAlien
     }
   }
 

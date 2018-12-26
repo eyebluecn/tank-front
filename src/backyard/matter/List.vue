@@ -107,13 +107,14 @@
         //准备新建的文件。
         newMatter: new Matter(),
         //准备上传的一系列文件
-        uploadMatters: [],
+        uploadMatters: this.$store.state.uploadMatters,
         //当前选中的文件
         selectedMatters: [],
         //搜索的文字
         searchText: null,
         pager: new Pager(Matter, 50),
         user: this.$store.state.user,
+        preference: this.$store.state.preference,
         breadcrumbs: this.$store.state.breadcrumbs,
         director: new Director()
 
@@ -156,6 +157,14 @@
         //如果没有设置用户的话，那么默认显示当前登录用户的资料
         if (!this.pager.getFilterValue('userUuid')) {
           this.pager.setFilterValue('userUuid', this.user.uuid)
+        }
+
+        //如果没有设置alien，那么默认听从偏好设置中的。
+        if (this.pager.getFilterValue('alien') !== true || this.pager.getFilterValue('alien') !== false) {
+          //显示应用文件意味着 应用文件和非应用文件一起显示。
+          if (!this.preference.showAlien) {
+            this.pager.setFilterValue('alien', false)
+          }
         }
 
         this.pager.setFilterValue("name", null)
@@ -268,8 +277,12 @@
 
         let domFiles = that.$refs['refFile'].files;
         if (!domFiles || !domFiles.length) {
-          console.error(domFiles)
-          console.error("没有选择文件")
+          that.$message.error("没有选择文件")
+          return;
+        }
+
+        if (domFiles.length > 1000) {
+          that.$message.error("最多只能同时选取1000个文件")
           return;
         }
 
@@ -298,7 +311,7 @@
           m.file = domFile
 
           m.httpUpload(function () {
-            that.refresh()
+            that.$store.state.uploadListInstance.refresh()
           })
 
           that.uploadMatters.push(m)
@@ -471,12 +484,12 @@
       }
     },
     mounted() {
-
       let that = this
       this.pager.enableHistory()
+      //更新vuex中List实例，主要解决大文件上传持有的功能。
+      this.$store.state.uploadListInstance = this
 
       this.refresh()
-
     }
   }
 </script>

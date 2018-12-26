@@ -1,7 +1,7 @@
 import BaseEntity from '../base/BaseEntity'
 import Filter from '../base/Filter'
-import {Notification, Message} from 'element-ui'
-import {getMimeType, MimeUtil} from '../../util/MimeUtil'
+import {Message} from 'element-ui'
+import {getMimeType} from '../../util/MimeUtil'
 import {containStr, endWith, getExtension, startWith} from '../../filter/str'
 import User from '../user/User'
 import UserInputSelection from '../../../backyard/user/widget/UserInputSelection'
@@ -67,6 +67,7 @@ export default class Matter extends BaseEntity {
       new Filter(FilterType.HTTP_INPUT_SELECTION, '用户', 'userUuid', null, User, false, UserInputSelection),
       new Filter(FilterType.INPUT, '关键字', 'name'),
       new Filter(FilterType.CHECK, '文件夹', 'dir'),
+      new Filter(FilterType.CHECK, '应用数据', 'alien'),
       new Filter(FilterType.SORT, '文件夹', 'orderDir'),
       new Filter(FilterType.SORT, '下载次数', 'orderTimes'),
       new Filter(FilterType.SORT, '大小', 'orderSize'),

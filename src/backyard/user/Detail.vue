@@ -27,8 +27,6 @@
               <div>
 
 
-
-
                 <div class="row">
 
                   <div class="col-md-12 form-info">
@@ -94,7 +92,6 @@
                   </div>
 
 
-
                   <div class="col-md-12 form-info">
                     <span>上次登录时间：</span>
                     <span>
@@ -146,7 +143,7 @@
 <script>
   import NbExpanding from '../../common/widget/NbExpanding.vue'
   import User from '../../common/model/user/User'
-  import {MessageBox, Notification} from 'element-ui'
+  import {MessageBox} from 'element-ui'
   import {UserGender, UserGenderList, UserGenderMap} from "../../common/model/user/UserGender";
   import {UserRole, UserRoleList, UserRoleMap} from "../../common/model/user/UserRole";
   import {UserStatus, UserStatusList, UserStatusMap} from "../../common/model/user/UserStatus";
@@ -195,7 +192,7 @@
           inputErrorMessage: '新密码必填'
         }).then(({value}) => {
           that.currentUser.httpUserResetPassword(value, function (response) {
-            Notification.success({
+            that.$message.success({
               message: '重置密码成功！'
             })
           })

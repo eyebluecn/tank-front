@@ -2,7 +2,6 @@
   <nav ref="menuNav" class="side-navigation" :class="{'show-drawer':showDrawer}" @click.stop.prevent="eatClick">
     <div class="sidebar-collapse">
 
-
       <div class="menu-header" @click="goToProfile" v-if="$store.state.installed">
         <div class="logo-area">
           <img alt="image" class="img-circle w80"
@@ -86,7 +85,7 @@
   </nav>
 </template>
 <script>
-  import {Message, MessageBox, Notification} from 'element-ui'
+  import {MessageBox} from 'element-ui'
   import {UserRole} from "../../common/model/user/UserRole";
   import {handleImageUrl} from "../../common/util/ImageUtil";
 
@@ -204,6 +203,7 @@
       width: @sidebar-width;
       background-color: @brand-primary;
       height: @top-navigation-height;
+
       a {
         font-size: 16px;
         color: white;
@@ -213,6 +213,7 @@
     //放头像和昵称的地方。
     .menu-header {
       cursor: pointer;
+
       .logo-area {
 
         text-align: center;
@@ -225,6 +226,7 @@
           color: @nav-text-color;
           font-weight: bold;
         }
+
         .role {
           text-align: center;
           color: @nav-text-color;
@@ -253,6 +255,7 @@
           color: @nav-text-color;
 
           padding: 12px 20px;
+
           &:hover, &:focus {
             color: @font-highlight-color;
             background-color: transparent;

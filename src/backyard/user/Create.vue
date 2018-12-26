@@ -175,12 +175,12 @@
       save() {
         let that = this
         if (!this.currentUser.editMode && this.currentUser.password !== this.rePassword) {
-          Notification.error('两次密码输入不一致')
+          that.$message.error('两次密码输入不一致')
           return
         }
 
         this.currentUser.httpSave(function (response) {
-          Notification.success({
+          that.$message.success({
             message: that.currentUser.editMode ? '修改用户成功！' : '创建用户成功！'
           })
 

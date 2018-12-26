@@ -60,6 +60,7 @@ html, body {
     a {
       font-size: 17px;
       color: @app-color-title;
+
       &:hover {
         color: @brand-primary;
       }
@@ -72,6 +73,7 @@ html, body {
     letter-spacing: 0;
     line-height: 18px;
   }
+
   .cell-description {
     font-size: 12px;
     color: @app-color-content;
@@ -118,6 +120,7 @@ p {
       border-bottom: 2px solid @brand-primary;
     }
   }
+
   .tool {
     position: absolute;
     right: 0;
@@ -136,13 +139,15 @@ p {
 //列表页中展开的标准样式
 .form-info {
   margin-bottom: 10px;
-  span:first-child:not(.label) {
+
+  > span:first-child:not(.label) {
     width: 150px;
     color: #99a9bf;
     font-size: 15px;
     font-weight: bold;
   }
-  span:last-child:not(.label) {
+
+  > span:last-child:not(.label) {
     font-size: 15px;
   }
 }

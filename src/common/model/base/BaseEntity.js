@@ -1,6 +1,6 @@
 import Base from './Base'
 import Filter from './Filter'
-import {MessageBox, Notification as NotificationBox} from 'element-ui'
+import {MessageBox, Message} from 'element-ui'
 import Schema from 'async-validator'
 import {FilterType} from "./FilterType";
 
@@ -227,7 +227,7 @@ export default class BaseEntity extends Base {
     }).then(function () {
 
         that.httpDel(function () {
-          NotificationBox.success({
+          Message.success({
             message: '成功删除!'
           })
 

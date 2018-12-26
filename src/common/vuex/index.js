@@ -27,6 +27,10 @@ const state = {
   user,
 
   breadcrumbs: [],
+  //全局正在上传的文件
+  uploadMatters: [],
+  //当前接受上传的那个Matter List.vue实例
+  uploadListInstance: null,
 
   //网站是否已经安装好
   installed: true,

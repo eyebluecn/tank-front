@@ -147,7 +147,7 @@
   import NbExpanding from '../../../common/widget/NbExpanding'
   import $ from 'jquery'
   import Director from './Director'
-  import {Message, MessageBox, Notification} from 'element-ui'
+  import {Message, MessageBox} from 'element-ui'
   import {currentHost, setInputSelection} from '../../../common/util/Utils'
 
   export default {

@@ -46,6 +46,13 @@
       </div>
 
       <div class="row mt10">
+        <label class="col-md-2 control-label mt5">是否显示应用数据</label>
+        <div class="col-md-10">
+          <NbSwitcher v-model="preference.showAlien"/>
+        </div>
+      </div>
+
+      <div class="row mt10">
         <div class="col-md-12">
           <div>
             <CreateSaveButton :entity="preference" :callback="save"/>
@@ -61,7 +68,7 @@
   import CreateSaveButton from '../widget/CreateSaveButton'
   import MatterImage from '../matter/widget/MatterImage'
   import Preference from '../../common/model/preference/Preference'
-  import {Notification} from 'element-ui'
+  import NbSwitcher from "../../common/widget/NbSwitcher"
 
   export default {
     name: 'edit',
@@ -73,14 +80,15 @@
     },
     components: {
       MatterImage,
-      CreateSaveButton
+      CreateSaveButton,
+      NbSwitcher
     },
     methods: {
       save() {
         let that = this;
         this.preference.httpSave(function (response) {
 
-          Notification.success({
+          that.$message.success({
             message: '修改偏好成功！'
           });
 

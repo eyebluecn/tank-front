@@ -48,11 +48,10 @@
     </div>
 
 
-
   </div>
 </template>
 <script>
-  import {Notification} from 'element-ui'
+
   import CreateSaveButton from '../../backyard/widget/CreateSaveButton'
 
   export default {
@@ -71,21 +70,21 @@
       save() {
         let that = this
         if (!this.oldPassword || !this.password || !this.repeatPassword) {
-          Notification.error({
+          that.$message.error({
             message: '不能为空！'
           })
           return
         }
 
         if (this.repeatPassword !== this.password) {
-          Notification.error({
+          that.$message.error({
             message: '两次输入不一致！'
           })
           return
         }
 
         this.user.httpUserChangePassword(this.oldPassword, this.password, function (response) {
-          Notification.success({
+          that.$message.success({
             message: '修改密码成功！'
           })
           that.$router.go(-1)
