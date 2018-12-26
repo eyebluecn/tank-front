@@ -13,7 +13,7 @@
             <div class="amount">{{dashboard.totalInvokeNum}}</div>
             <div>
               <RatePanel name="周环比" :standardValue="standardWeekInvokeNum" :compareValue="compareWeekInvokeNum"/>
-              <RatePanel name="日同比" :standardValue="standardDayInvokeNum" :compareValue="compareDayInvokeNum"/>
+              <RatePanel name="日环比" :standardValue="standardDayInvokeNum" :compareValue="compareDayInvokeNum"/>
             </div>
           </div>
           <div class="lower">
@@ -28,7 +28,7 @@
             <div class="amount">{{dashboard.totalUv}}</div>
             <div>
               <RatePanel name="周环比" :standardValue="standardWeekUv" :compareValue="compareWeekUv"/>
-              <RatePanel name="日同比" :standardValue="standardDayUv" :compareValue="compareDayUv"/>
+              <RatePanel name="日环比" :standardValue="standardDayUv" :compareValue="compareDayUv"/>
 
             </div>
           </div>
@@ -44,7 +44,7 @@
             <div class="amount">{{dashboard.totalMatterNum}}</div>
             <div>
               <RatePanel name="周环比" :standardValue="standardWeekMatterNum" :compareValue="compareWeekMatterNum"/>
-              <RatePanel name="日同比" :standardValue="standardDayMatterNum" :compareValue="compareDayMatterNum"/>
+              <RatePanel name="日环比" :standardValue="standardDayMatterNum" :compareValue="compareDayMatterNum"/>
 
             </div>
           </div>
@@ -60,7 +60,7 @@
             <div class="amount">{{dashboard.totalFileSize | humanFileSize}}</div>
             <div>
               <RatePanel name="周环比" :standardValue="standardWeekSize" :compareValue="compareWeekSize"/>
-              <RatePanel name="日同比" :standardValue="standardDaySize" :compareValue="compareDaySize"/>
+              <RatePanel name="日环比" :standardValue="standardDaySize" :compareValue="compareDaySize"/>
 
             </div>
           </div>
@@ -169,28 +169,28 @@
         dateStrings: [],
         //昨天的统计情况
         dashboard: new Dashboard(),
-        //调用量周同比
+        //调用量周环比
         standardWeekInvokeNum: 0,
         compareWeekInvokeNum: 0,
-        //调用量日同比
+        //调用量日环比
         standardDayInvokeNum: 0,
         compareDayInvokeNum: 0,
-        //UV周同比
+        //UV周环比
         standardWeekUv: 0,
         compareWeekUv: 0,
-        //UV日同比
+        //UV日环比
         standardDayUv: 0,
         compareDayUv: 0,
-        //文件总数周同比
+        //文件总数周环比
         standardWeekMatterNum: 0,
         compareWeekMatterNum: 0,
-        //文件总数日同比
+        //文件总数日环比
         standardDayMatterNum: 0,
         compareDayMatterNum: 0,
-        //文件大小周同比
+        //文件大小周环比
         standardWeekSize: 0,
         compareWeekSize: 0,
-        //文件大小日同比
+        //文件大小日环比
         standardDaySize: 0,
         compareDaySize: 0,
 
@@ -292,26 +292,26 @@
           //同环比
           that.standardWeekInvokeNum = 0
           that.compareWeekInvokeNum = 0
-          //调用量日同比
+          //调用量日环比
           that.standardDayInvokeNum = 0
           that.compareDayInvokeNum = 0
-          //UV周同比
+          //UV周环比
           that.standardWeekUv = 0
           that.compareWeekUv = 0
-          //UV日同比
+          //UV日环比
           that.standardDayUv = 0
           that.compareDayUv = 0
 
-          //文件总数周同比
+          //文件总数周环比
           that.standardWeekMatterNum = 0
           that.compareWeekMatterNum = 0
-          //文件总数日同比
+          //文件总数日环比
           that.standardDayMatterNum = 0
           that.compareDayMatterNum = 0
-          //文件大小周同比
+          //文件大小周环比
           that.standardWeekSize = 0
           that.compareWeekSize = 0
-          //文件大小日同比
+          //文件大小日环比
           that.standardDaySize = 0
           that.compareDaySize = 0
 
