@@ -10,6 +10,7 @@
 <script>
   import NprogressContainer from 'vue-nprogress/src/NprogressContainer'
 
+
   export default {
     data () {
       return {
