@@ -51,7 +51,7 @@ module.exports = {
           resolve('node_modules/resize-detector'),
           //对于使用cnpm时会是如下形式
           resolve('node_modules/_vue-echarts@3.1.3@vue-echarts'),
-          resolve('node_modules/_resize-detector@0.1.9@resize-detector')
+          resolve('node_modules/_resize-detector@0.1.10@resize-detector')
 
         ]
       },
