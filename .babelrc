@@ -8,7 +8,7 @@
     }],
     "stage-2"
   ],
-  "plugins": ["transform-runtime"],
+  "plugins": ["transform-runtime","babel-plugin-syntax-dynamic-import"],
   "env": {
     "test": {
       "presets": ["env", "stage-2"],

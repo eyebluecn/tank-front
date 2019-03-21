@@ -12,6 +12,10 @@ module.exports = {
   entry: {
     app: './src/main.js'
   },
+  externals:{
+    'vue':'Vue',
+    'element-ui':'ELEMENT'
+  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -45,13 +49,16 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
+        options:{
+          plugins:['babel-plugin-syntax-dynamic-import']
+        },
         include: [resolve('src'),
           resolve('test'),
           resolve('node_modules/vue-echarts'),
           resolve('node_modules/resize-detector'),
           //对于使用cnpm时会是如下形式
           resolve('node_modules/_vue-echarts@3.1.3@vue-echarts'),
-          resolve('node_modules/_resize-detector@0.1.9@resize-detector')
+          resolve('node_modules/_resize-detector@0.1.10@resize-detector')
 
         ]
       },
