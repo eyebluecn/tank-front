@@ -12,10 +12,6 @@ module.exports = {
   entry: {
     app: './src/main.js'
   },
-  externals:{
-    'vue':'Vue',
-    'element-ui':'ELEMENT'
-  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -49,9 +45,6 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        options:{
-          plugins:['babel-plugin-syntax-dynamic-import']
-        },
         include: [resolve('src'),
           resolve('test'),
           resolve('node_modules/vue-echarts'),

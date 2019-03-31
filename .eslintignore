@@ -3,7 +3,6 @@
 /dist/
 /static/
 /*.js
-/*.vue
 
 src/common/fork/*
 

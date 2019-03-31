@@ -10,7 +10,6 @@
 <script>
   import NprogressContainer from 'vue-nprogress/src/NprogressContainer'
 
-
   export default {
     data () {
       return {
@@ -33,7 +32,7 @@
 
 <style lang="less" rel="stylesheet/less">
 
-	//@import "~font-awesome/css/font-awesome.css";
+	@import "~font-awesome/css/font-awesome.css";
 	@import "./assets/css/app.less";
 
 	.nb-app {

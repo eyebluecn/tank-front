@@ -1,22 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import ByFrameView from '../../backyard/Frame.vue'
+import MatterList from '../../backyard/matter/List'
+import MatterDetail from '../../backyard/matter/Detail'
+import UserLogin from '../../backyard/user/Login.vue'
+import UserList from '../../backyard/user/List'
+import UserDetail from '../../backyard/user/Detail'
+import UserChangePassword from '../../backyard/user/ChangePassword'
+import UserCreate from '../../backyard/user/Create'
+import ImageCacheList from '../../backyard/image/cache/List'
+import DashboardIndex from '../../backyard/dashboard/Index'
+import PreferenceIndex from '../../backyard/preference/Index'
+import InstallIndex from '../../backyard/install/Index'
+import PreferenceEdit from '../../backyard/preference/Edit'
+import NotFound from '../../backyard/layout/NotFound'
 import store from '../vuex/index.js'
-
-const ByFrameView  = () => import('../../backyard/Frame');
-const MatterList  = () => import('../../backyard/matter/List');
-const MatterDetail  = () => import('../../backyard/matter/Detail');
-const UserLogin  = () => import('../../backyard/user/Login');
-const UserList  = () => import('../../backyard/user/List');
-const UserDetail  = () => import('../../backyard/user/Detail');
-const UserChangePassword  = () => import('../../backyard/user/ChangePassword');
-const UserCreate  = () => import('../../backyard/user/Create');
-const ImageCacheList  = () => import('../../backyard/image/cache/List');
-const DashboardIndex  = () => import('../../backyard/dashboard/Index');
-const PreferenceIndex  = () => import('../../backyard/preference/Index');
-const InstallIndex  = () => import('../../backyard/install/Index');
-const PreferenceEdit  = () => import('../../backyard/preference/Edit');
-const NotFound  = () => import('../../backyard/layout/NotFound');
-
 
 Vue.use(Router)
 
