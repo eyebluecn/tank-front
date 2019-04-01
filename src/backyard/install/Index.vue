@@ -36,7 +36,7 @@
           <div class="row mt10" v-validator="install.validatorSchema.mysqlPassword.error">
             <label class="col-md-2 control-label mt5 compulsory">MySQL 密码</label>
             <div class="col-md-10 validate">
-              <input type="password" class="form-control" v-model="install.mysqlPassword">
+              <input type="password" class="form-control" :value="install.mysqlPassword" @input="mysqlPasswordChange">
             </div>
           </div>
 
@@ -356,6 +356,15 @@
       NbExpanding
     },
     methods: {
+      mysqlPasswordChange(e) {
+        //这么做主要是为了防止浏览器自动填充
+        //只有在第一个tab的时候才能变化
+        if (this.activeName === "first") {
+          this.install.mysqlPassword = e.target.value
+        } else {
+          console.log("只有first的tab才能改变mysqlPassword", e.target.value)
+        }
+      },
       verify() {
         let that = this;
         this.install.httpVerify(function () {

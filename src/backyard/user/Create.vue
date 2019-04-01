@@ -18,10 +18,19 @@
             <div class="row mt10">
               <label class="col-md-2 control-label mt5">头像</label>
               <div class="col-md-10">
-                <MatterImage v-model="currentUser.avatarUrl"/>
+
+                <input
+                  v-show="manualFillAvatar"
+                  type="text"
+                  placeholder="请填写头像http链接，可以使用一张公有图片链接" class="form-control"
+                  v-model="currentUser.avatarUrl">
+
+                <div v-show="!manualFillAvatar">
+                  <MatterImage v-model="currentUser.avatarUrl" uploadHint=""/>
+                </div>
+
               </div>
             </div>
-
 
             <div class="row mt10" v-if="!currentUser.editMode" v-validator="currentUser.validatorSchema.email.error">
               <label class="col-md-2 control-label mt5 compulsory">邮箱</label>
@@ -122,6 +131,12 @@
               <span class="fa fa-reply"></span>
               返回
             </button>
+            <button
+              class="btn btn-sm btn-primary mr10"
+              @click.stop.prevent="manualFillAvatar = !manualFillAvatar">
+              <span class="fa fa-image"></span>
+              {{manualFillAvatar?'头像上传模式':'头像填写模式'}}
+            </button>
             <CreateSaveButton :entity="currentUser" :callback="save"></CreateSaveButton>
           </div>
 
@@ -159,7 +174,7 @@
         UserStatus,
         UserStatusList,
         UserStatusMap,
-
+        manualFillAvatar: false,
         rePassword: null,
         user: this.$store.state.user,
         currentUser: new User(),

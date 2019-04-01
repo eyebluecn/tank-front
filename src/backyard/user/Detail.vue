@@ -14,19 +14,17 @@
           <div class="media">
 
             <div class="mr20" :class="{'pull-left':!$store.state.config.mobile}">
-              <img class="img-container"
+              <img class="img-container cursor img-circle"
                    :class="{'img-blg':!$store.state.config.mobile,'img-lg':$store.state.config.mobile}"
+                   @click="$photoSwipePlugin.showPhoto(currentUser.avatarUrl)"
                    :src="handleImageUrl(currentUser.avatarUrl)">
             </div>
+
             <div class="media-body">
               <div class="cell-title">
                 <h1 class="mt10">{{currentUser.username}}</h1>
               </div>
-
-
               <div>
-
-
                 <div class="row">
 
                   <div class="col-md-12 form-info">

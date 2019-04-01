@@ -3,7 +3,7 @@
 
     <div class="tiny-block">
       <div class="p10 mb10 bg-white br5 border" :style="'width:'+previewWidth+'px'" v-show="preview && value">
-        <img class="wp100" :src="value"/>
+        <img class="wp100 cursor" :src="value" @click="$photoSwipePlugin.showPhoto(value)"/>
       </div>
     </div>
 
@@ -22,9 +22,7 @@
     </div>
     <div>
       <UploadMatterPanel :matter="matter"/>
-
     </div>
-
 
   </div>
 </template>
@@ -81,6 +79,7 @@
         let that = this
 
         let matter = that.matter;
+        matter.puuid = "root"
         matter.uploadHint = that.uploadHint
         matter.filter = that.filter
         matter.privacy = false
