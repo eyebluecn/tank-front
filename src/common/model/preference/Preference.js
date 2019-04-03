@@ -1,6 +1,10 @@
 import BaseEntity from '../base/BaseEntity'
 
 export default class Preference extends BaseEntity {
+
+  static URL_API_PREFERENCE_FETCH = '/api/preference/fetch'
+  static URL_API_SYSTEM_CLEANUP = '/api/preference/system_cleanup'
+
   constructor(args) {
     super(args)
     //网站名称
@@ -26,7 +30,6 @@ export default class Preference extends BaseEntity {
     }
   }
 
-  static URL_API_PREFERENCE_FETCH = '/api/preference/fetch'
 
   render(obj) {
     super.render(obj)
@@ -47,17 +50,6 @@ export default class Preference extends BaseEntity {
     return super.validate()
   }
 
-  httpFetch(successCallback, errorCallback) {
-    let that = this
-    this.httpPost(Preference.URL_API_PREFERENCE_FETCH, {}, function (response) {
-      that.render(response.data.data)
-
-      that.updateTitleAndFavicon()
-
-      that.safeCallback(successCallback)(response)
-
-    }, errorCallback)
-  }
 
   //修改title和favicon
   updateTitleAndFavicon() {
@@ -74,5 +66,28 @@ export default class Preference extends BaseEntity {
     document.title = this.name
 
   }
+
+
+  httpFetch(successCallback, errorCallback) {
+    let that = this
+    this.httpPost(Preference.URL_API_PREFERENCE_FETCH, {}, function (response) {
+      that.render(response.data.data)
+
+      that.updateTitleAndFavicon()
+
+      that.safeCallback(successCallback)(response)
+
+    }, errorCallback)
+  }
+
+  httpSystemCleanup(password, successCallback, errorCallback) {
+    let that = this
+    this.httpPost(Preference.URL_API_SYSTEM_CLEANUP, {password}, function (response) {
+
+      that.safeCallback(successCallback)(response)
+
+    }, errorCallback)
+  }
+
 
 }

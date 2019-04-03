@@ -33,7 +33,7 @@
         <li v-if="user.role === UserRole.ADMINISTRATOR">
           <router-link to="/preference" :class="{'custom-active':isCustomActive('/preference')}">
             <i class="w14 fa fa-cog"></i>
-            <span>网站偏好</span>
+            <span>网站设置</span>
           </router-link>
         </li>
 

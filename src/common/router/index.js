@@ -211,12 +211,12 @@ const router = new Router({
           name: 'PreferenceIndex',
           component: PreferenceIndex,
           meta: {
-            title: '网站偏好',
+            title: '网站设置',
             requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'PreferenceIndex',
-                title: '网站偏好'
+                title: '网站设置'
               }
             ]
           }
@@ -227,16 +227,16 @@ const router = new Router({
           name: 'PreferenceEdit',
           component: PreferenceEdit,
           meta: {
-            title: '网站偏好设置',
+            title: '网站设置',
             requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'PreferenceIndex',
-                title: '网站偏好'
+                title: '网站设置'
               },
               {
                 name: 'PreferenceEdit',
-                title: '网站偏好设置'
+                title: '网站设置'
               }
             ]
           }

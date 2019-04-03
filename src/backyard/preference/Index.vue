@@ -2,8 +2,12 @@
   <div class="backyard-preference">
 
     <div class="pedia-navigation">
-      <span class="item active">网站偏好</span>
+      <span class="item active">网站设置</span>
       <span class="tool">
+        <button class="btn btn-sm btn-primary" @click.stop.prevent="systemCleanup" title="重置系统将清空除管理员账号外所有数据">
+          <i class="fa fa-warning"></i>
+          重置系统
+        </button>
         <router-link class="btn btn-sm btn-primary" to="/preference/edit">
           <i class="fa fa-pencil"></i>
           修改
@@ -63,7 +67,29 @@
         preference: this.$store.state.preference
       }
     },
-    methods: {},
+    methods: {
+      systemCleanup() {
+
+        let that = this
+        let preference = this.preference
+
+        this.$prompt('重置系统将清空除管理员账号外所有数据，事关重大，请输入登录密码', '提示', {
+          inputValue: null,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /^.{1,45}$/,
+          inputErrorMessage: '必填，不超过45个字'
+        }).then(({value}) => {
+
+          preference.httpSystemCleanup(value, function () {
+            that.$message.success("重置系统成功！");
+          })
+        }).catch(() => {
+
+        });
+
+      }
+    },
     components: {
       NbSwitcher
     },
