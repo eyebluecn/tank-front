@@ -46,7 +46,7 @@
           <div class="middle-part">
 
             <span class="image-cache-name">
-              {{imageCache.getName()}}
+              {{imageCache.name}}
             </span>
 
           </div>

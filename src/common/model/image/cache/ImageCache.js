@@ -12,8 +12,10 @@ export default class ImageCache extends BaseEntity {
   constructor(args) {
     super(args)
 
+    this.name = null;
     this.userUuid = null;
     this.matterUuid = null;
+    this.matterName = null;
     this.mode = null;
     this.md5 = null;
     this.size = 0;
@@ -48,21 +50,12 @@ export default class ImageCache extends BaseEntity {
     }
   }
 
-  getMatterName() {
-
-    return this.path.substr(this.path.lastIndexOf("/") + 1)
-  }
-
-  getName() {
-    return this.getMatterName() + "?ir=" + this.mode
-  }
-
   getResizeUrl() {
-    return '/api/alien/preview/' + this.matterUuid + '/' + this.getName()
+    return '/api/alien/preview/' + this.matterUuid + '/' + this.matterName + "?ir=" + this.mode
   }
 
   getOriginUrl() {
-    return '/api/alien/download/' + this.matterUuid + '/' + this.getMatterName()
+    return '/api/alien/download/' + this.matterUuid + '/' + this.matterName
   }
 
 
