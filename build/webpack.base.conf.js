@@ -45,7 +45,8 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'),
+        include: [
+          resolve('src'),
           resolve('test'),
           resolve('node_modules/vue-echarts'),
           resolve('node_modules/resize-detector'),
