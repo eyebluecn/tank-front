@@ -14,7 +14,7 @@
           <span class="bold">{{matter.name}}</span>
         </div>
         <div class="col-md-12 form-info">
-          <span>文件路径：</span>
+          <span>路径：</span>
           <span class="matter-breadcrumb">
             <span v-for="m in parentList">
               <span>/</span>
@@ -26,8 +26,13 @@
               </span>
             </span>
           </span>
+
+          <a class="mr15" title="复制路径"
+             @click.stop.prevent="copyPath">
+            <i class="fa fa-copy"></i>
+          </a>
         </div>
-        <div class="col-md-12 form-info">
+        <div class="col-md-12 form-info" v-if="!matter.dir">
           <span>大小：</span>
           <span class="bold">{{matter.size | humanFileSize}}</span>
         </div>
@@ -43,15 +48,15 @@
           <span>系统文件：</span>
           <span>{{matter.alien?'是':'否'}}</span>
         </div>
-        <div class="col-md-12 form-info">
+        <div class="col-md-12 form-info" v-if="!matter.dir">
           <span>文件公开性：</span>
           <span>{{matter.privacy?'私有文件，只有自己或者授权的用户可以下载':'公有文件，任何人可以通过链接下载'}}</span>
         </div>
-        <div class="col-md-12 form-info">
+        <div class="col-md-12 form-info" v-if="!matter.dir">
           <span>下载次数：</span>
           <span>{{matter.times}}</span>
         </div>
-        <div class="col-md-12 form-info">
+        <div class="col-md-12 form-info" v-if="!matter.dir">
           <span>操作：</span>
           <span>
             <a class="mr15" title="下载" @click.stop.prevent="matter.download()" v-if="!matter.dir">
@@ -79,7 +84,7 @@
       </div>
     </div>
 
-    <div class="matter-block" v-if="matter.uuid && matter.isImage()">
+    <div class="matter-block" v-if="!matter.dir && matter.uuid && matter.isImage()">
       <div class="title">
         图片缓存
       </div>
@@ -145,6 +150,19 @@
           })
         }
 
+      },
+      
+      copyPath() {
+        let that = this;
+
+        let textToCopy = that.matter.path;
+
+        that.$copyPlguin.copy(textToCopy, function () {
+          Message.success({
+            message: textToCopy + " 复制成功!",
+            center: true
+          })
+        })
       }
     },
     components: {
@@ -155,7 +173,10 @@
       this.matter.uuid = this.$store.state.route.params.uuid
       if (this.matter.uuid) {
         this.matter.httpDetail(function () {
-          that.downloadToken.httpFetchDownloadToken(that.matter.uuid)
+
+          if (!that.matter.dir) {
+            that.downloadToken.httpFetchDownloadToken(that.matter.uuid)
+          }
         })
       }
     }
@@ -171,6 +192,7 @@
       border-radius: 5px;
       padding: 20px 15px 10px 15px;
       margin-bottom: 30px;
+
       .title {
         font-size: 16px;
         padding: 0 0 15px 0;
@@ -178,6 +200,7 @@
         margin-bottom: 10px;
         border-bottom: 1px solid #eee;
       }
+
       .matter-breadcrumb {
         a {
           font-weight: normal;

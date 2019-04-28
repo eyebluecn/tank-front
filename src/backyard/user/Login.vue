@@ -6,7 +6,7 @@
 			<!--输入框开始-->
 			<div class="input-group mb15">
 				<span class="input-group-addon"><i class="fa fa-user w14"></i></span>
-				<input type="email" class="form-control" placeholder="邮箱" v-model="user.email"
+				<input type="text" class="form-control" placeholder="用户名/邮箱" v-model="user.username"
 				       @keyup.enter="login">
 			</div>
 			<div class="input-group mb15">

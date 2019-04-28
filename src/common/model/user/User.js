@@ -194,7 +194,7 @@ export default class User extends BaseEntity {
 
   loginValidate() {
 
-    if (!this.email) {
+    if (!this.username) {
       this.errorMessage = '账号必填'
       return false
     }
@@ -210,7 +210,7 @@ export default class User extends BaseEntity {
   getLoginForm() {
 
     return {
-      email: this.email,
+      username: this.username,
       password: this.localPassword
     }
   }

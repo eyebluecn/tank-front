@@ -27,13 +27,13 @@
               <i class="fa fa-unlock btn-action text-primary" v-if="!matter.dir && !matter.privacy" title="设置为私有文件"
                  @click.stop.prevent="matter.httpChangePrivacy(true)"></i>
 
-              <i class="fa fa-info-circle btn-action text-primary" v-if="!matter.dir" title="文件详情"
+              <i class="fa fa-info-circle btn-action text-primary" v-if="matter.dir" title="文件"
                  @click.stop.prevent="$router.push('/matter/detail/'+matter.uuid)"></i>
 
               <i class="fa fa-font btn-action text-primary" title="重命名" @click.stop.prevent="prepareRename"></i>
               <i class="fa fa-link btn-action text-primary" title="复制下载链接" v-if="!matter.dir"
                  @click.stop.prevent="clipboard"></i>
-              <i class="fa fa-download btn-action text-primary" title="下载" v-if="!matter.dir"
+              <i class="fa fa-download btn-action text-primary" title="下载"
                  @click.stop.prevent="matter.download()"></i>
 
               <i class="fa fa-trash btn-action text-danger" title="删除" @click.stop.prevent="deleteMatter"></i>
