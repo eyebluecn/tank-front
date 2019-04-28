@@ -38,18 +38,28 @@
         </div>
 
         <div class="col-md-12 form-info">
-          <span>底部第一行文字：</span>
-          <span v-html="preference.footerLine1"></span>
+          <span>版权信息：</span>
+          <span v-html="preference.copyright"></span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>底部第二行文字：</span>
-          <span v-html="preference.footerLine2"></span>
+          <span>备案信息：</span>
+          <span v-html="preference.record"></span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>是否显示应用数据：</span>
-          <NbSwitcher :disabled="true" v-model="preference.showAlien"/>
+          <span>文件夹下载限制：</span>
+          <span>
+            <span class="mr10">
+                  文件限制:
+                    <span v-if="preference.downloadDirMaxSize >= 0">
+                            {{preference.downloadDirMaxSize | humanFileSize}}
+                          </span>
+                    <span v-else>
+                            无限制
+                          </span>
+                </span>
+          </span>
         </div>
 
       </div>

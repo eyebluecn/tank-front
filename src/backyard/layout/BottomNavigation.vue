@@ -1,10 +1,10 @@
 <template>
   <div class="bottom-navigation text-center">
 		<span class="mr10">
-			<span v-html="preference.footerLine1"></span>
+			<span v-html="preference.copyright"></span>
 		</span>
     <span class="mr10">
-			<span v-html="preference.footerLine2"></span>
+			<span v-html="preference.record"></span>
 		</span>
     <!-- 版本号：cn.eyeblue.tank:2.0.0 -->
     <!-- 开源不易，请不要移除掉这里的代码，蓝眼云盘谢谢您 ^_^ -->

@@ -159,14 +159,6 @@
           this.pager.setFilterValue('userUuid', this.user.uuid)
         }
 
-        //如果没有设置alien，那么默认听从偏好设置中的。
-        if (this.pager.getFilterValue('alien') !== true || this.pager.getFilterValue('alien') !== false) {
-          //显示应用文件意味着 应用文件和非应用文件一起显示。
-          if (!this.preference.showAlien) {
-            this.pager.setFilterValue('alien', false)
-          }
-        }
-
         this.pager.setFilterValue("name", null)
 
 

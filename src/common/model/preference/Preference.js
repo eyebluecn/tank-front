@@ -3,7 +3,7 @@ import BaseEntity from '../base/BaseEntity'
 export default class Preference extends BaseEntity {
 
   static URL_API_PREFERENCE_FETCH = '/api/preference/fetch'
-  static URL_API_SYSTEM_CLEANUP = '/api/preference/system_cleanup'
+  static URL_API_SYSTEM_CLEANUP = '/api/preference/system/cleanup'
 
   constructor(args) {
     super(args)
@@ -14,13 +14,12 @@ export default class Preference extends BaseEntity {
     this.logoUrl = null
     this.faviconUrl = null
 
-    //底部第一行文字
-    this.footerLine1 = null
-    this.footerLine2 = null
+    //版权信息
+    this.copyright = null
+    this.record = null
 
-    //是否显示应用数据
-    this.showAlien = true
-
+    //大小限制
+    this.downloadDirMaxSize = -1
 
     this.validatorSchema = {
       name: {
@@ -40,9 +39,9 @@ export default class Preference extends BaseEntity {
       name: this.name,
       logoUrl: this.logoUrl,
       faviconUrl: this.faviconUrl,
-      footerLine1: this.footerLine1,
-      footerLine2: this.footerLine2,
-      showAlien: this.showAlien
+      copyright: this.copyright,
+      record: this.record,
+      downloadDirMaxSize: this.downloadDirMaxSize
     }
   }
 

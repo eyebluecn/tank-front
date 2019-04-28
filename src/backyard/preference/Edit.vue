@@ -32,25 +32,37 @@
       </div>
 
       <div class="row mt10">
-        <label class="col-md-2 control-label mt5">底部第一行文字(可使用html)</label>
+        <label class="col-md-2 control-label mt5">版权信息(支持html)</label>
         <div class="col-md-10">
-          <input type="text" class="form-control" v-model="preference.footerLine1">
+          <input type="text" class="form-control" v-model="preference.copyright">
         </div>
       </div>
 
       <div class="row mt10">
-        <label class="col-md-2 control-label mt5">底部第二行文字(可使用html)</label>
+        <label class="col-md-2 control-label mt5">备案信息(支持html)</label>
         <div class="col-md-10">
-          <input type="text" class="form-control" v-model="preference.footerLine2">
+          <input type="text" class="form-control" v-model="preference.record">
         </div>
       </div>
 
       <div class="row mt10">
-        <label class="col-md-2 control-label mt5">是否显示应用数据</label>
+        <label class="col-md-2 control-label mt5">文件夹下载限制(B) </label>
         <div class="col-md-10">
-          <NbSwitcher v-model="preference.showAlien"/>
+          <div class="row">
+            <div class="col-xs-6">
+              <input type="number" class="form-control" v-model="preference.downloadDirMaxSize">
+            </div>
+            <div class="col-xs-6" style="line-height:30px;">
+              当前值：
+              <span v-if="preference.downloadDirMaxSize < 0">无限制</span>
+              <span v-else>{{preference.downloadDirMaxSize | humanFileSize}}</span>
+            </div>
+          </div>
+
         </div>
+
       </div>
+
 
       <div class="row mt10">
         <div class="col-md-12">
