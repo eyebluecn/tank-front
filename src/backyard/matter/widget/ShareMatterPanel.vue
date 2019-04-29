@@ -50,7 +50,7 @@
 
             <span class="matter-name"
                   :title="matter.name">
-                {{matter.name}} <i class="fa fa-unlock" v-if="!matter.dir && !matter.privacy" title="公有文件，任何人可以访问"></i>
+                {{matter.name}}
               </span>
 
           </div>
@@ -110,16 +110,9 @@
         let that = this
 
         if (this.matter.dir) {
-          this.$emit('goToDirectory', that.matter.uuid)
+          this.$emit('goToDirectory', that.matter)
         } else {
-          //图片进行预览操作
-          if (that.matter.isImage()) {
-
-            this.$emit("previewImage", that.matter)
-
-          } else {
-            that.matter.preview()
-          }
+          that.matter.preview()
         }
       }
 

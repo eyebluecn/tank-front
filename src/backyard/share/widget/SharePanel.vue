@@ -8,9 +8,6 @@
         <div class="pull-left">
           <div class="left-part">
             <span class="basic-span">
-              <NbCheckbox v-model="share.check"/>
-            </span>
-            <span class="basic-span">
               <img class="share-icon" :src="share.getIcon()"/>
             </span>
           </div>
@@ -100,8 +97,6 @@
   export default {
     data() {
       return {
-        //正在向服务器提交rename的请求
-        renamingLoading: false,
         showMore: false
       }
     },
@@ -117,16 +112,10 @@
 
     },
     watch: {
-      'share.check'(newVal, oldVal) {
-        this.$emit('checkShare', this.share)
-      }
+
     },
     methods: {
       handleImageUrl,
-      clickRow() {
-        let that = this
-        console.log("点击了一行内容.")
-      },
       deleteShare() {
         let that = this
         MessageBox.confirm('此操作将永久删除该分享, 是否继续?', '提示', {

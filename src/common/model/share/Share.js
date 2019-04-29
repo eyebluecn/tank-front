@@ -18,12 +18,14 @@ export default class Share extends BaseEntity {
     this.name = null
     this.shareType = ShareType.MIX
     this.userUuid = 0;
+    this.username = null;
     this.downloadTimes = 0;
     this.code = 0;
     this.expireInfinity = false;
-    this.expireTime = 0;
+    this.expireTime = null;
 
-
+    //当前正在查看的文件夹
+    this.dirMatter = new Matter()
     //当前share对应的matters
     this.matters = []
 
@@ -39,7 +41,9 @@ export default class Share extends BaseEntity {
     super.render(obj)
 
     this.renderEntity("expireTime", Date)
+    this.renderEntity("dirMatter", Matter)
     this.renderList("matters", Matter)
+
 
   }
 
@@ -98,10 +102,12 @@ export default class Share extends BaseEntity {
   }
 
 
-  httpBrowse(successCallback, errorCallback) {
+  httpBrowse(puuid, rootUuid, successCallback, errorCallback) {
     let that = this
 
     let form = {
+      puuid,
+      rootUuid,
       shareUuid: this.uuid,
       code: this.code
     }

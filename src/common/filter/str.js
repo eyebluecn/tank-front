@@ -21,7 +21,6 @@ export function getExtension(filename) {
     return ''
   }
 
-  console.log("getExtension", filename)
   let index1 = filename.lastIndexOf('.')
   if (index1 === -1) {
     return ''

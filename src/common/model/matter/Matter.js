@@ -23,6 +23,8 @@ export default class Matter extends BaseEntity {
   static URL_MATTER_DOWNLOAD = '/api/matter/download'
   static URL_MATTER_UPLOAD = '/api/matter/upload'
 
+  static MATTER_ROOT = "root"
+
   constructor(args) {
     super(args)
     this.puuid = null
@@ -71,7 +73,10 @@ export default class Matter extends BaseEntity {
       new Filter(FilterType.SORT, '下载次数', 'orderTimes'),
       new Filter(FilterType.SORT, '大小', 'orderSize'),
       new Filter(FilterType.SORT, '名称', 'orderName'),
-      new Filter(FilterType.INPUT, '后缀名', 'extensions')
+      new Filter(FilterType.INPUT, '后缀名', 'extensions'),
+      new Filter(FilterType.INPUT, '分享uuid', 'shareUuid'),
+      new Filter(FilterType.INPUT, '提取码', 'shareCode'),
+      new Filter(FilterType.INPUT, '分享根目录', 'shareRootUuid')
     ]
   }
 

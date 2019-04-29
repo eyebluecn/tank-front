@@ -361,8 +361,6 @@
         //只有在第一个tab的时候才能变化
         if (this.activeName === "first") {
           this.install.mysqlPassword = e.target.value
-        } else {
-          console.log("只有first的tab才能改变mysqlPassword", e.target.value)
         }
       },
       verify() {
