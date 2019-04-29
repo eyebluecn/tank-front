@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import ByFrameView from '../../backyard/Frame.vue'
+import ShareList from '../../backyard/share/List'
+import ShareDetail from '../../backyard/share/Detail'
 import MatterList from '../../backyard/matter/List'
 import MatterDetail from '../../backyard/matter/Detail'
 import UserLogin from '../../backyard/user/Login.vue'
@@ -93,7 +95,7 @@ const router = new Router({
           component: UserDetail,
           meta: {
             title: '用户详情',
-            requiresAuth: true,
+            requiresAuth: false,
             breadcrumbs: [
               {
                 name: 'UserList',
@@ -170,6 +172,36 @@ const router = new Router({
               {
                 name: 'ImageCacheList',
                 title: '图片缓存'
+              }
+            ]
+          }
+        },
+        {
+          path: 'share/detail/:uuid',
+          name: 'ShareDetail',
+          component: ShareDetail,
+          meta: {
+            title: '分享详情',
+            requiresAuth: true,
+            breadcrumbs: [
+              {
+                name: 'ShareDetail',
+                title: '分享详情'
+              }
+            ]
+          }
+        },
+        {
+          path: 'share/list',
+          name: 'ShareList',
+          component: ShareList,
+          meta: {
+            title: '我的分享',
+            requiresAuth: true,
+            breadcrumbs: [
+              {
+                name: 'ShareList',
+                title: '我的分享'
               }
             ]
           }

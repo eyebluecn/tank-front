@@ -8,26 +8,36 @@
           <i class="fa fa-check-square"></i>
           全选
         </button>
+
         <button class="btn btn-primary btn-sm "
                 v-if="pager.data.length && selectedMatters.length === pager.data.length"
                 @click.stop.prevent="checkNone">
           <i class="fa fa-square-o"></i>
           取消全选
         </button>
+
         <button class="btn btn-primary btn-sm " v-if="selectedMatters.length" @click.stop.prevent="deleteBatch">
           <i class="fa fa-trash"></i>
           删除
         </button>
+
         <button class="btn btn-primary btn-sm " v-if="selectedMatters.length"
                 @click.stop.prevent="moveBatch($createElement)">
           <i class="fa fa-arrows"></i>
           移动
         </button>
 
+        <button class="btn btn-primary btn-sm " v-if="selectedMatters.length"
+                @click.stop.prevent="shareMatters($createElement)">
+          <i class="fa fa-share-alt"></i>
+          分享
+        </button>
+
+
         <span class="btn btn-primary btn-sm btn-file ">
               <slot name="button">
                 <i class="fa fa-cloud-upload"></i>
-                <span>上传文件</span>
+                <span>上传</span>
               </slot>
               <input ref="refFile" type="file" multiple="multiple" @change.prevent.stop="triggerUpload"/>
 				    </span>
@@ -86,6 +96,7 @@
   import MatterPanel from './widget/MatterPanel'
   import UploadMatterPanel from './widget/UploadMatterPanel'
   import MoveBatchPanel from './widget/MoveBatchPanel'
+  import SharePanel from './widget/SharePanel'
   import NbSlidePanel from '../../common/widget/NbSlidePanel.vue'
   import NbExpanding from '../../common/widget/NbExpanding.vue'
   import NbCheckbox from '../../common/widget/NbCheckbox.vue'
@@ -98,6 +109,7 @@
   import {UserRole} from "../../common/model/user/UserRole";
   import {SortDirection} from "../../common/model/base/SortDirection";
   import {humanFileSize} from "../../common/filter/str";
+  import Share from "../../common/model/share/Share";
 
   export default {
     data() {
@@ -124,6 +136,7 @@
       MatterPanel,
       UploadMatterPanel,
       MoveBatchPanel,
+      SharePanel,
       NbCheckbox,
       NbFilter,
       NbPager,
@@ -381,6 +394,46 @@
 
           }
         })
+      },
+      //分享
+      shareMatters(createElement) {
+        let that = this
+
+        let share = new Share()
+        let dom = createElement(SharePanel, {
+          props: {
+            share: share
+          }
+        })
+
+
+        MessageBox({
+          title: '分享',
+          message: dom,
+          customClass: 'wp50',
+          confirmButtonText: '确定',
+          showCancelButton: true,
+          cancelButtonText: '关闭',
+          callback: (action, instance) => {
+            if (action === 'confirm') {
+
+              let uuids = []
+
+              that.selectedMatters.forEach(function (item, index) {
+                uuids.push(item.uuid)
+              })
+
+              share.httpCreate(uuids, function (response) {
+                Message.success('分享成功！')
+              }, function (errorMessage, response) {
+                Message.error(errorMessage)
+              })
+
+            }
+          }
+        })
+
+
       },
       //批量移动
       moveBatch(createElement) {

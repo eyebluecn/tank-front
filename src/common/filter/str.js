@@ -17,9 +17,11 @@ export function endWith(str, suffix) {
 //获取文件后缀名
 export function getExtension(filename) {
 
-  if (filename === null || filename === '') {
+  if (!filename) {
     return ''
   }
+
+  console.log("getExtension", filename)
   let index1 = filename.lastIndexOf('.')
   if (index1 === -1) {
     return ''

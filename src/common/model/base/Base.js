@@ -37,6 +37,55 @@ export default class Base {
   }
 
   /**
+   * 根据一个类型，渲染出对应的数组。
+   * @param json 字符串或者数组对象。
+   * @param Clazz 需要渲染的目标对象
+   * @returns {*}
+   */
+  static assignList(json, Clazz) {
+
+    let target = []
+
+    let arr = []
+
+    if (json instanceof String) {
+
+      arr = parseList(json);
+
+    } else if (json instanceof Array) {
+      arr = json
+    } else {
+
+      console.error("源必须为字符或者数组", json)
+      return target
+    }
+
+    //如果我们要转换成字符串的数组形式，那么this[field]应该是一个字符串才对。
+    if (Clazz === String) {
+      return arr
+    }
+
+    if (!Clazz || !(Clazz.prototype instanceof Base)) {
+      console.error("指定的类型必须是 Base的子类 ")
+      return target
+    }
+
+    for (let i = 0; i < arr.length; i++) {
+      let bean = arr[i]
+
+      let clazz = new Clazz()
+
+      clazz.render(bean)
+
+      target.push(clazz)
+    }
+
+    return target
+  }
+
+
+
+  /**
    *
    * @param field 字段名
    * @param Clazz 类型名

@@ -6,7 +6,6 @@ import Matter from "../../matter/Matter";
 
 export default class ImageCache extends BaseEntity {
 
-  static URL_DELETE = '/api/image/cache/delete'
   static URL_DELETE_BATCH = '/api/image/cache/delete/batch'
 
   constructor(args) {
@@ -58,12 +57,6 @@ export default class ImageCache extends BaseEntity {
     return '/api/alien/download/' + this.matterUuid + '/' + this.matterName
   }
 
-
-  httpDelete(successCallback, errorCallback) {
-    this.httpPost(ImageCache.URL_DELETE, {'uuid': this.uuid}, function (response) {
-      typeof successCallback === 'function' && successCallback(response)
-    }, errorCallback)
-  }
 
   httpDeleteBatch(uuids, successCallback, errorCallback) {
     this.httpPost(ImageCache.URL_DELETE_BATCH, {'uuids': uuids}, function (response) {

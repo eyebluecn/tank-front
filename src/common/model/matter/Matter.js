@@ -10,9 +10,9 @@ import {FilterType} from "../base/FilterType";
 import {handleImageUrl} from "../../util/ImageUtil";
 import {currentHost} from "../../util/Utils";
 import DownloadToken from "../download/token/DownloadToken";
+import FileUtil from "../../util/FileUtil";
 
 export default class Matter extends BaseEntity {
-
 
   static URL_MATTER_CREATE_DIRECTORY = '/api/matter/create/directory'
   static URL_MATTER_DELETE = '/api/matter/delete'
@@ -22,7 +22,6 @@ export default class Matter extends BaseEntity {
   static URL_MATTER_MOVE = '/api/matter/move'
   static URL_MATTER_DOWNLOAD = '/api/matter/download'
   static URL_MATTER_UPLOAD = '/api/matter/upload'
-
 
   constructor(args) {
     super(args)
@@ -83,84 +82,48 @@ export default class Matter extends BaseEntity {
 
 
   isImage() {
-    let mimeType = getMimeType(this.name)
-    return startWith(mimeType, 'image');
+    return FileUtil.isImage(this.name)
   }
 
+
   isPdf() {
-    let mimeType = getMimeType(this.name)
-    return startWith(mimeType, 'application/pdf');
+    return FileUtil.isImage(this.name)
   }
 
   isText() {
-    let mimeType = getMimeType(this.name)
-    return startWith(mimeType, 'text');
+    return FileUtil.isText(this.name)
   }
 
   isDoc() {
-    let mimeType = getMimeType(this.name)
-    return startWith(mimeType, 'application/msword') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    return FileUtil.isDoc(this.name)
   }
 
   isPpt() {
-    let mimeType = getMimeType(this.name)
-    return startWith(mimeType, 'application/vnd.ms-powerpoint') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.presentationml.presentation');
+    return FileUtil.isPpt(this.name)
   }
 
   isXls() {
-    let mimeType = getMimeType(this.name)
-    return startWith(mimeType, 'application/vnd.ms-excel') || startWith(mimeType, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    return FileUtil.isXls(this.name)
   }
 
   isAudio() {
-    let mimeType = getMimeType(this.name)
-    return startWith(mimeType, 'audio');
+    return FileUtil.isAudio(this.name)
   }
 
   isVideo() {
-    let mimeType = getMimeType(this.name)
-    return startWith(mimeType, 'video');
+    return FileUtil.isVideo(this.name)
   }
 
   isPsd() {
-    let extension = getExtension(this.name)
-    return extension === '.psd';
+    return FileUtil.isPsd(this.name)
   }
 
   getIcon() {
-
-    if (this.dir) {
-      return "/static/img/file/folder.svg"
-    }
-
-    let mimeType = getMimeType(this.name)
-    if (this.isPdf()) {
-      return "/static/img/file/pdf.svg"
-    } else if (this.isDoc()) {
-      return "/static/img/file/doc.svg"
-    } else if (this.isPpt()) {
-      return "/static/img/file/ppt.svg"
-    } else if (this.isXls()) {
-      return "/static/img/file/xls.svg"
-    } else if (this.isAudio()) {
-      return "/static/img/file/audio.svg"
-    } else if (this.isVideo() || getExtension(this.name) === ".mkv") {
-      return "/static/img/file/video.svg"
-    } else if (this.isText()) {
-      return "/static/img/file/text.svg"
-    } else if (this.isPsd()) {
-      return "/static/img/file/psd.svg"
-    } else if (this.isImage()) {
-
-      //对于图片，使用其缩略图
+    if (FileUtil.isImage(this.name)) {
       return handleImageUrl(this.getPreviewUrl(), false, 100, 100)
-
-    } else if (endWith(this.name, 'zip') || endWith(this.name, 'rar') || endWith(this.name, '7z') || endWith(this.name, 'tar') || endWith(this.name, 'tar') || endWith(this.name, 'gz')) {
-      return "/static/img/file/archive.svg"
     } else {
-      return "/static/img/file/file.svg"
+      return FileUtil.getIcon(this.name, this.dir)
     }
-
   }
 
   //下载文件

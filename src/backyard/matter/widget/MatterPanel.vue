@@ -27,7 +27,7 @@
               <i class="fa fa-unlock btn-action text-primary" v-if="!matter.dir && !matter.privacy" title="设置为私有文件"
                  @click.stop.prevent="matter.httpChangePrivacy(true)"></i>
 
-              <i class="fa fa-info-circle btn-action text-primary" v-if="matter.dir" title="文件"
+              <i class="fa fa-info-circle btn-action text-primary" title="文件"
                  @click.stop.prevent="$router.push('/matter/detail/'+matter.uuid)"></i>
 
               <i class="fa fa-font btn-action text-primary" title="重命名" @click.stop.prevent="prepareRename"></i>

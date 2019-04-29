@@ -160,7 +160,7 @@ export default class BaseEntity extends Base {
 
   }
 
-  httpDel(successCallback, errorCallback) {
+  httpDelete(successCallback, errorCallback) {
 
     let that = this
     if (!this.uuid) {
@@ -171,7 +171,7 @@ export default class BaseEntity extends Base {
       return
     }
 
-    let url = this.getUrlDel(this.uuid)
+    let url = this.getUrlDelete(this.uuid)
 
     if (!url) {
       return
@@ -226,7 +226,7 @@ export default class BaseEntity extends Base {
       type: 'warning'
     }).then(function () {
 
-        that.httpDel(function () {
+        that.httpDelete(function () {
           Message.success({
             message: '成功删除!'
           })
@@ -252,13 +252,13 @@ export default class BaseEntity extends Base {
     return prefix + '/create'
   }
 
-  getUrlDel(uuid = null) {
+  getUrlDelete(uuid = null) {
     let prefix = this.getUrlPrefix()
 
     if (uuid === null) {
-      return prefix + '/del?uuid={uuid}'
+      return prefix + '/delete?uuid={uuid}'
     } else {
-      return prefix + '/del?uuid=' + uuid
+      return prefix + '/delete?uuid=' + uuid
     }
   }
 

@@ -30,6 +30,14 @@
           </router-link>
         </li>
 
+
+        <li v-if="user.role !== UserRole.GUEST">
+          <router-link to="/share/list" :class="{'custom-active':isCustomActive('/share/list')}">
+            <i class="w14 fa fa fa-share-alt"></i>
+            <span>我的分享</span>
+          </router-link>
+        </li>
+
         <li v-if="user.role === UserRole.ADMINISTRATOR">
           <router-link to="/preference" :class="{'custom-active':isCustomActive('/preference')}">
             <i class="w14 fa fa-cog"></i>
