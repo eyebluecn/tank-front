@@ -4,6 +4,7 @@ import {simpleDateTime} from "../../filter/time";
 import {ShareExpireOption, ShareExpireOptionMap} from "./ShareExpireOption";
 import FileUtil from "../../util/FileUtil";
 import Matter from "../matter/Matter";
+import {currentHost} from "../../util/Utils";
 
 
 export default class Share extends BaseEntity {
@@ -67,6 +68,10 @@ export default class Share extends BaseEntity {
       return FileUtil.getIcon(this.name, this.shareType === ShareType.DIRECTORY)
     }
 
+  }
+
+  getLink() {
+    return currentHost() + '/share/detail/' + this.uuid;
   }
 
   //获取过期时间

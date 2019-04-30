@@ -1,0 +1,92 @@
+<template>
+  <div class="widget-share-dialog-panel">
+    <div class="share-block">
+      <div>
+        <img class="share-icon" :src="share.getIcon()"/>
+        <span class="name">{{share.name}}</span>
+        <span class="italic">分享成功 <i class="fa fa-check text-success"></i></span>
+      </div>
+      <div class="mt15">
+        <span class="inline-block mr10">
+          分享者：{{share.username}}
+        </span>
+        <span class="inline-block mr10" v-if="!share.expireInfinity">
+          失效时间：{{share.expireTime | simpleDateHourMinute}}
+        </span>
+        <span class="inline-block mr10" v-if="share.expireInfinity">
+          永久有效
+        </span>
+      </div>
+      <div class="mt15">
+        链接：
+        <span>{{share.getLink()}}</span>
+        <a class="mr15" title="复制链接"
+           @click.stop.prevent="copyText(share.getLink())">
+          <i class="fa fa-copy"></i>
+        </a>
+      </div>
+      <div class="mt15">
+        提取码：
+        <span>{{share.code}}</span>
+        <a class="mr15" title="复制提取码"
+           @click.stop.prevent="copyText(share.code)">
+          <i class="fa fa-copy"></i>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<script>
+  import Share from "../../../common/model/share/Share";
+
+  export default {
+    data() {
+      return {}
+    },
+    watch: {},
+    props: {
+      share: {
+        type: Share,
+        required: true
+      }
+    },
+    components: {},
+    methods: {
+      copyText(text) {
+        let that = this;
+        that.$copyPlguin.copy(text, function () {
+          that.$message.success({
+            message: text + " 复制成功!",
+            center: true
+          })
+        })
+      }
+    },
+    mounted() {
+
+    }
+  }
+</script>
+
+<style lang="less" rel="stylesheet/less">
+  .widget-share-dialog-panel {
+
+    .share-block {
+
+      .share-icon {
+        width: 30px;
+        height: 30px;
+      }
+
+      .name {
+        font-size: 18px;
+        margin-left: 10px;
+        line-height: 30px;
+      }
+
+    }
+
+  }
+</style>

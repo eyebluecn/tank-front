@@ -28,10 +28,20 @@
         </button>
 
         <button class="btn btn-primary btn-sm " v-if="selectedMatters.length"
-                @click.stop.prevent="shareMatters($createElement)">
+                @click.stop.prevent="shareDialogVisible = !shareDialogVisible">
           <i class="fa fa-share-alt"></i>
           分享
         </button>
+
+        <el-dialog
+          title="提示"
+          :visible.sync="shareDialogVisible"
+          :append-to-body="true">
+
+          <SharePanel :matters="selectedMatters"
+                      @close="shareDialogVisible = false"/>
+
+        </el-dialog>
 
 
         <span class="btn btn-primary btn-sm btn-file ">
@@ -96,7 +106,7 @@
   import MatterPanel from './widget/MatterPanel'
   import UploadMatterPanel from './widget/UploadMatterPanel'
   import MoveBatchPanel from './widget/MoveBatchPanel'
-  import SharePanel from './widget/SharePanel'
+  import SharePanel from './widget/ShareOperationPanel'
   import NbSlidePanel from '../../common/widget/NbSlidePanel.vue'
   import NbExpanding from '../../common/widget/NbExpanding.vue'
   import NbCheckbox from '../../common/widget/NbCheckbox.vue'
@@ -128,7 +138,11 @@
         user: this.$store.state.user,
         preference: this.$store.state.preference,
         breadcrumbs: this.$store.state.breadcrumbs,
-        director: new Director()
+        director: new Director(),
+
+        share: new Share(),
+        //分享的弹框
+        shareDialogVisible: false
 
       }
     },

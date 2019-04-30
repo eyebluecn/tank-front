@@ -1,5 +1,5 @@
 <template>
-  <div class="widget-share-panel">
+  <div class="widget-share-bar">
 
     <div @click.stop.prevent="$router.push('/share/detail/'+share.uuid)">
 
@@ -156,7 +156,7 @@
     margin-right: 5px;
   }
 
-  .widget-share-panel {
+  .widget-share-bar {
 
     border-top: 1px solid #eee;
     background-color: white;

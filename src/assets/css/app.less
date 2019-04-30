@@ -21,6 +21,12 @@
   margin-top: 0;
 }
 
+.el-dialog__wrapper {
+  .el-dialog__body {
+    padding: 0 20px 20px 20px;
+  }
+}
+
 //手机端的弹出框太大了
 @media (max-width: 768px) {
   .el-message-box__wrapper {
@@ -28,7 +34,15 @@
       width: 90%;
     }
   }
+
+  .el-dialog__wrapper {
+    .el-dialog {
+      width: 90%;
+    }
+  }
+
 }
+
 
 html, body {
   font-family: "微软雅黑", Microsoft YaHei, "Helvetica Neue", Helvetica, Arial, sans-serif, "open sans";

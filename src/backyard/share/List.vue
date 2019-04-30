@@ -8,7 +8,7 @@
     <div class="row">
 
       <div class="col-md-12" v-for="(share,index) in pager.data">
-        <SharePanel
+        <ShareBar
           :share="share"
           @deleteSuccess="refresh"
         />
@@ -27,7 +27,7 @@
   import NbPager from '../../common/widget/NbPager.vue'
   import Pager from '../../common/model/base/Pager'
   import Share from "../../common/model/share/Share";
-  import SharePanel from "./widget/SharePanel"
+  import ShareBar from "./widget/ShareBar"
   import {MessageBox, Message} from "element-ui"
 
   export default {
@@ -45,7 +45,7 @@
     components: {
       NbFilter,
       NbPager,
-      SharePanel
+      ShareBar
     },
     methods: {
       search() {
