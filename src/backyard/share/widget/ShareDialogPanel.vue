@@ -4,7 +4,7 @@
       <div>
         <img class="share-icon" :src="share.getIcon()"/>
         <span class="name">{{share.name}}</span>
-        <span class="italic">分享成功 <i class="fa fa-check text-success"></i></span>
+        <span class="italic" v-if="showSuccessHint"> 分享成功 <i class="fa fa-check text-success"></i></span>
       </div>
       <div class="mt15">
         <span class="inline-block mr10">
@@ -50,6 +50,11 @@
       share: {
         type: Share,
         required: true
+      },
+      showSuccessHint: {
+        type: Boolean,
+        "default": false,
+        required: false
       }
     },
     components: {},

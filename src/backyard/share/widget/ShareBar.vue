@@ -18,6 +18,21 @@
           <div class="right-part" v-if="share.uuid">
 
             <span class="share-operation">
+              <i class="fa fa-info-circle btn-action text-primary" title="分享详情"
+                 @click.stop.prevent="shareDialogVisible = true"></i>
+            </span>
+            <el-dialog
+              title="分享详情"
+              :visible.sync="shareDialogVisible"
+              :append-to-body="true">
+              <ShareDialogPanel :share="share"/>
+              <span slot="footer" class="dialog-footer">
+                <button class="btn btn-primary btn-sm" @click="copyLinkAndCode">复制链接+提取码</button>
+                <button class="btn btn-default btn-sm" @click="shareDialogVisible = false">关闭</button>
+              </span>
+            </el-dialog>
+
+            <span class="share-operation">
               <i class="fa fa-trash btn-action text-danger" title="删除" @click.stop.prevent="deleteShare"></i>
             </span>
 
@@ -93,16 +108,19 @@
   import NbExpanding from '../../../common/widget/NbExpanding'
   import {Message, MessageBox} from 'element-ui'
   import {handleImageUrl} from "../../../common/util/ImageUtil";
+  import ShareDialogPanel from "./ShareDialogPanel"
 
   export default {
     data() {
       return {
+        shareDialogVisible: false,
         showMore: false
       }
     },
     components: {
       NbExpanding,
-      NbCheckbox
+      NbCheckbox,
+      ShareDialogPanel
     },
     props: {
       share: {
@@ -111,11 +129,19 @@
       }
 
     },
-    watch: {
-
-    },
+    watch: {},
     methods: {
       handleImageUrl,
+      copyLinkAndCode() {
+        let that = this;
+        let text = "链接：" + that.share.getLink() + " 提取码：" + that.share.code
+        that.$copyPlguin.copy(text, function () {
+          that.$message.success({
+            message: "链接+提取码 复制成功!",
+            center: true
+          })
+        })
+      },
       deleteShare() {
         let that = this
         MessageBox.confirm('此操作将永久删除该分享, 是否继续?', '提示', {
