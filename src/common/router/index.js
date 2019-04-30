@@ -184,10 +184,6 @@ const router = new Router({
             title: '分享详情',
             requiresAuth: true,
             breadcrumbs: [
-              {
-                name: 'ShareDetail',
-                title: '分享详情'
-              }
             ]
           }
         },

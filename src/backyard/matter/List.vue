@@ -2,7 +2,7 @@
   <div class="backyard-matter-list">
     <div class="row">
 
-      <div class="col-md-6 mb10">
+      <div class="col-md-8 mb10">
         <button class="btn btn-primary btn-sm " v-if="selectedMatters.length !== pager.data.length"
                 @click.stop.prevent="checkAll">
           <i class="fa fa-check-square"></i>
@@ -13,7 +13,7 @@
                 v-if="pager.data.length && selectedMatters.length === pager.data.length"
                 @click.stop.prevent="checkNone">
           <i class="fa fa-square-o"></i>
-          取消全选
+          取消
         </button>
 
         <button class="btn btn-primary btn-sm " v-if="selectedMatters.length" @click.stop.prevent="deleteBatch">
@@ -43,13 +43,13 @@
 				    </span>
 
         <button class="btn btn-sm btn-primary " @click.stop.prevent="createDirectory">
-          <i class="fa fa-plus"></i>
-          创建文件夹
+          <i class="fa fa-folder"></i>
+          新建
         </button>
 
       </div>
 
-      <div class="col-md-6 mb10">
+      <div class="col-md-4 mb10">
         <div class="input-group">
           <input type="text" class="form-control" v-model="searchText" @keyup.enter="searchFile" placeholder="搜索文件">
           <span class="input-group-btn">
@@ -405,11 +405,9 @@
           }
         })
 
-
         MessageBox({
           title: '分享',
           message: dom,
-          customClass: 'wp50',
           confirmButtonText: '确定',
           showCancelButton: true,
           cancelButtonText: '关闭',

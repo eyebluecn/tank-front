@@ -2,8 +2,8 @@
   <div class="widget-share-panel">
 
     <div class="row mt10">
-      <label class="col-md-2 control-label mt5">有效期</label>
-      <div class="col-md-10">
+      <label class="col-md-4 control-label mt5">有效期</label>
+      <div class="col-md-8">
         <select class="form-control" v-model="share.expireOption">
           <option v-for="item in ShareExpireOptionList" :value="item.value">{{item.name}}</option>
         </select>
@@ -32,6 +32,12 @@
       }
     },
     components: {},
+    methods: {
+
+      submit() {
+        console.log("开始提交", this.share.shareType)
+      }
+    },
     mounted() {
 
     }

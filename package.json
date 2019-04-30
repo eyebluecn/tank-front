@@ -19,7 +19,7 @@
     "bootstrap": "^3.3.7",
     "clipboard": "^2.0.4",
     "editor.md": "^1.5.0",
-    "element-ui": "^2.0.2",
+    "element-ui": "^2.8.2",
     "enquire.js": "^2.1.6",
     "font-awesome": "^4.7.0",
     "fs": "0.0.1-security",

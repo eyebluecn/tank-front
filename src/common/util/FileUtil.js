@@ -53,7 +53,6 @@ export default class FileUtil {
    * 根据名字获取对应的图标。imageIcon传值了，那么图片格式采用imageIcon
    * @param name
    * @param idDir
-   * @param imageIcon
    */
   static getIcon(name, idDir = false) {
 
@@ -61,24 +60,23 @@ export default class FileUtil {
       return "/static/img/file/folder.svg"
     }
 
-    let mimeType = getMimeType(name)
-    if (FileUtil.isPdf()) {
+    if (FileUtil.isPdf(name)) {
       return "/static/img/file/pdf.svg"
-    } else if (FileUtil.isDoc()) {
+    } else if (FileUtil.isDoc(name)) {
       return "/static/img/file/doc.svg"
-    } else if (FileUtil.isPpt()) {
+    } else if (FileUtil.isPpt(name)) {
       return "/static/img/file/ppt.svg"
-    } else if (FileUtil.isXls()) {
+    } else if (FileUtil.isXls(name)) {
       return "/static/img/file/xls.svg"
-    } else if (FileUtil.isAudio()) {
+    } else if (FileUtil.isAudio(name)) {
       return "/static/img/file/audio.svg"
-    } else if (FileUtil.isVideo() || getExtension(name) === ".mkv") {
+    } else if (FileUtil.isVideo(name) || getExtension(name) === ".mkv") {
       return "/static/img/file/video.svg"
-    } else if (FileUtil.isText()) {
+    } else if (FileUtil.isText(name)) {
       return "/static/img/file/text.svg"
-    } else if (FileUtil.isPsd()) {
+    } else if (FileUtil.isPsd(name)) {
       return "/static/img/file/psd.svg"
-    } else if (FileUtil.isImage()) {
+    } else if (FileUtil.isImage(name)) {
       return "/static/img/file/image.svg"
     } else if (endWith(name, 'zip') || endWith(name, 'rar') || endWith(name, '7z') || endWith(name, 'tar') || endWith(name, 'tar') || endWith(name, 'gz')) {
       return "/static/img/file/archive.svg"

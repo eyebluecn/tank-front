@@ -9,14 +9,16 @@
         </div>
         <div class="right-box">
 
-          <button class="btn btn-danger btn-sm">
+          <button class="btn btn-danger btn-sm" @click.stop.prevent="cancelShare">
             <i class="fa fa-ban"></i>
             取消分享
           </button>
+
           <button class="btn btn-primary btn-sm">
             <i class="fa fa-link"></i>
             下载链接
           </button>
+
         </div>
       </div>
       <div class="share-info">
@@ -40,9 +42,10 @@
     <div class="breadcrumb" v-if="breadcrumbs && breadcrumbs.length">
       <a href="javascript:void(0)"
          @click.stop.prevent="goToDirectory(null)">全部文件</a>
-      <span v-for="matter in breadcrumbs">
+      <span v-for="(matter,index) in breadcrumbs">
           <span>/</span>
-          <a href="javascript:void(0)" @click.stop.prevent="goToDirectory(matter)">{{matter.name}}</a>
+          <a v-if="index<breadcrumbs.length-1" href="javascript:void(0)" @click.stop.prevent="goToDirectory(matter)">{{matter.name}} </a>
+          <span v-if="index===breadcrumbs.length-1">{{matter.name}}</span>
         </span>
     </div>
 
@@ -68,6 +71,7 @@
   import Pager from "../../common/model/base/Pager";
   import NbPager from "../../common/widget/NbPager";
   import {SortDirection} from "../../common/model/base/SortDirection";
+  import {Message, MessageBox} from 'element-ui'
 
   export default {
     data() {
@@ -174,6 +178,25 @@
           that.breadcrumbs.splice(0, 0, pMatter)
           pMatter = pMatter.parent
         }
+
+      },
+      cancelShare() {
+        let that = this
+        MessageBox.confirm('此操作将永久取消该分享, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          callback: function (action, instance) {
+            if (action === 'confirm') {
+              that.share.httpDelete(function (response) {
+                Message.success('取消成功！')
+                that.$router.push("/share/list")
+
+              })
+            }
+
+          }
+        })
 
       }
     },
