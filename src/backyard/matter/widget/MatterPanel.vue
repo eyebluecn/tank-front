@@ -55,7 +55,7 @@
         <!--在小屏幕下的操作栏-->
         <div class="pull-right hidden-lg hidden-md">
           <span class="more-btn" @click.stop.prevent="showMore = !showMore">
-            <i class="fa fa-ellipsis-h btn-action" title="重命名"></i>
+            <i class="fa fa-ellipsis-h btn-action" title="更多"></i>
           </span>
         </div>
 

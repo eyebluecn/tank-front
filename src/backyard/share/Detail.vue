@@ -65,7 +65,7 @@
         </div>
 
         <div v-for="matter in pager.data">
-          <ShareMatterPanel
+          <ShareMatterBar
             :matter="matter"
             @goToDirectory="goToDirectory"
           />
@@ -94,7 +94,7 @@
 <script>
 
   import Share from "../../common/model/share/Share";
-  import ShareMatterPanel from "../matter/widget/ShareMatterPanel"
+  import ShareMatterBar from "./widget/ShareMatterBar"
   import Matter from "../../common/model/matter/Matter";
   import Pager from "../../common/model/base/Pager";
   import NbPager from "../../common/widget/NbPager";
@@ -128,26 +128,26 @@
 
         //如果dirMatter不存在，那么当成回到分享详情页处理
         if (dirMatter) {
+
           let puuid = this.$route.query.puuid
 
           this.pager.setFilterValue('puuid', dirMatter.uuid)
           this.pager.page = 0
           let query = this.pager.getParams()
 
-          //如果当前是跟，那么shareRootUuid就是这个matter的uuid
+          //shareRootUuid 一旦设置好了，只要根文件夹不换，那么就一直不会变。
           if (!puuid || puuid === Matter.MATTER_ROOT) {
-            query["shareRootUuid"] = dirMatter.uuid
+            query["shareRootUuid"] = puuid
           }
 
-
-          //采用router去管理路由，否则浏览器的回退按钮出现意想不到的问题。
+          //采用router去管理路由
           this.$router.push({
             path: this.$route.path,
             query: query
           })
         } else {
 
-          //采用router去管理路由，否则浏览器的回退按钮出现意想不到的问题。
+          //采用router去管理路由
           this.$router.push({
             path: this.$route.path,
             query: {}
@@ -162,6 +162,7 @@
         let puuid = this.$route.query.puuid
         let shareRootUuid = this.$route.query.shareRootUuid
 
+        //只有当鉴权通过，并且不是分享首页时需要去进行page请求。
         if (!that.needShareCode && puuid && puuid !== Matter.MATTER_ROOT) {
 
           this.pager.setFilterValue('puuid', puuid)
@@ -185,7 +186,7 @@
 
         //根目录从分享中获取
         if (!shareRootUuid) {
-          shareRootUuid = null
+          shareRootUuid = Matter.MATTER_ROOT
         }
         if (!puuid) {
           puuid = Matter.MATTER_ROOT
@@ -265,7 +266,7 @@
     components: {
       LoadingFrame,
       ShareDialogPanel,
-      ShareMatterPanel,
+      ShareMatterBar,
       NbPager
     },
     mounted() {
@@ -318,10 +319,12 @@
           }
         }
       }
+
       .share-info {
         margin-top: 5px;
       }
     }
+
     .breadcrumb {
       padding: 10px;
       border-top: 1px solid #eee;

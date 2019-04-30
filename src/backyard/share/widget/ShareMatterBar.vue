@@ -40,7 +40,7 @@
         <!--在小屏幕下的操作栏-->
         <div class="pull-right hidden-lg hidden-md">
           <span class="more-btn" @click.stop.prevent="showMore = !showMore">
-            <i class="fa fa-ellipsis-h btn-action" title="重命名"></i>
+            <i class="fa fa-ellipsis-h btn-action" title="更多"></i>
           </span>
         </div>
 
@@ -86,6 +86,7 @@
 <script>
   import Matter from '../../../common/model/matter/Matter'
   import NbExpanding from '../../../common/widget/NbExpanding'
+  import {handleImageUrl} from "../../../common/util/ImageUtil";
 
   export default {
     data() {
@@ -102,9 +103,7 @@
         required: true
       }
     },
-    watch: {
-
-    },
+    watch: {},
     methods: {
       clickRow() {
         let that = this
@@ -113,6 +112,14 @@
           this.$emit('goToDirectory', that.matter)
         } else {
           that.matter.preview()
+        }
+      },
+
+      getIcon() {
+        if (this.matter.isImage()) {
+          return handleImageUrl(this.getPreviewUrl(), false, 100, 100)
+        } else {
+          return this.matter.getIcon()
         }
       }
 

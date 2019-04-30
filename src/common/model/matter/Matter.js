@@ -92,7 +92,7 @@ export default class Matter extends BaseEntity {
 
 
   isPdf() {
-    return FileUtil.isImage(this.name)
+    return FileUtil.isPdf(this.name)
   }
 
   isText() {
@@ -138,8 +138,10 @@ export default class Matter extends BaseEntity {
   }
 
   //预览文件
-  preview() {
+  preview(previewUrl = null) {
     let that = this;
+
+
 
     if (that.isImage()) {
 
@@ -437,6 +439,14 @@ export default class Matter extends BaseEntity {
 
   getPreviewUrl(downloadTokenUuid = null) {
     return currentHost() + '/api/alien/preview/' + this.uuid + '/' + this.name + (downloadTokenUuid ? '?downloadTokenUuid=' + downloadTokenUuid : '')
+  }
+
+  getShareDownloadUrl(shareUuid, shareCode, shareRootUuid) {
+    return currentHost() + '/api/alien/download/' + this.uuid + '/' + this.name + '?shareUuid=' + shareUuid + "&shareCode=" + shareCode + "&shareRootUuid=" + shareRootUuid
+  }
+
+  getSharePreviewUrl(shareUuid, shareCode, shareRootUuid) {
+    return currentHost() + '/api/alien/preview/' + this.uuid + '/' + this.name + '?shareUuid=' + shareUuid + "&shareCode=" + shareCode + "&shareRootUuid=" + shareRootUuid
   }
 
 }
