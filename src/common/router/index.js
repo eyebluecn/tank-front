@@ -95,7 +95,7 @@ const router = new Router({
           component: UserDetail,
           meta: {
             title: '用户详情',
-            requiresAuth: false,
+            requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'UserList',
@@ -182,7 +182,7 @@ const router = new Router({
           component: ShareDetail,
           meta: {
             title: '分享详情',
-            requiresAuth: true,
+            requiresAuth: false,
             breadcrumbs: [
             ]
           }

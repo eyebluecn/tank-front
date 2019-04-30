@@ -1,74 +1,92 @@
 <template>
   <div class="share-detail">
 
-    <div class="share-block">
-      <div class="upper">
-        <div class="left-box">
-          <img class="share-icon" :src="share.getIcon()"/>
-          <span class="name">{{share.name}}</span>
-        </div>
-        <div class="right-box">
+    <LoadingFrame :loading="share.detailLoading && needShareCode">
+      <div v-if="!needShareCode">
+        <div class="share-block">
+          <div class="upper">
+            <div class="left-box">
+              <img class="share-icon" :src="share.getIcon()"/>
+              <span class="name">
+                {{share.name}}
+                <span class="text-danger" v-if="share.hasExpired()">已过期</span>
+              </span>
+            </div>
+            <div class="right-box">
 
-          <button class="btn btn-danger btn-sm" @click.stop.prevent="cancelShare">
-            <i class="fa fa-ban"></i>
-            取消分享
-          </button>
+              <button class="btn btn-danger btn-sm" @click.stop.prevent="cancelShare">
+                <i class="fa fa-ban"></i>
+                取消分享
+              </button>
 
-          <button class="btn btn-primary btn-sm" @click.stop.prevent="shareDialogVisible = true">
-            <i class="fa fa-link"></i>
-            获取链接
-          </button>
-          <el-dialog
-            title="分享详情"
-            :visible.sync="shareDialogVisible"
-            :append-to-body="true">
-            <ShareDialogPanel :share="share"/>
-            <span slot="footer" class="dialog-footer">
-                <button class="btn btn-primary btn-sm" @click="copyLinkAndCode">复制链接+提取码</button>
+              <button class="btn btn-primary btn-sm" @click.stop.prevent="shareDialogVisible = true">
+                <i class="fa fa-link"></i>
+                获取链接
+              </button>
+              <el-dialog
+                title="分享详情"
+                :visible.sync="shareDialogVisible"
+                :append-to-body="true">
+                <ShareDialogPanel :share="share"/>
+                <span slot="footer" class="dialog-footer">
+                <button class="btn btn-primary btn-sm" @click="share.copyLinkAndCode()">复制链接+提取码</button>
                 <button class="btn btn-default btn-sm" @click="shareDialogVisible = false">关闭</button>
               </span>
-          </el-dialog>
+              </el-dialog>
 
-        </div>
-      </div>
-      <div class="share-info">
+            </div>
+          </div>
+          <div class="share-info">
 
         <span class="inline-block mr10">
           分享者：{{share.username}}
         </span>
-        <span class="inline-block mr10">
+            <span class="inline-block mr10">
           创建时间：{{share.createTime | simpleDateHourMinute}}
         </span>
-        <span class="inline-block mr10" v-if="!share.expireInfinity">
+            <span class="inline-block mr10" v-if="!share.expireInfinity">
           失效时间：{{share.expireTime | simpleDateHourMinute}}
         </span>
-        <span class="inline-block mr10" v-if="share.expireInfinity">
+            <span class="inline-block mr10" v-if="share.expireInfinity">
           永久有效
         </span>
 
-      </div>
-    </div>
+          </div>
+        </div>
 
-    <div class="breadcrumb" v-if="breadcrumbs && breadcrumbs.length">
-      <a href="javascript:void(0)"
-         @click.stop.prevent="goToDirectory(null)">全部文件</a>
-      <span v-for="(matter,index) in breadcrumbs">
+        <div class="breadcrumb" v-if="breadcrumbs && breadcrumbs.length">
+          <a href="javascript:void(0)"
+             @click.stop.prevent="goToDirectory(null)">全部文件</a>
+          <span v-for="(matter,index) in breadcrumbs">
           <span>/</span>
           <a v-if="index<breadcrumbs.length-1" href="javascript:void(0)" @click.stop.prevent="goToDirectory(matter)">{{matter.name}} </a>
           <span v-if="index===breadcrumbs.length-1">{{matter.name}}</span>
         </span>
-    </div>
+        </div>
 
-    <div v-for="matter in pager.data">
-      <ShareMatterPanel
-        :matter="matter"
-        @goToDirectory="goToDirectory"
-      />
-    </div>
+        <div v-for="matter in pager.data">
+          <ShareMatterPanel
+            :matter="matter"
+            @goToDirectory="goToDirectory"
+          />
+        </div>
 
-    <div class="mt20">
-      <NbPager :pager="pager" :callback="refresh" emptyHint="该目录下暂无任何内容"/>
-    </div>
+        <div class="mt20">
+          <NbPager :pager="pager" :callback="refresh" emptyHint="该目录下暂无任何内容"/>
+        </div>
+      </div>
+
+      <div v-if="needShareCode" class="col-md-4 col-md-offset-4 mt100">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="请输入提取码" v-model="share.code">
+          <span class="input-group-btn">
+          <button type="button" class="btn btn-primary" @click.stop.prevent="refresh">
+            提取文件
+          </button>
+        </span>
+        </div>
+      </div>
+    </LoadingFrame>
 
   </div>
 </template>
@@ -83,10 +101,13 @@
   import {SortDirection} from "../../common/model/base/SortDirection";
   import {Message, MessageBox} from 'element-ui'
   import ShareDialogPanel from "./widget/ShareDialogPanel"
+  import LoadingFrame from "../widget/LoadingFrame";
+  import {ResultCode} from "../../common/model/base/ResultCode";
 
   export default {
     data() {
       return {
+        needShareCode: true,
         shareDialogVisible: false,
         breadcrumbs: [],
         share: new Share(),
@@ -135,37 +156,14 @@
 
 
       },
-      refresh() {
+      refreshPager() {
 
         let that = this
         let puuid = this.$route.query.puuid
         let shareRootUuid = this.$route.query.shareRootUuid
 
-        //根目录从分享中获取
-        if (!puuid) {
-          puuid = Matter.MATTER_ROOT
-        }
-        if (!shareRootUuid) {
-          shareRootUuid = null
-        }
-        that.share.httpBrowse(puuid, shareRootUuid, function (response) {
+        if (!that.needShareCode && puuid && puuid !== Matter.MATTER_ROOT) {
 
-          //如果是寻根之旅，那么直接赋值到pager.
-          if (!puuid || puuid === Matter.MATTER_ROOT) {
-            that.pager.page = 0
-            that.pager.pageSize = 50
-            that.pager.totalItems = that.share.matters.length
-            that.pager.data.splice(0, that.pager.data.length)
-            that.pager.data.push(...that.share.matters)
-
-          }
-
-          //刷新面包屑
-          that.refreshBreadcrumbs()
-
-        })
-
-        if (puuid && puuid !== Matter.MATTER_ROOT) {
           this.pager.setFilterValue('puuid', puuid)
           this.pager.setFilterValue('shareUuid', that.share.uuid)
           this.pager.setFilterValue('shareCode', that.share.code)
@@ -177,6 +175,58 @@
 
           this.pager.httpFastPage()
         }
+
+      },
+      refresh() {
+
+        let that = this
+        let puuid = this.$route.query.puuid
+        let shareRootUuid = this.$route.query.shareRootUuid
+
+        //根目录从分享中获取
+        if (!shareRootUuid) {
+          shareRootUuid = null
+        }
+        if (!puuid) {
+          puuid = Matter.MATTER_ROOT
+        }
+
+        that.share.httpBrowse(puuid, shareRootUuid, function (response) {
+
+          //如果是寻根之旅，那么直接赋值到pager.
+          if (puuid === Matter.MATTER_ROOT) {
+            that.pager.page = 0
+            that.pager.pageSize = 50
+            that.pager.totalItems = that.share.matters.length
+            that.pager.data.splice(0, that.pager.data.length)
+            that.pager.data.push(...that.share.matters)
+          }
+
+          //刷新面包屑
+          that.refreshBreadcrumbs()
+
+
+          if (that.needShareCode) {
+            that.needShareCode = false
+            that.refreshPager()
+          }
+
+        }, function (errorMessage, response) {
+
+          if (response.data.code === ResultCode.NEED_SHARE_CODE) {
+            that.needShareCode = true
+            that.$message.warning("请输入提取码")
+          } else if (response.data.code === ResultCode.SHARE_CODE_ERROR) {
+            that.needShareCode = true
+            that.$message.error("提取码错误")
+          } else {
+            that.$message.error(errorMessage)
+          }
+
+        })
+
+
+        that.refreshPager()
 
       },
       refreshBreadcrumbs() {
@@ -191,16 +241,6 @@
           pMatter = pMatter.parent
         }
 
-      },
-      copyLinkAndCode() {
-        let that = this;
-        let text = "链接：" + that.share.getLink() + " 提取码：" + that.share.code
-        that.$copyPlguin.copy(text, function () {
-          that.$message.success({
-            message: "链接+提取码 复制成功!",
-            center: true
-          })
-        })
       },
       cancelShare() {
         let that = this
@@ -223,6 +263,7 @@
       }
     },
     components: {
+      LoadingFrame,
       ShareDialogPanel,
       ShareMatterPanel,
       NbPager
@@ -277,14 +318,10 @@
           }
         }
       }
-
       .share-info {
         margin-top: 5px;
       }
-
-
     }
-
     .breadcrumb {
       padding: 10px;
       border-top: 1px solid #eee;

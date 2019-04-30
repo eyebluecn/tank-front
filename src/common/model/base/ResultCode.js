@@ -4,6 +4,8 @@ let ResultCode = {
   BAD_REQUEST: "BAD_REQUEST",
   CAPTCHA_ERROR: "CAPTCHA_ERROR",
   NEED_CAPTCHA: "NEED_CAPTCHA",
+  NEED_SHARE_CODE: "NEED_SHARE_CODE",
+  SHARE_CODE_ERROR: "SHARE_CODE_ERROR",
   USERNAME_PASSWORD_ERROR: "USERNAME_PASSWORD_ERROR",
   REQUIRE_GENDER: "REQUIRE_GENDER",
   REQUIRE_PHONE: "REQUIRE_PHONE",
@@ -34,6 +36,14 @@ let ResultCodeMap = {
   NEED_CAPTCHA: {
     name: "验证码必填",
     value: "NEED_CAPTCHA"
+  },
+  NEED_SHARE_CODE: {
+    name: "提取码必填",
+    value: "NEED_SHARE_CODE"
+  },
+  SHARE_CODE_ERROR: {
+    name: "提取码错误",
+    value: "SHARE_CODE_ERROR"
   },
   USERNAME_PASSWORD_ERROR: {
     name: "用户名或密码错误",

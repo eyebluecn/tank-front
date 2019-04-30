@@ -16,7 +16,7 @@
 
     <div class="text-right mt10">
 
-      <button class="btn btn-primary btn-sm" @click.stop.prevent="copyLinkAndCode" v-if="share.uuid">
+      <button class="btn btn-primary btn-sm" @click.stop.prevent="share.copyLinkAndCode()" v-if="share.uuid">
         复制链接+提取码
       </button>
       <button class="btn btn-primary btn-sm" @click.stop.prevent="submit" v-if="!share.uuid">
@@ -46,7 +46,6 @@
     },
     watch: {
       matters(newVal, oldVal) {
-        console.log("matters变化了", newVal, oldVal)
         this.share.render(new Share())
       }
     },
@@ -84,16 +83,6 @@
         that.$copyPlguin.copy(text, function () {
           that.$message.success({
             message: text + " 复制成功!",
-            center: true
-          })
-        })
-      },
-      copyLinkAndCode() {
-        let that = this;
-        let text = "链接：" + that.share.getLink() + " 提取码：" + that.share.code
-        that.$copyPlguin.copy(text, function () {
-          that.$message.success({
-            message: "链接+提取码 复制成功!",
             center: true
           })
         })

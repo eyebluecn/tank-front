@@ -21,16 +21,6 @@
               <i class="fa fa-info-circle btn-action text-primary" title="分享详情"
                  @click.stop.prevent="shareDialogVisible = true"></i>
             </span>
-            <el-dialog
-              title="分享详情"
-              :visible.sync="shareDialogVisible"
-              :append-to-body="true">
-              <ShareDialogPanel :share="share"/>
-              <span slot="footer" class="dialog-footer">
-                <button class="btn btn-primary btn-sm" @click="copyLinkAndCode">复制链接+提取码</button>
-                <button class="btn btn-default btn-sm" @click="shareDialogVisible = false">关闭</button>
-              </span>
-            </el-dialog>
 
             <span class="share-operation">
               <i class="fa fa-trash btn-action text-danger" title="删除" @click.stop.prevent="deleteShare"></i>
@@ -65,6 +55,7 @@
 
             <span class="share-name">
               {{share.name}}
+              <span class="text-danger" v-if="share.hasExpired()">已过期</span>
             </span>
 
           </div>
@@ -87,8 +78,11 @@
           <span title="到期时间" v-if="!share.expireInfinity">
             到期时间：{{share.expireTime | simpleDateHourMinute}}
           </span>
+        </div>
 
-
+        <div class="cell-btn" title="分享详情" @click.stop.prevent="shareDialogVisible = true">
+          <i class="fa fa-info-circle"></i>
+          分享详情
         </div>
 
         <div class="cell-btn text-danger" title="删除" @click.stop.prevent="deleteShare">
@@ -98,6 +92,17 @@
 
       </div>
     </NbExpanding>
+
+    <el-dialog
+      title="分享详情"
+      :visible.sync="shareDialogVisible"
+      :append-to-body="true">
+      <ShareDialogPanel :share="share"/>
+      <span slot="footer" class="dialog-footer">
+                <button class="btn btn-primary btn-sm" @click="share.copyLinkAndCode()">复制链接+提取码</button>
+                <button class="btn btn-default btn-sm" @click="shareDialogVisible = false">关闭</button>
+              </span>
+    </el-dialog>
 
   </div>
 
@@ -132,16 +137,6 @@
     watch: {},
     methods: {
       handleImageUrl,
-      copyLinkAndCode() {
-        let that = this;
-        let text = "链接：" + that.share.getLink() + " 提取码：" + that.share.code
-        that.$copyPlguin.copy(text, function () {
-          that.$message.success({
-            message: "链接+提取码 复制成功!",
-            center: true
-          })
-        })
-      },
       deleteShare() {
         let that = this
         MessageBox.confirm('此操作将永久删除该分享, 是否继续?', '提示', {

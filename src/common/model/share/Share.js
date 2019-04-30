@@ -5,6 +5,8 @@ import {ShareExpireOption, ShareExpireOptionMap} from "./ShareExpireOption";
 import FileUtil from "../../util/FileUtil";
 import Matter from "../matter/Matter";
 import {currentHost} from "../../util/Utils";
+import Vue from "vue"
+import {Message, MessageBox} from 'element-ui'
 
 
 export default class Share extends BaseEntity {
@@ -21,7 +23,7 @@ export default class Share extends BaseEntity {
     this.userUuid = 0;
     this.username = null;
     this.downloadTimes = 0;
-    this.code = 0;
+    this.code = null;
     this.expireInfinity = false;
     this.expireTime = null;
 
@@ -74,6 +76,30 @@ export default class Share extends BaseEntity {
     return currentHost() + '/share/detail/' + this.uuid;
   }
 
+  hasExpired() {
+    if (this.expireInfinity) {
+      return false
+    } else {
+      if (this.expireTime) {
+        return this.expireTime < new Date().getTime();
+      } else {
+        return false
+      }
+
+    }
+  }
+
+  copyLinkAndCode() {
+    let that = this;
+    let text = "链接：" + that.getLink() + " 提取码：" + that.code
+    Vue.$copyPlguin.copy(text, function () {
+      Message.success({
+        message: "链接+提取码 复制成功!",
+        center: true
+      })
+    })
+  }
+
   //获取过期时间
   getExpireTime() {
     let delta = ShareExpireOptionMap[this.expireOption].deltaMillisecond
@@ -117,13 +143,23 @@ export default class Share extends BaseEntity {
       code: this.code
     }
 
+    that.detailLoading = true
     this.httpPost(Share.URL_BROWSE, form, function (response) {
 
       that.render(response.data.data)
 
+      that.detailLoading = false
+
       typeof successCallback === 'function' && successCallback(response)
 
-    }, errorCallback)
+    }, function (errorMessage, response) {
+
+      that.detailLoading = false
+
+      typeof errorCallback === 'function' && errorCallback(errorMessage, response)
+
+
+    })
   }
 
 
