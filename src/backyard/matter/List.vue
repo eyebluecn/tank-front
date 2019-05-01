@@ -21,6 +21,11 @@
           删除
         </button>
 
+        <button class="btn btn-primary btn-sm " v-if="selectedMatters.length" @click.stop.prevent="downloadZip">
+          <i class="fa fa-download"></i>
+          下载
+        </button>
+
         <button class="btn btn-primary btn-sm " v-if="selectedMatters.length"
                 @click.stop.prevent="moveBatch($createElement)">
           <i class="fa fa-arrows"></i>
@@ -381,6 +386,18 @@
           }
         })
 
+      },
+
+      //批量删除
+      downloadZip() {
+        let that = this
+        let uuids = []
+
+        that.selectedMatters.forEach(function (item, index) {
+          uuids.push(item.uuid)
+        })
+
+        that.matter.downloadZip(uuids.toString())
       },
       //批量删除
       deleteBatch() {

@@ -48,7 +48,12 @@
         </div>
 
         <div class="col-md-12 form-info">
-          <span>文件夹下载限制：</span>
+          <span>zip下载数量限制：</span>
+          <span v-html="preference.downloadDirMaxNum"></span>
+        </div>
+
+        <div class="col-md-12 form-info">
+          <span>zip下载大小限制：</span>
           <span>
             <span class="mr10">
                   文件限制:

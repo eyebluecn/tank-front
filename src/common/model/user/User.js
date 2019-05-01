@@ -32,6 +32,8 @@ export default class User extends BaseEntity {
     this.lastTime = null
     //默认大小限制100Mb.
     this.sizeLimit = 104857600
+    this.totalSize = 0
+    this.totalSizeLimit = -1
     this.status = UserStatus.OK
 
     //local fields

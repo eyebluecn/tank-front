@@ -22,6 +22,7 @@ export default class Matter extends BaseEntity {
   static URL_MATTER_MOVE = '/api/matter/move'
   static URL_MATTER_DOWNLOAD = '/api/matter/download'
   static URL_MATTER_UPLOAD = '/api/matter/upload'
+  static URL_MATTER_ZIP = '/api/matter/zip'
 
   static MATTER_ROOT = "root"
 
@@ -132,49 +133,69 @@ export default class Matter extends BaseEntity {
   }
 
   //下载文件
-  download() {
-
-    window.open(this.getDownloadUrl())
+  download(downloadUrl = null) {
+    if (!downloadUrl) {
+      downloadUrl = this.getDownloadUrl()
+    }
+    window.open(downloadUrl)
   }
 
-  //预览文件
+  //下载zip包
+  downloadZip(uuidsString) {
+    window.open(currentHost() + Matter.URL_MATTER_ZIP + "?uuids=" + uuidsString)
+  }
+
+  //预览文件 在分享的预览中才主动传入previewUrl.
   preview(previewUrl = null) {
     let that = this;
 
-
+    let shareMode = true
+    if (previewUrl) {
+      shareMode = true
+    } else {
+      shareMode = false
+      previewUrl = that.getPreviewUrl()
+    }
 
     if (that.isImage()) {
 
-      Vue.$photoSwipePlugin.showPhoto(that.getPreviewUrl())
+      Vue.$photoSwipePlugin.showPhoto(previewUrl)
 
     } else if (that.isPdf()) {
 
-      Vue.$previewer.previewPdf(that.name, that.getPreviewUrl(), that.size)
+      Vue.$previewer.previewPdf(that.name, previewUrl, that.size)
 
     } else if (that.isDoc() || that.isPpt() || that.isXls()) {
 
-      //如果是共有文件
-      if (this.privacy) {
-        let downloadToken = new DownloadToken()
-        downloadToken.httpFetchDownloadToken(that.uuid, function () {
-          Vue.$previewer.previewOffice(that.name, that.getPreviewUrl(downloadToken.uuid), that.size)
-        })
+      //如果是分享中的预览，直接就可以公有访问。
+      if (shareMode) {
+        Vue.$previewer.previewOffice(that.name, previewUrl, that.size)
       } else {
-        Vue.$previewer.previewOffice(that.name, that.getPreviewUrl(), that.size)
+
+        //如果是共有文件 office文件的预览请求一次性链接。
+        if (this.privacy) {
+
+          let downloadToken = new DownloadToken()
+          downloadToken.httpFetchDownloadToken(that.uuid, function () {
+            Vue.$previewer.previewOffice(that.name, that.getPreviewUrl(downloadToken.uuid), that.size)
+          })
+        } else {
+          Vue.$previewer.previewOffice(that.name, previewUrl, that.size)
+        }
       }
 
 
     } else if (that.isText()) {
 
-      Vue.$previewer.previewText(that.name, that.getPreviewUrl(), that.size)
+      Vue.$previewer.previewText(that.name, previewUrl, that.size)
 
     } else if (that.isAudio()) {
 
-      Vue.$previewer.previewAudio(that.name, that.getPreviewUrl(), that.size)
+      Vue.$previewer.previewAudio(that.name, previewUrl, that.size)
 
     } else if (that.isVideo()) {
 
-      Vue.$previewer.previewVideo(that.name, that.getPreviewUrl(), that.size)
+      Vue.$previewer.previewVideo(that.name, previewUrl, that.size)
 
     } else {
       window.open(this.getPreviewUrl())
@@ -197,6 +218,7 @@ export default class Matter extends BaseEntity {
       typeof successCallback === 'function' && successCallback(response)
     }, errorCallback)
   }
+
 
   httpDeleteBatch(uuids, successCallback, errorCallback) {
     this.httpPost(Matter.URL_MATTER_DELETE_BATCH, {'uuids': uuids}, function (response) {
@@ -448,5 +470,6 @@ export default class Matter extends BaseEntity {
   getSharePreviewUrl(shareUuid, shareCode, shareRootUuid) {
     return currentHost() + '/api/alien/preview/' + this.uuid + '/' + this.name + '?shareUuid=' + shareUuid + "&shareCode=" + shareCode + "&shareRootUuid=" + shareRootUuid
   }
+
 
 }

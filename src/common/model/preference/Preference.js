@@ -20,6 +20,8 @@ export default class Preference extends BaseEntity {
 
     //大小限制
     this.downloadDirMaxSize = -1
+    //文件数量
+    this.downloadDirMaxNum = -1
 
     this.validatorSchema = {
       name: {
@@ -34,6 +36,7 @@ export default class Preference extends BaseEntity {
     super.render(obj)
   }
 
+
   getForm() {
     return {
       name: this.name,
@@ -41,6 +44,7 @@ export default class Preference extends BaseEntity {
       faviconUrl: this.faviconUrl,
       copyright: this.copyright,
       record: this.record,
+      downloadDirMaxNum: this.downloadDirMaxNum,
       downloadDirMaxSize: this.downloadDirMaxSize
     }
   }

@@ -14,6 +14,7 @@ export default class Share extends BaseEntity {
   static URL_CREATE = '/api/share/create'
   static URL_BROWSE = '/api/share/browse'
   static URL_DELETE_BATCH = '/api/share/delete/batch'
+  static URL_ZIP = '/api/share/zip'
 
   constructor(args) {
     super(args)
@@ -32,6 +33,8 @@ export default class Share extends BaseEntity {
     //当前share对应的matters
     this.matters = []
 
+    //当前分享正在查看的根目录。前端辅助字段。
+    this.rootUuid = Matter.MATTER_ROOT
 
     //本地临时字段
     this.expireOption = ShareExpireOption.MONTH
@@ -106,6 +109,13 @@ export default class Share extends BaseEntity {
     let now = new Date()
     return new Date(now.getTime() + delta)
   }
+
+
+  //下载zip包
+  downloadZip(puuid) {
+    window.open(currentHost() + Share.URL_ZIP + "?shareUuid=" + this.uuid + "&code=" + this.code + "&puuid=" + puuid + "&rootUuid=" + this.rootUuid)
+  }
+
 
   //创建一个分享.matterUuids要求为数组，expireTime要求为时间对象
   httpCreate(matterUuids, successCallback, errorCallback) {

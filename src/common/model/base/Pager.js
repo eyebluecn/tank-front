@@ -331,6 +331,14 @@ export default class Pager extends Base {
 
   }
 
+  //清空data中的数据。
+  clear() {
+    this.data.splice(0, this.data.length)
+    this.page = 0
+    this.totalItems = 0
+    this.totalPages = 0
+  }
+
 }
 
 

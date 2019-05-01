@@ -45,8 +45,17 @@
         </div>
       </div>
 
+
+
       <div class="row mt10">
-        <label class="col-md-2 control-label mt5">文件夹下载限制(B) </label>
+        <label class="col-md-2 control-label mt5">zip下载数量限制</label>
+        <div class="col-md-10">
+          <input type="text" class="form-control" v-model="preference.downloadDirMaxNum">
+        </div>
+      </div>
+
+      <div class="row mt10">
+        <label class="col-md-2 control-label mt5">zip下载大小限制(B) </label>
         <div class="col-md-10">
           <div class="row">
             <div class="col-xs-6">

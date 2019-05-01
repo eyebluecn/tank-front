@@ -14,12 +14,19 @@
             </div>
             <div class="right-box">
 
-              <button class="btn btn-danger btn-sm" @click.stop.prevent="cancelShare">
+              <button class="btn btn-primary btn-sm" @click.stop.prevent="downloadZip">
+                <i class="fa fa-download"></i>
+                下载
+              </button>
+
+              <button class="btn btn-danger btn-sm" @click.stop.prevent="cancelShare"
+                      v-if="user.uuid && user.uuid === share.userUuid">
                 <i class="fa fa-ban"></i>
                 取消分享
               </button>
 
-              <button class="btn btn-primary btn-sm" @click.stop.prevent="shareDialogVisible = true">
+              <button class="btn btn-primary btn-sm" @click.stop.prevent="shareDialogVisible = true"
+                      v-if="user.uuid && user.uuid === share.userUuid">
                 <i class="fa fa-link"></i>
                 获取链接
               </button>
@@ -67,6 +74,7 @@
         <div v-for="matter in pager.data">
           <ShareMatterBar
             :matter="matter"
+            :share="share"
             @goToDirectory="goToDirectory"
           />
         </div>
@@ -78,7 +86,7 @@
 
       <div v-if="needShareCode" class="col-md-4 col-md-offset-4 mt100">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="请输入提取码" v-model="share.code">
+          <input type="text" class="form-control" placeholder="请输入提取码" v-model="share.code" @keyup.enter="refresh">
           <span class="input-group-btn">
           <button type="button" class="btn btn-primary" @click.stop.prevent="refresh">
             提取文件
@@ -112,6 +120,7 @@
         breadcrumbs: [],
         share: new Share(),
         pager: new Pager(Matter, 50),
+        user: this.$store.state.user,
         preference: this.$store.state.preference
       }
     },
@@ -135,9 +144,10 @@
           this.pager.page = 0
           let query = this.pager.getParams()
 
-          //shareRootUuid 一旦设置好了，只要根文件夹不换，那么就一直不会变。
+          //share.rootUuid 一旦设置好了，只要根文件夹不换，那么就一直不会变。
           if (!puuid || puuid === Matter.MATTER_ROOT) {
-            query["shareRootUuid"] = puuid
+            this.share.rootUuid = dirMatter.uuid
+            this.pager.clear()
           }
 
           //采用router去管理路由
@@ -145,7 +155,12 @@
             path: this.$route.path,
             query: query
           })
+
         } else {
+
+          this.share.rootUuid = Matter.MATTER_ROOT
+          this.pager.clear()
+
 
           //采用router去管理路由
           this.$router.push({
@@ -160,7 +175,6 @@
 
         let that = this
         let puuid = this.$route.query.puuid
-        let shareRootUuid = this.$route.query.shareRootUuid
 
         //只有当鉴权通过，并且不是分享首页时需要去进行page请求。
         if (!that.needShareCode && puuid && puuid !== Matter.MATTER_ROOT) {
@@ -168,7 +182,7 @@
           this.pager.setFilterValue('puuid', puuid)
           this.pager.setFilterValue('shareUuid', that.share.uuid)
           this.pager.setFilterValue('shareCode', that.share.code)
-          this.pager.setFilterValue('shareRootUuid', shareRootUuid)
+          this.pager.setFilterValue('shareRootUuid', that.share.rootUuid)
 
           //如果所有的排序都没有设置，那么默认以时间降序。
           this.pager.setFilterValue('orderCreateTime', SortDirection.DESC)
@@ -182,17 +196,12 @@
 
         let that = this
         let puuid = this.$route.query.puuid
-        let shareRootUuid = this.$route.query.shareRootUuid
 
-        //根目录从分享中获取
-        if (!shareRootUuid) {
-          shareRootUuid = Matter.MATTER_ROOT
-        }
         if (!puuid) {
           puuid = Matter.MATTER_ROOT
         }
 
-        that.share.httpBrowse(puuid, shareRootUuid, function (response) {
+        that.share.httpBrowse(puuid, that.share.rootUuid, function (response) {
 
           //如果是寻根之旅，那么直接赋值到pager.
           if (puuid === Matter.MATTER_ROOT) {
@@ -261,6 +270,16 @@
           }
         })
 
+      },
+      downloadZip() {
+        let puuid = this.$route.query.puuid
+
+        if (!puuid) {
+          puuid = Matter.MATTER_ROOT
+        }
+
+        this.share.downloadZip(puuid)
+
       }
     },
     components: {
@@ -273,6 +292,10 @@
       let that = this;
 
       this.share.uuid = this.$store.state.route.params.uuid
+      //如果query中有rootUuid那么就更新.
+      if (this.$route.query.shareRootUuid) {
+        this.share.rootUuid = this.$route.query.shareRootUuid
+      }
 
       this.pager.enableHistory()
 

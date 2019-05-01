@@ -8,7 +8,7 @@
         <div class="pull-left">
           <div class="left-part">
             <span class="basic-span">
-              <img class="matter-icon" :src="matter.getIcon()"/>
+              <img class="matter-icon" :src="getIcon()"/>
             </span>
           </div>
         </div>
@@ -20,13 +20,10 @@
             <span class="matter-operation">
 
               <i class="fa fa-download btn-action text-primary" title="下载"
-                 @click.stop.prevent="matter.download()"></i>
+                 @click.stop.prevent="download()"></i>
 
             </span>
-            <span class="matter-size" v-if="matter.dir">
-              -
-            </span>
-            <span class="matter-size" v-else>
+            <span class="matter-size">
               {{matter.size | humanFileSize}}
             </span>
 
@@ -87,6 +84,7 @@
   import Matter from '../../../common/model/matter/Matter'
   import NbExpanding from '../../../common/widget/NbExpanding'
   import {handleImageUrl} from "../../../common/util/ImageUtil";
+  import Share from "../../../common/model/share/Share";
 
   export default {
     data() {
@@ -101,6 +99,10 @@
       matter: {
         type: Matter,
         required: true
+      },
+      share: {
+        type: Share,
+        required: true
       }
     },
     watch: {},
@@ -111,16 +113,24 @@
         if (this.matter.dir) {
           this.$emit('goToDirectory', that.matter)
         } else {
-          that.matter.preview()
+
+          that.matter.preview(that.matter.getSharePreviewUrl(this.share.uuid, this.share.code, this.share.rootUuid))
         }
       },
 
       getIcon() {
+
         if (this.matter.isImage()) {
-          return handleImageUrl(this.getPreviewUrl(), false, 100, 100)
+
+          return handleImageUrl(this.matter.getSharePreviewUrl(this.share.uuid, this.share.code, this.share.rootUuid), false, 100, 100)
+
         } else {
           return this.matter.getIcon()
         }
+      },
+      download() {
+
+        this.matter.download(this.matter.getShareDownloadUrl(this.share.uuid, this.share.code, this.share.rootUuid))
       }
 
     },

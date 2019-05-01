@@ -38,10 +38,7 @@
 
               <i class="fa fa-trash btn-action text-danger" title="删除" @click.stop.prevent="deleteMatter"></i>
             </span>
-            <span class="matter-size" v-if="matter.dir">
-              -
-            </span>
-            <span class="matter-size" v-else>
+            <span class="matter-size">
               {{matter.size | humanFileSize}}
             </span>
 
@@ -117,14 +114,13 @@
           重命名
         </div>
 
-        <div class="cell-btn" title="复制下载链接" v-if="!matter.dir"
+        <div class="cell-btn" title="复制下载链接"
              @click.stop.prevent="clipboard">
           <i class="fa fa-link"></i>
           复制下载链接
         </div>
 
-
-        <div class="cell-btn" title="下载" v-if="!matter.dir"
+        <div class="cell-btn" title="下载"
              @click.stop.prevent="matter.download()">
           <i class="fa fa-download"></i>
           下载
