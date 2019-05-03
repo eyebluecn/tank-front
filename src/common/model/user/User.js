@@ -6,7 +6,9 @@ import {UserRole} from "./UserRole";
 import {UserStatus, UserStatusList} from "./UserStatus";
 import {UserGender} from "./UserGender";
 import {FilterType} from "../base/FilterType";
+import {handleImageUrl} from "../../util/ImageUtil";
 
+let defaultAvatarPath = require("../../../assets/img/avatar.png")
 
 export default class User extends BaseEntity {
 
@@ -23,10 +25,6 @@ export default class User extends BaseEntity {
     this.role = UserRole.GUEST
     this.username = null
     this.password = null
-    this.email = null
-    this.phone = null
-    this.gender = UserGender.MALE
-    this.city = null
     this.avatarUrl = null
     this.lastIp = null
     this.lastTime = null
@@ -45,11 +43,11 @@ export default class User extends BaseEntity {
     this.validatorSchema = {
       username: {
         rules: [
-          {required: true, message: '昵称必填'},
+          {required: true, message: '用户名必填'},
           {
             type: 'string',
             pattern: /^[0-9a-zA-Z_]+$/,
-            message: '昵称只能包含字母，数字和"_"'
+            message: '用户名只能包含字母，数字和"_"'
           }],
         error: null
       },
@@ -59,17 +57,15 @@ export default class User extends BaseEntity {
           {min: 6, message: '密码长度至少为6位'}
         ],
         error: null
-      },
-      email: {
-        rules: [
-          {required: true, message: '邮箱必填'},
-          {
-            type: 'string',
-            pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,
-            message: '邮箱格式不正确'
-          }],
-        error: null
       }
+    }
+  }
+
+  getAvatarUrl() {
+    if (this.avatarUrl) {
+      return handleImageUrl(user.avatarUrl)
+    } else {
+      return defaultAvatarPath
     }
   }
 
@@ -82,7 +78,6 @@ export default class User extends BaseEntity {
     return [
       ...super.getFilters(),
       new Filter(FilterType.HTTP_INPUT_SELECTION, '用户', 'username', null, User, true, UserInputSelection),
-      new Filter(FilterType.INPUT, '邮箱', 'email'),
       new Filter(FilterType.INPUT, '手机号', 'phone', null, null, false),
       new Filter(FilterType.SELECTION, '状态', 'status', UserStatusList),
       new Filter(FilterType.SORT, '最新更新时间', 'orderLastTime')
@@ -146,7 +141,6 @@ export default class User extends BaseEntity {
       avatarUrl: this.avatarUrl,
       username: this.username,
       password: this.password,
-      email: this.email,
       gender: this.gender,
       sizeLimit: this.sizeLimit
     }
@@ -166,10 +160,6 @@ export default class User extends BaseEntity {
   }
 
   validate() {
-
-    if (this.editMode) {
-      this.password = '10101010'
-    }
 
     return super.validate()
   }

@@ -32,15 +32,9 @@
               </div>
             </div>
 
-            <div class="row mt10" v-if="!currentUser.editMode" v-validator="currentUser.validatorSchema.email.error">
-              <label class="col-md-2 control-label mt5 compulsory">邮箱</label>
-              <div class="col-md-10 validate">
-                <input type="text" class="form-control" v-model="currentUser.email">
-              </div>
-            </div>
 
             <div class="row mt10" v-validator="currentUser.validatorSchema.username.error">
-              <label class="col-md-2 control-label mt5 compulsory">昵称</label>
+              <label class="col-md-2 control-label mt5 compulsory">用户名</label>
               <div class="col-md-10 validate">
                 <input type="text" class="form-control"
                        :disabled="currentUser.editMode"
@@ -116,8 +110,8 @@
               </div>
               <div>
                 <ol>
-                  <li>登录时，使用邮箱和密码进行登录</li>
-                  <li>因为昵称会作为用户上传文件的存储目录，因此只能使用数字和字母</li>
+                  <li>登录时，使用用户名和密码进行登录</li>
+                  <li>因为用户名会作为用户上传文件的存储目录，因此只能使用数字和字母</li>
                   <li>文件限制指用户上传的每个文件的最大值，-1表示对上传大小不做任何限制</li>
                 </ol>
               </div>

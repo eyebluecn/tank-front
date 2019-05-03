@@ -22,7 +22,6 @@ export default class Install extends BaseEntity {
 
     //管理员用户名
     this.adminUsername = null
-    this.adminEmail = null
     this.adminPassword = null
     this.adminRepassword = null
 
@@ -65,21 +64,11 @@ export default class Install extends BaseEntity {
     this.adminValidatorSchema = {
       adminUsername: {
         rules: [
-          {required: true, message: '昵称必填'},
+          {required: true, message: '用户名必填'},
           {
             type: 'string',
             pattern: /^[0-9a-zA-Z_]+$/,
-            message: '昵称只能包含字母，数字和"_"'
-          }],
-        error: null
-      },
-      adminEmail: {
-        rules: [
-          {required: true, message: '邮箱必填'},
-          {
-            type: 'string',
-            pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,
-            message: '邮箱格式不正确'
+            message: '用户名只能包含字母，数字和"_"'
           }],
         error: null
       },
@@ -240,7 +229,6 @@ export default class Install extends BaseEntity {
 
     let form = this.getForm()
     form["adminUsername"] = this.adminUsername
-    form["adminEmail"] = this.adminEmail
     form["adminPassword"] = this.adminPassword
 
 
@@ -262,14 +250,14 @@ export default class Install extends BaseEntity {
       return
     }
 
-    if (!this.adminEmail || !this.adminPassword) {
-      this.defaultErrorHandler("邮箱和密码必填", errorCallback)
+    if (!this.adminUsername || !this.adminPassword) {
+      this.defaultErrorHandler("用户名和密码必填", errorCallback)
       return
     }
 
 
     let form = this.getForm()
-    form["adminEmail"] = this.adminEmail
+    form["adminUsername"] = this.adminUsername
     form["adminPassword"] = this.adminPassword
 
 

@@ -1,12 +1,13 @@
 <template>
 	<div class="row">
 
+
 		<div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 mt100">
 			<div class="text-primary f25 text-center mb20">欢迎登录</div>
 			<!--输入框开始-->
 			<div class="input-group mb15">
 				<span class="input-group-addon"><i class="fa fa-user w14"></i></span>
-				<input type="text" class="form-control" placeholder="用户名/邮箱" v-model="user.username"
+				<input type="text" class="form-control" placeholder="用户名" v-model="user.username"
 				       @keyup.enter="login">
 			</div>
 			<div class="input-group mb15">

@@ -16,8 +16,8 @@
             <div class="mr20" :class="{'pull-left':!$store.state.config.mobile}">
               <img class="img-container cursor img-circle"
                    :class="{'img-blg':!$store.state.config.mobile,'img-lg':$store.state.config.mobile}"
-                   @click="$photoSwipePlugin.showPhoto(currentUser.avatarUrl)"
-                   :src="handleImageUrl(currentUser.avatarUrl)">
+                   @click="$photoSwipePlugin.showPhoto(currentUser.user.getAvatarUrl())"
+                   :src="user.getAvatarUrl()">
             </div>
 
             <div class="media-body">
@@ -33,36 +33,6 @@
                       {{UserRoleMap[currentUser.role].name}}
                     </span>
                   </div>
-
-                  <div class="col-md-12 form-info">
-                    <span>邮箱：</span>
-                    <span>
-                      {{currentUser.email}}
-                    </span>
-                  </div>
-
-                  <div class="col-md-12 form-info">
-                    <span>手机号：</span>
-                    <span>
-                      {{currentUser.phone}}
-                    </span>
-                  </div>
-
-                  <div class="col-md-12 form-info">
-                    <span>性别：</span>
-                    <span>
-                      {{UserGenderMap[currentUser.gender].name}}
-                    </span>
-                  </div>
-
-
-                  <div class="col-md-12 form-info">
-                    <span>城市：</span>
-                    <span>
-                     {{currentUser.city}}
-                    </span>
-                  </div>
-
 
                   <div class="col-md-12 form-info">
                     <span>单文件限制：</span>

@@ -23,14 +23,13 @@
           <div class="media">
             <div class="pull-left">
               <router-link :to="'/user/detail/'+userItem.uuid">
-                <img class="img-circle img-md" :src="handleImageUrl(userItem.avatarUrl)">
+                <img class="img-circle img-md" :src="userItem.getAvatarUrl()">
               </router-link>
             </div>
             <div class="media-body">
               <div>
 							<span class="f16">
 								<router-link class="black" :to="'/user/detail/'+userItem.uuid">
-
                   <span>
                     {{userItem.username}}
                     <span v-if="userItem.status === UserStatus.DISABLED"
@@ -45,13 +44,6 @@
               <div>
                 <div class="mt5">
                   {{UserRoleMap[userItem.role].name}}
-                </div>
-                <div class="mt5">
-                  <i class="fa fa-envelope text-success" v-if="userItem.email"></i>
-                  {{userItem.email}}
-
-                  <i class="fa fa-phone text-info" v-if="userItem.phone"></i>
-                  {{userItem.phone}}
                 </div>
               </div>
               <div class="mv5 text-muted one-line">

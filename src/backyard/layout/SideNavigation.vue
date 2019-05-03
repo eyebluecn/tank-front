@@ -5,7 +5,7 @@
       <div class="menu-header" @click="goToProfile" v-if="$store.state.installed">
         <div class="logo-area">
           <img alt="image" class="img-circle w80"
-               :src="handleImageUrl(user.avatarUrl)"/>
+               :src="user.getAvatarUrl()"/>
         </div>
         <div class="text-area">
           <div class="nickname">
@@ -218,7 +218,7 @@
       }
     }
 
-    //放头像和昵称的地方。
+    //放头像和用户名的地方。
     .menu-header {
       cursor: pointer;
 

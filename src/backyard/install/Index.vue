@@ -157,10 +157,10 @@
                 检测到系统中已经存在有以下管理员：
               </div>
               <div class="mv10 bold" v-for="admin in install.adminList">
-                {{admin.email}}
+                {{admin.username}}
               </div>
               <div>
-                你可以使用其中一位管理员的邮箱密码进行验证，或者创建一位个的管理员账户
+                你可以使用其中一位管理员的用户名和密码进行验证，或者创建一位新的管理员账户
               </div>
 
               <div>
@@ -175,7 +175,6 @@
                     <i class="fa fa-user-plus"></i>
                     创建管理员账户
                   </button>
-
 
                   <button class="btn btn-primary btn-sm" @click.stop.prevent="goTo('second')">
                     <i class="fa fa-arrow-left"></i>
@@ -196,10 +195,10 @@
                 验证管理员账号
               </div>
 
-              <div class="row mt10" v-validator="install.adminValidatorSchema.adminEmail.error">
-                <label class="col-md-2 control-label mt5 compulsory">管理员邮箱</label>
+              <div class="row mt10" v-validator="install.adminValidatorSchema.adminUsername.error">
+                <label class="col-md-2 control-label mt5 compulsory">管理员用户名</label>
                 <div class="col-md-10 validate">
-                  <input type="text" class="form-control" v-model="install.adminEmail">
+                  <input type="text" class="form-control" v-model="install.adminUsername">
                 </div>
               </div>
 
@@ -238,16 +237,9 @@
               </div>
 
               <div class="row mt10" v-validator="install.adminValidatorSchema.adminUsername.error">
-                <label class="col-md-2 control-label mt5 compulsory">管理员昵称</label>
+                <label class="col-md-2 control-label mt5 compulsory">管理员用户名</label>
                 <div class="col-md-10 validate">
                   <input type="text" class="form-control" v-model="install.adminUsername">
-                </div>
-              </div>
-
-              <div class="row mt10" v-validator="install.adminValidatorSchema.adminEmail.error">
-                <label class="col-md-2 control-label mt5 compulsory">管理员邮箱</label>
-                <div class="col-md-10 validate">
-                  <input type="text" class="form-control" v-model="install.adminEmail">
                 </div>
               </div>
 
@@ -271,8 +263,7 @@
                   <div class="alert alert-info">
                     <div><i class="fa fa-bullhorn"></i> 注意：</div>
                     <ol class="pl30 m0">
-                      <li>由于昵称将作为文件上传的目录，因此只允许字母数字以及"_"。</li>
-                      <li>管理员邮箱将作为登录的用户名。</li>
+                      <li>由于用户名将作为文件上传的目录，因此只允许字母数字以及"_"。</li>
                     </ol>
 
                   </div>
