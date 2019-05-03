@@ -14,6 +14,7 @@ export default class User extends BaseEntity {
 
   static LOCAL_STORAGE_KEY = "user";
   static URL_LOGIN = '/api/user/login'
+  static URL_REGISTER = '/api/user/register'
   static URL_LOGOUT = '/api/user/logout'
   static URL_USER_CHANGE_PASSWORD = '/api/user/change/password'
   static URL_USER_RESET_PASSWORD = '/api/user/reset/password'
@@ -36,9 +37,6 @@ export default class User extends BaseEntity {
 
     //local fields
     this.isLogin = false
-
-    //登录的密码，服务器返回字段中没有密码
-    this.localPassword = null
 
     this.validatorSchema = {
       username: {
@@ -184,45 +182,21 @@ export default class User extends BaseEntity {
 
   }
 
-  loginValidate() {
+  httpLogin(username, password, successCallback, errorCallback) {
 
-    if (!this.username) {
-      this.errorMessage = '账号必填'
+    let that = this
+
+    if (!username) {
+      this.errorMessage = '用户名必填'
       return false
     }
 
-    if (!this.localPassword) {
+    if (!password) {
       this.errorMessage = '密码必填'
       return false
     }
 
-    return true
-  }
-
-  getLoginForm() {
-
-    return {
-      username: this.username,
-      password: this.localPassword
-    }
-  }
-
-  getResetForm() {
-    return {
-      phone: this.phone,
-      password: this.password
-    }
-  }
-
-  httpLogin(successCallback, errorCallback) {
-
-    let that = this
-
-    if (!this.loginValidate()) {
-      return
-    }
-
-    let form = this.getLoginForm()
+    let form = {username, password}
 
     this.httpPost(User.URL_LOGIN, form, function (response) {
 
@@ -230,6 +204,33 @@ export default class User extends BaseEntity {
 
       that.safeCallback(successCallback)(response)
 
+    }, errorCallback)
+  }
+
+  httpRegister(username, password, rePassword, successCallback, errorCallback) {
+
+    let that = this
+
+    if (!username) {
+      this.errorMessage = '用户名必填'
+      return
+    }
+
+    if (!password) {
+      this.errorMessage = '密码必填'
+      return
+    }
+
+    if (rePassword !== password) {
+      this.errorMessage = '两次密码输入不一致'
+      return
+    }
+
+    let form = {username, password}
+
+    this.httpPost(User.URL_REGISTER, form, function (response) {
+      that.innerLogin(response)
+      that.safeCallback(successCallback)(response)
     }, errorCallback)
   }
 

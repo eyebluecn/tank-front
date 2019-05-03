@@ -22,6 +22,12 @@ export default class Preference extends BaseEntity {
     this.downloadDirMaxSize = -1
     //文件数量
     this.downloadDirMaxNum = -1
+    //用户默认总大小限制
+    this.defaultTotalSizeLimit = -1
+    //是否允许自主注册
+    this.allowRegister = false
+    //后台版本
+    this.version = null
 
     this.validatorSchema = {
       name: {
@@ -45,7 +51,9 @@ export default class Preference extends BaseEntity {
       copyright: this.copyright,
       record: this.record,
       downloadDirMaxNum: this.downloadDirMaxNum,
-      downloadDirMaxSize: this.downloadDirMaxSize
+      downloadDirMaxSize: this.downloadDirMaxSize,
+      defaultTotalSizeLimit: this.defaultTotalSizeLimit,
+      allowRegister: this.allowRegister
     }
   }
 

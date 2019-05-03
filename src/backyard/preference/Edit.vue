@@ -46,13 +46,13 @@
       </div>
 
 
-
       <div class="row mt10">
         <label class="col-md-2 control-label mt5">zip下载数量限制</label>
         <div class="col-md-10">
           <input type="text" class="form-control" v-model="preference.downloadDirMaxNum">
         </div>
       </div>
+
 
       <div class="row mt10">
         <label class="col-md-2 control-label mt5">zip下载大小限制(B) </label>
@@ -72,6 +72,19 @@
 
       </div>
 
+      <div class="row mt10">
+        <label class="col-md-2 control-label mt5">用户默认总大小限制</label>
+        <div class="col-md-10">
+          <input type="text" class="form-control" v-model="preference.defaultTotalSizeLimit">
+        </div>
+      </div>
+
+      <div class="row mt10">
+        <label class="col-md-2 control-label mt5">允许自主注册</label>
+        <div class="col-md-10">
+          <NbSwitcher v-model="preference.allowRegister"/>
+        </div>
+      </div>
 
       <div class="row mt10">
         <div class="col-md-12">

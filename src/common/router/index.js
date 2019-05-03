@@ -5,7 +5,8 @@ import ShareList from '../../backyard/share/List'
 import ShareDetail from '../../backyard/share/Detail'
 import MatterList from '../../backyard/matter/List'
 import MatterDetail from '../../backyard/matter/Detail'
-import UserLogin from '../../backyard/user/Login.vue'
+import UserLogin from '../../backyard/user/Login'
+import UserRegister from '../../backyard/user/Register'
 import UserList from '../../backyard/user/List'
 import UserDetail from '../../backyard/user/Detail'
 import UserChangePassword from '../../backyard/user/ChangePassword'
@@ -44,7 +45,6 @@ const router = new Router({
             ]
           }
         },
-
         {
           path: 'matter/detail/:uuid',
           name: 'MatterDetail',
@@ -70,6 +70,16 @@ const router = new Router({
           component: UserLogin,
           meta: {
             title: '登录',
+            requiresAuth: false,
+            breadcrumbs: []
+          }
+        },
+        {
+          path: 'user/register',
+          name: 'UserRegister',
+          component: UserRegister,
+          meta: {
+            title: '注册',
             requiresAuth: false,
             breadcrumbs: []
           }
@@ -183,8 +193,7 @@ const router = new Router({
           meta: {
             title: '分享详情',
             requiresAuth: false,
-            breadcrumbs: [
-            ]
+            breadcrumbs: []
           }
         },
         {

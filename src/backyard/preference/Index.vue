@@ -53,6 +53,11 @@
         </div>
 
         <div class="col-md-12 form-info">
+          <span>是否允许用户自主注册：</span>
+          <span>{{preference.allowRegister?'是':'否'}}</span>
+        </div>
+
+        <div class="col-md-12 form-info">
           <span>zip下载大小限制：</span>
           <span>
             <span class="mr10">
@@ -65,6 +70,12 @@
                           </span>
                 </span>
           </span>
+        </div>
+
+
+        <div class="col-md-12 form-info">
+          <span>用户默认总大小限制：</span>
+          <span v-html="preference.defaultTotalSizeLimit"></span>
         </div>
 
       </div>
