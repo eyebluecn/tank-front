@@ -76,34 +76,6 @@
 
             </div>
 
-            <div class="row mt10">
-              <label class="col-md-2 control-label mt5">手机号</label>
-              <div class="col-md-10">
-
-                <input type="text" class="form-control" v-model="currentUser.phone">
-              </div>
-            </div>
-
-
-            <div class="row mt10">
-              <label class="col-md-2 control-label mt5">性别</label>
-              <div class="col-md-10">
-
-                <span v-for="gender in UserGenderList" class="mr10">
-                  <NbRadio v-model="currentUser.gender" :val="gender.value" name="gender"></NbRadio>
-                  <label>{{gender.name}}</label>
-                </span>
-
-              </div>
-            </div>
-
-            <div class="row mt10">
-              <label class="col-md-2 control-label mt5">城市</label>
-              <div class="col-md-10">
-                <input type="text" class="form-control" v-model="currentUser.city">
-              </div>
-            </div>
-
             <div class="alert alert-info mt20">
               <div class="bold">
                 <i class="fa fa-bullhorn"></i> 说明
@@ -150,7 +122,6 @@
   import MatterImage from '../matter/widget/MatterImage'
   import CreateSaveButton from '../widget/CreateSaveButton'
   import User from '../../common/model/user/User'
-  import {UserGender, UserGenderList, UserGenderMap} from "../../common/model/user/UserGender";
   import {UserRole, UserRoleList, UserRoleMap} from "../../common/model/user/UserRole";
   import {UserStatus, UserStatusList, UserStatusMap} from "../../common/model/user/UserStatus";
 
@@ -159,9 +130,6 @@
     data() {
       return {
         FeatureType,
-        UserGender,
-        UserGenderList,
-        UserGenderMap,
         UserRole,
         UserRoleList,
         UserRoleMap,

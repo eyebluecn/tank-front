@@ -6,6 +6,7 @@ import ShareDetail from '../../backyard/share/Detail'
 import MatterList from '../../backyard/matter/List'
 import MatterDetail from '../../backyard/matter/Detail'
 import UserLogin from '../../backyard/user/Login'
+import UserAuthentication from '../../backyard/user/Authentication'
 import UserRegister from '../../backyard/user/Register'
 import UserList from '../../backyard/user/List'
 import UserDetail from '../../backyard/user/Detail'
@@ -70,6 +71,16 @@ const router = new Router({
           component: UserLogin,
           meta: {
             title: '登录',
+            requiresAuth: false,
+            breadcrumbs: []
+          }
+        },
+        {
+          path: 'user/authentication/:authentication',
+          name: 'UserAuthentication',
+          component: UserAuthentication,
+          meta: {
+            title: '自动登录',
             requiresAuth: false,
             breadcrumbs: []
           }

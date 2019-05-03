@@ -63,21 +63,23 @@
                 <span class="mr10">上次IP: {{userItem.lastIp}}</span>
 
                 <span class="pull-right action-buttons">
-									<router-link :to="'/?userUuid=' + userItem.uuid" title="TA的文件">
-										<i class="fa fa-file-word-o text-success f18"></i>
-									</router-link>
 
                   <router-link :to="'/user/edit/'+userItem.uuid" title="修改用户资料">
 										<i class="fa fa-pencil text-info f18"></i>
 									</router-link>
 
+									<a href="javascript:void(0)"
+                     title="变身" @click.stop.prevent="userItem.transfiguration()">
+                    <i class="fa fa-user-secret f18"></i>
+									</a>
+
 									<a href="javascript:void(0)" v-if="userItem.status === UserStatus.OK && user.uuid!==userItem.uuid"
-                     title="禁用该用户" @click.stop.prevent="changeStatus(userItem)">
+                     title="禁用该用户" @click.stop.prevent="toggleStatus(userItem)">
                     <i class="fa fa-close text-danger f18"></i>
 									</a>
                   <a href="javascript:void(0)"
                      v-if="userItem.status === UserStatus.DISABLED && user.uuid!==userItem.uuid"
-                     title="激活该用户" @click.stop.prevent="changeStatus(userItem)">
+                     title="激活该用户" @click.stop.prevent="toggleStatus(userItem)">
                     <i class="fa fa-check text-success f18"></i>
 									</a>
 
@@ -102,7 +104,6 @@
   import NbPager from '../../common/widget/NbPager.vue'
   import Pager from '../../common/model/base/Pager'
   import User from '../../common/model/user/User'
-  import {UserGender, UserGenderList, UserGenderMap} from "../../common/model/user/UserGender";
   import {UserRole, UserRoleList, UserRoleMap} from "../../common/model/user/UserRole";
   import {UserStatus, UserStatusList, UserStatusMap} from "../../common/model/user/UserStatus";
   import {handleImageUrl} from "../../common/util/ImageUtil";
@@ -111,9 +112,6 @@
 
     data() {
       return {
-        UserGender,
-        UserGenderList,
-        UserGenderMap,
         UserRole,
         UserRoleList,
         UserRoleMap,
@@ -138,9 +136,9 @@
       refresh() {
         this.pager.httpFastPage()
       },
-      changeStatus(user) {
+      toggleStatus(user) {
         let that = this
-        user.httpChangeStatus(function () {
+        user.httpToggleStatus(function () {
           that.refresh()
         })
       }

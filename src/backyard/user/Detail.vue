@@ -77,6 +77,11 @@
                       <i class="fa fa-lock"></i>
                       重置密码
                     </button>
+                    <button class="btn btn-sm btn-primary mb5" v-if="user.role === UserRole.ADMINISTRATOR"
+                            @click.stop.prevent="currentUser.transfiguration()">
+                      <i class="fa fa-user-secret"></i>
+                      变身
+                    </button>
                     <button class="btn btn-sm btn-primary mb5" v-if="currentUser.uuid === user.uuid"
                             @click.stop.prevent="changePassword">
                       <i class="fa fa-lock"></i>
@@ -112,17 +117,14 @@
   import NbExpanding from '../../common/widget/NbExpanding.vue'
   import User from '../../common/model/user/User'
   import {MessageBox} from 'element-ui'
-  import {UserGender, UserGenderList, UserGenderMap} from "../../common/model/user/UserGender";
   import {UserRole, UserRoleList, UserRoleMap} from "../../common/model/user/UserRole";
   import {UserStatus, UserStatusList, UserStatusMap} from "../../common/model/user/UserStatus";
   import {handleImageUrl} from "../../common/util/ImageUtil";
+  import {currentHost} from "../../common/util/Utils";
 
   export default {
     data() {
       return {
-        UserGender,
-        UserGenderList,
-        UserGenderMap,
         UserRole,
         UserRoleList,
         UserRoleMap,

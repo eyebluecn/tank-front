@@ -1,25 +1,28 @@
 import BaseEntity from '../base/BaseEntity'
 import Filter from '../base/Filter'
-import {readLocalStorage, removeLocalStorage, saveToLocalStorage} from "../../util/Utils";
+import {currentHost, readLocalStorage, removeLocalStorage, saveToLocalStorage} from "../../util/Utils";
 import UserInputSelection from '../../../backyard/user/widget/UserInputSelection'
 import {UserRole} from "./UserRole";
 import {UserStatus, UserStatusList} from "./UserStatus";
-import {UserGender} from "./UserGender";
 import {FilterType} from "../base/FilterType";
 import {handleImageUrl} from "../../util/ImageUtil";
+import {MessageBox, Message} from 'element-ui'
+import Vue from "vue"
 
 let defaultAvatarPath = require("../../../assets/img/avatar.png")
 
 export default class User extends BaseEntity {
 
   static LOCAL_STORAGE_KEY = "user";
+
   static URL_LOGIN = '/api/user/login'
+  static URL_AUTHENTICATION_LOGIN = '/api/user/authentication/login'
   static URL_REGISTER = '/api/user/register'
   static URL_LOGOUT = '/api/user/logout'
   static URL_USER_CHANGE_PASSWORD = '/api/user/change/password'
   static URL_USER_RESET_PASSWORD = '/api/user/reset/password'
-  static URL_USER_DISABLE = '/api/user/disable'
-  static URL_USER_ENABLE = '/api/user/enable'
+  static URL_USER_TOGGLE_STATUS = '/api/user/toggle/status'
+  static URL_USER_TRANSFIGURATION = '/api/user/transfiguration'
 
   constructor(args) {
     super(args)
@@ -171,6 +174,30 @@ export default class User extends BaseEntity {
 
   }
 
+
+  transfiguration() {
+    let that = this
+    this.httpTransfiguration(function (authentication) {
+      let textToCopy = currentHost() + "/user/authentication/" + authentication
+      MessageBox.confirm('请复制以下链接到其他浏览器访问，在当前浏览器访问会导致当前用户登录信息失效。' + textToCopy, '变身提示', {
+        confirmButtonText: '复制',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(function () {
+
+          Vue.$copyPlguin.copy(textToCopy, function () {
+            Message.success({
+              message: "复制成功!",
+              center: true
+            })
+          })
+        },
+        function () {
+        }
+      )
+    });
+  }
+
   innerLogin(response) {
     let that = this
     this.errorMessage = null
@@ -262,18 +289,31 @@ export default class User extends BaseEntity {
     }, errorCallback)
   }
 
-  httpChangeStatus(successCallback, errorCallback) {
-    let that = this
-    if (this.status === 'OK') {
-      this.httpPost(User.URL_USER_DISABLE, {'uuid': this.uuid}, function (response) {
-        typeof successCallback === 'function' && successCallback(response)
-      }, errorCallback)
-    } else {
-      this.httpPost(User.URL_USER_ENABLE, {'uuid': this.uuid}, function (response) {
-        typeof successCallback === 'function' && successCallback(response)
-      }, errorCallback)
-    }
 
+  httpToggleStatus(successCallback, errorCallback) {
+    let that = this
+    this.httpPost(User.URL_USER_TOGGLE_STATUS, {'uuid': this.uuid}, function (response) {
+      typeof successCallback === 'function' && successCallback(response)
+    }, errorCallback)
+  }
+
+
+  httpAuthenticationLogin(authentication, successCallback, errorCallback) {
+    let that = this
+    let form = {authentication}
+    this.httpPost(User.URL_AUTHENTICATION_LOGIN, form, function (response) {
+      that.innerLogin(response)
+      that.safeCallback(successCallback)(response)
+    }, errorCallback)
+  }
+
+
+  httpTransfiguration(successCallback, errorCallback) {
+    let that = this
+    let form = {'uuid': this.uuid}
+    this.httpPost(User.URL_USER_TRANSFIGURATION, form, function (response) {
+      that.safeCallback(successCallback)(response.data.msg)
+    }, errorCallback)
   }
 
 }
