@@ -6,7 +6,7 @@
     <span class="mr10">
 			<span v-html="preference.record"></span>
 		</span>
-    <!-- 版本号：cn.eyeblue.tank:2.0.0 -->
+    <!-- 版本号：cn.eyeblue.tank:3.0.0 -->
     <!-- 开源不易，请不要移除掉这里的代码，蓝眼云盘谢谢您 ^_^ -->
     <span>
 			Powered by <a target="_blank" href="https://github.com/eyebluecn/tank">
