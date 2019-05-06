@@ -18,7 +18,7 @@
         <div class="col-md-12 form-info">
           <span>favicon：</span>
           <span>
-            <img v-if="preference.logoUrl" :src="preference.logoUrl" alt="logo" class="max-height-100">
+            <img v-if="preference.faviconUrl" :src="preference.faviconUrl" alt="favicon" class="max-height-100">
           </span>
         </div>
 
@@ -46,7 +46,6 @@
           <span>zip下载大小限制：</span>
           <span>
             <span class="mr10">
-                  文件限制:
                     <span v-if="preference.downloadDirMaxSize >= 0">
                             {{preference.downloadDirMaxSize | humanFileSize}}
                           </span>
@@ -57,10 +56,18 @@
           </span>
         </div>
 
-
         <div class="col-md-12 form-info">
           <span>用户默认总大小限制：</span>
-          <span v-html="preference.defaultTotalSizeLimit"></span>
+          <span>
+            <span class="mr10">
+                    <span v-if="preference.defaultTotalSizeLimit >= 0">
+                            {{preference.defaultTotalSizeLimit | humanFileSize}}
+                          </span>
+                    <span v-else>
+                            无限制
+                          </span>
+                </span>
+          </span>
         </div>
 
       </div>

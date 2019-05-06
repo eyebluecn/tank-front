@@ -7,8 +7,8 @@
         <div class="mr20" :class="{'pull-left':!$store.state.config.mobile}">
           <img class="img-container cursor img-circle"
                :class="{'img-blg':!$store.state.config.mobile,'img-lg':$store.state.config.mobile}"
-               @click="$photoSwipePlugin.showPhoto(currentUser.user.getAvatarUrl())"
-               :src="user.getAvatarUrl()">
+               @click="$photoSwipePlugin.showPhoto(currentUser.getAvatarUrl())"
+               :src="currentUser.getAvatarUrl()">
         </div>
 
         <div class="media-body">
@@ -33,6 +33,22 @@
                 <span v-else>
                             无限制
                           </span>
+              </div>
+              <div class="col-md-12 form-info">
+                <span>总文件限制：</span>
+                <span v-if="currentUser.totalSizeLimit >= 0">
+                            {{currentUser.totalSizeLimit | humanFileSize}}
+                          </span>
+                <span v-else>
+                  无限制
+                </span>
+              </div>
+
+              <div class="col-md-12 form-info">
+                <span>总文件大小：</span>
+                <span>
+                 {{currentUser.totalSize | humanFileSize}}
+                </span>
               </div>
 
               <div class="col-md-12 form-info">
@@ -85,14 +101,9 @@
         修改密码
       </button>
       <button class="btn btn-sm btn-primary mb5"
-              @click.stop.prevent="$router.push('/?userUuid=' + currentUser.uuid)">
-        <i class="fa fa-file-word-o"></i>
-        {{currentUser.uuid === user.uuid ? '我的文件' : '他的文件'}}
-      </button>
-      <button class="btn btn-sm btn-primary mb5"
               @click.stop.prevent="$router.push('/user/edit/' + currentUser.uuid)">
         <i class="fa fa-pencil"></i>
-        {{currentUser.uuid === user.uuid ? '编辑个人资料' : '编辑他的资料'}}
+        编辑资料
       </button>
     </div>
 

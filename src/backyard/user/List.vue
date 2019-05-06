@@ -37,9 +37,9 @@
               <div class="mv5 text-muted one-line">
                 {{userItem.description}}
               </div>
-              <div>
+              <div class="mv5">
                 <span class="mr10">
-                  文件限制:
+                  单文件限制:
                     <span v-if="userItem.sizeLimit >= 0">
                             {{userItem.sizeLimit | humanFileSize}}
                           </span>
@@ -47,6 +47,27 @@
                             无限制
                           </span>
                 </span>
+                <span class="mr10">
+                  总文件限制:
+                    <span v-if="userItem.totalSizeLimit >= 0">
+                            {{userItem.totalSizeLimit | humanFileSize}}
+                          </span>
+                    <span v-else>
+                            无限制
+                          </span>
+                </span>
+                <span class="mr10">
+                  文件总大小:
+                    <span v-if="userItem.totalSize >= 0">
+                            {{userItem.totalSize | humanFileSize}}
+                          </span>
+                    <span v-else>
+                            无限制
+                          </span>
+                </span>
+
+              </div>
+              <div class="mv5">
                 <span class="mr10">上次登录: {{userItem.lastTime | humanTime}}</span>
                 <span class="mr10">上次IP: {{userItem.lastIp}}</span>
 

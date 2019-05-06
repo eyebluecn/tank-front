@@ -65,10 +65,21 @@
       </div>
 
       <div class="row mt10">
-        <label class="col-md-2 control-label mt5">用户默认总大小限制</label>
+        <label class="col-md-2 control-label mt5">用户默认总大小限制(B) </label>
         <div class="col-md-10">
-          <input type="text" class="form-control" v-model="preference.defaultTotalSizeLimit">
+          <div class="row">
+            <div class="col-xs-6">
+              <input type="number" class="form-control" v-model="preference.defaultTotalSizeLimit">
+            </div>
+            <div class="col-xs-6" style="line-height:30px;">
+              当前值：
+              <span v-if="preference.defaultTotalSizeLimit < 0">无限制</span>
+              <span v-else>{{preference.defaultTotalSizeLimit | humanFileSize}}</span>
+            </div>
+          </div>
+
         </div>
+
       </div>
 
       <div class="row mt10">

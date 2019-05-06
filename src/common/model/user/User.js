@@ -51,20 +51,13 @@ export default class User extends BaseEntity {
             message: '用户名只能包含字母，数字和"_"'
           }],
         error: null
-      },
-      password: {
-        rules: [
-          {required: true, message: '密码必填'},
-          {min: 6, message: '密码长度至少为6位'}
-        ],
-        error: null
       }
     }
   }
 
   getAvatarUrl() {
     if (this.avatarUrl) {
-      return handleImageUrl(user.avatarUrl)
+      return handleImageUrl(this.avatarUrl)
     } else {
       return defaultAvatarPath
     }
@@ -136,28 +129,16 @@ export default class User extends BaseEntity {
     }
   }
 
-
   getForm() {
     let form = {
       avatarUrl: this.avatarUrl,
-      username: this.username,
-      password: this.password,
       gender: this.gender,
-      sizeLimit: this.sizeLimit
-    }
-
-    if (this.phone) {
-      form.phone = this.phone
-    }
-    if (this.city) {
-      form.city = this.city
-    }
-    if (this.uuid) {
-      form.uuid = this.uuid
+      sizeLimit: this.sizeLimit,
+      totalSizeLimit: this.totalSizeLimit,
+      uuid: this.uuid ? this.uuid : null
     }
 
     return form
-
   }
 
   validate() {

@@ -8,14 +8,30 @@
     </div>
 
     <div>
+      <div class="input-group">
+        <input type="text"
+               class="form-control input-sm"
+               v-model="value"
+               v-if="manual"
+               placeholder="请填写图片链接">
 
-      <span class="btn btn-primary btn-sm btn-file">
+        <span class="form-control input-sm btn-file text-center pt3 pb0" v-show="!manual">
           <slot name="button">
             <i class="fa fa-cloud-upload"></i>
-            <span>{{value?'重新上传':'上传图片'}}</span>
+            <span>{{value?'重新选择':'选择图片'}}</span>
           </slot>
           <input ref="refFile" type="file" @change.prevent.stop="triggerUpload"/>
         </span>
+
+        <span class="input-group-btn">
+          <button class="btn btn-primary btn-sm" @click.stop.prevent="manual = !manual">
+        <i class="fa fa-pencil" v-if="!manual"></i>
+        <i class="fa fa-cloud-upload" v-if="manual"></i>
+        <span>{{manual?'上传模式':'填写模式'}}</span>
+      </button>
+          </span>
+      </div>
+
       <div class="italic" v-if="uploadHint">
         {{uploadHint}}
       </div>
@@ -34,6 +50,7 @@
   export default {
     data() {
       return {
+        manual: false,
         user: this.$store.state.user,
         matter: new Matter()
       }
