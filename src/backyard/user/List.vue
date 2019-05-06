@@ -82,12 +82,12 @@
                     <i class="fa fa-user-secret f18"></i>
 									</a>
 
-									<a href="javascript:void(0)" v-if="userItem.status === UserStatus.OK && user.uuid!==userItem.uuid"
+									<a href="javascript:void(0)" v-if="user.role === UserRole.ADMINISTRATOR && userItem.status === UserStatus.OK && user.uuid!==userItem.uuid"
                      title="禁用该用户" @click.stop.prevent="toggleStatus(userItem)">
                     <i class="fa fa-close text-danger f18"></i>
 									</a>
                   <a href="javascript:void(0)"
-                     v-if="userItem.status === UserStatus.DISABLED && user.uuid!==userItem.uuid"
+                     v-if="user.role === UserRole.ADMINISTRATOR && userItem.status === UserStatus.DISABLED && user.uuid!==userItem.uuid"
                      title="激活该用户" @click.stop.prevent="toggleStatus(userItem)">
                     <i class="fa fa-check text-success f18"></i>
 									</a>
