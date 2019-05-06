@@ -3,18 +3,6 @@
     <div class="row">
 
       <div class="col-md-12">
-        <div class="pedia-navigation">
-          <span class="item active">用户列表</span>
-          <span class="tool">
-            <router-link class="btn btn-primary btn-sm" to="/user/create">
-              <i class="fa fa-plus"></i>
-              创建用户
-            </router-link>
-          </span>
-        </div>
-      </div>
-
-      <div class="col-md-12">
         <NbPlainFilter :filters="pager.filters" @change="search"/>
       </div>
 

@@ -1,10 +1,6 @@
 <template>
   <div class="dashboard-index">
-    <div>
-      <div class="pedia-navigation">
-        <span class="item active">大盘监控</span>
-      </div>
-    </div>
+
     <div class="row mt20">
       <div class="col-lg-3 col-md-6 col-sm-12">
         <div class="text-block">

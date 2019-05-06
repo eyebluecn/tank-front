@@ -1,22 +1,7 @@
 <template>
   <div class="backyard-preference">
 
-    <div class="pedia-navigation">
-      <span class="item active">网站设置</span>
-      <span class="tool">
-        <button class="btn btn-sm btn-primary" @click.stop.prevent="systemCleanup" title="重置系统将清空除管理员账号外所有数据">
-          <i class="fa fa-warning"></i>
-          重置系统
-        </button>
-        <router-link class="btn btn-sm btn-primary" to="/preference/edit">
-          <i class="fa fa-pencil"></i>
-          修改
-        </router-link>
-      </span>
-    </div>
-
-
-    <div class="preference-block">
+    <div class="preference-block tank-box">
       <div class="row">
         <div class="col-md-12 form-info">
           <span>网站名称：</span>
@@ -81,6 +66,17 @@
       </div>
     </div>
 
+    <div class="text-right">
+      <button class="btn btn-sm btn-primary" @click.stop.prevent="systemCleanup" title="重置系统将清空除管理员账号外所有数据">
+        <i class="fa fa-warning"></i>
+        重置系统
+      </button>
+      <router-link class="btn btn-sm btn-primary" to="/preference/edit">
+        <i class="fa fa-pencil"></i>
+        修改
+      </router-link>
+    </div>
+
   </div>
 </template>
 
@@ -131,12 +127,8 @@
     }
 
     .preference-block {
-      background-color: white;
-      box-shadow: 0 0 5px rgba(0, 0, 0, .2);
-      border-radius: 5px;
-      padding: 20px 15px 10px 15px;
       margin-top: 10px;
-      margin-bottom: 30px;
+      margin-bottom: 10px;
     }
   }
 </style>

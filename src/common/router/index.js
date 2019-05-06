@@ -11,8 +11,7 @@ import UserRegister from '../../backyard/user/Register'
 import UserList from '../../backyard/user/List'
 import UserDetail from '../../backyard/user/Detail'
 import UserChangePassword from '../../backyard/user/ChangePassword'
-import UserCreate from '../../backyard/user/Create'
-import ImageCacheList from '../../backyard/image/cache/List'
+import UserCreate from '../../backyard/user/Edit'
 import DashboardIndex from '../../backyard/dashboard/Index'
 import PreferenceIndex from '../../backyard/preference/Index'
 import InstallIndex from '../../backyard/install/Index'
@@ -182,21 +181,7 @@ const router = new Router({
             ]
           }
         },
-        {
-          path: 'image/cache/list',
-          name: 'ImageCacheList',
-          component: ImageCacheList,
-          meta: {
-            title: '图片缓存',
-            requiresAuth: true,
-            breadcrumbs: [
-              {
-                name: 'ImageCacheList',
-                title: '图片缓存'
-              }
-            ]
-          }
-        },
+
         {
           path: 'share/detail/:uuid',
           name: 'ShareDetail',

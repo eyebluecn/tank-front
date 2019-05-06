@@ -1,10 +1,6 @@
 <template>
   <div class="page-share-list animated fadeIn">
 
-    <div class="pedia-navigation">
-      <span class="item active">我的分享</span>
-    </div>
-
     <div class="row">
 
       <div class="col-md-12" v-for="(share,index) in pager.data">

@@ -255,7 +255,6 @@ export default class Install extends BaseEntity {
       return
     }
 
-
     let form = this.getForm()
     form["adminUsername"] = this.adminUsername
     form["adminPassword"] = this.adminPassword

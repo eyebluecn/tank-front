@@ -1,15 +1,7 @@
 <template>
   <div class="backyard-preference-edit animated fadeIn">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="pedia-navigation">
-					<span class="item active">
-						偏好设置
-					</span>
-        </div>
-      </div>
-    </div>
-    <div class="bg-white br4 p20 mt10">
+
+    <div class="tank-box bg-white br4 p20 mt10">
       <div class="row" v-validator="preference.validatorSchema.name.error">
         <label class="col-md-2 control-label mt5 compulsory">网盘名称</label>
         <div class="col-md-10 validate">
@@ -86,14 +78,14 @@
         </div>
       </div>
 
-      <div class="row mt10">
-        <div class="col-md-12">
-          <div>
-            <CreateSaveButton :entity="preference" :callback="save"/>
-          </div>
+    </div>
+
+    <div class="row mt10">
+      <div class="col-md-12">
+        <div>
+          <CreateSaveButton :entity="preference" :callback="save"/>
         </div>
       </div>
-
     </div>
   </div>
 </template>

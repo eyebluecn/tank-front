@@ -1,9 +1,5 @@
 <template>
   <div class="matter-detail">
-    <div class="pedia-navigation">
-      <span class="item active">文件详情</span>
-    </div>
-
     <div class="matter-block">
       <div class="title">
         文件基本信息
@@ -151,7 +147,7 @@
         }
 
       },
-      
+
       copyPath() {
         let that = this;
 

@@ -1,18 +1,8 @@
 <template>
   <div class="backyard-user-change-password animated fadeIn">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="pedia-navigation">
-					<span class="item active">
-						<span>修改密码</span>
-					</span>
-        </div>
-      </div>
-    </div>
 
-    <div class="password-block">
+    <div class="password-block tank-box">
       <div>
-
         <div class="row mt10">
           <label class="col-md-2 control-label mt5 compulsory">旧密码</label>
           <div class="col-md-10">
@@ -34,17 +24,18 @@
           </div>
         </div>
 
-        <div class="mt10 text-right">
-          <button class="btn btn-sm btn-primary mr10" @click.stop.prevent="$router.go(-1)">
-            <span class="fa fa-reply"></span>
-            返回
-          </button>
-          <button class="btn btn-sm btn-primary pull-right" @click.stop.prevent="save">
-            <i class="fa fa-save"></i>
-            保存
-          </button>
-        </div>
       </div>
+    </div>
+
+    <div class="mt10 text-right">
+      <button class="btn btn-sm btn-primary mr10" @click.stop.prevent="$router.go(-1)">
+        <span class="fa fa-reply"></span>
+        返回
+      </button>
+      <button class="btn btn-sm btn-primary pull-right" @click.stop.prevent="save">
+        <i class="fa fa-save"></i>
+        保存
+      </button>
     </div>
 
 
@@ -93,15 +84,12 @@
     }
   }
 </script>
+
 <style lang="less" rel="stylesheet/less">
   .backyard-user-change-password {
     .password-block {
-      background-color: white;
-      box-shadow: 0 0 5px rgba(0, 0, 0, .2);
-      border-radius: 5px;
-      padding: 20px 15px 10px 15px;
       margin-top: 10px;
-      margin-bottom: 30px;
+      margin-bottom: 10px;
     }
   }
 
