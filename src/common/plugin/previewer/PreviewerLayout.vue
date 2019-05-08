@@ -53,7 +53,7 @@
           center: true,
           showCancelButton: false,
           showConfirmButton: false,
-          confirmButtonText: '确定',
+          confirmButtonText: that.$t("confirm"),
           beforeClose: (action, instance, done) => {
 
             that.bodyRemoveClass()

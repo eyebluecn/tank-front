@@ -6,21 +6,40 @@
     <span class="mr10">
 			<span v-html="preference.record"></span>
 		</span>
+    <span class="mr10">
+			<a href="javascript:void(0)" @click.stop.prevent="changeLang">
+        {{$store.state.lang==='zh'?'English':'中文'}}
+      </a>
+		</span>
     <!-- 版本号：cn.eyeblue.tank:3.0.0 -->
     <!-- 开源不易，请不要移除掉这里的代码，蓝眼云盘谢谢您 ^_^ -->
-    <span>
+    <span class="brand">
 			Powered by <a target="_blank" href="https://github.com/eyebluecn/tank">
       <img class="w30" src="../../assets/img/logo.png"/>
-      蓝眼云盘{{$store.state.version.versionName}}</a>
+      {{ $t("eyeblueTank") }}</a>
 		</span>
   </div>
 </template>
 
 <script>
+  import Cookies from "js-cookie"
+
   export default {
     data() {
       return {
         preference: this.$store.state.preference
+      }
+    },
+    methods: {
+      changeLang() {
+        if (this.$store.state.lang === 'zh') {
+          this.$store.state.lang = 'en'
+        } else {
+          this.$store.state.lang = 'zh'
+        }
+
+        Cookies.set('_lang', this.$store.state.lang);
+        this.$i18n.locale = this.$store.state.lang
       }
     }
   }
@@ -60,6 +79,9 @@
         left: 0;
         display: none;
       }
+    }
+
+    .brand {
     }
   }
 </style>

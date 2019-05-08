@@ -6,14 +6,14 @@
         <button class="btn btn-primary btn-sm " v-if="selectedMatters.length !== pager.data.length"
                 @click.stop.prevent="checkAll">
           <i class="fa fa-check-square"></i>
-          全选
+          {{ $t("selectAll") }}
         </button>
 
         <button class="btn btn-primary btn-sm "
                 v-if="pager.data.length && selectedMatters.length === pager.data.length"
                 @click.stop.prevent="checkNone">
           <i class="fa fa-square-o"></i>
-          取消
+          {{ $t("cancel") }}
         </button>
 
         <button class="btn btn-primary btn-sm " v-if="selectedMatters.length" @click.stop.prevent="deleteBatch">
@@ -403,8 +403,8 @@
       deleteBatch() {
         let that = this
         MessageBox.confirm('此操作将永久删除这些文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: that.$t("confirm"),
+          cancelButtonText: that.$t("cancel"),
           type: 'warning',
           callback: function (action, instance) {
             if (action === 'confirm') {
@@ -425,44 +425,7 @@
           }
         })
       },
-      //分享
-      shareMatters(createElement) {
-        let that = this
 
-        let share = new Share()
-        let dom = createElement(SharePanel, {
-          props: {
-            share: share
-          }
-        })
-
-        MessageBox({
-          title: '分享',
-          message: dom,
-          confirmButtonText: '确定',
-          showCancelButton: true,
-          cancelButtonText: '关闭',
-          callback: (action, instance) => {
-            if (action === 'confirm') {
-
-              let uuids = []
-
-              that.selectedMatters.forEach(function (item, index) {
-                uuids.push(item.uuid)
-              })
-
-              share.httpCreate(uuids, function (response) {
-                Message.success('分享成功！')
-              }, function (errorMessage, response) {
-                Message.error(errorMessage)
-              })
-
-            }
-          }
-        })
-
-
-      },
       //批量移动
       moveBatch(createElement) {
         let that = this
@@ -486,7 +449,7 @@
           title: '移动到',
           message: dom,
           customClass: 'wp50',
-          confirmButtonText: '确定',
+          confirmButtonText: that.$t("confirm"),
           showCancelButton: true,
           cancelButtonText: '关闭',
           callback: (action, instance) => {

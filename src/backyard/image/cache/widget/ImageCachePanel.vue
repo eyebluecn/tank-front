@@ -21,7 +21,7 @@
           <div class="right-part" v-if="imageCache.uuid">
 
             <span class="image-cache-operation">
-              <i class="fa fa-trash btn-action text-danger" title="删除" @click.stop.prevent="deleteImageCache"></i>
+              <i class="fa fa-trash btn-action text-danger" :title="$t('delete')" @click.stop.prevent="deleteImageCache"></i>
             </span>
             <span class="image-cache-size">
               {{imageCache.size | humanFileSize}}
@@ -37,7 +37,7 @@
         <!--在小屏幕下的操作栏-->
         <div class="pull-right hidden-lg hidden-md">
           <span class="more-btn" @click.stop.prevent="showMore = !showMore">
-            <i class="fa fa-ellipsis-h btn-action" title="显示更多"></i>
+            <i class="fa fa-ellipsis-h btn-action" :title="$t('showMore')"></i>
           </span>
         </div>
 
@@ -67,9 +67,8 @@
           </span>
         </div>
 
-        <div class="cell-btn text-danger" title="删除" @click.stop.prevent="deleteImageCache">
+        <div class="cell-btn text-danger" :title="$t('delete')" @click.stop.prevent="deleteImageCache">
           <i class="fa fa-trash"></i>
-          删除
         </div>
 
       </div>
@@ -117,14 +116,14 @@
       },
       deleteImageCache() {
         let that = this
-        MessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        MessageBox.confirm(that.$t("actionCanNotRevertConfirm"), that.$t("prompt"), {
+          confirmButtonText: that.$t("confirm"),
+          cancelButtonText: that.$t("cancel"),
           type: 'warning',
           callback: function (action, instance) {
             if (action === 'confirm') {
               that.imageCache.httpDelete(function (response) {
-                Message.success('删除成功！')
+                Message.success(that.$t("operationSuccess"))
                 that.$emit('deleteSuccess', that.imageCache)
               })
             }

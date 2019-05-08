@@ -104,8 +104,8 @@
 
         this.$prompt('重置系统将清空除管理员账号外所有数据，事关重大，请输入登录密码', '提示', {
           inputValue: null,
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: that.$t("confirm"),
+          cancelButtonText: that.$t("cancel"),
           inputPattern: /^.{1,45}$/,
           inputErrorMessage: '必填，不超过45个字'
         }).then(({value}) => {

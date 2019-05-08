@@ -2,7 +2,6 @@
   <div class="top-navigation-bar">
     <nav class="navbar">
 
-
       <div class="navbar-title">
 
         <router-link to="/">
@@ -78,10 +77,12 @@
       float: left;
       cursor: pointer;
       margin-left: 10px;
+
       .logo {
         height: @top-navigation-height;
 
       }
+
       .title {
         margin-left: 10px;
         font-size: 18px;
@@ -97,6 +98,7 @@
     .login-trigger {
       float: right;
       margin-right: 10px;
+
       .login-span, .register-span {
         color: #888;
         cursor: pointer;
@@ -110,6 +112,8 @@
       }
     }
 
+
+
     .drawer-trigger {
       float: right;
       margin-top: 5px;
@@ -120,9 +124,11 @@
 
       > li {
         display: inline-block;
+
         &:last-child {
           margin-right: 5px;
         }
+
         a {
           color: #999c9e;
           font-size: 14px;

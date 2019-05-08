@@ -5,70 +5,77 @@
       <div class="col-lg-3 col-md-6 col-sm-12">
         <div class="text-block">
           <div class="upper">
-            <div class="indicator">总访问量</div>
+            <div class="indicator">{{ $t('dashboard.totalInvokeNum') }}</div>
             <div class="amount">{{dashboard.totalInvokeNum}}</div>
             <div>
-              <RatePanel name="周环比" :standardValue="standardWeekInvokeNum" :compareValue="compareWeekInvokeNum"/>
-              <RatePanel name="日环比" :standardValue="standardDayInvokeNum" :compareValue="compareDayInvokeNum"/>
+              <RatePanel :name="$t('dashboard.weekRate')" :standardValue="standardWeekInvokeNum"
+                         :compareValue="compareWeekInvokeNum"/>
+              <RatePanel :name="$t('dashboard.dayRate')" :standardValue="standardDayInvokeNum"
+                         :compareValue="compareDayInvokeNum"/>
             </div>
           </div>
           <div class="lower">
-            昨日访问量：{{dashboard.invokeNum}}
+            {{ $t('dashboard.yesterdayInvoke') }}:{{dashboard.invokeNum}}
           </div>
         </div>
       </div>
       <div class="col-lg-3 col-md-6 col-sm-12">
         <div class="text-block">
           <div class="upper">
-            <div class="indicator">总访问IP</div>
+            <div class="indicator">{{ $t('dashboard.totalUV') }}</div>
             <div class="amount">{{dashboard.totalUv}}</div>
             <div>
-              <RatePanel name="周环比" :standardValue="standardWeekUv" :compareValue="compareWeekUv"/>
-              <RatePanel name="日环比" :standardValue="standardDayUv" :compareValue="compareDayUv"/>
+              <RatePanel :name="$t('dashboard.weekRate')" :standardValue="standardWeekUv"
+                         :compareValue="compareWeekUv"/>
+              <RatePanel :name="$t('dashboard.dayRate')" :standardValue="standardDayUv" :compareValue="compareDayUv"/>
 
             </div>
           </div>
           <div class="lower">
-            昨日访IP：{{dashboard.uv}}
+            {{ $t('dashboard.yesterdayUV') }}:{{dashboard.uv}}
           </div>
         </div>
       </div>
       <div class="col-lg-3 col-md-6 col-sm-12">
         <div class="text-block">
           <div class="upper">
-            <div class="indicator">文件总数</div>
+            <div class="indicator">{{ $t('dashboard.totalMatterNum') }}</div>
             <div class="amount">{{dashboard.totalMatterNum}}</div>
             <div>
-              <RatePanel name="周环比" :standardValue="standardWeekMatterNum" :compareValue="compareWeekMatterNum"/>
-              <RatePanel name="日环比" :standardValue="standardDayMatterNum" :compareValue="compareDayMatterNum"/>
+              <RatePanel :name="$t('dashboard.weekRate')" :standardValue="standardWeekMatterNum"
+                         :compareValue="compareWeekMatterNum"/>
+              <RatePanel :name="$t('dashboard.dayRate')" :standardValue="standardDayMatterNum"
+                         :compareValue="compareDayMatterNum"/>
 
             </div>
           </div>
           <div class="lower">
-            昨日新增文件数：{{dashboard.matterNum}}
+            {{ $t('dashboard.yesterdayMatterNum') }}:{{dashboard.matterNum}}
           </div>
         </div>
       </div>
       <div class="col-lg-3 col-md-6 col-sm-12">
         <div class="text-block">
           <div class="upper">
-            <div class="indicator">文件总大小(包括缓存)</div>
+            <div class="indicator">{{ $t('dashboard.totalFileSize') }}</div>
             <div class="amount">{{dashboard.totalFileSize | humanFileSize}}</div>
             <div>
-              <RatePanel name="周环比" :standardValue="standardWeekSize" :compareValue="compareWeekSize"/>
-              <RatePanel name="日环比" :standardValue="standardDaySize" :compareValue="compareDaySize"/>
+              <RatePanel :name="$t('dashboard.weekRate')" :standardValue="standardWeekSize"
+                         :compareValue="compareWeekSize"/>
+              <RatePanel :name="$t('dashboard.dayRate')" :standardValue="standardDaySize"
+                         :compareValue="compareDaySize"/>
 
             </div>
           </div>
           <div class="lower">
-            昨日新增文件：{{dashboard.fileSize | humanFileSize}}
+            {{ $t('dashboard.yesterdayMatterSize') }}:{{dashboard.fileSize | humanFileSize}}
           </div>
         </div>
       </div>
       <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="figure-block">
           <div class="title">
-            最近{{days}}日调用量/UV
+            {{ $t('dashboard.recentDayInvokeUV',[days]) }}
           </div>
           <figure>
             <ECharts
@@ -84,7 +91,7 @@
       <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="figure-block">
           <div class="title">
-            文件下载量TOP10
+            {{ $t('dashboard.downloadMatterTop10') }}
           </div>
           <div class="list-rank">
             <ul>
@@ -102,7 +109,7 @@
       <div class="col-lg-6 col-md-6 col-sm-12">
         <div class="figure-block">
           <div class="title">
-            活跃IP TOP10
+            {{ $t('dashboard.activeIpTop10') }}
           </div>
           <div class="list-rank">
             <ul>
@@ -195,7 +202,7 @@
         activeIpTop10: [],
         //图标加载中的样式
         loadingOption: {
-          text: '加载中…',
+          text: this.$t("dashboard.loading"),
           color: '#006699',
           maskColor: 'rgba(255, 255, 255, 0.4)'
         },
@@ -205,17 +212,17 @@
         invokeListOption: {
           tooltip: {},
           legend: {
-            data: ['调用量', 'UV']
+            data: ['PV', 'UV']
           },
           xAxis: {
-            name: "日期",
+            name: this.$t("dashboard.date"),
             data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
           },
           yAxis: {
-            name: "数量"
+            name: this.$t("dashboard.num")
           },
           series: [{
-            name: '调用量',
+            name: 'PV',
             type: 'bar',
             data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
           }, {

@@ -161,14 +161,14 @@ export default class User extends BaseEntity {
     this.httpTransfiguration(function (authentication) {
       let textToCopy = currentHost() + "/user/authentication/" + authentication
       MessageBox.confirm('请复制以下链接到其他浏览器访问，在当前浏览器访问会导致当前用户登录信息失效。' + textToCopy, '变身提示', {
-        confirmButtonText: '复制',
-        cancelButtonText: '取消',
+        confirmButtonText: Vue.i18n.t("copy"),
+        cancelButtonText: Vue.i18n.t("cancel"),
         type: 'info'
       }).then(function () {
 
           Vue.$copyPlguin.copy(textToCopy, function () {
             Message.success({
-              message: "复制成功!",
+              message: Vue.i18n.t("operationSuccess"),
               center: true
             })
           })

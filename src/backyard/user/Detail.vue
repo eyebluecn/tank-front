@@ -154,8 +154,8 @@
       resetPassword() {
         let that = this
         MessageBox.prompt('输入新密码', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: that.$t("confirm"),
+          cancelButtonText: that.$t("cancel"),
           inputPattern: /.+/,
           inputErrorMessage: '新密码必填'
         }).then(({value}) => {

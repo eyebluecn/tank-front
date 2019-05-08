@@ -2,7 +2,7 @@
   <div class="backyard-install">
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="配置MySQL" name="first">
+      <el-tab-pane :label=" $t('install.configMysql')" name="first">
         <div class="install-block">
 
           <div class="row" v-validator="install.validatorSchema.mysqlHost.error">
@@ -13,28 +13,28 @@
           </div>
 
           <div class="row mt10" v-validator="install.validatorSchema.mysqlPort.error">
-            <label class="col-md-2 control-label mt5 compulsory">MySQL 端口</label>
+            <label class="col-md-2 control-label mt5 compulsory">MySQL {{ $t('install.port') }}</label>
             <div class="col-md-10 validate">
               <input type="number" class="form-control" v-model="install.mysqlPort">
             </div>
           </div>
 
           <div class="row mt10" v-validator="install.validatorSchema.mysqlSchema.error">
-            <label class="col-md-2 control-label mt5 compulsory">MySQL 库名</label>
+            <label class="col-md-2 control-label mt5 compulsory">MySQL {{ $t('install.schema') }}</label>
             <div class="col-md-10 validate">
               <input type="text" class="form-control" v-model="install.mysqlSchema">
             </div>
           </div>
 
           <div class="row mt10" v-validator="install.validatorSchema.mysqlUsername.error">
-            <label class="col-md-2 control-label mt5 compulsory">MySQL 用户名</label>
+            <label class="col-md-2 control-label mt5 compulsory">MySQL {{ $t('username') }}</label>
             <div class="col-md-10 validate">
               <input type="text" class="form-control" v-model="install.mysqlUsername">
             </div>
           </div>
 
           <div class="row mt10" v-validator="install.validatorSchema.mysqlPassword.error">
-            <label class="col-md-2 control-label mt5 compulsory">MySQL 密码</label>
+            <label class="col-md-2 control-label mt5 compulsory">MySQL {{ $t('password') }}</label>
             <div class="col-md-10 validate">
               <input type="password" class="form-control" :value="install.mysqlPassword" @input="mysqlPasswordChange">
             </div>
@@ -43,10 +43,10 @@
           <div class="row mt20">
             <div class="col-md-12">
               <div class="alert alert-info">
-                <div><i class="fa fa-bullhorn"></i> 注意：</div>
+                <div><i class="fa fa-bullhorn"></i> {{ $t('install.notice') }}</div>
                 <ol class="pl30 m0">
-                  <li>如果数据库和蓝眼云盘安装在同一台服务器，Host可以直接填写 127.0.0.1。</li>
-                  <li>数据库账户的权限要求要能够创建表，否则第二步"创建表"操作会出错</li>
+                  <li>{{ $t('install.mysqlNotice1') }}</li>
+                  <li>{{ $t('install.mysqlNotice2') }}</li>
                 </ol>
 
               </div>
@@ -57,22 +57,22 @@
             <div class="col-md-12 text-right">
               <button class="btn btn-success btn-sm" v-if="install.verified">
                 <i class="fa fa-link"></i>
-                MySQL连接测试通过
+                {{ $t('install.mysqlConnectionPass') }}
               </button>
               <button class="btn btn-info btn-sm" @click.stop.prevent="verify" v-if="!install.verified">
                 <i class="fa fa-unlink"></i>
-                测试MySQL连接
+                {{ $t('install.testMysqlConnection') }}
               </button>
 
               <button class="btn btn-primary btn-sm" @click.stop.prevent="goTo('second')">
                 <i class="fa fa-arrow-right"></i>
-                下一步
+                {{ $t('install.nextStep') }}
               </button>
             </div>
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="创建表" name="second" :disabled="!install.verified">
+      <el-tab-pane :label="$t('install.createTable')" name="second" :disabled="!install.verified">
         <div class="install-block">
 
           <div class="mb15 border-bottom" v-for="(tableInfo,index) in install.tableInfoList">
@@ -80,23 +80,24 @@
               {{tableInfo.name}}
 
               <span class="label label-success" v-if="tableInfo.tableExist && !tableInfo.missingFields.length">
-                已安装
+                {{ $t('install.installed') }}
               </span>
               <span class="label label-danger" v-if="tableInfo.tableExist && tableInfo.missingFields.length">
-                已安装,字段缺失
+                {{ $t('install.installedButMissing') }}
               </span>
               <span class="label label-warning" v-if="!tableInfo.tableExist">
-                待安装
+                {{ $t('install.toBeInstalled') }}
               </span>
 
             </div>
 
             <div class="mt10">
-              所有字段: <span class="label label-default mr5 inline-block mb10" v-for="field in tableInfo.allFields">{{field.DBName}}</span>
+              {{ $t('install.allFields') }}: <span class="label label-default mr5 inline-block mb10"
+                                                   v-for="field in tableInfo.allFields">{{field.DBName}}</span>
             </div>
             <div class="mt10" v-if="tableInfo.tableExist && tableInfo.missingFields.length">
-              缺失字段: <span class="label label-default mr5 inline-block mb10"
-                          v-for="field in tableInfo.missingFields">{{field.DBName}}</span>
+              {{ $t('install.missingFields') }}: <span class="label label-default mr5 inline-block mb10"
+                                                       v-for="field in tableInfo.missingFields">{{field.DBName}}</span>
             </div>
 
           </div>
@@ -104,12 +105,12 @@
           <div class="row mt20">
             <div class="col-md-12">
               <div class="alert alert-info">
-                <div><i class="fa fa-bullhorn"></i> 点击"一键建表"后会按照以下逻辑执行操作：</div>
+                <div><i class="fa fa-bullhorn"></i>{{ $t('install.tableNotice') }}</div>
                 <ol class="pl30 m0">
-                  <li>如果某表不存在，则直接创建表。</li>
-                  <li>如果某表存在并且字段齐全，那么不会对该表做任何操作</li>
-                  <li>如果某表存在但是部分字段缺失，那么会在该表中增加缺失字段。</li>
-                  <li>如果表中有多余的字段(多余字段即不是蓝眼云盘需要的字段)，不会做删除处理，而会维持原样。</li>
+                  <li>{{ $t('install.tableNotice1') }}</li>
+                  <li>{{ $t('install.tableNotice2') }}</li>
+                  <li>{{ $t('install.tableNotice3') }}</li>
+                  <li>{{ $t('install.tableNotice4') }}</li>
                 </ol>
 
               </div>
@@ -121,22 +122,22 @@
 
               <button class="btn btn-info btn-sm" v-if="!install.tableCreated()" @click.stop.prevent="createTable()">
                 <i class="fa fa-gavel"></i>
-                一键建表
+                {{ $t('install.oneKeyCreate') }}
               </button>
 
               <button class="btn btn-success btn-sm" v-if="install.tableCreated()">
                 <i class="fa fa-check"></i>
-                建表完成
+                {{ $t('install.oneKeyCreate') }}
               </button>
 
               <button class="btn btn-primary btn-sm" @click.stop.prevent="goTo('first')">
                 <i class="fa fa-arrow-left"></i>
-                上一步
+                {{ $t('install.preStep') }}
               </button>
 
               <button class="btn btn-primary btn-sm" @click.stop.prevent="goTo('third')">
                 <i class="fa fa-arrow-right"></i>
-                下一步
+                {{ $t('install.nextStep') }}
               </button>
 
             </div>
@@ -144,7 +145,7 @@
 
         </div>
       </el-tab-pane>
-      <el-tab-pane label="设置管理员" name="third" :disabled="!install.tableCreated()">
+      <el-tab-pane :label="$t('install.setAdministrator')" name="third" :disabled="!install.tableCreated()">
         <div class="install-block">
 
           <div class="text-center" v-show="phase===-1">
@@ -154,13 +155,13 @@
           <NbExpanding>
             <div v-show="phase===0">
               <div>
-                检测到系统中已经存在有以下管理员：
+                {{ $t('install.detectAdministrator') }}
               </div>
               <div class="mv10 bold" v-for="admin in install.adminList">
                 {{admin.username}}
               </div>
               <div>
-                你可以使用其中一位管理员的用户名和密码进行验证，或者创建一位新的管理员账户
+                {{ $t('install.useOrCreateAdministrator') }}
               </div>
 
               <div>
@@ -168,17 +169,17 @@
 
                   <button class="btn btn-primary btn-sm" @click.stop.prevent="phase = 1">
                     <i class="fa fa-user-o"></i>
-                    验证管理员账户
+                    {{ $t('install.validateAdministrator') }}
                   </button>
 
                   <button class="btn btn-primary btn-sm" @click.stop.prevent="phase = 2">
                     <i class="fa fa-user-plus"></i>
-                    创建管理员账户
+                    {{ $t('install.createAdministrator') }}
                   </button>
 
                   <button class="btn btn-primary btn-sm" @click.stop.prevent="goTo('second')">
                     <i class="fa fa-arrow-left"></i>
-                    上一步
+                    {{ $t('install.preStep') }}
                   </button>
 
                 </div>
@@ -192,18 +193,18 @@
 
 
               <div class="bold f20 text-center">
-                验证管理员账号
+                {{ $t('install.validateAdministrator') }}
               </div>
 
               <div class="row mt10" v-validator="install.adminValidatorSchema.adminUsername.error">
-                <label class="col-md-2 control-label mt5 compulsory">管理员用户名</label>
+                <label class="col-md-2 control-label mt5 compulsory">{{ $t('install.administratorUsername') }}</label>
                 <div class="col-md-10 validate">
                   <input type="text" class="form-control" v-model="install.adminUsername">
                 </div>
               </div>
 
               <div class="row mt10" v-validator="install.adminValidatorSchema.adminPassword.error">
-                <label class="col-md-2 control-label mt5 compulsory">管理员密码</label>
+                <label class="col-md-2 control-label mt5 compulsory">{{ $t('install.administratorPassword') }}</label>
                 <div class="col-md-10 validate">
                   <input type="password" class="form-control" v-model="install.adminPassword">
                 </div>
@@ -214,13 +215,13 @@
 
                   <button class="btn btn-primary btn-sm" @click.stop.prevent="phase = 0">
                     <i class="fa fa-arrow-left"></i>
-                    上一步
+                    {{ $t('install.preStep') }}
                   </button>
 
 
                   <button class="btn btn-primary btn-sm" @click.stop.prevent="validateAdmin()">
                     <i class="fa fa-send"></i>
-                    提交
+                    {{ $t('submit') }}
                   </button>
 
                 </div>
@@ -233,25 +234,25 @@
             <div v-show="phase===2">
 
               <div class="bold f20 text-center">
-                创建管理员账号
+                {{ $t('install.createAdministrator') }}
               </div>
 
               <div class="row mt10" v-validator="install.adminValidatorSchema.adminUsername.error">
-                <label class="col-md-2 control-label mt5 compulsory">管理员用户名</label>
+                <label class="col-md-2 control-label mt5 compulsory">{{ $t('install.administratorUsername') }}</label>
                 <div class="col-md-10 validate">
                   <input type="text" class="form-control" v-model="install.adminUsername">
                 </div>
               </div>
 
               <div class="row mt10" v-validator="install.adminValidatorSchema.adminPassword.error">
-                <label class="col-md-2 control-label mt5 compulsory">管理员密码</label>
+                <label class="col-md-2 control-label mt5 compulsory">{{ $t('install.administratorPassword') }}</label>
                 <div class="col-md-10 validate">
                   <input type="password" class="form-control" v-model="install.adminPassword">
                 </div>
               </div>
 
               <div class="row mt10" v-validator="install.adminValidatorSchema.adminRepassword.error">
-                <label class="col-md-2 control-label mt5 compulsory">再次输入密码</label>
+                <label class="col-md-2 control-label mt5 compulsory">{{ $t('install.administratorRePassword') }}</label>
                 <div class="col-md-10 validate">
                   <input type="password" class="form-control" v-model="install.adminRepassword">
                 </div>
@@ -261,9 +262,9 @@
               <div class="row mt20">
                 <div class="col-md-12">
                   <div class="alert alert-info">
-                    <div><i class="fa fa-bullhorn"></i> 注意：</div>
+                    <div><i class="fa fa-bullhorn"></i> {{ $t('install.notice') }}</div>
                     <ol class="pl30 m0">
-                      <li>由于用户名将作为文件上传的目录，因此只允许字母数字以及"_"。</li>
+                      <li>{{ $t('install.usernameRule') }}</li>
                     </ol>
 
                   </div>
@@ -276,36 +277,35 @@
 
                   <button class="btn btn-primary btn-sm" @click.stop.prevent="preStep">
                     <i class="fa fa-arrow-left"></i>
-                    上一步
+                    {{ $t('install.preStep') }}
                   </button>
 
                   <button class="btn btn-primary btn-sm" @click.stop.prevent="createAdmin()">
                     <i class="fa fa-send"></i>
-                    提交
+                    {{ $t('submit') }}
                   </button>
 
                 </div>
               </div>
-
 
             </div>
           </NbExpanding>
 
         </div>
       </el-tab-pane>
-      <el-tab-pane label="完成" name="forth" :disabled="!install.adminConfigured">
+      <el-tab-pane :label="$t('finish') " name="forth" :disabled="!install.adminConfigured">
         <div class="install-block">
 
           <div class="text-center">
             <img src="../../assets/img/success.svg" class="w50"/>
           </div>
           <div class="text-center mt10">
-            恭喜，安装成功！
+            {{ $t('install.congratulationInstall') }}
           </div>
           <div class="text-center mv20">
             <button class="btn btn-primary btn-sm" @click.stop.prevent="finish">
               <i class="fa fa-home">
-                点击进入首页
+                {{ $t('install.enterHome') }}
               </i>
             </button>
           </div>
@@ -358,7 +358,7 @@
         let that = this;
         this.install.httpVerify(function () {
           that.install.verified = true
-          that.$message.success("数据库连接可用！")
+          that.$message.success(that.$t("install.mysqlConnectionPass"))
         })
       },
       fetchTableInfoList() {
@@ -375,15 +375,16 @@
         //开始建表
         let that = this;
         this.install.httpCreateTable(function (response) {
-          that.$message.success("建表成功！")
+          that.$message.success(that.$t("install.createTableSuccess"))
 
         })
       },
       goTo(tabName) {
+        let that = this
         if (tabName === "second") {
 
           if (!this.install.verified) {
-            this.$message.error("请首先验证数据库连接")
+            this.$message.error(that.$t("install.validateMysqlFirst"))
             return
           }
 
@@ -391,7 +392,7 @@
 
         } else if (tabName === "third") {
           if (!this.install.tableCreated()) {
-            this.$message.error("请首先点击'一键建表'")
+            this.$message.error(that.$t("install.crateTableFirst"))
             return
           }
 
@@ -400,7 +401,7 @@
 
         } else if (tabName === "forth") {
           if (!this.install.adminConfigured) {
-            this.$message.error("请首先配置管理员信息")
+            this.$message.error(that.$t("install.configAdminFirst"))
             return
           }
         }
@@ -421,7 +422,7 @@
         //开始创建管理员
         let that = this;
         this.install.httpCreateAdmin(function (response) {
-          that.$message.success("创建管理员成功！")
+          that.$message.success(that.$t("install.createAdminSuccess"))
           that.goTo("forth")
         })
       },
@@ -429,7 +430,7 @@
         //开始创建管理员
         let that = this;
         this.install.httpValidateAdmin(function (response) {
-          that.$message.success("验证管理员成功！")
+          that.$message.success(that.$t("install.validateAdminSuccess"))
 
           that.goTo("forth")
         })

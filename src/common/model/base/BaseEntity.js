@@ -215,36 +215,6 @@ export default class BaseEntity extends Base {
     this.httpPost(url, params, successCallback, failureCallback)
   }
 
-  //确认删除操作.
-  confirmDel(successCallback, failureCallback) {
-
-    let that = this
-
-    MessageBox.confirm('此操作将永久删除该条记录, 是否继续?', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }).then(function () {
-
-        that.httpDelete(function () {
-          Message.success({
-            message: '成功删除!'
-          })
-
-          if (typeof successCallback === 'function') {
-            successCallback()
-          }
-
-        }, failureCallback)
-
-      },
-      function () {
-        if (typeof failureCallback === 'function') {
-          failureCallback()
-        }
-      }
-    )
-  }
 
   getUrlCreate() {
     let prefix = this.getUrlPrefix()

@@ -42,7 +42,7 @@
       name: {
         type: String,
         required: false,
-        'default': "周环比"
+        'default': ""
       },
       standardValue: {
         type: Number,

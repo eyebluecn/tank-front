@@ -2,21 +2,22 @@
   <div class="widget-image-cache-list animated fadeIn">
     <div class="row">
       <div class="col-md-12 text-right pb10">
+        <button class="btn btn-primary btn-sm " v-if="selectedImageCaches.length" @click.stop.prevent="deleteBatch">
+          <i class="fa fa-trash"></i>
+          {{ $t('delete') }}
+        </button>
         <button class="btn btn-primary btn-sm" v-if="selectedImageCaches.length !== pager.data.length"
                 @click.stop.prevent="checkAll">
           <i class="fa fa-check-square"></i>
-          全选
+          {{ $t('selectAll') }}
         </button>
         <button class="btn btn-primary btn-sm"
                 v-if="pager.data.length && selectedImageCaches.length === pager.data.length"
                 @click.stop.prevent="checkNone">
           <i class="fa fa-square-o"></i>
-          取消全选
+          {{ $t('cancel') }}
         </button>
-        <button class="btn btn-primary btn-sm " v-if="selectedImageCaches.length" @click.stop.prevent="deleteBatch">
-          <i class="fa fa-trash"></i>
-          删除
-        </button>
+
       </div>
 
       <div class="col-md-12" v-for="(imageCache,index) in pager.data">
@@ -73,7 +74,9 @@
 
         if (this.initFilter) {
           for (let key in this.initFilter) {
-            this.pager.setFilterValue(key, this.initFilter[key]);
+            if (this.initFilter.hasOwnProperty(key)) {
+              this.pager.setFilterValue(key, this.initFilter[key]);
+            }
           }
         }
         this.pager.httpFastPage()
@@ -125,9 +128,9 @@
       },
       deleteBatch() {
         let that = this
-        MessageBox.confirm('此操作将永久删除这些文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        MessageBox.confirm(that.$t("actionCanNotRevertConfirm"), that.$t("prompt"), {
+          confirmButtonText: that.$t("confirm"),
+          cancelButtonText: that.$t("cancel"),
           type: 'warning',
           callback: function (action, instance) {
             if (action === 'confirm') {
@@ -141,7 +144,7 @@
               })
               let imageCache = new ImageCache()
               imageCache.httpDeleteBatch(uuids, function (response) {
-                Message.success('删除成功！')
+                Message.success(that.$t("operationSuccess"))
                 that.refresh()
               })
             }

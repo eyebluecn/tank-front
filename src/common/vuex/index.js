@@ -2,11 +2,20 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import User from "../model/user/User";
 import Preference from '../model/preference/Preference'
+import BrowserUtil from "../util/BrowserUtil";
+import {readLocalStorage} from "../util/Utils";
+import Cookies from "js-cookie"
 
 Vue.use(Vuex)
 
 let user = new User()
 user.renderFromLocalStorage()
+
+let lang = BrowserUtil.browserLang()
+let localLang = Cookies.get("_lang");
+if (localLang === "zh" || localLang === "en") {
+  lang = localLang
+}
 
 const state = {
   config: {
@@ -34,6 +43,9 @@ const state = {
 
   //网站是否已经安装好
   installed: true,
+
+  //当前的语言
+  lang: lang,
 
   //网站设置
   preference: new Preference(),
