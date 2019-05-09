@@ -6,11 +6,11 @@
       <span class="fa fa-chevron-right mr5 w14" v-if="pager.data.length && !showSubFolder"></span>
       <span :class="{ 'ml23': !pager.data.length }">
 				<span v-if="matter.uuid">
-					<img :src="matter.getIcon()" class="mr5" alt="文件夹" width="22"/>
+					<img :src="matter.getIcon()" class="mr5" :alt="$t('matter.directory')" width="22"/>
 					<span>{{matter.name}}</span>
 				</span>
 				<span v-else>
-					<span>根目录</span>
+					<span>{{$t('matter.root')}}</span>
 				</span>
 			</span>
 

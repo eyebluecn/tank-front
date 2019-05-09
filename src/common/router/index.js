@@ -35,12 +35,13 @@ const router = new Router({
           name: 'MatterList',
           component: MatterList,
           meta: {
-            title: '全部文件',
+            //here is i18n key
+            title: 'router.allFiles',
             requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'MatterList',
-                title: '全部文件'
+                title: 'router.allFiles'
               }
             ]
           }
@@ -50,16 +51,16 @@ const router = new Router({
           name: 'MatterDetail',
           component: MatterDetail,
           meta: {
-            title: '文件详情',
+            title: 'router.fileDetail',
             requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'MatterList',
-                title: '文件列表'
+                title: 'router.allFiles'
               },
               {
                 name: 'MatterDetail',
-                title: '文件详情'
+                title: 'router.fileDetail'
               }
             ]
           }
@@ -69,7 +70,7 @@ const router = new Router({
           name: 'UserLogin',
           component: UserLogin,
           meta: {
-            title: '登录',
+            title: 'router.login',
             requiresAuth: false,
             breadcrumbs: []
           }
@@ -79,7 +80,7 @@ const router = new Router({
           name: 'UserAuthentication',
           component: UserAuthentication,
           meta: {
-            title: '自动登录',
+            title: 'router.autoLogin',
             requiresAuth: false,
             breadcrumbs: []
           }
@@ -89,7 +90,7 @@ const router = new Router({
           name: 'UserRegister',
           component: UserRegister,
           meta: {
-            title: '注册',
+            title: 'router.register',
             requiresAuth: false,
             breadcrumbs: []
           }
@@ -99,12 +100,12 @@ const router = new Router({
           name: 'UserList',
           component: UserList,
           meta: {
-            title: '用户列表',
+            title: 'router.users',
             requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'UserList',
-                title: '用户列表'
+                title: 'router.users'
               }
             ]
           }
@@ -114,16 +115,16 @@ const router = new Router({
           name: 'UserDetail',
           component: UserDetail,
           meta: {
-            title: '用户详情',
+            title: 'router.userDetail',
             requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'UserList',
-                title: '用户列表'
+                title: 'router.users'
               },
               {
                 name: 'UserDetail',
-                title: '用户详情'
+                title: 'router.userDetail'
               }
             ]
           }
@@ -133,50 +134,32 @@ const router = new Router({
           name: 'UserChangePassword',
           component: UserChangePassword,
           meta: {
-            title: '修改密码',
+            title: 'router.changePassword',
             requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'UserChangePassword',
-                title: '修改密码'
+                title: 'router.changePassword'
               }
             ]
           }
         },
-        {
-          path: 'user/create',
-          name: 'UserCreate',
-          component: UserCreate,
-          meta: {
-            title: '创建用户',
-            requiresAuth: true,
-            breadcrumbs: [
-              {
-                name: 'UserList',
-                title: '用户列表'
-              },
-              {
-                name: 'UserCreate',
-                title: '创建用户'
-              }
-            ]
-          }
-        },
+
         {
           path: 'user/edit/:uuid',
           name: 'UserEdit',
           component: UserCreate,
           meta: {
-            title: '编辑用户',
+            title: 'router.editUser',
             requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'UserList',
-                title: '用户列表'
+                title: 'router.users'
               },
               {
                 name: 'UserEdit',
-                title: '编辑用户'
+                title: 'router.editUser'
               }
             ]
           }
@@ -187,7 +170,7 @@ const router = new Router({
           name: 'ShareDetail',
           component: ShareDetail,
           meta: {
-            title: '分享详情',
+            title: 'router.shareDetail',
             requiresAuth: false,
             breadcrumbs: []
           }
@@ -197,12 +180,12 @@ const router = new Router({
           name: 'ShareList',
           component: ShareList,
           meta: {
-            title: '我的分享',
+            title: 'router.myShare',
             requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'ShareList',
-                title: '我的分享'
+                title: 'router.myShare'
               }
             ]
           }
@@ -212,12 +195,12 @@ const router = new Router({
           name: 'DashboardIndex',
           component: DashboardIndex,
           meta: {
-            title: '监控统计',
+            title: 'router.dashboard',
             requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'DashboardIndex',
-                title: '监控统计'
+                title: 'router.dashboard'
               }
             ]
           }
@@ -228,12 +211,12 @@ const router = new Router({
           name: 'InstallIndex',
           component: InstallIndex,
           meta: {
-            title: '安装网站',
+            title: 'router.dashboard',
             requiresAuth: false,
             breadcrumbs: [
               {
                 name: 'InstallIndex',
-                title: '安装网站'
+                title: 'router.dashboard'
               }
             ]
           }
@@ -244,12 +227,12 @@ const router = new Router({
           name: 'PreferenceIndex',
           component: PreferenceIndex,
           meta: {
-            title: '网站设置',
+            title: 'router.setting',
             requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'PreferenceIndex',
-                title: '网站设置'
+                title: 'router.setting'
               }
             ]
           }
@@ -260,16 +243,16 @@ const router = new Router({
           name: 'PreferenceEdit',
           component: PreferenceEdit,
           meta: {
-            title: '网站设置',
+            title: 'router.setting',
             requiresAuth: true,
             breadcrumbs: [
               {
                 name: 'PreferenceIndex',
-                title: '网站设置'
+                title: 'router.setting'
               },
               {
                 name: 'PreferenceEdit',
-                title: '网站设置'
+                title: 'router.setting'
               }
             ]
           }

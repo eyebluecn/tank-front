@@ -17,10 +17,10 @@
             <span v-for="b in $store.state.breadcrumbs">
               <span>/</span>
 							<router-link v-if="(b.name || b.path) && b.name !== $store.state.route.name" :to="b">
-                {{b.title}}
+                {{$t(b.title)}}
               </router-link>
 							<span v-else>
-								{{b.title}}
+								{{$t(b.title)}}
 							</span>
 
             </span>
@@ -35,7 +35,7 @@
       <TopNavigation/>
 
       <!--手机上不显示bottomNavigation，而采用弹出的形式-->
-      <BottomNavigation />
+      <BottomNavigation/>
     </div>
   </div>
 
@@ -76,6 +76,7 @@
         let that = this
         enquire.register('(max-width: 768px)', {
           match: function () {
+            that.$store.state.config.showDrawer = false
             that.$store.state.config.mobile = true
           },
           unmatch: function () {

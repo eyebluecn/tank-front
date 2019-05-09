@@ -19,14 +19,14 @@
         <li v-if="user.role === UserRole.GUEST">
           <router-link to="/user/login">
             <i class="w14 fa fa-user-circle-o"></i>
-            <span>登录</span>
+            <span>{{ $t('login') }}</span>
           </router-link>
         </li>
 
         <li v-if="user.role !== UserRole.GUEST">
           <router-link to="/" :class="{'custom-active':isCustomActive('/')}">
             <i class="w14 fa fa fa-th"></i>
-            <span>全部文件</span>
+            <span>{{ $t('layout.allFiles') }}</span>
           </router-link>
         </li>
 
@@ -34,42 +34,42 @@
         <li v-if="user.role !== UserRole.GUEST">
           <router-link to="/share/list" :class="{'custom-active':isCustomActive('/share/list')}">
             <i class="w14 fa fa fa-share-alt"></i>
-            <span>我的分享</span>
+            <span>{{ $t('layout.myShare') }}</span>
           </router-link>
         </li>
 
         <li v-if="user.role === UserRole.ADMINISTRATOR">
           <router-link to="/preference" :class="{'custom-active':isCustomActive('/preference')}">
             <i class="w14 fa fa-cog"></i>
-            <span>网站设置</span>
+            <span>{{ $t('layout.setting') }}</span>
           </router-link>
         </li>
 
         <li v-if="user.role === UserRole.ADMINISTRATOR">
           <router-link to="/dashboard/index" :class="{'custom-active':isCustomActive('/dashboard/index')}">
             <i class="w14 fa fa-dashboard"></i>
-            <span>监控统计</span>
+            <span>{{ $t('layout.setting') }}</span>
           </router-link>
         </li>
 
         <li v-if="user.role === UserRole.ADMINISTRATOR">
           <router-link to="/user/list" :class="{'custom-active':isCustomActive('/user/list')}">
             <i class="w14 fa fa-user"></i>
-            <span>用户列表</span>
+            <span>{{ $t('layout.users') }}</span>
           </router-link>
         </li>
 
         <li v-if="user.role !== UserRole.GUEST">
           <router-link to="/user/login" :class="{'custom-active':isCustomActive('/user/login')}">
             <i class="w14 fa fa-power-off"></i>
-            <span>退出登录</span>
+            <span>{{ $t('layout.logout') }}</span>
           </router-link>
         </li>
 
         <li class="about-menu">
-          <a href="javascript:void(0)" @click.stop.prevent="showAbout">
+          <a href="javascript:void(0)" @click.stop.prevent="showAbout($createElement)">
             <i class="w14 fa fa-info-circle"></i>
-            <span>关于</span>
+            <span>{{ $t('layout.about') }}</span>
           </a>
         </li>
       </ul>
@@ -84,7 +84,7 @@
         <li>
           <router-link to="/install/index" :class="{'custom-active':isCustomActive('/install/index')}">
             <i class="w14 fa fa-cogs"></i>
-            <span>安装网站</span>
+            <span>{{ $t('layout.install') }}</span>
           </router-link>
         </li>
       </ul>
@@ -96,6 +96,7 @@
   import {MessageBox} from 'element-ui'
   import {UserRole} from "../../common/model/user/UserRole";
   import {handleImageUrl} from "../../common/util/ImageUtil";
+  import BottomNavigation from "./BottomNavigation";
 
   let logoPath = require("../../assets/img/logo.png")
 
@@ -136,23 +137,28 @@
       eatClick() {
 
       },
-      showAbout() {
+      showAbout(createElement) {
+
 
         let that = this
-        let html = '<div class="text-center">' + this.preference.copyright + "<br/>" + this.preference.record + "<br/>" + 'Powered by <a target="_blank" href="https://github.com/eyebluecn/tank"><img class="w30" src="' + logoPath + '"/> 蓝眼云盘</a>' + '</div>'
-        MessageBox({
-          title: '关于',
-          message: html,
-          dangerouslyUseHTMLString: true,
-          confirmButtonText: that.$t("confirm"),
-          showCancelButton: false,
-          cancelButtonText: '关闭',
-          callback: (action, instance) => {
-            if (action === 'confirm') {
 
-            }
+        let targetMatterUuid = null
+        let dom = createElement(BottomNavigation, {
+          props: {
+
           }
         })
+
+        MessageBox({
+          title: that.$t('layout.about'),
+          message: dom,
+          confirmButtonText: that.$t("confirm"),
+          showCancelButton: false,
+          callback: (action, instance) => {
+
+          }
+        })
+
 
       }
     },

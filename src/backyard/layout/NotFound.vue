@@ -1,6 +1,6 @@
 <template>
   <div class="not-found">
-    404 页面找不到
+    {{ $t('notFound') }}
   </div>
 </template>
 <script>

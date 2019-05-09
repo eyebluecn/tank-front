@@ -18,28 +18,28 @@
 
         <button class="btn btn-primary btn-sm " v-if="selectedMatters.length" @click.stop.prevent="deleteBatch">
           <i class="fa fa-trash"></i>
-          删除
+          {{ $t("delete") }}
         </button>
 
         <button class="btn btn-primary btn-sm " v-if="selectedMatters.length" @click.stop.prevent="downloadZip">
           <i class="fa fa-download"></i>
-          下载
+          {{ $t("matter.delete") }}
         </button>
 
         <button class="btn btn-primary btn-sm " v-if="selectedMatters.length"
                 @click.stop.prevent="moveBatch($createElement)">
           <i class="fa fa-arrows"></i>
-          移动
+          {{ $t("matter.move") }}
         </button>
 
         <button class="btn btn-primary btn-sm " v-if="selectedMatters.length"
                 @click.stop.prevent="shareDialogVisible = !shareDialogVisible">
           <i class="fa fa-share-alt"></i>
-          分享
+          {{ $t("matter.share") }}
         </button>
 
         <el-dialog
-          title="提示"
+          :title="$t('matter.prompt')"
           :visible.sync="shareDialogVisible"
           :append-to-body="true">
 
@@ -52,21 +52,21 @@
         <span class="btn btn-primary btn-sm btn-file ">
               <slot name="button">
                 <i class="fa fa-cloud-upload"></i>
-                <span>上传</span>
+                <span>{{ $t("matter.upload") }}</span>
               </slot>
               <input ref="refFile" type="file" multiple="multiple" @change.prevent.stop="triggerUpload"/>
 				    </span>
 
         <button class="btn btn-sm btn-primary " @click.stop.prevent="createDirectory">
           <i class="fa fa-folder"></i>
-          新建
+          {{ $t("matter.create") }}
         </button>
 
       </div>
 
       <div class="col-md-4 mb10">
         <div class="input-group">
-          <input type="text" class="form-control" v-model="searchText" @keyup.enter="searchFile" placeholder="搜索文件">
+          <input type="text" class="form-control" v-model="searchText" @keyup.enter="searchFile" :placeholder="$t('matter.searchFile')">
           <span class="input-group-btn">
             <button type="button" class="btn btn-primary" @click.prevent.stop="searchFile">
               <i class="fa fa-search"></i>
@@ -98,7 +98,7 @@
         </div>
 
         <div>
-          <NbPager :pager="pager" :callback="refresh" emptyHint="该目录下暂无任何内容"/>
+          <NbPager :pager="pager" :callback="refresh" :emptyHint="$t('matter.noContentYet')"/>
         </div>
       </div>
 
@@ -226,7 +226,7 @@
           this.matter.uuid = 'root'
           that.breadcrumbs.splice(0, that.breadcrumbs.length)
           that.breadcrumbs.push({
-            title: '全部文件'
+            title: that.$t('matter.allFiles')
           })
 
         } else {
@@ -247,7 +247,7 @@
             //添加一个随机数，防止watch $route失败
             query['_t'] = new Date().getTime()
             that.breadcrumbs.push({
-              title: '全部文件',
+              title:that.$t('matter.allFiles'),
               path: '/',
               query: query
             })
@@ -272,7 +272,7 @@
       },
       createDirectory() {
         let that = this
-        that.newMatter.name = '新建文件夹'
+        that.newMatter.name = that.$t('matter.allFiles')
         that.newMatter.dir = true
         that.newMatter.editMode = true
         that.newMatter.puuid = that.matter.uuid
@@ -300,12 +300,12 @@
 
         let domFiles = that.$refs['refFile'].files;
         if (!domFiles || !domFiles.length) {
-          that.$message.error("没有选择文件")
+          that.$message.error(that.$t('matter.allFiles'))
           return;
         }
 
         if (domFiles.length > 1000) {
-          that.$message.error("最多只能同时选取1000个文件")
+          that.$message.error(that.$t('matter.exceed1000'))
           return;
         }
 
@@ -326,7 +326,7 @@
           //判断文件大小。
           if (that.user.sizeLimit >= 0) {
             if (domFile.size > that.user.sizeLimit) {
-              that.$message.error("文件大小超过了限制 " + humanFileSize(domFile.size) + " > " + humanFileSize(that.user.sizeLimit))
+              that.$message.error(that.$t('matter.sizeExceedLimit',humanFileSize(domFile.size),humanFileSize(that.user.sizeLimit)))
               continue
             }
           }
@@ -402,7 +402,7 @@
       //批量删除
       deleteBatch() {
         let that = this
-        MessageBox.confirm('此操作将永久删除这些文件, 是否继续?', '提示', {
+        MessageBox.confirm(that.$t("actionCanNotRevertConfirm"), that.$t("prompt"), {
           confirmButtonText: that.$t("confirm"),
           cancelButtonText: that.$t("cancel"),
           type: 'warning',
@@ -417,7 +417,7 @@
                 }
               })
               that.matter.httpDeleteBatch(uuids, function (response) {
-                Message.success('删除成功！')
+                Message.success(that.$t("operationSuccess"))
                 that.refresh()
               })
             }

@@ -55,6 +55,7 @@ const i18n = new VueI18n({
 })
 Vue.i18n = i18n
 
+
 const nprogress = new NProgress({parent: '.nprogress-container'})
 
 /* eslint-disable no-new */

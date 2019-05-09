@@ -2,7 +2,7 @@
   <div class="widget-share-panel">
 
     <div class="row" v-if="!share.uuid">
-      <label class="col-md-4 control-label mt5">有效期</label>
+      <label class="col-md-4 control-label mt5">{{$t('matter.expire')}}</label>
       <div class="col-md-8">
         <select class="form-control" v-model="share.expireOption">
           <option v-for="item in ShareExpireOptionList" :value="item.value">{{item.name}}</option>
@@ -17,14 +17,14 @@
     <div class="text-right mt10">
 
       <button class="btn btn-primary btn-sm" @click.stop.prevent="share.copyLinkAndCode()" v-if="share.uuid">
-        复制链接+提取码
+        {{$t('matter.expire')}}
       </button>
       <button class="btn btn-primary btn-sm" @click.stop.prevent="submit" v-if="!share.uuid">
-        分享
+        {{$t('matter.share')}}
       </button>
 
       <button class="btn btn-default btn-sm" @click.stop.prevent="close">
-        关闭
+        {{$t('matter.close')}}
       </button>
     </div>
 
@@ -82,7 +82,7 @@
         let that = this;
         that.$copyPlguin.copy(text, function () {
           that.$message.success({
-            message: text + " 复制成功!",
+            message: that.$t('operationSuccess'),
             center: true
           })
         })

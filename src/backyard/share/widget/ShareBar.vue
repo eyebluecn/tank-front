@@ -139,14 +139,14 @@
       handleImageUrl,
       deleteShare() {
         let that = this
-        MessageBox.confirm('此操作将永久删除该分享, 是否继续?', '提示', {
+        MessageBox.confirm(that.$t("actionCanNotRevertConfirm"), that.$t("prompt"), {
           confirmButtonText: that.$t("confirm"),
           cancelButtonText: that.$t("cancel"),
           type: 'warning',
           callback: function (action, instance) {
             if (action === 'confirm') {
               that.share.httpDelete(function (response) {
-                Message.success('删除成功！')
+                Message.success(that.$t("operationSuccess"))
                 that.$emit('deleteSuccess', that.share)
               })
             }

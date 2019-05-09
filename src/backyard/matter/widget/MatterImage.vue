@@ -13,12 +13,12 @@
                class="form-control input-sm"
                v-model="value"
                v-if="manual"
-               placeholder="请填写图片链接">
+               :placeholder="$t('matter.fillInPicLink')">
 
         <span class="form-control input-sm btn-file text-center pt3 pb0" v-show="!manual">
           <slot name="button">
             <i class="fa fa-cloud-upload"></i>
-            <span>{{value?'重新选择':'选择图片'}}</span>
+            <span>{{value?$t('matter.rePick'):$t('matter.chooseImage')}}</span>
           </slot>
           <input ref="refFile" type="file" @change.prevent.stop="triggerUpload"/>
         </span>
@@ -27,7 +27,7 @@
           <button class="btn btn-primary btn-sm" @click.stop.prevent="manual = !manual">
         <i class="fa fa-pencil" v-if="!manual"></i>
         <i class="fa fa-cloud-upload" v-if="manual"></i>
-        <span>{{manual?'上传模式':'填写模式'}}</span>
+        <span>{{manual?$t('matter.uploadMode'):$t('matter.fillMode')}}</span>
       </button>
           </span>
       </div>
@@ -84,7 +84,7 @@
       uploadHint: {
         type: String,
         required: false,
-        "default": "图片最大不超过1M"
+        "default": ""
       }
     },
     methods: {
@@ -115,7 +115,7 @@
         //判断文件大小。
         if (that.user.sizeLimit >= 0) {
           if (matter.file.size > that.user.sizeLimit) {
-            that.$message.error("文件大小超过了限制 " + humanFileSize(matter.file.size) + " > " + humanFileSize(that.user.sizeLimit))
+            that.$message.error(this.$t('matter.sizeExceedLimit', humanFileSize(matter.file.size), humanFileSize(that.user.sizeLimit)))
             return;
           }
         }

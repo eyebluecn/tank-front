@@ -11,13 +11,13 @@
         </div>
         <div class="progress" :class="{'progress-striped active' : matter.loading}">
           <div :style="'width: '+(matter.progress*100)+'%'" class="progress-bar progress-bar-primary">
-            <span>已上传 {{(matter.progress * 100).toFixed(1)}}%</span>
+            <span>{{$t('matter.uploaded')}} {{(matter.progress * 100).toFixed(1)}}%</span>
           </div>
         </div>
         <div>
-          已上传:{{ (matter.file.size * matter.progress).toFixed(0) | humanFileSize }}/{{ matter.file.size |
+          {{$t('matter.uploaded')}}:{{ (matter.file.size * matter.progress).toFixed(0) | humanFileSize }}/{{ matter.file.size |
           humanFileSize}}
-          速度:{{matter.speed | humanFileSize}}/s
+          {{$t('matter.speed')}}:{{matter.speed | humanFileSize}}/s
 
         </div>
       </div>
