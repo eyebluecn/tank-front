@@ -11,7 +11,7 @@
 
       </div>
 
-      <button class="drawer-trigger btn btn-primary btn-sm"
+      <button class="drawer-trigger btn btn-primary btn-sm mr5"
               @click.stop.prevent="$store.state.config.showDrawer=!$store.state.config.showDrawer">
         <i class="fa fa-bars"></i>
       </button>

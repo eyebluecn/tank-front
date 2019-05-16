@@ -14,18 +14,18 @@
             </div>
             <div class="right-box">
 
-              <button class="btn btn-primary btn-sm" @click.stop.prevent="downloadZip">
+              <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="downloadZip">
                 <i class="fa fa-download"></i>
                 下载
               </button>
 
-              <button class="btn btn-danger btn-sm" @click.stop.prevent="cancelShare"
+              <button class="btn btn-danger btn-sm mr5" @click.stop.prevent="cancelShare"
                       v-if="user.uuid && user.uuid === share.userUuid">
                 <i class="fa fa-ban"></i>
                 取消分享
               </button>
 
-              <button class="btn btn-primary btn-sm" @click.stop.prevent="shareDialogVisible = true"
+              <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="shareDialogVisible = true"
                       v-if="user.uuid && user.uuid === share.userUuid">
                 <i class="fa fa-link"></i>
                 获取链接
@@ -36,8 +36,8 @@
                 :append-to-body="true">
                 <ShareDialogPanel :share="share"/>
                 <span slot="footer" class="dialog-footer">
-                <button class="btn btn-primary btn-sm" @click="share.copyLinkAndCode()">复制链接+提取码</button>
-                <button class="btn btn-default btn-sm" @click="shareDialogVisible = false">关闭</button>
+                <button class="btn btn-primary btn-sm mr5" @click="share.copyLinkAndCode()">复制链接+提取码</button>
+                <button class="btn btn-default btn-sm mr5" @click="shareDialogVisible = false">关闭</button>
               </span>
               </el-dialog>
 

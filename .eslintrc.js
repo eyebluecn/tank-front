@@ -60,6 +60,8 @@ module.exports = {
     'no-template-curly-in-string': 0,
     'no-mixed-spaces-and-tabs': 0,
     'handle-callback-err': 0,
-    "import/no-webpack-loader-syntax": "off"
+    "import/no-webpack-loader-syntax": "off",
+    'object-curly-spacing': 0,
+    'comma-dangle': 0
   }
 }

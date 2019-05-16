@@ -57,31 +57,31 @@ export default class FileUtil {
   static getIcon(name, idDir = false) {
 
     if (idDir) {
-      return "/static/img/file/folder.svg"
+      return require("../../assets/img/file/folder.svg")
     }
 
     if (FileUtil.isPdf(name)) {
-      return "/static/img/file/pdf.svg"
+      return require("../../assets/img/file/pdf.svg")
     } else if (FileUtil.isDoc(name)) {
-      return "/static/img/file/doc.svg"
+      return require("../../assets/img/file/doc.svg")
     } else if (FileUtil.isPpt(name)) {
-      return "/static/img/file/ppt.svg"
+      return require("../../assets/img/file/ppt.svg")
     } else if (FileUtil.isXls(name)) {
-      return "/static/img/file/xls.svg"
+      return require("../../assets/img/file/xls.svg")
     } else if (FileUtil.isAudio(name)) {
-      return "/static/img/file/audio.svg"
+      return require("../../assets/img/file/audio.svg")
     } else if (FileUtil.isVideo(name) || getExtension(name) === ".mkv") {
-      return "/static/img/file/video.svg"
+      return require("../../assets/img/file/video.svg")
     } else if (FileUtil.isText(name)) {
-      return "/static/img/file/text.svg"
+      return require("../../assets/img/file/text.svg")
     } else if (FileUtil.isPsd(name)) {
-      return "/static/img/file/psd.svg"
+      return require("../../assets/img/file/psd.svg")
     } else if (FileUtil.isImage(name)) {
-      return "/static/img/file/image.svg"
+      return require("../../assets/img/file/image.svg")
     } else if (endWith(name, 'zip') || endWith(name, 'rar') || endWith(name, '7z') || endWith(name, 'tar') || endWith(name, 'tar') || endWith(name, 'gz')) {
-      return "/static/img/file/archive.svg"
+      return require("../../assets/img/file/archive.svg")
     } else {
-      return "/static/img/file/file.svg"
+      return require("../../assets/img/file/file.svg")
     }
 
   }

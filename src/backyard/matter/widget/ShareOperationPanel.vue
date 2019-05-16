@@ -16,14 +16,14 @@
 
     <div class="text-right mt10">
 
-      <button class="btn btn-primary btn-sm" @click.stop.prevent="share.copyLinkAndCode()" v-if="share.uuid">
+      <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="share.copyLinkAndCode()" v-if="share.uuid">
         {{$t('matter.expire')}}
       </button>
-      <button class="btn btn-primary btn-sm" @click.stop.prevent="submit" v-if="!share.uuid">
+      <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="submit" v-if="!share.uuid">
         {{$t('matter.share')}}
       </button>
 
-      <button class="btn btn-default btn-sm" @click.stop.prevent="close">
+      <button class="btn btn-default btn-sm mr5" @click.stop.prevent="close">
         {{$t('matter.close')}}
       </button>
     </div>

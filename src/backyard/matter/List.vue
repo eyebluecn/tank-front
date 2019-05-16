@@ -3,36 +3,36 @@
     <div class="row">
 
       <div class="col-md-8 mb10">
-        <button class="btn btn-primary btn-sm " v-if="selectedMatters.length !== pager.data.length"
+        <button class="btn btn-primary btn-sm mr5" v-if="selectedMatters.length !== pager.data.length"
                 @click.stop.prevent="checkAll">
           <i class="fa fa-check-square"></i>
           {{ $t("selectAll") }}
         </button>
 
-        <button class="btn btn-primary btn-sm "
+        <button class="btn btn-primary btn-sm mr5"
                 v-if="pager.data.length && selectedMatters.length === pager.data.length"
                 @click.stop.prevent="checkNone">
           <i class="fa fa-square-o"></i>
           {{ $t("cancel") }}
         </button>
 
-        <button class="btn btn-primary btn-sm " v-if="selectedMatters.length" @click.stop.prevent="deleteBatch">
+        <button class="btn btn-primary btn-sm mr5" v-if="selectedMatters.length" @click.stop.prevent="deleteBatch">
           <i class="fa fa-trash"></i>
           {{ $t("delete") }}
         </button>
 
-        <button class="btn btn-primary btn-sm " v-if="selectedMatters.length" @click.stop.prevent="downloadZip">
+        <button class="btn btn-primary btn-sm mr5" v-if="selectedMatters.length" @click.stop.prevent="downloadZip">
           <i class="fa fa-download"></i>
           {{ $t("matter.delete") }}
         </button>
 
-        <button class="btn btn-primary btn-sm " v-if="selectedMatters.length"
+        <button class="btn btn-primary btn-sm mr5" v-if="selectedMatters.length"
                 @click.stop.prevent="moveBatch($createElement)">
           <i class="fa fa-arrows"></i>
           {{ $t("matter.move") }}
         </button>
 
-        <button class="btn btn-primary btn-sm " v-if="selectedMatters.length"
+        <button class="btn btn-primary btn-sm mr5" v-if="selectedMatters.length"
                 @click.stop.prevent="shareDialogVisible = !shareDialogVisible">
           <i class="fa fa-share-alt"></i>
           {{ $t("matter.share") }}
@@ -49,7 +49,7 @@
         </el-dialog>
 
 
-        <span class="btn btn-primary btn-sm btn-file ">
+        <span class="btn btn-primary btn-sm btn-file mr5">
               <slot name="button">
                 <i class="fa fa-cloud-upload"></i>
                 <span>{{ $t("matter.upload") }}</span>
@@ -57,7 +57,7 @@
               <input ref="refFile" type="file" multiple="multiple" @change.prevent.stop="triggerUpload"/>
 				    </span>
 
-        <button class="btn btn-sm btn-primary " @click.stop.prevent="createDirectory">
+        <button class="btn btn-sm btn-primary mr5" @click.stop.prevent="createDirectory">
           <i class="fa fa-folder"></i>
           {{ $t("matter.create") }}
         </button>
@@ -66,9 +66,10 @@
 
       <div class="col-md-4 mb10">
         <div class="input-group">
-          <input type="text" class="form-control" v-model="searchText" @keyup.enter="searchFile" :placeholder="$t('matter.searchFile')">
+          <input type="text" class="form-control" v-model="searchText" @keyup.enter="searchFile"
+                 :placeholder="$t('matter.searchFile')">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-primary" @click.prevent.stop="searchFile">
+            <button type="button" class="btn btn-primary mr5" @click.prevent.stop="searchFile">
               <i class="fa fa-search"></i>
             </button>
           </span>
@@ -247,7 +248,7 @@
             //添加一个随机数，防止watch $route失败
             query['_t'] = new Date().getTime()
             that.breadcrumbs.push({
-              title:that.$t('matter.allFiles'),
+              title: that.$t('matter.allFiles'),
               path: '/',
               query: query
             })
@@ -326,7 +327,7 @@
           //判断文件大小。
           if (that.user.sizeLimit >= 0) {
             if (domFile.size > that.user.sizeLimit) {
-              that.$message.error(that.$t('matter.sizeExceedLimit',humanFileSize(domFile.size),humanFileSize(that.user.sizeLimit)))
+              that.$message.error(that.$t('matter.sizeExceedLimit', humanFileSize(domFile.size), humanFileSize(that.user.sizeLimit)))
               continue
             }
           }

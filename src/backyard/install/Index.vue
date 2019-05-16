@@ -55,16 +55,16 @@
 
           <div class="row">
             <div class="col-md-12 text-right">
-              <button class="btn btn-success btn-sm" v-if="install.verified">
+              <button class="btn btn-success btn-sm mr5" v-if="install.verified">
                 <i class="fa fa-link"></i>
                 {{ $t('install.mysqlConnectionPass') }}
               </button>
-              <button class="btn btn-info btn-sm" @click.stop.prevent="verify" v-if="!install.verified">
+              <button class="btn btn-info btn-sm mr5" @click.stop.prevent="verify" v-if="!install.verified">
                 <i class="fa fa-unlink"></i>
                 {{ $t('install.testMysqlConnection') }}
               </button>
 
-              <button class="btn btn-primary btn-sm" @click.stop.prevent="goTo('second')">
+              <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="goTo('second')">
                 <i class="fa fa-arrow-right"></i>
                 {{ $t('install.nextStep') }}
               </button>
@@ -120,22 +120,22 @@
           <div class="row">
             <div class="col-md-12 text-right">
 
-              <button class="btn btn-info btn-sm" v-if="!install.tableCreated()" @click.stop.prevent="createTable()">
+              <button class="btn btn-info btn-sm mr5" v-if="!install.tableCreated()" @click.stop.prevent="createTable()">
                 <i class="fa fa-gavel"></i>
                 {{ $t('install.oneKeyCreate') }}
               </button>
 
-              <button class="btn btn-success btn-sm" v-if="install.tableCreated()">
+              <button class="btn btn-success btn-sm mr5" v-if="install.tableCreated()">
                 <i class="fa fa-check"></i>
                 {{ $t('install.oneKeyCreate') }}
               </button>
 
-              <button class="btn btn-primary btn-sm" @click.stop.prevent="goTo('first')">
+              <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="goTo('first')">
                 <i class="fa fa-arrow-left"></i>
                 {{ $t('install.preStep') }}
               </button>
 
-              <button class="btn btn-primary btn-sm" @click.stop.prevent="goTo('third')">
+              <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="goTo('third')">
                 <i class="fa fa-arrow-right"></i>
                 {{ $t('install.nextStep') }}
               </button>
@@ -167,17 +167,17 @@
               <div>
                 <div class="text-right">
 
-                  <button class="btn btn-primary btn-sm" @click.stop.prevent="phase = 1">
+                  <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="phase = 1">
                     <i class="fa fa-user-o"></i>
                     {{ $t('install.validateAdministrator') }}
                   </button>
 
-                  <button class="btn btn-primary btn-sm" @click.stop.prevent="phase = 2">
+                  <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="phase = 2">
                     <i class="fa fa-user-plus"></i>
                     {{ $t('install.createAdministrator') }}
                   </button>
 
-                  <button class="btn btn-primary btn-sm" @click.stop.prevent="goTo('second')">
+                  <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="goTo('second')">
                     <i class="fa fa-arrow-left"></i>
                     {{ $t('install.preStep') }}
                   </button>
@@ -213,13 +213,13 @@
               <div class="row mt10">
                 <div class="col-md-12 text-right">
 
-                  <button class="btn btn-primary btn-sm" @click.stop.prevent="phase = 0">
+                  <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="phase = 0">
                     <i class="fa fa-arrow-left"></i>
                     {{ $t('install.preStep') }}
                   </button>
 
 
-                  <button class="btn btn-primary btn-sm" @click.stop.prevent="validateAdmin()">
+                  <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="validateAdmin()">
                     <i class="fa fa-send"></i>
                     {{ $t('submit') }}
                   </button>
@@ -275,12 +275,12 @@
               <div class="row">
                 <div class="col-md-12 text-right">
 
-                  <button class="btn btn-primary btn-sm" @click.stop.prevent="preStep">
+                  <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="preStep">
                     <i class="fa fa-arrow-left"></i>
                     {{ $t('install.preStep') }}
                   </button>
 
-                  <button class="btn btn-primary btn-sm" @click.stop.prevent="createAdmin()">
+                  <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="createAdmin()">
                     <i class="fa fa-send"></i>
                     {{ $t('submit') }}
                   </button>
@@ -303,7 +303,7 @@
             {{ $t('install.congratulationInstall') }}
           </div>
           <div class="text-center mv20">
-            <button class="btn btn-primary btn-sm" @click.stop.prevent="finish">
+            <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="finish">
               <i class="fa fa-home">
                 {{ $t('install.enterHome') }}
               </i>

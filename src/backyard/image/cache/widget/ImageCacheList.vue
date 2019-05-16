@@ -2,16 +2,16 @@
   <div class="widget-image-cache-list animated fadeIn">
     <div class="row">
       <div class="col-md-12 text-right pb10">
-        <button class="btn btn-primary btn-sm " v-if="selectedImageCaches.length" @click.stop.prevent="deleteBatch">
+        <button class="btn btn-primary btn-sm mr5" v-if="selectedImageCaches.length" @click.stop.prevent="deleteBatch">
           <i class="fa fa-trash"></i>
           {{ $t('delete') }}
         </button>
-        <button class="btn btn-primary btn-sm" v-if="selectedImageCaches.length !== pager.data.length"
+        <button class="btn btn-primary btn-sm mr5" v-if="selectedImageCaches.length !== pager.data.length"
                 @click.stop.prevent="checkAll">
           <i class="fa fa-check-square"></i>
           {{ $t('selectAll') }}
         </button>
-        <button class="btn btn-primary btn-sm"
+        <button class="btn btn-primary btn-sm mr5"
                 v-if="pager.data.length && selectedImageCaches.length === pager.data.length"
                 @click.stop.prevent="checkNone">
           <i class="fa fa-square-o"></i>

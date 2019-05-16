@@ -74,11 +74,11 @@
     </div>
 
     <div class="text-right">
-      <button class="btn btn-sm btn-danger" @click.stop.prevent="systemCleanup" title="重置系统将清空除管理员账号外所有数据">
+      <button class="btn btn-sm btn-danger mr5" @click.stop.prevent="systemCleanup" title="重置系统将清空除管理员账号外所有数据">
         <i class="fa fa-warning"></i>
         重置系统
       </button>
-      <router-link class="btn btn-sm btn-primary" to="/preference/edit">
+      <router-link class="btn btn-sm btn-primary mr5" to="/preference/edit">
         <i class="fa fa-pencil"></i>
         修改
       </router-link>

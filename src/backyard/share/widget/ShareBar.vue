@@ -99,8 +99,8 @@
       :append-to-body="true">
       <ShareDialogPanel :share="share"/>
       <span slot="footer" class="dialog-footer">
-                <button class="btn btn-primary btn-sm" @click="share.copyLinkAndCode()">复制链接+提取码</button>
-                <button class="btn btn-default btn-sm" @click="shareDialogVisible = false">关闭</button>
+                <button class="btn btn-primary btn-sm mr5" @click="share.copyLinkAndCode()">复制链接+提取码</button>
+                <button class="btn btn-default btn-sm mr5" @click="shareDialogVisible = false">关闭</button>
               </span>
     </el-dialog>
 

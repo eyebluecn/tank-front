@@ -68,7 +68,7 @@ export default class Share extends BaseEntity {
 
   getIcon() {
     if (this.shareType === ShareType.MIX) {
-      return "/static/img/file/archive.svg"
+      return require("../../../assets/img/file/archive.svg")
     } else {
       return FileUtil.getIcon(this.name, this.shareType === ShareType.DIRECTORY)
     }

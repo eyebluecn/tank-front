@@ -24,7 +24,7 @@
         </span>
 
         <span class="input-group-btn">
-          <button class="btn btn-primary btn-sm" @click.stop.prevent="manual = !manual">
+          <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="manual = !manual">
         <i class="fa fa-pencil" v-if="!manual"></i>
         <i class="fa fa-cloud-upload" v-if="manual"></i>
         <span>{{manual?$t('matter.uploadMode'):$t('matter.fillMode')}}</span>
