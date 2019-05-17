@@ -58,17 +58,6 @@ Vue.i18n = i18n
 
 const nprogress = new NProgress({parent: '.nprogress-container'})
 
-/* eslint-disable no-new */
-// new Vue({
-//   el: '#app',
-//   nprogress,
-//   i18n,
-//   store,
-//   router,
-//   template: "<app/>",
-//   components: {App}
-// })
-
 new Vue({
   nprogress,
   i18n,

@@ -10,6 +10,7 @@
   import VideoPanel from "./panels/VideoPanel"
   import {humanFileSize} from "../../filter/str";
   import {isIE} from "../../util/Utils";
+  import Vue from "vue"
 
 
   let CLASS_NAME = "previewer-mode"
@@ -53,7 +54,7 @@
           center: true,
           showCancelButton: false,
           showConfirmButton: false,
-          confirmButtonText: that.$t("confirm"),
+          confirmButtonText: Vue.i18n.t("confirm"),
           beforeClose: (action, instance, done) => {
 
             that.bodyRemoveClass()
@@ -87,6 +88,7 @@
             url: url
           }
         });
+
 
         this.preview(name, url, size, vNode)
       },
