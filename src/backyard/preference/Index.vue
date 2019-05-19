@@ -4,67 +4,67 @@
     <div class="preference-block tank-box">
       <div class="row">
         <div class="col-md-12 form-info">
-          <span>网站名称：</span>
+          <span>{{$t('preference.websiteName')}}:</span>
           <span class="bold">{{preference.name}}</span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>logo：</span>
+          <span>{{$t('preference.logo')}}:</span>
           <span>
             <img v-if="preference.logoUrl" :src="preference.logoUrl" alt="logo" class="max-height-100">
           </span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>favicon：</span>
+          <span>favicon:</span>
           <span>
             <img v-if="preference.faviconUrl" :src="preference.faviconUrl" alt="favicon" class="max-height-100">
           </span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>版权信息：</span>
+          <span>{{$t('preference.copyright')}}:</span>
           <span v-html="preference.copyright"></span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>备案信息：</span>
+          <span>{{$t('preference.extraInfo')}}:</span>
           <span v-html="preference.record"></span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>zip下载数量限制：</span>
+          <span>{{$t('preference.zipMaxNumLimit')}}:</span>
           <span v-html="preference.downloadDirMaxNum"></span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>是否允许用户自主注册：</span>
-          <span>{{preference.allowRegister?'是':'否'}}</span>
+          <span>{{$t('preference.allowRegister')}}:</span>
+          <span>{{preference.allowRegister?$t('yes'):$t('no')}}</span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>zip下载大小限制：</span>
+          <span>{{$t('preference.zipMaxSizeLimit')}}:</span>
           <span>
             <span class="mr10">
                     <span v-if="preference.downloadDirMaxSize >= 0">
                             {{preference.downloadDirMaxSize | humanFileSize}}
                           </span>
                     <span v-else>
-                            无限制
+                            {{$t('preference.noLimit')}}
                           </span>
                 </span>
           </span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>用户默认总大小限制：</span>
+          <span>{{$t('preference.userDefaultSizeLimit')}}:</span>
           <span>
             <span class="mr10">
                     <span v-if="preference.defaultTotalSizeLimit >= 0">
                             {{preference.defaultTotalSizeLimit | humanFileSize}}
                           </span>
                     <span v-else>
-                            无限制
+                            {{$t('preference.noLimit')}}
                           </span>
                 </span>
           </span>
@@ -74,13 +74,15 @@
     </div>
 
     <div class="text-right">
-      <button class="btn btn-sm btn-danger mr5" @click.stop.prevent="systemCleanup" title="重置系统将清空除管理员账号外所有数据">
+      <button class="btn btn-sm btn-danger mr5"
+              @click.stop.prevent="systemCleanup"
+              :title="$t('preference.systemCleanupDescription')">
         <i class="fa fa-warning"></i>
-        重置系统
+        {{$t('preference.systemCleanup')}}
       </button>
       <router-link class="btn btn-sm btn-primary mr5" to="/preference/edit">
         <i class="fa fa-pencil"></i>
-        修改
+        {{$t('edit')}}
       </router-link>
     </div>
 
@@ -102,16 +104,16 @@
         let that = this
         let preference = this.preference
 
-        this.$prompt('重置系统将清空除管理员账号外所有数据，事关重大，请输入登录密码', '提示', {
+        this.$prompt(that.$t("preference.systemCleanupPrompt"), that.$t("prompt"), {
           inputValue: null,
           confirmButtonText: that.$t("confirm"),
           cancelButtonText: that.$t("cancel"),
           inputPattern: /^.{1,45}$/,
-          inputErrorMessage: '必填，不超过45个字'
+          inputErrorMessage: that.$t("required")
         }).then(({value}) => {
 
           preference.httpSystemCleanup(value, function () {
-            that.$message.success("重置系统成功！");
+            that.$message.success(that.$t("operationSuccess"));
           })
         }).catch(() => {
 

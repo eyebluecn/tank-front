@@ -39,7 +39,7 @@
         </button>
 
         <el-dialog
-          :title="$t('matter.prompt')"
+          :title="$t('matter.share')"
           :visible.sync="shareDialogVisible"
           :append-to-body="true">
 
@@ -227,7 +227,7 @@
           this.matter.uuid = 'root'
           that.breadcrumbs.splice(0, that.breadcrumbs.length)
           that.breadcrumbs.push({
-            title: that.$t('matter.allFiles')
+            title: 'matter.allFiles'
           })
 
         } else {
@@ -248,7 +248,7 @@
             //添加一个随机数，防止watch $route失败
             query['_t'] = new Date().getTime()
             that.breadcrumbs.push({
-              title: that.$t('matter.allFiles'),
+              title: 'matter.allFiles',
               path: '/',
               query: query
             })
@@ -260,20 +260,22 @@
               query['_t'] = new Date().getTime()
               that.breadcrumbs.push({
                 title: m.name,
+                displayDirect: true,
                 path: '/',
                 query: query
               })
             }
             //第一个文件
             that.breadcrumbs.push({
-              title: that.matter.name
+              title: that.matter.name,
+              displayDirect: true,
             })
           })
         }
       },
       createDirectory() {
         let that = this
-        that.newMatter.name = that.$t('matter.allFiles')
+        that.newMatter.name = 'matter.allFiles'
         that.newMatter.dir = true
         that.newMatter.editMode = true
         that.newMatter.puuid = that.matter.uuid

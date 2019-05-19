@@ -19,48 +19,50 @@
             <div class="row">
 
               <div class="col-md-12 form-info">
-                <span>角色：</span>
+                <span>{{$t('user.role')}}:</span>
                 <span>
                       {{UserRoleMap[currentUser.role].name}}
                     </span>
               </div>
 
               <div class="col-md-12 form-info">
-                <span>单文件限制：</span>
+                <span>{{$t('user.singleFileSizeLimit')}}:</span>
                 <span v-if="currentUser.sizeLimit >= 0">
                             {{currentUser.sizeLimit | humanFileSize}}
                           </span>
                 <span v-else>
-                            无限制
+                            {{$t('user.noLimit')}}
                           </span>
               </div>
               <div class="col-md-12 form-info">
-                <span>总文件限制：</span>
+                <span>{{$t('user.totalFileSizeLimit')}}:</span>
                 <span v-if="currentUser.totalSizeLimit >= 0">
                             {{currentUser.totalSizeLimit | humanFileSize}}
                           </span>
                 <span v-else>
-                  无限制
+                  {{$t('user.noLimit')}}
                 </span>
               </div>
 
               <div class="col-md-12 form-info">
-                <span>总文件大小：</span>
+                <span>{{$t('user.totalFileSize')}}:</span>
                 <span>
                  {{currentUser.totalSize | humanFileSize}}
                 </span>
               </div>
 
               <div class="col-md-12 form-info">
-                <span>状态：</span>
-                <span>
-                     {{UserStatusMap[currentUser.status].name}}
-                    </span>
+                <span>{{$t('user.status')}}:</span>
+
+                <span :class="'text-'+UserStatusMap[currentUser.status].style">
+                  {{UserStatusMap[currentUser.status].name}}
+                </span>
+
               </div>
 
 
               <div class="col-md-12 form-info">
-                <span>上次登录IP：</span>
+                <span>{{$t('user.lastLoginIp')}}:</span>
                 <span>
                      {{currentUser.lastIp}}
                     </span>
@@ -68,7 +70,7 @@
 
 
               <div class="col-md-12 form-info">
-                <span>上次登录时间：</span>
+                <span>{{$t('user.lastLoginTime')}}:</span>
                 <span>
                      {{currentUser.lastTime | simpleDateTime}}
                     </span>
@@ -85,25 +87,25 @@
 
 
     <div class="text-right" v-if="user.username!=='demo'">
-      <button class="btn btn-sm btn-primary mb5" v-if="user.role === UserRole.ADMINISTRATOR"
+      <button class="btn btn-sm btn-primary mb5 mr10" v-if="user.role === UserRole.ADMINISTRATOR"
               @click.stop.prevent="resetPassword">
         <i class="fa fa-lock"></i>
-        重置密码
+        {{$t('user.resetPassword')}}
       </button>
-      <button class="btn btn-sm btn-primary mb5" v-if="user.role === UserRole.ADMINISTRATOR"
+      <button class="btn btn-sm btn-primary mb5 mr10" v-if="user.role === UserRole.ADMINISTRATOR"
               @click.stop.prevent="currentUser.transfiguration()">
         <i class="fa fa-user-secret"></i>
-        变身
+        {{$t('user.transfiguration')}}
       </button>
-      <button class="btn btn-sm btn-primary mb5" v-if="currentUser.uuid === user.uuid"
+      <button class="btn btn-sm btn-primary mb5 mr10" v-if="currentUser.uuid === user.uuid"
               @click.stop.prevent="changePassword">
         <i class="fa fa-lock"></i>
-        修改密码
+        {{$t('user.changePassword')}}
       </button>
       <button class="btn btn-sm btn-primary mb5"
               @click.stop.prevent="$router.push('/user/edit/' + currentUser.uuid)">
         <i class="fa fa-pencil"></i>
-        编辑资料
+        {{$t('edit')}}
       </button>
     </div>
 
@@ -153,15 +155,15 @@
       },
       resetPassword() {
         let that = this
-        MessageBox.prompt('输入新密码', '提示', {
+        MessageBox.prompt(that.$t('user.enterPassword'), that.$t('prompt'), {
           confirmButtonText: that.$t("confirm"),
           cancelButtonText: that.$t("cancel"),
           inputPattern: /.+/,
-          inputErrorMessage: '新密码必填'
+          inputErrorMessage: that.$t('user.cannotBeNull')
         }).then(({value}) => {
           that.currentUser.httpUserResetPassword(value, function (response) {
             that.$message.success({
-              message: '重置密码成功！'
+              message: that.$t('operationSuccess')
             })
           })
         }).catch(() => {
@@ -174,10 +176,11 @@
       }
     },
     created() {
+      let that = this
       if (this.user.role !== UserRole.ADMINISTRATOR) {
         this.breadcrumbs.splice(0, this.breadcrumbs.length)
         this.breadcrumbs.push({
-          title: '个人详情'
+          title: that.$t('user.profile')
         })
       }
     },

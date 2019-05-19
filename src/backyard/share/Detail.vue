@@ -9,35 +9,35 @@
               <img class="share-icon" :src="share.getIcon()"/>
               <span class="name">
                 {{share.name}}
-                <span class="text-danger" v-if="share.hasExpired()">已过期</span>
+                <span class="text-danger" v-if="share.hasExpired()">{{$t('share.expired')}}</span>
               </span>
             </div>
             <div class="right-box">
 
               <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="downloadZip">
                 <i class="fa fa-download"></i>
-                下载
+                {{$t('download')}}
               </button>
 
               <button class="btn btn-danger btn-sm mr5" @click.stop.prevent="cancelShare"
                       v-if="user.uuid && user.uuid === share.userUuid">
                 <i class="fa fa-ban"></i>
-                取消分享
+                {{$t('share.cancelShare')}}
               </button>
 
               <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="shareDialogVisible = true"
                       v-if="user.uuid && user.uuid === share.userUuid">
                 <i class="fa fa-link"></i>
-                获取链接
+                {{$t('share.getLink')}}
               </button>
               <el-dialog
-                title="分享详情"
+                :title="$t('share.shareDetail')"
                 :visible.sync="shareDialogVisible"
                 :append-to-body="true">
                 <ShareDialogPanel :share="share"/>
                 <span slot="footer" class="dialog-footer">
-                <button class="btn btn-primary btn-sm mr5" @click="share.copyLinkAndCode()">复制链接+提取码</button>
-                <button class="btn btn-default btn-sm mr5" @click="shareDialogVisible = false">关闭</button>
+                <button class="btn btn-primary btn-sm mr5" @click="share.copyLinkAndCode()">{{$t('share.copyLinkAndCode')}}</button>
+                <button class="btn btn-default btn-sm mr5" @click="shareDialogVisible = false">{{$t('close')}}</button>
               </span>
               </el-dialog>
 
@@ -46,16 +46,16 @@
           <div class="share-info">
 
         <span class="inline-block mr10">
-          分享者：{{share.username}}
+          {{$t('share.sharer')}}:{{share.username}}
         </span>
             <span class="inline-block mr10">
-          创建时间：{{share.createTime | simpleDateHourMinute}}
+          {{$t('createTime')}}:{{share.createTime | simpleDateHourMinute}}
         </span>
             <span class="inline-block mr10" v-if="!share.expireInfinity">
-          失效时间：{{share.expireTime | simpleDateHourMinute}}
+          {{$t('share.expireTime')}}:{{share.expireTime | simpleDateHourMinute}}
         </span>
             <span class="inline-block mr10" v-if="share.expireInfinity">
-          永久有效
+          {{$t('share.noExpire')}}
         </span>
 
           </div>
@@ -63,7 +63,7 @@
 
         <div class="breadcrumb" v-if="breadcrumbs && breadcrumbs.length">
           <a href="javascript:void(0)"
-             @click.stop.prevent="goToDirectory(null)">全部文件</a>
+             @click.stop.prevent="goToDirectory(null)">{{$t('share.allFiles')}}</a>
           <span v-for="(matter,index) in breadcrumbs">
           <span>/</span>
           <a v-if="index<breadcrumbs.length-1" href="javascript:void(0)" @click.stop.prevent="goToDirectory(matter)">{{matter.name}} </a>
@@ -80,16 +80,17 @@
         </div>
 
         <div class="mt20">
-          <NbPager :pager="pager" :callback="refresh" emptyHint="该目录下暂无任何内容"/>
+          <NbPager :pager="pager" :callback="refresh" :emptyHint="$t('share.noContent')"/>
         </div>
       </div>
 
       <div v-if="needShareCode" class="col-md-4 col-md-offset-4 mt100">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="请输入提取码" v-model="share.code" @keyup.enter="refresh">
+          <input type="text" class="form-control" :placeholder="$t('share.enterCode')" v-model="share.code"
+                 @keyup.enter="refresh">
           <span class="input-group-btn">
           <button type="button" class="btn btn-primary" @click.stop.prevent="refresh">
-            提取文件
+            {{$t('share.getFiles')}}
           </button>
         </span>
         </div>
@@ -225,10 +226,10 @@
 
           if (response.data.code === ResultCode.NEED_SHARE_CODE) {
             that.needShareCode = true
-            that.$message.warning("请输入提取码")
+            that.$message.warning(that.$t('share.enterCode'))
           } else if (response.data.code === ResultCode.SHARE_CODE_ERROR) {
             that.needShareCode = true
-            that.$message.error("提取码错误")
+            that.$message.error(that.$t('share.codeError'))
           } else {
             that.$message.error(errorMessage)
           }
@@ -254,14 +255,14 @@
       },
       cancelShare() {
         let that = this
-        MessageBox.confirm('此操作将永久取消该分享, 是否继续?', '提示', {
+        MessageBox.confirm(that.$t('share.cancelPrompt'), that.$t('prompt'), {
           confirmButtonText: that.$t("confirm"),
           cancelButtonText: that.$t("cancel"),
           type: 'warning',
           callback: function (action, instance) {
             if (action === 'confirm') {
               that.share.httpDelete(function (response) {
-                Message.success('取消成功！')
+                Message.success(that.$t('operationSuccess'))
                 that.$router.push("/share/list")
 
               })

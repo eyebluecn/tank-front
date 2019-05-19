@@ -2,23 +2,23 @@
   <div class="row animated fadeIn backyard-user-register">
 
     <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 mt100">
-      <div class="text-primary f25 text-center mb20">欢迎注册</div>
+      <div class="text-primary f25 text-center mb20">{{$t('user.welcomeRegister')}}</div>
       <!--输入框开始-->
       <div class="input-group mb15">
         <span class="input-group-addon"><i class="fa fa-user w14"></i></span>
-        <input type="text" class="form-control" placeholder="用户名" v-model="username"
+        <input type="text" class="form-control" :placeholder="$t('user.username')" v-model="username"
                @keyup.enter="register">
       </div>
 
       <div class="input-group mb15">
         <span class="input-group-addon"><i class="fa fa-unlock-alt w14"></i></span>
-        <input type="password" class="form-control" placeholder="密码" v-model="password"
+        <input type="password" class="form-control" :placeholder="$t('user.password')" v-model="password"
                @keyup.enter="register">
       </div>
 
       <div class="input-group mb15">
         <span class="input-group-addon"><i class="fa fa-unlock-alt w14"></i></span>
-        <input type="password" class="form-control" placeholder="确认密码" v-model="rePassword"
+        <input type="password" class="form-control" :placeholder="$t('user.confirmPassword')" v-model="rePassword"
                @keyup.enter="register">
       </div>
 
@@ -26,16 +26,16 @@
         <button class="btn btn-primary button full-width" @click.prevent.stop="register" :disabled="user.loading">
           <span v-if="user.loading">
             <i class="fa fa-spinner fa-spin"></i>
-            正在登录...
+            {{$t('user.registering')}}
           </span>
           <span v-else>
             <i class="fa fa-user-circle-o"></i>
-            登录
+            {{$t('user.register')}}
           </span>
         </button>
       </div>
       <div class="mb15 text-right">
-        <router-link to="/user/login">前往登录</router-link>
+        <router-link to="/user/login">{{$t('user.goToLogin')}}</router-link>
       </div>
 
 
@@ -87,23 +87,22 @@
           }
 
           //登录成功啦。
-        }, function (err) {
+        }, function (errMsg) {
 
-          that.$message.error({
-            title: '错误',
-            message: err.data.msg
-          })
+          that.$message.error(errMsg)
 
         })
 
       },
       logout() {
-
+        let that = this
         if (this.user.role !== 'GUEST') {
           this.user.httpLogout(function () {
 
-          }, function () {
-            console.error('退出失败！')
+          }, function (errMsg) {
+
+            that.$message.error(errMsg)
+
           })
         }
 

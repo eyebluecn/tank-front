@@ -94,10 +94,10 @@ export default class Share extends BaseEntity {
 
   copyLinkAndCode() {
     let that = this;
-    let text = "链接：" + that.getLink() + " 提取码：" + that.code
+    let text = Vue.i18n.t("model.linkCodeText", [that.getLink(), that.code])
     Vue.$copyPlguin.copy(text, function () {
       Message.success({
-        message: "链接+提取码 复制成功!",
+        message: Vue.i18n.t("model.copyLinkCodeSuccess"),
         center: true
       })
     })

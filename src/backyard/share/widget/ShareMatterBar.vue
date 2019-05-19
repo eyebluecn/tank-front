@@ -37,7 +37,7 @@
         <!--在小屏幕下的操作栏-->
         <div class="pull-right hidden-lg hidden-md">
           <span class="more-btn" @click.stop.prevent="showMore = !showMore">
-            <i class="fa fa-ellipsis-h btn-action" title="更多"></i>
+            <i class="fa fa-ellipsis-h btn-action" :title="$t('share.more')"></i>
           </span>
         </div>
 
@@ -68,10 +68,10 @@
           </span>
         </div>
 
-        <div class="cell-btn" title="下载" v-if="!matter.dir"
+        <div class="cell-btn" :title="$t('download')" v-if="!matter.dir"
              @click.stop.prevent="matter.download()">
           <i class="fa fa-download"></i>
-          下载
+          {{$t('download')}}
         </div>
 
       </div>

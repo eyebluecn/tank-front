@@ -1,16 +1,16 @@
 <template>
   <div class="row">
     <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 mt100">
-      <div class="text-primary f25 text-center mb20">欢迎登录</div>
+      <div class="text-primary f25 text-center mb20">{{$t('user.welcomeLogin')}}</div>
       <!--输入框开始-->
       <div class="input-group mb15">
         <span class="input-group-addon"><i class="fa fa-user w14"></i></span>
-        <input type="text" class="form-control" placeholder="用户名" v-model="username"
+        <input type="text" class="form-control" :placeholder="$t('user.username')" v-model="username"
                @keyup.enter="login">
       </div>
       <div class="input-group mb15">
         <span class="input-group-addon"><i class="fa fa-unlock-alt w14"></i></span>
-        <input type="password" class="form-control" placeholder="密码" v-model="password"
+        <input type="password" class="form-control" :placeholder="$t('user.password')" v-model="password"
                @keyup.enter="login">
       </div>
 
@@ -19,16 +19,16 @@
                 :disabled="user.loading">
           <span v-if="user.loading">
             <i class="fa fa-spinner fa-spin"></i>
-            正在登录...
+            {{$t('user.logining')}}
           </span>
           <span v-else>
             <i class="fa fa-user-circle-o"></i>
-            登录
+            {{$t('user.login')}}
           </span>
         </button>
       </div>
       <div class="mb15 text-right">
-        <router-link to="/user/register">立即注册</router-link>
+        <router-link to="/user/register">{{$t('user.toToRegister')}}</router-link>
       </div>
 
       <div class="mb15" v-show="user.errorMessage">
@@ -79,23 +79,22 @@
           }
 
           //登录成功啦。
-        }, function (err) {
+        }, function (errMsg) {
 
-          that.$message.error({
-            title: '错误',
-            message: err.data.msg
-          })
+          that.$message.error(errMsg)
 
         })
 
       },
       logout() {
-
+        let that = this
         if (this.user.role !== 'GUEST') {
           this.user.httpLogout(function () {
 
-          }, function () {
-            console.error('退出失败！')
+          }, function (errMsg) {
+
+            that.$message.error(errMsg)
+
           })
         }
 

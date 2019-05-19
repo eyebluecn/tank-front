@@ -3,35 +3,41 @@
 
     <div class="tank-box bg-white br4 p20 mt10">
       <div class="row" v-validator="preference.validatorSchema.name.error">
-        <label class="col-md-2 control-label mt5 compulsory">网盘名称</label>
+        <label class="col-md-2 control-label mt5 compulsory">
+          {{$t('preference.websiteName')}}
+        </label>
         <div class="col-md-10 validate">
           <input type="text" class="form-control" v-model="preference.name">
         </div>
       </div>
 
       <div class="row mt10">
-        <label class="col-md-2 control-label mt5">云盘logo</label>
+        <label class="col-md-2 control-label mt5">
+          {{$t('preference.logo')}}
+        </label>
         <div class="col-md-10">
-          <MatterImage v-model="preference.logoUrl" uploadHint="logo请使用正方形图片，否则在显示时会裁剪成正方形"/>
+          <MatterImage v-model="preference.logoUrl" :uploadHint="$t('preference.logoSquare')"/>
         </div>
       </div>
 
       <div class="row mt10">
         <label class="col-md-2 control-label mt5">favicon</label>
         <div class="col-md-10">
-          <MatterImage v-model="preference.faviconUrl" filter=".ico" uploadHint="只允许上传.ico图标" :previewWidth="60"/>
+          <MatterImage v-model="preference.faviconUrl" filter=".ico"
+                       :uploadHint="$t('preference.onlyAllowIco')"
+                       :previewWidth="60"/>
         </div>
       </div>
 
       <div class="row mt10">
-        <label class="col-md-2 control-label mt5">版权信息(支持html)</label>
+        <label class="col-md-2 control-label mt5">{{$t('preference.copyright')}}</label>
         <div class="col-md-10">
           <input type="text" class="form-control" v-model="preference.copyright">
         </div>
       </div>
 
       <div class="row mt10">
-        <label class="col-md-2 control-label mt5">备案信息(支持html)</label>
+        <label class="col-md-2 control-label mt5">{{$t('preference.extraInfo')}}</label>
         <div class="col-md-10">
           <input type="text" class="form-control" v-model="preference.record">
         </div>
@@ -39,7 +45,7 @@
 
 
       <div class="row mt10">
-        <label class="col-md-2 control-label mt5">zip下载数量限制</label>
+        <label class="col-md-2 control-label mt5">{{$t('preference.zipMaxNumLimit')}}</label>
         <div class="col-md-10">
           <input type="text" class="form-control" v-model="preference.downloadDirMaxNum">
         </div>
@@ -47,15 +53,15 @@
 
 
       <div class="row mt10">
-        <label class="col-md-2 control-label mt5">zip下载大小限制(B) </label>
+        <label class="col-md-2 control-label mt5">{{$t('preference.zipMaxSizeLimit')}} </label>
         <div class="col-md-10">
           <div class="row">
             <div class="col-xs-6">
               <input type="number" class="form-control" v-model="preference.downloadDirMaxSize">
             </div>
             <div class="col-xs-6" style="line-height:30px;">
-              当前值：
-              <span v-if="preference.downloadDirMaxSize < 0">无限制</span>
+              {{$t('preference.current')}}:
+              <span v-if="preference.downloadDirMaxSize < 0">{{$t('preference.noLimit')}}</span>
               <span v-else>{{preference.downloadDirMaxSize | humanFileSize}}</span>
             </div>
           </div>
@@ -65,15 +71,15 @@
       </div>
 
       <div class="row mt10">
-        <label class="col-md-2 control-label mt5">用户默认总大小限制(B) </label>
+        <label class="col-md-2 control-label mt5">{{$t('preference.userDefaultSizeLimit')}}</label>
         <div class="col-md-10">
           <div class="row">
             <div class="col-xs-6">
               <input type="number" class="form-control" v-model="preference.defaultTotalSizeLimit">
             </div>
             <div class="col-xs-6" style="line-height:30px;">
-              当前值：
-              <span v-if="preference.defaultTotalSizeLimit < 0">无限制</span>
+              {{$t('preference.current')}}:
+              <span v-if="preference.defaultTotalSizeLimit < 0">{{$t('preference.noLimit')}}</span>
               <span v-else>{{preference.defaultTotalSizeLimit | humanFileSize}}</span>
             </div>
           </div>
@@ -83,7 +89,7 @@
       </div>
 
       <div class="row mt10">
-        <label class="col-md-2 control-label mt5">允许自主注册</label>
+        <label class="col-md-2 control-label mt5">{{$t('preference.allowRegister')}}</label>
         <div class="col-md-10">
           <NbSwitcher v-model="preference.allowRegister"/>
         </div>
@@ -126,7 +132,7 @@
         this.preference.httpSave(function (response) {
 
           that.$message.success({
-            message: '修改偏好成功！'
+            message: $t('operationSuccess')
           });
 
           that.globalPreference.render(response.data.data);

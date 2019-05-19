@@ -4,22 +4,24 @@
     <div class="password-block tank-box">
       <div>
         <div class="row mt10">
-          <label class="col-md-2 control-label mt5 compulsory">旧密码</label>
-          <div class="col-md-10">
+          <label class="col-md-3 control-label mt5 compulsory">
+            {{$t('user.oldPassword')}}
+          </label>
+          <div class="col-md-9">
             <input type="password" class="form-control" v-model="oldPassword">
           </div>
         </div>
 
         <div class="row mt10">
-          <label class="col-md-2 control-label mt5 compulsory">新密码</label>
-          <div class="col-md-10">
+          <label class="col-md-3 control-label mt5 compulsory">{{$t('user.newPassword')}}</label>
+          <div class="col-md-9">
             <input type="password" class="form-control" v-model="password">
           </div>
         </div>
 
         <div class="row mt10">
-          <label class="col-md-2 control-label mt5 compulsory">确认新密码</label>
-          <div class="col-md-10">
+          <label class="col-md-3 control-label mt5 compulsory">{{$t('user.confirmNewPassword')}}</label>
+          <div class="col-md-9">
             <input type="password" class="form-control" v-model="repeatPassword">
           </div>
         </div>
@@ -28,13 +30,9 @@
     </div>
 
     <div class="mt10 text-right">
-      <button class="btn btn-sm btn-primary mr10" @click.stop.prevent="$router.go(-1)">
-        <span class="fa fa-reply"></span>
-        返回
-      </button>
       <button class="btn btn-sm btn-primary pull-right" @click.stop.prevent="save">
         <i class="fa fa-save"></i>
-        保存
+        {{$t('submit')}}
       </button>
     </div>
 
@@ -62,21 +60,21 @@
         let that = this
         if (!this.oldPassword || !this.password || !this.repeatPassword) {
           that.$message.error({
-            message: '不能为空！'
+            message: that.$t('user.cannotBeNull')
           })
           return
         }
 
         if (this.repeatPassword !== this.password) {
           that.$message.error({
-            message: '两次输入不一致！'
+            message: that.$t('user.passwordNotSame')
           })
           return
         }
 
         this.user.httpUserChangePassword(this.oldPassword, this.password, function (response) {
           that.$message.success({
-            message: '修改密码成功！'
+            message: that.$t('operationSuccess')
           })
           that.$router.go(-1)
         })

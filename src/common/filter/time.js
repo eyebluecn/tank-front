@@ -111,7 +111,7 @@ export function simpleDateTime (d, fallback = null) {
   } else if (d === null) {
     return fallback
   } else {
-    console.error('时间格式错误：' + d)
+    console.error('Time format error:' + d)
     return 'Invalid Date:' + d
   }
 }
@@ -123,7 +123,7 @@ export function simpleDateHourMinute (d, fallback = null) {
   } else if (d === null) {
     return fallback
   } else {
-    console.error('时间格式错误：' + d)
+    console.error('Time format error:' + d)
     return 'Invalid Date:' + d
   }
 }
@@ -176,7 +176,7 @@ export function simpleYearAndMonth (d, fallback = null) {
   }
 }
 
-//将js的时间对象，转换成人性化的时间。当天：15:34 2017-04-03
+//将js的时间对象，转换成人性化的时间。当天:15:34 2017-04-03
 export function humanTime (d, fallback = null) {
 
   let now = new Date()

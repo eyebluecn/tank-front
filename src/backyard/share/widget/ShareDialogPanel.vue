@@ -4,31 +4,32 @@
       <div>
         <img class="share-icon" :src="share.getIcon()"/>
         <span class="name">{{share.name}}</span>
-        <span class="italic" v-if="showSuccessHint"> 分享成功 <i class="fa fa-check text-success"></i></span>
+        <span class="italic" v-if="showSuccessHint"> {{$t('share.shareSuccess')}} <i
+          class="fa fa-check text-success"></i></span>
       </div>
       <div class="mt15">
         <span class="inline-block mr10">
-          分享者：{{share.username}}
+          {{$t('share.sharer')}}:{{share.username}}
         </span>
         <span class="inline-block mr10" v-if="!share.expireInfinity">
-          失效时间：{{share.expireTime | simpleDateHourMinute}}
+          {{$t('share.expireTime')}}:{{share.expireTime | simpleDateHourMinute}}
         </span>
         <span class="inline-block mr10" v-if="share.expireInfinity">
-          永久有效
+          {{$t('share.noExpire')}}
         </span>
       </div>
       <div class="mt15">
-        链接：
+        {{$t('share.link')}}:
         <span>{{share.getLink()}}</span>
-        <a class="mr15" title="复制链接"
+        <a class="mr15" :title="$t('share.copyLink')"
            @click.stop.prevent="copyText(share.getLink())">
           <i class="fa fa-copy"></i>
         </a>
       </div>
       <div class="mt15">
-        提取码：
+        {{$t('share.code')}}:
         <span>{{share.code}}</span>
-        <a class="mr15" title="复制提取码"
+        <a class="mr15" :title="$t('share.copyCode')"
            @click.stop.prevent="copyText(share.code)">
           <i class="fa fa-copy"></i>
         </a>
@@ -63,7 +64,7 @@
         let that = this;
         that.$copyPlguin.copy(text, function () {
           that.$message.success({
-            message: text + " 复制成功!",
+            message: text + that.$t('share.copySuccess'),
             center: true
           })
         })

@@ -3,13 +3,13 @@
 		<button v-show="!entity.editMode" :class="createClass" @click="callback" :disabled="entity.loading">
 						<i :class="createIcon" v-show="!entity.loading"></i>
 						<i class="fa fa-spinner fa-spin" v-show="entity.loading"></i>
-						创建
+						{{$t('create')}}
 					</button>
 					<button v-show="entity.editMode" :class="saveClass" @click="callback"
 					        :disabled="entity.loading">
 						<i :class="saveIcon" v-show="!entity.loading"></i>
 						<i class="fa fa-spinner fa-spin" v-show="entity.loading"></i>
-						保存
+						{{$t('save')}}
 					</button>
 	</span>
 

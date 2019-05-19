@@ -17,10 +17,10 @@
             <span v-for="b in $store.state.breadcrumbs">
               <span>/</span>
 							<router-link v-if="(b.name || b.path) && b.name !== $store.state.route.name" :to="b">
-                {{$t(b.title)}}
+                {{b.displayDirect?b.title:$t(b.title)}}
               </router-link>
 							<span v-else>
-								{{$t(b.title)}}
+								{{b.displayDirect?b.title:$t(b.title)}}
 							</span>
 
             </span>

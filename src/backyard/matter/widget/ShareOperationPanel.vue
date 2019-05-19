@@ -17,7 +17,7 @@
     <div class="text-right mt10">
 
       <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="share.copyLinkAndCode()" v-if="share.uuid">
-        {{$t('matter.expire')}}
+        {{$t('matter.copyLinkAndCode')}}
       </button>
       <button class="btn btn-primary btn-sm mr5" @click.stop.prevent="submit" v-if="!share.uuid">
         {{$t('matter.share')}}

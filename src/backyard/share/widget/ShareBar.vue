@@ -18,23 +18,26 @@
           <div class="right-part" v-if="share.uuid">
 
             <span class="share-operation">
-              <i class="fa fa-info-circle btn-action text-primary" title="分享详情"
+              <i class="fa fa-info-circle btn-action text-primary"
+                 :title="$t('share.shareDetail')"
                  @click.stop.prevent="shareDialogVisible = true"></i>
             </span>
 
             <span class="share-operation">
-              <i class="fa fa-trash btn-action text-danger" title="删除" @click.stop.prevent="deleteShare"></i>
+              <i class="fa fa-trash btn-action text-danger"
+                 :title="$t('delete')"
+                 @click.stop.prevent="deleteShare"></i>
             </span>
 
-            <span class="share-date" title="分享时间">
+            <span class="share-date" :title="$t('share.shareTime')">
               {{share.updateTime | simpleDateHourMinute}}
             </span>
 
-            <span class="share-date w110 text-center" title="到期时间" v-if="share.expireInfinity">
-              永久有效
+            <span class="share-date w110 text-center" :title="$t('share.expireTime')"  v-if="share.expireInfinity">
+              {{$t('share.noExpire')}}
             </span>
 
-            <span class="share-date w110 text-center" title="到期时间" v-if="!share.expireInfinity">
+            <span class="share-date w110 text-center" :title="$t('share.expireTime')"  v-if="!share.expireInfinity">
               {{share.expireTime | simpleDateHourMinute}}
             </span>
 
@@ -45,7 +48,7 @@
         <!--在小屏幕下的操作栏-->
         <div class="pull-right hidden-lg hidden-md">
           <span class="more-btn" @click.stop.prevent="showMore = !showMore">
-            <i class="fa fa-ellipsis-h btn-action" title="显示更多"></i>
+            <i class="fa fa-ellipsis-h btn-action" :title="$t('showMore')"></i>
           </span>
         </div>
 
@@ -55,7 +58,7 @@
 
             <span class="share-name">
               {{share.name}}
-              <span class="text-danger" v-if="share.hasExpired()">已过期</span>
+              <span class="text-danger" v-if="share.hasExpired()">{{$t('share.expired')}}</span>
             </span>
 
           </div>
@@ -68,39 +71,39 @@
       <div class="hidden-lg hidden-md more-panel" v-if="showMore">
         <div class="cell-btn" style="border: none">
 
-          <span title="分享时间">
-            分享时间：{{share.createTime | simpleDateHourMinute}}
+          <span :title="$t('share.shareTime')">
+            {{$t('share.shareTime')}}:{{share.createTime | simpleDateHourMinute}}
           </span>
 
-          <span title="到期时间" v-if="share.expireInfinity">
-            永久有效
+          <span :title="$t('share.expireTime')" v-if="share.expireInfinity">
+            {{$t('share.noExpire')}}
           </span>
-          <span title="到期时间" v-if="!share.expireInfinity">
-            到期时间：{{share.expireTime | simpleDateHourMinute}}
+          <span :title="$t('share.expireTime')" v-if="!share.expireInfinity">
+            {{$t('share.expireTime')}}:{{share.expireTime | simpleDateHourMinute}}
           </span>
         </div>
 
-        <div class="cell-btn" title="分享详情" @click.stop.prevent="shareDialogVisible = true">
+        <div class="cell-btn" :title="$t('share.shareDetail')" @click.stop.prevent="shareDialogVisible = true">
           <i class="fa fa-info-circle"></i>
-          分享详情
+          {{$t('share.shareDetail')}}
         </div>
 
-        <div class="cell-btn text-danger" title="删除" @click.stop.prevent="deleteShare">
+        <div class="cell-btn text-danger" :title="$t('delete')" @click.stop.prevent="deleteShare">
           <i class="fa fa-trash"></i>
-          删除
+          {{$t('delete')}}
         </div>
 
       </div>
     </NbExpanding>
 
     <el-dialog
-      title="分享详情"
+      :title="$t('share.shareDetail')"
       :visible.sync="shareDialogVisible"
       :append-to-body="true">
       <ShareDialogPanel :share="share"/>
       <span slot="footer" class="dialog-footer">
-                <button class="btn btn-primary btn-sm mr5" @click="share.copyLinkAndCode()">复制链接+提取码</button>
-                <button class="btn btn-default btn-sm mr5" @click="shareDialogVisible = false">关闭</button>
+                <button class="btn btn-primary btn-sm mr5" @click="share.copyLinkAndCode()">{{$t('share.copyLinkAndCode')}}</button>
+                <button class="btn btn-default btn-sm mr5" @click="shareDialogVisible = false">{{$t('close')}}</button>
               </span>
     </el-dialog>
 

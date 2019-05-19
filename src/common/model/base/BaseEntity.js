@@ -28,9 +28,9 @@ export default class BaseEntity extends Base {
   //获取过滤器，必须每次动态生成，否则会造成filter逻辑混乱。
   getFilters() {
     return [
-      new Filter(FilterType.SORT, '排序', 'orderSort'),
-      new Filter(FilterType.SORT, '修改时间排序', 'orderUpdateTime'),
-      new Filter(FilterType.SORT, '创建时间排序', 'orderCreateTime')
+      new Filter(FilterType.SORT, 'Sort', 'orderSort'),
+      new Filter(FilterType.SORT, 'Sort UpdateTime', 'orderUpdateTime'),
+      new Filter(FilterType.SORT, 'Sort CreateTime', 'orderCreateTime')
     ]
   };
 
@@ -98,7 +98,7 @@ export default class BaseEntity extends Base {
     let that = this
     if (!this.uuid) {
 
-      this.errorMessage = '没有定义uui,没有详情！'
+      this.errorMessage = 'No uuid error'
 
       this.defaultErrorHandler(this.errorMessage, errorCallback)
 
@@ -165,7 +165,7 @@ export default class BaseEntity extends Base {
     let that = this
     if (!this.uuid) {
 
-      this.errorMessage = '没有uuid，无法删除！'
+      this.errorMessage = 'no uuid. cannot delete'
       that.defaultErrorHandler(this.errorMessage, errorCallback)
 
       return
@@ -191,7 +191,7 @@ export default class BaseEntity extends Base {
 
     if (!uuid1 || !uuid2 || !(sort1 === 0 || sort1) || !(sort2 === 0 || sort2)) {
 
-      this.errorMessage = '参数不齐！'
+      this.errorMessage = 'params error'
       that.defaultErrorHandler(this.errorMessage, failureCallback)
 
       return

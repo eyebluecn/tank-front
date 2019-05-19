@@ -4,7 +4,6 @@ import {Message} from 'element-ui'
 import {getMimeType} from '../../util/MimeUtil'
 import {containStr, endWith, getExtension, startWith} from '../../filter/str'
 import User from '../user/User'
-import UserInputSelection from '../../../backyard/user/widget/UserInputSelection'
 import Vue from "vue"
 import {FilterType} from "../base/FilterType";
 import {handleImageUrl} from "../../util/ImageUtil";
@@ -66,7 +65,7 @@ export default class Matter extends BaseEntity {
     return [
       ...super.getFilters(),
       new Filter(FilterType.INPUT, '父级菜单uuid', 'puuid', null, null, false),
-      new Filter(FilterType.HTTP_INPUT_SELECTION, '用户', 'userUuid', null, User, false, UserInputSelection),
+      new Filter(FilterType.INPUT, '用户', 'userUuid', null, User, false),
       new Filter(FilterType.INPUT, '关键字', 'name'),
       new Filter(FilterType.CHECK, '文件夹', 'dir'),
       new Filter(FilterType.CHECK, '应用数据', 'alien'),

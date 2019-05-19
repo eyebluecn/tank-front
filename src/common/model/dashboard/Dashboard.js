@@ -29,7 +29,7 @@ export default class Dashboard extends BaseEntity {
   getFilters() {
     return [
       ...super.getFilters(),
-      new Filter(FilterType.SORT, '日期排序', 'orderDt')
+      new Filter(FilterType.SORT, 'Sort Dt', 'orderDt')
     ]
   }
 

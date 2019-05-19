@@ -6,16 +6,19 @@ let UserRole = {
 
 let UserRoleMap = {
   GUEST: {
-    name: '游客身份',
-    value: 'GUEST'
+    name: 'Guest',
+    value: 'GUEST',
+    style: "warning",
   },
   USER: {
-    name: '注册用户',
-    value: 'USER'
+    name: 'User',
+    value: 'USER',
+    style: "primary",
   },
   ADMINISTRATOR: {
-    name: '管理员',
-    value: 'ADMINISTRATOR'
+    name: 'Administrator',
+    value: 'ADMINISTRATOR',
+    style: "success",
   }
 }
 

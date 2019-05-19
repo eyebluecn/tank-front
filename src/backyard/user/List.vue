@@ -21,7 +21,7 @@
                   <span>
                     {{userItem.username}}
                     <span v-if="userItem.status === UserStatus.DISABLED"
-                          class="label label-danger">已禁用</span>
+                          class="label label-danger">{{$t('user.disabled')}}</span>
                   </span>
 
 										<span v-if="userItem.uuid === user.uuid"
@@ -30,7 +30,7 @@
 							</span>
               </div>
               <div>
-                <div class="mt5">
+                <div :class="'mt5 text-'+UserRoleMap[userItem.role].style">
                   {{UserRoleMap[userItem.role].name}}
                 </div>
               </div>
@@ -39,56 +39,54 @@
               </div>
               <div class="mv5">
                 <span class="mr10">
-                  单文件限制:
+                  {{$t('user.singleFileSizeLimit')}}:
                     <span v-if="userItem.sizeLimit >= 0">
                             {{userItem.sizeLimit | humanFileSize}}
                           </span>
                     <span v-else>
-                            无限制
+                            {{$t('user.noLimit')}}
                           </span>
                 </span>
                 <span class="mr10">
-                  总文件限制:
+                  {{$t('user.totalFileSizeLimit')}}:
                     <span v-if="userItem.totalSizeLimit >= 0">
                             {{userItem.totalSizeLimit | humanFileSize}}
                           </span>
                     <span v-else>
-                            无限制
+                            {{$t('user.noLimit')}}
                           </span>
                 </span>
                 <span class="mr10">
-                  文件总大小:
-                    <span v-if="userItem.totalSize >= 0">
+                  {{$t('user.totalFileSize')}}:
+                    <span>
                             {{userItem.totalSize | humanFileSize}}
-                          </span>
-                    <span v-else>
-                            无限制
                           </span>
                 </span>
 
               </div>
               <div class="mv5">
-                <span class="mr10">上次登录: {{userItem.lastTime | humanTime}}</span>
-                <span class="mr10">上次IP: {{userItem.lastIp}}</span>
+                <span class="mr10">{{$t('user.lastLoginTime')}}: {{userItem.lastTime | humanTime}}</span>
+                <span class="mr10">{{$t('user.lastLoginIp')}}: {{userItem.lastIp}}</span>
 
                 <span class="pull-right action-buttons">
 
-                  <router-link :to="'/user/edit/'+userItem.uuid" title="修改用户资料">
+                  <router-link :to="'/user/edit/'+userItem.uuid" :title="$t('edit')">
 										<i class="fa fa-pencil text-info f18"></i>
 									</router-link>
 
 									<a href="javascript:void(0)"
-                     title="变身" @click.stop.prevent="userItem.transfiguration()">
+                     :title="$t('user.transfiguration')" @click.stop.prevent="userItem.transfiguration()">
                     <i class="fa fa-user-secret f18"></i>
 									</a>
 
-									<a href="javascript:void(0)" v-if="user.role === UserRole.ADMINISTRATOR && userItem.status === UserStatus.OK && user.uuid!==userItem.uuid"
-                     title="禁用该用户" @click.stop.prevent="toggleStatus(userItem)">
+									<a href="javascript:void(0)"
+                     v-if="user.role === UserRole.ADMINISTRATOR && userItem.status === UserStatus.OK && user.uuid!==userItem.uuid"
+                     :title="$t('user.disableUser')" @click.stop.prevent="toggleStatus(userItem)">
                     <i class="fa fa-close text-danger f18"></i>
 									</a>
                   <a href="javascript:void(0)"
                      v-if="user.role === UserRole.ADMINISTRATOR && userItem.status === UserStatus.DISABLED && user.uuid!==userItem.uuid"
-                     title="激活该用户" @click.stop.prevent="toggleStatus(userItem)">
+                     :title="$t('user.activeUser')" @click.stop.prevent="toggleStatus(userItem)">
                     <i class="fa fa-check text-success f18"></i>
 									</a>
 

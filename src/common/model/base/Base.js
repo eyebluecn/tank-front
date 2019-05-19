@@ -56,7 +56,7 @@ export default class Base {
       arr = json
     } else {
 
-      console.error("源必须为字符或者数组", json)
+      console.error("Src must be string or array", json)
       return target
     }
 
@@ -66,7 +66,7 @@ export default class Base {
     }
 
     if (!Clazz || !(Clazz.prototype instanceof Base)) {
-      console.error("指定的类型必须是 Base的子类 ")
+      console.error("Class must be  Base subclass ")
       return target
     }
 
@@ -82,7 +82,6 @@ export default class Base {
 
     return target
   }
-
 
 
   /**
@@ -159,7 +158,7 @@ export default class Base {
       }
 
     } else {
-      console.error('调用错误！')
+      console.error('调用错误!')
     }
 
   }
@@ -228,27 +227,7 @@ export default class Base {
 
   }
 
-  //专门捕捉没有认证手机这种错误。return true -> 有错误（已经处理掉了）  false -> 没错误 （什么都没干）
-  phoneValidateErrorHandler(response) {
 
-    let temp = response['data']
-    if (temp !== null && typeof temp === 'object') {
-      if (temp['code'] === ResultCode.REQUIRE_PHONE) {
-
-        Message.error({
-          message: '请认证手机后再操作'
-        })
-
-        Vue.$popupPhoneValidation.show(Vue.store.state.user)
-
-        return true
-
-      }
-    }
-
-    return false
-
-  }
 
   //get errorMessage from response and wrap the value to this.errorMessage.
   getErrorMessage(response) {
@@ -256,7 +235,7 @@ export default class Base {
     let msg = '服务器出错，请稍后再试!'
 
     if (response === null) {
-      msg = '出错啦，请稍后重试！'
+      msg = '出错啦，请稍后重试!'
     } else if (typeof response === 'string') {
       msg = response
     } else if (response['msg']) {
@@ -309,11 +288,6 @@ export default class Base {
         return
       }
 
-      //对于没有认证手机的错误直接弹出手机认证框
-      if (that.phoneValidateErrorHandler(response)) {
-        return
-      }
-
       //有传入错误处理方法，就按你的执行
       if (typeof errorCallback === 'function') {
         errorCallback(that.getErrorMessage(response), response)
@@ -355,11 +329,6 @@ export default class Base {
 
       //对于没有登录的错误直接跳转到登录页面
       if (that.specialErrorHandler(response)) {
-        return
-      }
-
-      //对于没有认证手机的错误直接弹出手机认证框
-      if (that.phoneValidateErrorHandler(response)) {
         return
       }
 

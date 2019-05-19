@@ -4,7 +4,7 @@
     <div class="user-block tank-box">
       <div>
         <div class="row mt10" v-if="user.uuid === currentUser.uuid">
-          <label class="col-md-2 control-label mt5">头像</label>
+          <label class="col-md-2 control-label mt5">{{$t('user.avatar')}}</label>
           <div class="col-md-10">
             <div>
               <MatterImage v-model="currentUser.avatarUrl" uploadHint=""/>
@@ -13,7 +13,7 @@
         </div>
 
         <div class="row mt10" v-validator="currentUser.validatorSchema.username.error">
-          <label class="col-md-2 control-label mt5 compulsory">用户名</label>
+          <label class="col-md-2 control-label mt5 compulsory">{{$t('user.username')}}</label>
           <div class="col-md-10 validate">
             <input type="text" class="form-control"
                    disabled
@@ -22,7 +22,7 @@
         </div>
 
         <div class="row mt10">
-          <label class="col-md-2 control-label mt5">单文件限制(B) </label>
+          <label class="col-md-2 control-label mt5">{{$t('user.singleFileSizeLimit')}}(B) </label>
           <div class="col-md-10">
             <div class="row">
               <div class="col-xs-6">
@@ -31,8 +31,8 @@
                        v-model="currentUser.sizeLimit">
               </div>
               <div class="col-xs-6" style="line-height:30px;">
-                当前值：
-                <span v-if="currentUser.sizeLimit < 0">无限制</span>
+                {{$t('user.current')}}:
+                <span v-if="currentUser.sizeLimit < 0">{{$t('user.noLimit')}}</span>
                 <span v-else>{{currentUser.sizeLimit | humanFileSize}}</span>
               </div>
             </div>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="row mt10">
-          <label class="col-md-2 control-label mt5">总文件限制(B) </label>
+          <label class="col-md-2 control-label mt5">{{$t('user.totalFileSizeLimit')}}(B) </label>
           <div class="col-md-10">
             <div class="row">
               <div class="col-xs-6">
@@ -49,8 +49,8 @@
                        v-model="currentUser.totalSizeLimit">
               </div>
               <div class="col-xs-6" style="line-height:30px;">
-                当前值：
-                <span v-if="currentUser.totalSizeLimit < 0">无限制</span>
+                {{$t('user.current')}}:
+                <span v-if="currentUser.totalSizeLimit < 0">{{$t('user.noLimit')}}</span>
                 <span v-else>{{currentUser.totalSizeLimit | humanFileSize}}</span>
               </div>
             </div>
@@ -101,7 +101,7 @@
 
         this.currentUser.httpSave(function (response) {
           that.$message.success({
-            message: '修改用户成功！'
+            message: that.$t('operationSuccess')
           })
 
           if (that.user.uuid === that.currentUser.uuid) {
@@ -113,13 +113,14 @@
       }
     },
     created() {
+      let that = this
       if (this.user.role !== UserRole.ADMINISTRATOR) {
         this.breadcrumbs.splice(0, this.breadcrumbs.length)
         this.breadcrumbs.push({
-          title: '个人详情',
+          title: that.$t('user.profile'),
           path: '/user/detail/' + this.user.uuid
         }, {
-          title: '编辑资料'
+          title: that.$t('edit')
         })
       }
     },

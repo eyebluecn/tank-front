@@ -10,11 +10,11 @@
     </iframe>
     <div class="fallback" v-else>
       <h3>
-        无法预览
+        Cannot preview
       </h3>
       <p>
-        Office预览是借助了<a target='_blank' href='http://office.com'>Microsoft Office</a>在线预览功能，
-        由于微软服务器无法拉取到 <a target="_blank" :href="url">{{name}}</a> ，因此本地部署的蓝眼云盘无法预览Office文件
+        Office Preview is powered by <a target='_blank' href='http://office.com'>Microsoft Office Online Preview</a>，
+        Because Microsoft server cannot get <a target="_blank" :href="url">{{name}}</a>, so url with localhost(127.0.0.1) cannot preview office files.
       </p>
     </div>
   </div>
@@ -70,6 +70,7 @@
     iframe {
       border: 1px solid #eeeeee;
     }
+
     .fallback {
       border: 1px solid #eeeeee;
       padding: 20px;

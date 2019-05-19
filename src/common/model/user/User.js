@@ -1,7 +1,7 @@
 import BaseEntity from '../base/BaseEntity'
 import Filter from '../base/Filter'
 import {currentHost, readLocalStorage, removeLocalStorage, saveToLocalStorage} from "../../util/Utils";
-import UserInputSelection from '../../../backyard/user/widget/UserInputSelection'
+
 import {UserRole} from "./UserRole";
 import {UserStatus, UserStatusList} from "./UserStatus";
 import {FilterType} from "../base/FilterType";
@@ -44,11 +44,11 @@ export default class User extends BaseEntity {
     this.validatorSchema = {
       username: {
         rules: [
-          {required: true, message: '用户名必填'},
+          {required: true, message: 'username required'},
           {
             type: 'string',
             pattern: /^[0-9a-zA-Z_]+$/,
-            message: '用户名只能包含字母，数字和"_"'
+            message: "only lowercase letter and number and _ is permitted."
           }],
         error: null
       }
@@ -71,7 +71,7 @@ export default class User extends BaseEntity {
   getFilters() {
     return [
       ...super.getFilters(),
-      new Filter(FilterType.HTTP_INPUT_SELECTION, '用户', 'username', null, User, true, UserInputSelection),
+      new Filter(FilterType.INPUT, '用户', 'username', null, User, false),
       new Filter(FilterType.INPUT, '手机号', 'phone', null, null, false),
       new Filter(FilterType.SELECTION, '状态', 'status', UserStatusList),
       new Filter(FilterType.SORT, '最新更新时间', 'orderLastTime')
@@ -160,7 +160,7 @@ export default class User extends BaseEntity {
     let that = this
     this.httpTransfiguration(function (authentication) {
       let textToCopy = currentHost() + "/user/authentication/" + authentication
-      MessageBox.confirm('请复制以下链接到其他浏览器访问，在当前浏览器访问会导致当前用户登录信息失效。' + textToCopy, '变身提示', {
+      MessageBox.confirm(Vue.i18n.t("model.transfigurationPrompt", [textToCopy]), Vue.i18n.t("model.transfigurationPromptText"), {
         confirmButtonText: Vue.i18n.t("copy"),
         cancelButtonText: Vue.i18n.t("cancel"),
         type: 'info'
@@ -195,12 +195,12 @@ export default class User extends BaseEntity {
     let that = this
 
     if (!username) {
-      this.errorMessage = '用户名必填'
+      this.errorMessage = 'username required'
       return false
     }
 
     if (!password) {
-      this.errorMessage = '密码必填'
+      this.errorMessage = 'password required'
       return false
     }
 
@@ -220,17 +220,17 @@ export default class User extends BaseEntity {
     let that = this
 
     if (!username) {
-      this.errorMessage = '用户名必填'
+      this.errorMessage = 'username required'
       return
     }
 
     if (!password) {
-      this.errorMessage = '密码必填'
+      this.errorMessage = 'password required'
       return
     }
 
     if (rePassword !== password) {
-      this.errorMessage = '两次密码输入不一致'
+      this.errorMessage = 'new and old password not same'
       return
     }
 

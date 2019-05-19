@@ -5,17 +5,16 @@ let UserStatus = {
 
 let UserStatusMap = {
   OK: {
-    name: '激活',
+    name: 'Active',
     value: 'OK',
     style: 'primary'
   },
   DISABLED: {
-    name: '未激活',
+    name: 'Disabled',
     value: 'DISABLED',
     style: 'danger'
   }
 }
-
 
 
 let UserStatusList = [];

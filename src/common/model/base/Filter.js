@@ -11,7 +11,7 @@ export default class Filter {
 
   constructor(type, name, key, options, Clazz, visible = true) {
     if (!type || !name || !key) {
-      console.error('Filter 传入的参数缺失！' + type + ' ' + name + ' ' + key)
+      console.error('Filter params error!' + type + ' ' + name + ' ' + key)
       return
     }
 
@@ -39,19 +39,19 @@ export default class Filter {
 
     if (type === FilterType.SELECTION) {
       if (!options || !(options instanceof Array)) {
-        console.error('Filter SELECTION 的 options必须指定，并且为数组，同时必须包含name和value键值（style可选）！')
+        console.error('Filter SELECTION 的 options必须指定，并且为数组，同时必须包含name和value键值（style可选）!')
 
       }
     } else if (type === FilterType.MULTI_SELECTION) {
       if (!options || !(options instanceof Array)) {
-        console.error('Filter MULTI_SELECTION 的 options必须指定，并且为数组，同时必须包含name和value键值（style可选）！')
+        console.error('Filter MULTI_SELECTION 的 options必须指定，并且为数组，同时必须包含name和value键值（style可选）!')
 
       } else {
         this.value = []
       }
     } else if (type === FilterType.HTTP_SELECTION) {
       if (!Clazz || !(Clazz.prototype instanceof BaseEntity)) {
-        console.error('Clazz必须指定，并且为BaseEntity的子类！')
+        console.error('Clazz必须指定，并且为BaseEntity的子类!')
 
       }
     }

@@ -1,6 +1,6 @@
 <template>
   <div class="row animated fadeIn backyard-user-authentication">
-    <div>正在转跳...</div>
+    <div>{{$t('user.redirecting')}}</div>
   </div>
 </template>
 

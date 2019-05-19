@@ -38,8 +38,8 @@ export default class ImageCache extends BaseEntity {
   getFilters() {
     return [
       ...super.getFilters(),
-      new Filter(FilterType.INPUT, '用户Uuid', 'userUuid', null, null, false),
-      new Filter(FilterType.INPUT, '文件Uuid', 'matterUuid', null, null, false)
+      new Filter(FilterType.INPUT, 'User Uuid', 'userUuid', null, null, false),
+      new Filter(FilterType.INPUT, 'File Uuid', 'matterUuid', null, null, false)
     ]
   }
 
