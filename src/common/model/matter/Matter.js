@@ -80,6 +80,10 @@ export default class Matter extends BaseEntity {
     ]
   }
 
+  getUrlPage() {
+    return "/api/matter/page"
+  }
+
   render(obj) {
     super.render(obj)
     super.renderEntity("parent", Matter)

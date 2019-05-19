@@ -29,7 +29,9 @@ export default class ImageCache extends BaseEntity {
     this.user = new User()
     this.matter = new Matter()
   }
-
+  getUrlPage() {
+    return "/api/image/cache/page"
+  }
   render(obj) {
     super.render(obj)
 

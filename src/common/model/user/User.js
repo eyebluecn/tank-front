@@ -63,6 +63,10 @@ export default class User extends BaseEntity {
     }
   }
 
+  getUrlPage() {
+    return "/api/user/page"
+  }
+
   render(obj) {
     super.render(obj)
     this.renderEntity('lastTime', Date)

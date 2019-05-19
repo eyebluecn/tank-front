@@ -31,13 +31,6 @@ export default class Pager extends Base {
     if (Clazz && (Clazz.prototype instanceof Base)) {
       this.Clazz = Clazz
 
-      let tags = Clazz.prototype.getTAGS()
-      if (tags) {
-        this[Clazz.prototype.getTAGS()] = null
-        this.TAGS = tags
-      } else {
-        console.error('The Clazz MUST define a prototype named \'TAGS\'')
-      }
       //考虑兼容模式，允许自定义URL_PAGE.
       let urlPage = Clazz.prototype.URL_PAGE
       if (!urlPage) {

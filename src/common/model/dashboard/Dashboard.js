@@ -21,6 +21,10 @@ export default class Dashboard extends BaseEntity {
     this.dt = 0;
   }
 
+  getUrlPage() {
+    return "/api/dashboard/page"
+  }
+
   render(obj) {
     super.render(obj)
 

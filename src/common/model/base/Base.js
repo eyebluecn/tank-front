@@ -357,12 +357,6 @@ export default class Base {
     return lowerCamel(className)
   }
 
-  //获取到当前类的复数标签。比如 Project便得到 projects
-  getTAGS() {
-
-    return toPlural(this.getTAG())
-  }
-
   //获取到当前实体的url前缀。
   getUrlPrefix() {
     return "/api" + lowerSlash(this.getTAG())

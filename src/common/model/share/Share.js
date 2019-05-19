@@ -41,7 +41,9 @@ export default class Share extends BaseEntity {
 
 
   }
-
+  getUrlPage() {
+    return "/api/share/page"
+  }
 
   render(obj) {
     super.render(obj)
