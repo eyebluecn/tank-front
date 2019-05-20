@@ -63,8 +63,8 @@ export default class User extends BaseEntity {
     }
   }
 
-  getUrlPage() {
-    return "/api/user/page"
+  getUrlPrefix() {
+    return "/api/user"
   }
 
   render(obj) {

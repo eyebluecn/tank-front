@@ -80,8 +80,8 @@ export default class Matter extends BaseEntity {
     ]
   }
 
-  getUrlPage() {
-    return "/api/matter/page"
+  getUrlPrefix() {
+    return "/api/matter"
   }
 
   render(obj) {

@@ -92,8 +92,8 @@ export default class Install extends BaseEntity {
 
   }
 
-  getUrlPage() {
-    return "/api/install/page"
+  getUrlPrefix() {
+    return "/api/install"
   }
   render(obj) {
     super.render(obj)

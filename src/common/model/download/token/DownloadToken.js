@@ -14,8 +14,8 @@ export default class DownloadToken extends BaseEntity {
     this.expireTime = null
     this.ip = null
   }
-  getUrlPage() {
-    return "/api/download/token/page"
+  getUrlPrefix() {
+    return "/api/download/token"
   }
 
   render(obj) {

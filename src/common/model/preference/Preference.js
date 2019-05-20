@@ -37,8 +37,8 @@ export default class Preference extends BaseEntity {
     }
   }
 
-  getUrlPage() {
-    return "/api/preference/page"
+  getUrlPrefix() {
+    return "/api/preference"
   }
   render(obj) {
     super.render(obj)
