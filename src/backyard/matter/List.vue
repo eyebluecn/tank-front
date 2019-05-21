@@ -3,36 +3,36 @@
     <div class="row">
 
       <div class="col-md-8 mb10">
-        <button class="btn btn-primary btn-sm mr5" v-if="selectedMatters.length !== pager.data.length"
+        <button class="btn btn-primary btn-sm mr5 mb5" v-if="selectedMatters.length !== pager.data.length"
                 @click.stop.prevent="checkAll">
           <i class="fa fa-check-square"></i>
           {{ $t("selectAll") }}
         </button>
 
-        <button class="btn btn-primary btn-sm mr5"
+        <button class="btn btn-primary btn-sm mr5 mb5"
                 v-if="pager.data.length && selectedMatters.length === pager.data.length"
                 @click.stop.prevent="checkNone">
           <i class="fa fa-square-o"></i>
           {{ $t("cancel") }}
         </button>
 
-        <button class="btn btn-primary btn-sm mr5" v-if="selectedMatters.length" @click.stop.prevent="deleteBatch">
+        <button class="btn btn-primary btn-sm mr5 mb5" v-if="selectedMatters.length" @click.stop.prevent="deleteBatch">
           <i class="fa fa-trash"></i>
           {{ $t("delete") }}
         </button>
 
-        <button class="btn btn-primary btn-sm mr5" v-if="selectedMatters.length" @click.stop.prevent="downloadZip">
+        <button class="btn btn-primary btn-sm mr5 mb5" v-if="selectedMatters.length" @click.stop.prevent="downloadZip">
           <i class="fa fa-download"></i>
-          {{ $t("matter.delete") }}
+          {{ $t("matter.download") }}
         </button>
 
-        <button class="btn btn-primary btn-sm mr5" v-if="selectedMatters.length"
+        <button class="btn btn-primary btn-sm mr5 mb5" v-if="selectedMatters.length"
                 @click.stop.prevent="moveBatch($createElement)">
           <i class="fa fa-arrows"></i>
           {{ $t("matter.move") }}
         </button>
 
-        <button class="btn btn-primary btn-sm mr5" v-if="selectedMatters.length"
+        <button class="btn btn-primary btn-sm mr5 mb5" v-if="selectedMatters.length"
                 @click.stop.prevent="shareDialogVisible = !shareDialogVisible">
           <i class="fa fa-share-alt"></i>
           {{ $t("matter.share") }}
