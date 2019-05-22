@@ -21,7 +21,7 @@
               <div class="col-md-12 form-info">
                 <span>{{$t('user.role')}}:</span>
                 <span>
-                      {{UserRoleMap[currentUser.role].name}}
+                      {{$t(UserRoleMap[currentUser.role].name)}}
                     </span>
               </div>
 
@@ -55,11 +55,9 @@
                 <span>{{$t('user.status')}}:</span>
 
                 <span :class="'text-'+UserStatusMap[currentUser.status].style">
-                  {{UserStatusMap[currentUser.status].name}}
+                  {{$t(UserStatusMap[currentUser.status].name)}}
                 </span>
-
               </div>
-
 
               <div class="col-md-12 form-info">
                 <span>{{$t('user.lastLoginIp')}}:</span>
@@ -74,6 +72,13 @@
                 <span>
                      {{currentUser.lastTime | simpleDateTime}}
                     </span>
+              </div>
+
+              <div class="col-md-12 form-info">
+                <span>{{$t('user.webdavLink')}}:</span>
+                <span>
+                  {{webdavLink}}
+                </span>
               </div>
 
             </div>
@@ -139,6 +144,11 @@
     components: {
       NbExpanding
     },
+    computed: {
+      "webdavLink"() {
+        return currentHost() + "/api/dav"
+      }
+    },
     methods: {
       handleImageUrl,
       currentUserUpdate(uuid) {
@@ -180,6 +190,7 @@
       if (this.user.role !== UserRole.ADMINISTRATOR) {
         this.breadcrumbs.splice(0, this.breadcrumbs.length)
         this.breadcrumbs.push({
+          displayDirect: true,
           title: that.$t('user.profile')
         })
       }

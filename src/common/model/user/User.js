@@ -135,6 +135,7 @@ export default class User extends BaseEntity {
 
   getForm() {
     let form = {
+      role: this.role,
       avatarUrl: this.avatarUrl,
       gender: this.gender,
       sizeLimit: this.sizeLimit,

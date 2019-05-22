@@ -49,7 +49,7 @@
         </el-dialog>
 
 
-        <span class="btn btn-primary btn-sm btn-file mr5">
+        <span class="btn btn-primary btn-sm btn-file mr5 mb5">
               <slot name="button">
                 <i class="fa fa-cloud-upload"></i>
                 <span>{{ $t("matter.upload") }}</span>
@@ -57,7 +57,7 @@
               <input ref="refFile" type="file" multiple="multiple" @change.prevent.stop="triggerUpload"/>
 				    </span>
 
-        <button class="btn btn-sm btn-primary mr5" @click.stop.prevent="createDirectory">
+        <button class="btn btn-sm btn-primary mr5 mb5" @click.stop.prevent="createDirectory">
           <i class="fa fa-folder"></i>
           {{ $t("matter.create") }}
         </button>

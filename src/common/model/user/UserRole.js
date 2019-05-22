@@ -6,17 +6,17 @@ let UserRole = {
 
 let UserRoleMap = {
   GUEST: {
-    name: 'Guest',
+    name: 'user.roleGuest',
     value: 'GUEST',
     style: "warning",
   },
   USER: {
-    name: 'User',
+    name: 'user.roleUser',
     value: 'USER',
     style: "primary",
   },
   ADMINISTRATOR: {
-    name: 'Administrator',
+    name: 'user.roleAdministrator',
     value: 'ADMINISTRATOR',
     style: "success",
   }

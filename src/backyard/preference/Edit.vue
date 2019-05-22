@@ -132,7 +132,7 @@
         this.preference.httpSave(function (response) {
 
           that.$message.success({
-            message: $t('operationSuccess')
+            message: that.$t('operationSuccess')
           });
 
           that.globalPreference.render(response.data.data);

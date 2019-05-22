@@ -31,7 +31,7 @@
               </div>
               <div>
                 <div :class="'mt5 text-'+UserRoleMap[userItem.role].style">
-                  {{UserRoleMap[userItem.role].name}}
+                  {{$t(UserRoleMap[userItem.role].name)}}
                 </div>
               </div>
               <div class="mv5 text-muted one-line">

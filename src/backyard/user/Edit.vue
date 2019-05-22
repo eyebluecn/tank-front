@@ -21,6 +21,17 @@
           </div>
         </div>
 
+        <div class="row mt10" v-if="user.role === UserRole.ADMINISTRATOR">
+          <label class="col-md-2 control-label mt5 compulsory">{{$t('user.role')}}</label>
+          <div class="col-md-10">
+            <select class="form-control" v-model="currentUser.role">
+              <option v-for="item in UserRoleList" v-if="item.value !== UserRole.GUEST" :value="item.value">
+                {{$t(item.name)}}
+              </option>
+            </select>
+          </div>
+        </div>
+
         <div class="row mt10">
           <label class="col-md-2 control-label mt5">{{$t('user.singleFileSizeLimit')}}(B) </label>
           <div class="col-md-10">
@@ -117,9 +128,11 @@
       if (this.user.role !== UserRole.ADMINISTRATOR) {
         this.breadcrumbs.splice(0, this.breadcrumbs.length)
         this.breadcrumbs.push({
+          displayDirect: true,
           title: that.$t('user.profile'),
           path: '/user/detail/' + this.user.uuid
         }, {
+          displayDirect: true,
           title: that.$t('edit')
         })
       }

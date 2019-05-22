@@ -5,7 +5,7 @@
       <label class="col-md-4 control-label mt5">{{$t('matter.expire')}}</label>
       <div class="col-md-8">
         <select class="form-control" v-model="share.expireOption">
-          <option v-for="item in ShareExpireOptionList" :value="item.value">{{item.name}}</option>
+          <option v-for="item in ShareExpireOptionList" :value="item.value">{{$t(item.name)}}</option>
         </select>
       </div>
     </div>

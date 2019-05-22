@@ -5,12 +5,12 @@ let UserStatus = {
 
 let UserStatusMap = {
   OK: {
-    name: 'Active',
+    name: 'user.statusActive',
     value: 'OK',
     style: 'primary'
   },
   DISABLED: {
-    name: 'Disabled',
+    name: 'user.statusDisabled',
     value: 'DISABLED',
     style: 'danger'
   }
