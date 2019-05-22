@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 import User from "../model/user/User";
 import Preference from '../model/preference/Preference'
 import BrowserUtil from "../util/BrowserUtil";
-import {readLocalStorage} from "../util/Utils";
 import Cookies from "js-cookie"
 
 Vue.use(Vuex)
@@ -22,14 +21,10 @@ const state = {
     mobile: false,
     showDrawer: true
   },
-  debug: true,
-
   //当前版本信息。
-  versionName: '3.0.0.beta4',
-
+  versionName: '3.0.0',
   //当前用户，即使没有登录依然有游客的用户在。
   user,
-
   breadcrumbs: [],
   //全局正在上传的文件
   uploadMatters: [],
