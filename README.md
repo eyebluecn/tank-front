@@ -2,7 +2,7 @@
 
 # 蓝眼云盘前端
 
-##### [在线Demo](http://tank.eyeblue.cn) (体验账号： demo@tank.eyeblue.cn 密码：123456)
+##### [在线Demo](http://tank.eyeblue.cn) (体验账号： demo 密码：123456)
 
 ##### [配套后端tank](https://github.com/eyebluecn/tank)
 
@@ -21,9 +21,8 @@ vue2.0 + vue-router + vuex + vue-resource + webpack + es6 + less
 ```
 npm install
 
-npm run dev
+npm run serve
 ```
-如果你有自己的tank后端，也可以在`config/index.js`中`proxyTable.target`修改为自己tank所在地址
 
 ### 打包
 
