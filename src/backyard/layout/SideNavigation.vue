@@ -48,7 +48,7 @@
         <li v-if="user.role === UserRole.ADMINISTRATOR">
           <router-link to="/dashboard/index" :class="{'custom-active':isCustomActive('/dashboard/index')}">
             <i class="w14 fa fa-dashboard"></i>
-            <span>{{ $t('layout.setting') }}</span>
+            <span>{{ $t('layout.dashboard') }}</span>
           </router-link>
         </li>
 
