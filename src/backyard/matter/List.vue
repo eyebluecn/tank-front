@@ -89,7 +89,8 @@
                        :director="director"/>
         </div>
         <div v-for="matter in pager.data">
-          <MatterPanel @goToDirectory="goToDirectory"
+          <MatterPanel :key="matter.uuid"
+                       @goToDirectory="goToDirectory"
                        @deleteSuccess="refresh()"
                        :matter="matter"
                        :director="director"
