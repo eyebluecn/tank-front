@@ -186,7 +186,7 @@
   //左侧菜单block.
   .side-navigation {
 
-    overflow: auto;
+    //overflow: auto;
 
     -webkit-transition: all 0.4s;
     -moz-transition: all 0.4s;

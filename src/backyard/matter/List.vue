@@ -69,7 +69,7 @@
           <input type="text" class="form-control" v-model="searchText" @keyup.enter="searchFile"
                  :placeholder="$t('matter.searchFile')">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-primary mr5" @click.prevent.stop="searchFile">
+            <button type="button" class="btn btn-primary" @click.prevent.stop="searchFile">
               <i class="fa fa-search"></i>
             </button>
           </span>
