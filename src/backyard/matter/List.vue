@@ -142,6 +142,8 @@
         //搜索的文字
         searchText: null,
         pager: new Pager(Matter, 50),
+        //移动的目标文件夹
+        targetMatterUuid: null,
         user: this.$store.state.user,
         preference: this.$store.state.preference,
         breadcrumbs: this.$store.state.breadcrumbs,
@@ -434,16 +436,16 @@
       moveBatch(createElement) {
         let that = this
 
-        let targetMatterUuid = null
+
         let dom = createElement(MoveBatchPanel, {
           props: {
             version: (new Date()).getTime(),
             userUuid: that.selectedMatters[0].userUuid,
             callback: function (matter) {
               if (matter.uuid) {
-                targetMatterUuid = matter.uuid
+                that.targetMatterUuid = matter.uuid
               } else {
-                targetMatterUuid = "root"
+                that.targetMatterUuid = "root"
               }
             }
           }
@@ -467,7 +469,7 @@
                 }
               })
 
-              that.matter.httpMove(uuids, targetMatterUuid, function (response) {
+              that.matter.httpMove(uuids, that.targetMatterUuid, function (response) {
                 Message.success('移动成功！')
                 that.refresh()
               })

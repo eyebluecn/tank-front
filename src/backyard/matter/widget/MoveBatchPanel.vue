@@ -1,6 +1,7 @@
 <template>
   <div class="move-batch-panel h300">
-    <FolderTree ref="folderTree" :matter="matter" :targetMatter="targetMatter" :userUuid="userUuid" :version="version" :callback="callback"
+    <FolderTree ref="folderTree" :matter="matter" :targetMatter="targetMatter" :userUuid="userUuid" :version="version"
+                :callback="callback"
                 :showSubFolderInit="true"/>
   </div>
 </template>
@@ -18,9 +19,7 @@
         targetMatter: new Matter()
       }
     },
-    watch: {
-
-    },
+    watch: {},
     props: {
       //寻找该用户的合适文件夹
       userUuid: {

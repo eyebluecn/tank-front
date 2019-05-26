@@ -6,11 +6,11 @@
       <span class="fa fa-chevron-right mr5 w14" v-if="pager.data.length && !showSubFolder"></span>
       <span :class="{ 'ml23': !pager.data.length }">
 				<span v-if="matter.uuid">
-					<img :src="matter.getIcon()" class="mr5" :alt="$t('matter.directory')" width="22"/>
+					<img :src="matter.getIcon()" class="mr5" :alt="Vue.i18n.t('matter.directory')" width="22"/>
 					<span>{{matter.name}}</span>
 				</span>
 				<span v-else>
-					<span>{{$t('matter.root')}}</span>
+					<span>{{Vue.i18n.t('matter.root')}}</span>
 				</span>
 			</span>
 
@@ -31,12 +31,14 @@
   import NbExpanding from '../../../common/widget/NbExpanding'
   import Pager from '../../../common/model/base/Pager'
   import Matter from '../../../common/model/matter/Matter'
+  import Vue from "vue"
 
   export default {
 
     name: "FolderTree",
     data() {
       return {
+        Vue,
         showSubFolder: false,
         pager: new Pager(Matter)
       }
@@ -105,7 +107,6 @@
 
         //限制选择的范围。文件和目标文件夹必须是同一主人
         this.pager.setFilterValue('userUuid', this.userUuid)
-
 
         this.pager.setFilterValue('dir', true)
         this.pager.httpFastPage()
