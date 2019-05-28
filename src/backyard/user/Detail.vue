@@ -81,6 +81,13 @@
                 </span>
               </div>
 
+              <div class="col-md-12 form-info" v-if="user.role === UserRole.ADMINISTRATOR">
+                <span>{{$t('user.docLink')}}:</span>
+                <a href="https://tank-doc.eyeblue.cn">
+                  https://tank-doc.eyeblue.cn
+                </a>
+              </div>
+
             </div>
 
 

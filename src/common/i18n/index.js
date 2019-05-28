@@ -229,6 +229,7 @@ let i18nMessage = {
       statusActive: "Ok",
       statusDisabled: "Disabled",
       webdavLink: "WebDAV Link",
+      docLink: "Document Link",
     },
     model: {
       usernameRule: "only lowercase letter and number and _ is permitted.",
@@ -493,6 +494,7 @@ let i18nMessage = {
       statusActive: "正常",
       statusDisabled: "禁用",
       webdavLink: "WebDAV 地址",
+      docLink: "文档链接",
     },
     model: {
       usernameRule: "用户名只能包含字母，数字和\"_\"",
