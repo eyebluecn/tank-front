@@ -52,7 +52,7 @@
         <span class="btn btn-primary btn-sm btn-file mr5 mb5">
               <slot name="button">
                 <i class="fa fa-cloud-upload"></i>
-                <span>{{ $t("matter.upload") }}</span>
+                <span> {{ $t("matter.upload") }} </span>
               </slot>
               <input ref="refFile" type="file" multiple="multiple" @change.prevent.stop="triggerUpload"/>
 				    </span>

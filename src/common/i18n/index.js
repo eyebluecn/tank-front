@@ -152,6 +152,8 @@ let i18nMessage = {
       current: "Current",
       noLimit: "No limit",
       userDefaultSizeLimit: "User default size limit(B) ",
+      docLink: "Document Link",
+      tankDocLink: "https://tank-doc.eyeblue.cn",
       allowRegister: "Allow register",
       systemCleanup: "System Cleanup",
       systemCleanupDescription: "This operation will cleanup everything except administrators' data",
@@ -239,6 +241,14 @@ let i18nMessage = {
       transfigurationPromptText: "Transfiguration Prompt",
       transfigurationPrompt: "Please visit this link in other browser, if in current browser, you will logout.{0}",
     },
+    plugin: {
+      cannotPreview: "Cannot Preview",
+      emptyHintDefault: "No Items",
+      everyPage: "Every Page",
+      items: "Items",
+      total: "Total",
+      clickRefresh: "Click To Refresh",
+    },
     selectAll: "All",
     edit: "Edit",
     createTime: "Create Time",
@@ -264,6 +274,7 @@ let i18nMessage = {
     logout: "Logout",
     yes: "Yes",
     no: "No",
+    all: "All",
   },
   zh: {
     eyeblueTank: "蓝眼云盘",
@@ -417,6 +428,8 @@ let i18nMessage = {
       current: "当前值",
       noLimit: "无限制",
       userDefaultSizeLimit: "用户默认总大小限制(B) ",
+      docLink: "文档链接",
+      tankDocLink: "https://tank-doc.eyeblue.cn/zh",
       allowRegister: "允许自主注册",
       systemCleanup: "重置系统",
       systemCleanupDescription: "重置系统将清空除管理员账号外所有数据",
@@ -505,7 +518,12 @@ let i18nMessage = {
       transfigurationPrompt: "请复制以下链接到其他浏览器访问，在当前浏览器访问会导致当前用户登录信息失效。{0}",
     },
     plugin: {
-      cannotPreview: "无法预览"
+      cannotPreview: "无法预览",
+      emptyHintDefault: "没有符合条件的项目",
+      everyPage: "每页",
+      items: "条",
+      total: "共",
+      clickRefresh: "点击刷新",
     },
     selectAll: "全选",
     edit: "修改",
@@ -532,6 +550,7 @@ let i18nMessage = {
     logout: "退出",
     yes: "是",
     no: "否",
+    all: "所有",
 
   }
 }

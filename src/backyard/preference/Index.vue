@@ -4,46 +4,46 @@
     <div class="preference-block tank-box">
       <div class="row">
         <div class="col-md-12 form-info">
-          <span>{{$t('preference.websiteName')}}:</span>
+          <span>{{$t('preference.websiteName')}}: </span>
           <span class="bold">{{preference.name}}</span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>{{$t('preference.logo')}}:</span>
+          <span>{{$t('preference.logo')}}: </span>
           <span>
             <img v-if="preference.logoUrl" :src="preference.logoUrl" alt="logo" class="max-height-100">
           </span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>favicon:</span>
+          <span>favicon: </span>
           <span>
             <img v-if="preference.faviconUrl" :src="preference.faviconUrl" alt="favicon" class="max-height-100">
           </span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>{{$t('preference.copyright')}}:</span>
+          <span>{{$t('preference.copyright')}}: </span>
           <span v-html="preference.copyright"></span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>{{$t('preference.extraInfo')}}:</span>
+          <span>{{$t('preference.extraInfo')}}: </span>
           <span v-html="preference.record"></span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>{{$t('preference.zipMaxNumLimit')}}:</span>
+          <span>{{$t('preference.zipMaxNumLimit')}}: </span>
           <span v-html="preference.downloadDirMaxNum"></span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>{{$t('preference.allowRegister')}}:</span>
+          <span>{{$t('preference.allowRegister')}}: </span>
           <span>{{preference.allowRegister?$t('yes'):$t('no')}}</span>
         </div>
 
         <div class="col-md-12 form-info">
-          <span>{{$t('preference.zipMaxSizeLimit')}}:</span>
+          <span>{{$t('preference.zipMaxSizeLimit')}}: </span>
           <span>
             <span class="mr10">
                     <span v-if="preference.downloadDirMaxSize >= 0">
@@ -57,7 +57,7 @@
         </div>
 
         <div class="col-md-12 form-info">
-          <span>{{$t('preference.userDefaultSizeLimit')}}:</span>
+          <span>{{$t('preference.userDefaultSizeLimit')}}: </span>
           <span>
             <span class="mr10">
                     <span v-if="preference.defaultTotalSizeLimit >= 0">
@@ -67,6 +67,13 @@
                             {{$t('preference.noLimit')}}
                           </span>
                 </span>
+          </span>
+        </div>
+
+        <div class="col-md-12 form-info">
+          <span>{{$t('preference.docLink')}}: </span>
+          <span>
+            <a :href="$t('preference.tankDocLink')" target="_blank">{{$t('preference.tankDocLink')}}</a>
           </span>
         </div>
 

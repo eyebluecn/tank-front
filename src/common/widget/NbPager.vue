@@ -7,7 +7,7 @@
 
     <div v-show="!pager.loading && pager.isEmpty() && !pager.errorMessage">
       <div class="italic text-center">
-        {{emptyHint}}
+        {{emptyHint?emptyHint:$t('plugin.emptyHintDefault')}}
       </div>
     </div>
 
@@ -21,7 +21,7 @@
           {{pager.errorMessage}}
         </div>
         <div>
-          点击刷新
+          {{$t('plugin.clickRefresh')}}
         </div>
       </div>
     </div>
@@ -53,18 +53,18 @@
     </div>
 
     <div class="text-center mt10" v-show="pager.totalItems > pager.pageSize">
-      每页
+      {{$t('plugin.everyPage')}}
       <select v-model="pageSize">
-        <option v-for="size in pageSizeOptions" v-if="size != pager.pageSize" :value="size">{{size}}</option>
+        <option v-for="size in pageSizeOptions" v-if="size !== pager.pageSize" :value="size">{{size}}</option>
 
         <option :value="pager.pageSize" disabled>
           {{pager.pageSize}}
         </option>
 
       </select>
-      条
+      {{$t('plugin.items')}}
 
-      共 {{pager.totalItems}} 条
+      {{$t('plugin.total')}} {{pager.totalItems}} {{$t('plugin.items')}}
     </div>
 
   </div>
@@ -74,6 +74,7 @@
 <script>
 
   import Pager from "../../common/model/base/Pager";
+  import Vue from "vue"
 
   export default {
     data() {
@@ -104,7 +105,7 @@
       emptyHint: {
         type: String,
         required: false,
-        "default": "没有符合条件的项目"
+        "default": ""
       }
     },
     computed: {

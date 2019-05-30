@@ -1,12 +1,12 @@
 <template>
 
-	<NbBtnDropdown :name="current.name" size="sm" :color="currentStyle" v-show="filter.visible">
+	<NbBtnDropdown :name="$t(current.name)" size="sm" :color="currentStyle" v-show="filter.visible">
 		<ul>
 			<li>
-				<a href="javascript:void(0)" @click="select(-1)">所有</a>
+				<a href="javascript:void(0)" @click="select(-1)">{{$t("all")}}</a>
 			</li>
 			<li v-for="(option, index) in filter.options">
-				<a href="javascript:void(0)" @click="select(index)">{{option.name}}</a>
+				<a href="javascript:void(0)" @click="select(index)">{{$t(option.name)}}</a>
 			</li>
 		</ul>
 	</NbBtnDropdown>
@@ -22,7 +22,7 @@
 		data () {
 			return {
 				all: {
-					name: "所有",
+					name: "all",
 					value: null,
 					style: "default"
 				}
