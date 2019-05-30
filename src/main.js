@@ -36,6 +36,7 @@ sync(store, router)
 Vue.use(VueResource)
 Vue.use(NProgress)
 
+
 //使用自定义插件
 Vue.use(new CopyPlugin())
 Vue.use(new PhotoSwipePlugin())
