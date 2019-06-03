@@ -11,7 +11,7 @@ import UserRegister from '../../backyard/user/Register'
 import UserList from '../../backyard/user/List'
 import UserDetail from '../../backyard/user/Detail'
 import UserChangePassword from '../../backyard/user/ChangePassword'
-import UserCreate from '../../backyard/user/Edit'
+import UserEdit from '../../backyard/user/Edit'
 import DashboardIndex from '../../backyard/dashboard/Index'
 import PreferenceIndex from '../../backyard/preference/Index'
 import InstallIndex from '../../backyard/install/Index'
@@ -144,11 +144,30 @@ const router = new Router({
             ]
           }
         },
+        {
+          path: 'user/create',
+          name: 'UserCreate',
+          component: UserEdit,
+          meta: {
+            title: 'router.createUser',
+            requiresAuth: true,
+            breadcrumbs: [
+              {
+                name: 'UserList',
+                title: 'router.users'
+              },
+              {
+                name: 'UserCreate',
+                title: 'router.createUser'
+              }
+            ]
+          }
+        },
 
         {
           path: 'user/edit/:uuid',
           name: 'UserEdit',
-          component: UserCreate,
+          component: UserEdit,
           meta: {
             title: 'router.editUser',
             requiresAuth: true,

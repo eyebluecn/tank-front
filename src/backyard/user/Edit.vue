@@ -16,8 +16,24 @@
           <label class="col-md-2 control-label mt5 compulsory">{{$t('user.username')}}</label>
           <div class="col-md-10 validate">
             <input type="text" class="form-control"
-                   disabled
+                   :disabled="!createMode"
                    v-model="currentUser.username">
+          </div>
+        </div>
+
+        <div class="row mt10" v-if="createMode">
+          <label class="col-md-2 control-label mt5 compulsory">{{$t('user.password')}}</label>
+          <div class="col-md-10 validate">
+            <input type="password" class="form-control"
+                   v-model="currentUser.password">
+          </div>
+        </div>
+
+        <div class="row mt10" v-if="createMode">
+          <label class="col-md-2 control-label mt5 compulsory">{{$t('user.confirmPassword')}}</label>
+          <div class="col-md-10 validate">
+            <input type="password" class="form-control"
+                   v-model="confirmPassword">
           </div>
         </div>
 
@@ -96,6 +112,8 @@
         UserStatus,
         UserStatusList,
         UserStatusMap,
+        createMode: false,
+        confirmPassword: null,
         user: this.$store.state.user,
         currentUser: new User(),
         breadcrumbs: this.$store.state.breadcrumbs
@@ -110,12 +128,19 @@
       save() {
         let that = this
 
+        if (this.createMode) {
+          if (this.confirmPassword !== this.currentUser.password) {
+            this.$message.error(that.$t("user.passwordNotSame"))
+            return
+          }
+        }
+
         this.currentUser.httpSave(function (response) {
           that.$message.success({
             message: that.$t('operationSuccess')
           })
 
-          if (that.user.uuid === that.currentUser.uuid) {
+          if (!that.createMode && that.user.uuid === that.currentUser.uuid) {
             that.user.innerLogin(response)
           }
 
@@ -142,7 +167,11 @@
       this.currentUser.errorMessage = null
       this.currentUser.uuid = this.$store.state.route.params.uuid
       if (this.currentUser.uuid) {
+        this.createMode = false
         this.currentUser.httpDetail()
+      } else {
+        this.createMode = true
+        this.currentUser.role = UserRole.USER
       }
     }
   }

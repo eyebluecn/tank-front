@@ -2,8 +2,14 @@
   <div class="backyard-user-list animated fadeIn">
     <div class="row">
 
-      <div class="col-md-12">
+      <div class="col-md-8">
         <NbPlainFilter :filters="pager.filters" @change="search"/>
+      </div>
+      <div class="col-md-4 text-right" v-if="user.role === UserRole.ADMINISTRATOR">
+        <router-link class="btn btn-primary btn-sm" to="/user/create">
+          <i class="fa fa-plus"></i>
+          创建用户
+        </router-link>
       </div>
 
       <div class="col-md-12" v-for="(userItem,index) in pager.data">
@@ -114,6 +120,7 @@
   import {UserRole, UserRoleList, UserRoleMap} from "../../common/model/user/UserRole";
   import {UserStatus, UserStatusList, UserStatusMap} from "../../common/model/user/UserStatus";
   import {handleImageUrl} from "../../common/util/ImageUtil";
+  import {SortDirection} from "../../common/model/base/SortDirection";
 
   export default {
 
@@ -152,6 +159,7 @@
     },
     mounted() {
       this.pager.enableHistory()
+      this.pager.setFilterValue("orderLastTime", SortDirection.DESC)
       this.refresh()
     }
   }

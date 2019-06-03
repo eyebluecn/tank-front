@@ -27,7 +27,7 @@
           </span>
         </button>
       </div>
-      <div class="mb15 text-right">
+      <div class="mb15 text-right" v-if="preference.allowRegister">
         <router-link to="/user/register">{{$t('user.toToRegister')}}</router-link>
       </div>
 
@@ -50,6 +50,7 @@
       return {
         username: null,
         password: null,
+        preference: this.$store.state.preference,
         user: this.$store.state.user,
         captchaValue: null,
         redirect: this.$route.query.redirect

@@ -135,9 +135,10 @@ export default class User extends BaseEntity {
 
   getForm() {
     let form = {
+      username: this.username,
+      password: this.password,
       role: this.role,
       avatarUrl: this.avatarUrl,
-      gender: this.gender,
       sizeLimit: this.sizeLimit,
       totalSizeLimit: this.totalSizeLimit,
       uuid: this.uuid ? this.uuid : null
