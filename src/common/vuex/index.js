@@ -22,7 +22,7 @@ const state = {
     showDrawer: true
   },
   //当前版本信息。
-  versionName: '3.0.3',
+  versionName: '3.0.4',
   //当前用户，即使没有登录依然有游客的用户在。
   user,
   breadcrumbs: [],
