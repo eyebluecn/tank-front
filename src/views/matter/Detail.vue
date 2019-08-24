@@ -91,7 +91,7 @@
 
 <script>
   import Matter from "../../model/matter/Matter";
-  import ImageCacheList from "../image/cache/widget/ImageCacheList"
+  import ImageCacheList from "./widget/imageCache/ImageCacheList"
   import DownloadToken from "../../model/download/token/DownloadToken";
   import {Message} from "element-ui"
 
