@@ -12,9 +12,9 @@ import Previewer from "./common/plugin/previewer/Previewer";
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import App from './App.vue'
-import store from './common/vuex'
+import store from './vuex'
 
-import router from './common/router'
+import router from './router'
 import {sync} from 'vuex-router-sync'
 import VueResource from 'vue-resource'
 import NProgress from 'vue-nprogress'
