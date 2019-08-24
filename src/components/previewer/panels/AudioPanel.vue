@@ -41,7 +41,7 @@
 </script>
 
 <style lang="less" rel="stylesheet/less">
-  @import "../../../../assets/css/global/variables";
+  @import "../../../assets/css/global/variables";
 
   .previewer-audio-panel {
     width: 100%;

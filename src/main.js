@@ -5,9 +5,9 @@ import "babel-polyfill";
 import "./common/directive/directive"
 
 //自定义文本框插件
-import CopyPlugin from "./common/plugin/copy/CopyPlugin";
-import PhotoSwipePlugin from "./common/plugin/photoswipe/PhotoSwipePlugin";
-import Previewer from "./common/plugin/previewer/Previewer";
+import CopyPlugin from "./components/copy/CopyPlugin";
+import PhotoSwipePlugin from "./components/photoswipe/PhotoSwipePlugin";
+import Previewer from "./components/previewer/Previewer";
 
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'

@@ -24,7 +24,7 @@
 
 <script>
 
-  import {startWith} from "../../../filter/str";
+  import {startWith} from "../../../common/filter/str";
 
   export default {
     data() {
@@ -61,7 +61,7 @@
 </script>
 
 <style lang="less" rel="stylesheet/less">
-  @import "../../../../assets/css/global/variables";
+  @import "../../../assets/css/global/variables";
 
   .previewer-doc-panel {
     width: 100%;

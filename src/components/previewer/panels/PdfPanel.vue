@@ -30,7 +30,7 @@
   }
 </script>
 <style lang="less" rel="stylesheet/less">
-  @import "../../../../assets/css/global/variables";
+  @import "../../../assets/css/global/variables";
 
   .previewer-pdf-panel {
     border: 1px solid #eeeeee;

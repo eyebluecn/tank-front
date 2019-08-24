@@ -8,8 +8,8 @@
   import OfficePanel from "./panels/OfficePanel"
   import AudioPanel from "./panels/AudioPanel"
   import VideoPanel from "./panels/VideoPanel"
-  import {humanFileSize} from "../../filter/str";
-  import {isIE} from "../../util/Utils";
+  import {humanFileSize} from "../../common/filter/str";
+  import {isIE} from "../../common/util/Utils";
   import Vue from "vue"
 
 
@@ -165,7 +165,7 @@
   }
 </script>
 <style lang="less" rel="stylesheet/less">
-  @import "../../../assets/css/global/variables";
+  @import "../../assets/css/global/variables";
 
   //弹出框出现时会在body中添加这个类
   .previewer-mode {

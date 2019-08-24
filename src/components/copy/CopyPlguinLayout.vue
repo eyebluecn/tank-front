@@ -9,7 +9,7 @@
 
 <script>
   import Clipboard from 'clipboard';
-  import {safeCallback} from "../../util/Utils";
+  import {safeCallback} from "../../common/util/Utils";
 
   let nop = () => {
   };
