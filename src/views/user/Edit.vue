@@ -93,7 +93,7 @@
 </template>
 
 <script>
-  import {FeatureType} from '../../model/feature/FeatureType'
+  import {FeatureType} from './feature/FeatureType'
   import NbRadio from '../../components/NbRadio.vue'
   import MatterImage from '../matter/widget/MatterImage'
   import CreateSaveButton from '../../components/CreateSaveButton'
