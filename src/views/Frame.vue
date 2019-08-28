@@ -1,6 +1,6 @@
 <template>
 
-  <div id="body">
+  <div id="body" ref="body">
 
     <div>
       <SideNavigation/>
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import SideNavigation from './layout/SideNavigation.vue'
   import TopNavigation from './layout/TopNavigation.vue'
   import BottomNavigation from './layout/BottomNavigation.vue'
@@ -84,15 +85,24 @@
             that.$store.state.config.mobile = false
           }
         })
+      },
+      listenDrag() {
+          this.$refs.body.addEventListener('dragover', e => {
+              e.preventDefault();
+          })
+          this.$refs.body.addEventListener('drop', e => {
+              if(this.$route.name === 'MatterList') {
+                  e.preventDefault();
+                  new Vue().dropUploadFile(e.dataTransfer.files);
+              }
+          })
       }
-    },
-    created() {
-
     },
     mounted() {
       let that = this
       this.$store.state.environment = 'views'
-      this.listenResponsiveEvent()
+      this.listenResponsiveEvent();
+      this.listenDrag()
     }
   }
 </script>
