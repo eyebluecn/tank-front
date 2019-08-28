@@ -110,6 +110,7 @@
   </div>
 </template>
 <script>
+  import Vue from 'vue'
   import MatterPanel from './widget/MatterPanel'
   import UploadMatterPanel from './widget/UploadMatterPanel'
   import MoveBatchPanel from './widget/MoveBatchPanel'
@@ -315,38 +316,41 @@
           return;
         }
 
-        for (let i = 0; i < domFiles.length; i++) {
-          let domFile = domFiles[i];
-          let m = new Matter()
-          m.dir = false
-          m.puuid = that.matter.uuid
+        this.launchUpload(domFiles);
+      },
 
-          //指定为当前选择的用户。
-          //如果没有设置用户的话，那么默认显示当前登录用户的资料
-          if (!that.pager.getFilterValue('userUuid')) {
-            m.userUuid = that.user.uuid
-          } else {
-            m.userUuid = that.pager.getFilterValue('userUuid')
+      launchUpload(domFiles) {
+          let that = this;
+          for (let i = 0; i < domFiles.length; i++) {
+              let domFile = domFiles[i];
+              let m = new Matter()
+              m.dir = false
+              m.puuid = that.matter.uuid
+
+              //指定为当前选择的用户。
+              //如果没有设置用户的话，那么默认显示当前登录用户的资料
+              if (!that.pager.getFilterValue('userUuid')) {
+                  m.userUuid = that.user.uuid
+              } else {
+                  m.userUuid = that.pager.getFilterValue('userUuid')
+              }
+
+              //判断文件大小。
+              if (that.user.sizeLimit >= 0) {
+                  if (domFile.size > that.user.sizeLimit) {
+                      that.$message.error(that.$t('matter.sizeExceedLimit', humanFileSize(domFile.size), humanFileSize(that.user.sizeLimit)))
+                      continue
+                  }
+              }
+
+              m.file = domFile
+
+              m.httpUpload(function () {
+                  that.$store.state.uploadListInstance.refresh()
+              })
+
+              that.uploadMatters.push(m)
           }
-
-          //判断文件大小。
-          if (that.user.sizeLimit >= 0) {
-            if (domFile.size > that.user.sizeLimit) {
-              that.$message.error(that.$t('matter.sizeExceedLimit', humanFileSize(domFile.size), humanFileSize(that.user.sizeLimit)))
-              continue
-            }
-          }
-
-          m.file = domFile
-
-          m.httpUpload(function () {
-            that.$store.state.uploadListInstance.refresh()
-          })
-
-          that.uploadMatters.push(m)
-        }
-
-
       },
 
       previewImage(matter) {
@@ -524,6 +528,7 @@
       } else {
         this.pager.setFilterValue('userUuid', this.user.uuid)
       }
+      Vue.prototype.dropUploadFile = this.launchUpload
     },
     mounted() {
       let that = this
@@ -532,7 +537,10 @@
       this.$store.state.uploadListInstance = this
 
       this.refresh()
-    }
+    },
+      destroyed() {
+          Vue.prototype.dropUploadFile = null;
+      }
   }
 </script>
 <style lang="less" rel="stylesheet/less">
