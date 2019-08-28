@@ -179,7 +179,6 @@
       },
       refresh() {
 
-
         let puuid = this.$route.query.puuid
         if (puuid) {
           this.pager.setFilterValue('puuid', puuid)
@@ -440,7 +439,6 @@
       moveBatch(createElement) {
         let that = this
 
-
         let dom = createElement(MoveBatchPanel, {
           props: {
             version: (new Date()).getTime(),
@@ -488,8 +486,6 @@
 
           //刷新面包屑
           that.refreshBreadcrumbs()
-
-
           that.pager.resetFilter()
           that.pager.setFilterValue('puuid', null)
           that.pager.setFilterValue("orderCreateTime", SortDirection.DESC)
@@ -500,11 +496,8 @@
 
         } else {
 
-
           that.refresh()
-
         }
-
 
       }
     },
@@ -538,9 +531,9 @@
 
       this.refresh()
     },
-      destroyed() {
-          Vue.prototype.dropUploadFile = null;
-      }
+    destroyed() {
+       Vue.prototype.dropUploadFile = null;
+    }
   }
 </script>
 <style lang="less" rel="stylesheet/less">
