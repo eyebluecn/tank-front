@@ -70,7 +70,8 @@ let i18nMessage = {
       users: "Users",
       logout: "Logout",
       about: "About",
-      install: "Install"
+      install: "Install",
+      dragMouseUp: "Put file here~"
     },
     matter: {
       file: "File",
@@ -347,7 +348,8 @@ let i18nMessage = {
       users: "用户列表",
       logout: "退出登录",
       about: "关于",
-      install: "安装网站"
+      install: "安装网站",
+      dragMouseUp: "可以松手啦~"
     },
     matter: {
       file: "文件",
