@@ -1,11 +1,11 @@
 <template>
 
-  <div id="body" ref="body">
+  <div id="body">
 
     <div>
       <SideNavigation/>
-      <div id="page-wrapper" :class="{'show-drawer':$store.state.config.showDrawer}" @click="blankClick">
-
+      <div id="page-wrapper" ref="pageWrapper" :class="{'show-drawer':$store.state.config.showDrawer}" @click="blankClick">
+        <DragObscure v-show="dragEnterCount > 0"/>
         <div>
 
           <div class="mb10">
@@ -47,12 +47,14 @@
   import SideNavigation from './layout/SideNavigation.vue'
   import TopNavigation from './layout/TopNavigation.vue'
   import BottomNavigation from './layout/BottomNavigation.vue'
+  import DragObscure from './layout/DragObscure';
   import enquire from 'enquire.js/dist/enquire'
 
   export default {
     data() {
       return {
-        member: this.$store.state.member
+        member: this.$store.state.member,
+        dragEnterCount: 0,
       }
     },
     computed: {
@@ -63,7 +65,8 @@
     components: {
       SideNavigation,
       TopNavigation,
-      BottomNavigation
+      BottomNavigation,
+      DragObscure
     },
     methods: {
       blankClick() {
@@ -87,11 +90,26 @@
         })
       },
       listenDrag() {
-          this.$refs.body.addEventListener('dragover', e => {
-              e.preventDefault();
-          })
-          this.$refs.body.addEventListener('drop', e => {
+          this.$refs.pageWrapper.addEventListener('dragenter', e => {
               if(this.$route.name === 'MatterList') {
+                  this.dragEnterCount++;
+                  e.preventDefault();
+              }
+          })
+          this.$refs.pageWrapper.addEventListener('dragleave', e => {
+              if(this.$route.name === 'MatterList') {
+                  this.dragEnterCount--;
+                  e.preventDefault();
+              }
+          })
+          this.$refs.pageWrapper.addEventListener('dragover', e => {
+              if(this.$route.name === 'MatterList') {
+                  e.preventDefault();
+              }
+          })
+          this.$refs.pageWrapper.addEventListener('drop', e => {
+              if(this.$route.name === 'MatterList') {
+                  this.dragEnterCount = 0;
                   e.preventDefault();
                   new Vue().dropUploadFile(e.dataTransfer.files);
               }
