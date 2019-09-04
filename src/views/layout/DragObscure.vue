@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <img class="icon" src="../../assets/img/logo.png" alt="icon" />
+    <img class="icon" src="../../assets/img/upload.png" alt="icon" />
     <p>{{ $t("layout.dragMouseUp") }}</p>
   </div>
 </template>
@@ -20,7 +20,7 @@ export default {
   left: 0;
   background: #000;
   z-index: 100;
-  opacity: 0.4;
+  opacity: 0.5;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,11 +28,11 @@ export default {
   p {
     font-size: 40px;
     letter-spacing: 3px;
-    color: rgb(57, 120, 178);
+    color: #fff;
   }
   .icon {
-    width: 300px;
-    height: 300px;
+    width: 100px;
+    height: 100px;
   }
 }
 </style>
