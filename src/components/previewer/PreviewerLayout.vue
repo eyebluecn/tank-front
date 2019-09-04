@@ -35,7 +35,7 @@
         }
       },
 
-      preview(name, url, size, vNode) {
+      preview(name, size, vNode) {
         let that = this;
 
         that.bodyAddClass()
@@ -90,7 +90,7 @@
         });
 
 
-        this.preview(name, url, size, vNode)
+        this.preview(name, size, vNode)
       },
       previewText(name, url, size) {
 
@@ -102,7 +102,7 @@
           }
         });
 
-        this.preview(name, url, size, vNode)
+        this.preview(name, size, vNode)
       },
       previewOffice(name, url, size) {
 
@@ -114,7 +114,7 @@
           }
         });
 
-        this.preview(name, url, size, vNode)
+        this.preview(name, size, vNode)
       },
       previewAudio(name, url, size) {
 
@@ -134,7 +134,7 @@
           }
         });
 
-        this.preview(name, url, size, vNode)
+        this.preview(name, size, vNode)
       },
       previewVideo(name, url, size) {
 
@@ -154,7 +154,7 @@
           }
         });
 
-        this.preview(name, url, size, vNode)
+        this.preview(name, size, vNode)
       }
 
     },
