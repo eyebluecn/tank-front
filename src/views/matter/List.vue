@@ -195,8 +195,7 @@
           this.pager.setFilterValue('userUuid', this.user.uuid)
         }
 
-        this.pager.setFilterValue("name", null)
-
+        this.pager.setFilterValue("name", this.searchText)
 
         //刷新面包屑
         this.refreshBreadcrumbs()
