@@ -186,6 +186,12 @@
           this.pager.setFilterValue('puuid', 'root')
         }
 
+        this.pager.setFilterValue("name", this.searchText)
+        //如果是有关键字的进行搜索，那么搜索条件就不应该有puuid
+        if(this.searchText) {
+            this.pager.setFilterValue('puuid', null)
+        }
+
         //如果所有的排序都没有设置，那么默认以时间降序。
         this.pager.setFilterValue('orderCreateTime', SortDirection.DESC)
         this.pager.setFilterValue("orderDir", SortDirection.DESC)
@@ -195,14 +201,13 @@
           this.pager.setFilterValue('userUuid', this.user.uuid)
         }
 
-        this.pager.setFilterValue("name", this.searchText)
-
         //刷新面包屑
         this.refreshBreadcrumbs()
 
         this.pager.httpFastPage()
       },
       goToDirectory(uuid) {
+        this.searchText = null
         this.pager.setFilterValue('puuid', uuid)
         this.pager.page = 0
         let query = this.pager.getParams()
@@ -488,6 +493,7 @@
           that.pager.resetFilter()
           that.pager.setFilterValue('puuid', null)
           that.pager.setFilterValue("orderCreateTime", SortDirection.DESC)
+          that.pager.setFilterValue("orderDir", SortDirection.DESC)
           that.pager.setFilterValue("name", that.searchText)
 
           that.pager.httpFastPage()
@@ -507,7 +513,7 @@
 
       },
       'searchText'(newVal, oldVal) {
-        if (oldVal && !newVal) {
+        if (!newVal && newVal !== null) {
           this.refresh()
         }
       }
