@@ -34,7 +34,7 @@
 
               <i class="fa fa-font btn-action text-primary" :title="$t('matter.rename')"
                  @click.stop.prevent="prepareRename"></i>
-              <i class="fa fa-link btn-action text-primary" :title="$t('matter.copyLink')" v-if="!matter.dir"
+              <i class="fa fa-link btn-action text-primary" :title="$t('matter.copyLink')"
                  @click.stop.prevent="clipboard"></i>
               <i class="fa fa-download btn-action text-primary" :title="$t('matter.download')"
                  @click.stop.prevent="matter.download()"></i>
