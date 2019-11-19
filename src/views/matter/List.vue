@@ -38,7 +38,7 @@
           {{ $t("matter.share") }}
         </button>
 
-        <el-dialog
+        <Dialog
           :title="$t('matter.share')"
           :visible.sync="shareDialogVisible"
           :append-to-body="true">
@@ -46,7 +46,7 @@
           <SharePanel :matters="selectedMatters"
                       @close="shareDialogVisible = false"/>
 
-        </el-dialog>
+        </Dialog>
 
 
         <span class="btn btn-primary btn-sm btn-file mr5 mb5">
@@ -123,7 +123,7 @@
   import Matter from '../../model/matter/Matter'
   import Pager from '../../model/base/Pager'
   import Director from './widget/Director'
-  import {Message, MessageBox} from 'element-ui'
+  import {Dialog, Message, MessageBox} from 'element-ui'
   import {UserRole} from "../../model/user/UserRole";
   import {SortDirection} from "../../model/base/SortDirection";
   import {humanFileSize} from "../../common/filter/str";
@@ -165,7 +165,8 @@
       NbFilter,
       NbPager,
       NbSlidePanel,
-      NbExpanding
+      NbExpanding,
+      Dialog
     },
     methods: {
       reset() {

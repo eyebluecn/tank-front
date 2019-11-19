@@ -1,8 +1,8 @@
 <template>
   <div class="backyard-install">
 
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane :label=" $t('install.configMysql')" name="first">
+    <Tabs v-model="activeName" @tab-click="handleClick">
+      <TabPane :label=" $t('install.configMysql')" name="first">
         <div class="install-block">
 
           <div class="row" v-validator="install.validatorSchema.mysqlHost.error">
@@ -71,8 +71,8 @@
             </div>
           </div>
         </div>
-      </el-tab-pane>
-      <el-tab-pane :label="$t('install.createTable')" name="second" :disabled="!install.verified">
+      </TabPane>
+      <TabPane :label="$t('install.createTable')" name="second" :disabled="!install.verified">
         <div class="install-block">
 
           <div class="mb15 border-bottom" v-for="(tableInfo,index) in install.tableInfoList">
@@ -144,8 +144,8 @@
           </div>
 
         </div>
-      </el-tab-pane>
-      <el-tab-pane :label="$t('install.setAdministrator')" name="third" :disabled="!install.tableCreated()">
+      </TabPane>
+      <TabPane :label="$t('install.setAdministrator')" name="third" :disabled="!install.tableCreated()">
         <div class="install-block">
 
           <div class="text-center" v-show="phase===-1">
@@ -292,8 +292,8 @@
           </NbExpanding>
 
         </div>
-      </el-tab-pane>
-      <el-tab-pane :label="$t('finish') " name="forth" :disabled="!install.adminConfigured">
+      </TabPane>
+      <TabPane :label="$t('finish') " name="forth" :disabled="!install.adminConfigured">
         <div class="install-block">
 
           <div class="text-center">
@@ -311,15 +311,15 @@
           </div>
 
         </div>
-      </el-tab-pane>
+      </TabPane>
 
-    </el-tabs>
+    </Tabs>
 
 
   </div>
-</template>
-
+</template
 <script>
+  import { Tabs, TabPane } from "element-ui";
   import Install from "../../model/install/Install";
   import NbExpanding from "../../components/NbExpanding";
 
@@ -344,7 +344,9 @@
       }
     },
     components: {
-      NbExpanding
+      NbExpanding,
+      Tabs,
+      TabPane
     },
     methods: {
       mysqlPasswordChange(e) {

@@ -30,7 +30,7 @@
                 <i class="fa fa-link"></i>
                 {{$t('share.getLink')}}
               </button>
-              <el-dialog
+              <Dialog
                 :title="$t('share.shareDetail')"
                 :visible.sync="shareDialogVisible"
                 :append-to-body="true">
@@ -39,7 +39,7 @@
                 <button class="btn btn-primary btn-sm mr5" @click="share.copyLinkAndCode()">{{$t('share.copyLinkAndCode')}}</button>
                 <button class="btn btn-default btn-sm mr5" @click="shareDialogVisible = false">{{$t('close')}}</button>
               </span>
-              </el-dialog>
+              </Dialog>
 
             </div>
           </div>
@@ -101,7 +101,7 @@
 </template>
 
 <script>
-
+  import { Dialog } from "element-ui";
   import Share from "../../model/share/Share";
   import ShareMatterBar from "./widget/ShareMatterBar"
   import Matter from "../../model/matter/Matter";
@@ -287,7 +287,8 @@
       LoadingFrame,
       ShareDialogPanel,
       ShareMatterBar,
-      NbPager
+      NbPager,
+      Dialog
     },
     mounted() {
       let that = this;
