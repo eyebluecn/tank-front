@@ -96,7 +96,7 @@
       </div>
     </NbExpanding>
 
-    <el-dialog
+    <Dialog
       :title="$t('share.shareDetail')"
       :visible.sync="shareDialogVisible"
       :append-to-body="true">
@@ -105,12 +105,13 @@
                 <button class="btn btn-primary btn-sm mr5" @click="share.copyLinkAndCode()">{{$t('share.copyLinkAndCode')}}</button>
                 <button class="btn btn-default btn-sm mr5" @click="shareDialogVisible = false">{{$t('close')}}</button>
               </span>
-    </el-dialog>
+    </Dialog>
 
   </div>
 
 </template>
 <script>
+  import { Dialog } from 'element-ui'
   import Share from '../../../model/share/Share'
   import NbCheckbox from '../../../components/NbCheckbox'
   import NbExpanding from '../../../components/NbExpanding'
@@ -128,7 +129,8 @@
     components: {
       NbExpanding,
       NbCheckbox,
-      ShareDialogPanel
+      ShareDialogPanel,
+      Dialog
     },
     props: {
       share: {

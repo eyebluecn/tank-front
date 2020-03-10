@@ -1,17 +1,21 @@
 <template>
   <span class="nb-filter-datetime" v-show="filter.visible">
-    <el-date-picker
+    <DatePicker
 	    v-model="date"
 	    type="datetime"
 	    placeholder="选择日期时间">
-		</el-date-picker>
+		</DatePicker>
   </span>
 </template>
 
 <script>
+  import { DatePicker } from "element-ui";
 	import Filter from "../../model/base/Filter";
 	import {simpleDateTime, str2Date} from "../../common/filter/time";
 	export default {
+	  components: {
+      DatePicker
+    },
 		data(){
 			return {
 				//饿了么时间控件有重大bug，此处不能设置为null，只能是空字符串，否则出错。

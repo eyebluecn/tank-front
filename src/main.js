@@ -20,13 +20,19 @@ import VueResource from 'vue-resource'
 import NProgress from 'vue-nprogress'
 import filters from './common/filter'
 import i18nMessage from "./common/i18n"
-
-//将整个eleme 都引进来了。
-import ElementUI from 'element-ui'
 import BrowserUtil from "./common/util/BrowserUtil";
 
+import { Tabs, TabPane, DatePicker, Dialog, Message, MessageBox } from 'element-ui';
 
-Vue.use(ElementUI)
+Vue.use(Tabs);
+Vue.use(TabPane);
+Vue.use(Dialog);
+Vue.use(DatePicker);
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$confirm = MessageBox.confirm;
+Vue.prototype.$prompt = MessageBox.prompt;
+Vue.prototype.$message = Message;
 
 //expose to global.
 Vue.store = store;
