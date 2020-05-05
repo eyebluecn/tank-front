@@ -20,6 +20,7 @@ export default class Install extends BaseEntity {
     this.mysqlSchema = "tank"
     this.mysqlUsername = "tank"
     this.mysqlPassword = null
+    this.mysqlCharset = "utf8"
 
     //管理员用户名
     this.adminUsername = null
@@ -105,7 +106,8 @@ export default class Install extends BaseEntity {
       mysqlHost: this.mysqlHost,
       mysqlSchema: this.mysqlSchema,
       mysqlUsername: this.mysqlUsername,
-      mysqlPassword: this.mysqlPassword
+      mysqlPassword: this.mysqlPassword,
+      mysqlCharset: this.mysqlCharset,
     }
   }
 

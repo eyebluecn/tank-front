@@ -40,6 +40,17 @@
             </div>
           </div>
 
+          <div class="row mt10">
+            <label class="col-md-2 control-label mt5 compulsory">MySQL {{ $t('install.charset') }}</label>
+            <div class="col-md-10 validate">
+              <select class="form-control" v-model="install.mysqlCharset">
+                <option value="utf8">utf8</option>
+                <option value="utf8mb4">utf8mb4</option>
+                <option value="gbk">gbk</option>
+              </select>
+            </div>
+          </div>
+
           <div class="row mt20">
             <div class="col-md-12">
               <div class="alert alert-info">
@@ -120,7 +131,8 @@
           <div class="row">
             <div class="col-md-12 text-right">
 
-              <button class="btn btn-info btn-sm mr5" v-if="!install.tableCreated()" @click.stop.prevent="createTable()">
+              <button class="btn btn-info btn-sm mr5" v-if="!install.tableCreated()"
+                      @click.stop.prevent="createTable()">
                 <i class="fa fa-gavel"></i>
                 {{ $t('install.oneKeyCreate') }}
               </button>
@@ -317,9 +329,9 @@
 
 
   </div>
-</template
+</template>
 <script>
-  import { Tabs, TabPane } from "element-ui";
+  import {Tabs, TabPane} from "element-ui";
   import Install from "../../model/install/Install";
   import NbExpanding from "../../components/NbExpanding";
 
@@ -335,7 +347,7 @@
     },
     computed: {
       mysqlUrl() {
-        return this.install.mysqlUsername + ":" + this.install.mysqlPassword + "@tcp(" + this.install.mysqlHost + ":" + this.install.mysqlPort + ")/" + this.install.mysqlSchema + "?charset=utf8&parseTime=True&loc=Local"
+        return this.install.mysqlUsername + ":" + this.install.mysqlPassword + "@tcp(" + this.install.mysqlHost + ":" + this.install.mysqlPort + ")/" + this.install.mysqlSchema + "?charset=" + this.install.mysqlCharset + "&parseTime=True&loc=Local"
       }
     },
     watch: {

@@ -60,7 +60,8 @@ let i18nMessage = {
       configAdminFirst: "Please config administrator first.",
       createAdminSuccess: "Create administrator successfully!",
       validateAdminSuccess: "Validate administrator successfully!",
-      enterHome: "Click to enter home"
+      enterHome: "Click to enter home",
+      charset: "Charset",
     },
     layout: {
       allFiles: "Files",
@@ -277,6 +278,7 @@ let i18nMessage = {
     yes: "Yes",
     no: "No",
     all: "All",
+    refresh: "refresh",
   },
   zh: {
     eyeblueTank: "蓝眼云盘",
@@ -338,7 +340,8 @@ let i18nMessage = {
       configAdminFirst: "请首先配置管理员信息！",
       createAdminSuccess: "创建管理员成功！",
       validateAdminSuccess: "验证管理员成功！",
-      enterHome: "点击进入首页"
+      enterHome: "点击进入首页",
+      charset: "编码",
     },
     layout: {
       allFiles: "所有文件",
@@ -555,6 +558,7 @@ let i18nMessage = {
     yes: "是",
     no: "否",
     all: "所有",
+    refresh: "刷新",
 
   }
 }

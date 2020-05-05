@@ -230,12 +230,12 @@ const router = new Router({
           name: 'InstallIndex',
           component: InstallIndex,
           meta: {
-            title: 'router.dashboard',
+            title: 'router.install',
             requiresAuth: false,
             breadcrumbs: [
               {
                 name: 'InstallIndex',
-                title: 'router.dashboard'
+                title: 'router.install'
               }
             ]
           }

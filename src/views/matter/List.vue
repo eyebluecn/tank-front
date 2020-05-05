@@ -62,6 +62,11 @@
           {{ $t("matter.create") }}
         </button>
 
+        <button class="btn btn-sm btn-primary mr5 mb5" @click.stop.prevent="refresh">
+          <i class="fa fa-refresh"></i>
+          {{ $t("refresh") }}
+        </button>
+
       </div>
 
       <div class="col-md-4 mb10">
