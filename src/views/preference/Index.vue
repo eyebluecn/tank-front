@@ -33,6 +33,11 @@
         </div>
 
         <div class="col-md-12 form-info">
+          <span>{{$t('preference.officeUrl')}}: </span>
+          <span v-html="preference.officeUrl"></span>
+        </div>
+
+        <div class="col-md-12 form-info">
           <span>{{$t('preference.zipMaxNumLimit')}}: </span>
           <span v-html="preference.downloadDirMaxNum"></span>
         </div>

@@ -45,6 +45,14 @@
 
 
       <div class="row mt10">
+        <label class="col-md-2 control-label mt5">{{$t('preference.officeUrl')}}</label>
+        <div class="col-md-10">
+          <input type="text" class="form-control" v-model="preference.officeUrl">
+        </div>
+      </div>
+
+
+      <div class="row mt10">
         <label class="col-md-2 control-label mt5">{{$t('preference.zipMaxNumLimit')}}</label>
         <div class="col-md-10">
           <input type="text" class="form-control" v-model="preference.downloadDirMaxNum">

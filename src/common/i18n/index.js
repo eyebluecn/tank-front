@@ -161,6 +161,7 @@ let i18nMessage = {
       systemCleanup: "System Cleanup",
       systemCleanupDescription: "This operation will cleanup everything except administrators' data",
       systemCleanupPrompt: "This operation will cleanup everything except administrators' account data, please input login password.",
+      officeUrl: "Office Preview Url",
     },
     share: {
       shareDetail: "Share Detail",
@@ -441,6 +442,7 @@ let i18nMessage = {
       systemCleanup: "重置系统",
       systemCleanupDescription: "重置系统将清空除管理员账号外所有数据",
       systemCleanupPrompt: "重置系统将清空除管理员账号外所有数据，事关重大，请输入登录密码",
+      officeUrl: "Office预览链接",
     },
     share: {
       shareDetail: "分享详情",

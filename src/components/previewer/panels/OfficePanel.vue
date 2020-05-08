@@ -1,21 +1,27 @@
 <template>
 
   <div class="previewer-doc-panel">
-    <iframe v-if="canPreview" :src='finalUrl'
+    <iframe v-if="!useMicrosoft || (useMicrosoft && canPreview )" :src='finalUrl'
             width="100%" height="100%">
       This is an embedded
       <a target='_blank' href='http://office.com'>Microsoft Office</a>
-      document, powered by
+      document, default powered by
       <a target='_blank' href='http://office.com/webapps'>Office Online</a>.
     </iframe>
     <div class="fallback" v-else>
-      <h3>
-        Cannot preview
-      </h3>
-      <p>
-        Office Preview is powered by <a target='_blank' href='http://office.com'>Microsoft Office Online Preview</a>，
-        Because Microsoft server cannot get <a target="_blank" :href="url">{{name}}</a>, so url with localhost(127.0.0.1) cannot preview office files.
-      </p>
+      <div v-if="useMicrosoft">
+        <h3>
+          Cannot preview
+        </h3>
+        <p>
+          Office Preview is powered by <a target='_blank' href='http://office.com'>Microsoft Office Online Preview</a>，
+          Because Microsoft server cannot get <a target="_blank" :href="url">{{name}}</a>, so url with
+          localhost(127.0.0.1) cannot preview office files.
+        </p>
+      </div>
+      <div v-else>
+        Cannot preview with custom office url.
+      </div>
     </div>
   </div>
 
@@ -25,10 +31,13 @@
 <script>
 
   import {startWith} from "../../../common/filter/str";
+  import Vue from "vue";
 
   export default {
     data() {
-      return {}
+      return {
+        preference: Vue.store.state.preference
+      }
     },
     computed: {
       canPreview() {
@@ -38,7 +47,18 @@
           !startWith(this.url, "https://127.0.0.1")
       },
       finalUrl() {
-        return "https://view.officeapps.live.com/op/embed.aspx?src=" + this.url;
+        if (this.preference.officeUrl) {
+          return this.preference.officeUrl + this.url;
+        } else {
+          return "https://view.officeapps.live.com/op/embed.aspx?src=" + this.url;
+        }
+      },
+      useMicrosoft() {
+        if (this.preference.officeUrl) {
+          return this.preference.officeUrl.startsWith("https://view.officeapps.live.com");
+        } else {
+          return true
+        }
       }
     },
     props: {
@@ -56,6 +76,7 @@
     methods: {},
     mounted() {
 
+      console.log("preview url:" + this.finalUrl)
     }
   }
 </script>

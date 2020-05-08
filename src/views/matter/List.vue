@@ -147,7 +147,7 @@
         selectedMatters: [],
         //搜索的文字
         searchText: null,
-        pager: new Pager(Matter, 50),
+        pager: new Pager(Matter, 1000),
         //移动的目标文件夹
         targetMatterUuid: null,
         user: this.$store.state.user,

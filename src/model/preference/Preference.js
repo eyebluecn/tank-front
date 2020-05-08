@@ -26,6 +26,8 @@ export default class Preference extends BaseEntity {
     this.defaultTotalSizeLimit = -1
     //是否允许自主注册
     this.allowRegister = false
+    //Office预览链接
+    this.officeUrl = null
     //后台版本
     this.version = null
 
@@ -40,6 +42,7 @@ export default class Preference extends BaseEntity {
   getUrlPrefix() {
     return "/api/preference"
   }
+
   render(obj) {
     super.render(obj)
   }
@@ -55,7 +58,8 @@ export default class Preference extends BaseEntity {
       downloadDirMaxNum: this.downloadDirMaxNum,
       downloadDirMaxSize: this.downloadDirMaxSize,
       defaultTotalSizeLimit: this.defaultTotalSizeLimit,
-      allowRegister: this.allowRegister
+      allowRegister: this.allowRegister,
+      officeUrl: this.officeUrl
     }
   }
 
