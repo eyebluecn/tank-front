@@ -6,6 +6,7 @@ import {Button, Col, Form, Input, message as MessageBox, Row} from 'antd';
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
+import Sun from "../../common/model/global/Sun";
 
 
 interface IProps extends RouteComponentProps {
@@ -16,7 +17,7 @@ interface IState {
 
 }
 
-class RawLogin extends TankComponent<IProps, IState> {
+export default class Login extends TankComponent<IProps, IState> {
 
   user: User = Moon.getSingleton().user
 
@@ -28,13 +29,24 @@ class RawLogin extends TankComponent<IProps, IState> {
 
   componentDidMount() {
 
+    //进入登录页面，默认退出一次
+    this.logout()
+  }
+
+  //退出登录
+  logout() {
+
+    let that = this
+
+    this.user.httpLogout(function () {
+      //刷新整个网站
+      Sun.updateFrame()
+    })
 
   }
 
-
   onFinish(values: any) {
     console.log('Success:', values);
-
 
     let that = this
 
@@ -105,4 +117,3 @@ class RawLogin extends TankComponent<IProps, IState> {
 }
 
 
-export default RawLogin;

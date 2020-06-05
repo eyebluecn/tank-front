@@ -8,6 +8,9 @@ export default class Sun {
   //全局的一个store对象
   static singleton: Sun | null = null
 
+  //持有整个网站最外层的frame，方便我们刷新整个页面。
+  frameComponent: any = null
+
   //持有全局的react-router对象，方便我们在非jsx环境中控制路由跳转
   reactRouter: any = null;
 
@@ -25,7 +28,7 @@ export default class Sun {
   }
 
 
-  ////////////和路由相关的方法 开始////////////
+  //*******************和路由相关的方法 开始 *******************//
 
   /**
    * 跳转到某个页面去
@@ -38,6 +41,19 @@ export default class Sun {
     }
   }
 
-  ////////////和路由相关的方法 结束////////////
+  //******************* 和路由相关的方法 结束 *******************//
 
+  //*******************和全局视图相关的方法 开始 *******************//
+  /**
+   * 刷新主框架内容
+   */
+  static updateFrame() {
+    if (Sun.getSingleton().frameComponent) {
+      Sun.getSingleton().frameComponent.updateUI()
+    } else {
+      console.error("全局的 frameComponent 未定义，请检查代码！")
+    }
+  }
+
+  //******************* 和全局视图相关的方法 结束 *******************//
 }

@@ -7,7 +7,6 @@ export default class User extends BaseEntity {
 
   //获取当前登录者的信息
   static URL_INFO = '/api/user/info';
-
   static URL_LOGIN = '/api/user/login'
   static URL_AUTHENTICATION_LOGIN = '/api/user/authentication/login'
   static URL_REGISTER = '/api/user/register'
@@ -29,9 +28,6 @@ export default class User extends BaseEntity {
   totalSizeLimit: number = -1
   status: UserStatus = UserStatus.OK
 
-  //****************本地临时变量****************/
-  //是否已经登录
-  isLogin: boolean = false;
 
   constructor(reactComponent?: React.Component) {
 
@@ -73,6 +69,42 @@ export default class User extends BaseEntity {
 
   }
 
+  //获取当前登录者的信息
+  httpInfo(successCallback?: any, errorCallback?: any, finalCallback?: any) {
+
+    let that = this;
+
+    let form = {};
+
+    this.httpGet(User.URL_INFO, form, function (response: any) {
+
+      that.assign(response.data.data);
+
+      SafeUtil.safeCallback(successCallback)(response);
+
+    }, errorCallback, finalCallback);
+
+  }
+
+
+  //退出登录
+  httpLogout(successCallback?: any, errorCallback?: any, finalCallback?: any) {
+
+    let that = this;
+
+    let form = {};
+
+    this.httpGet(User.URL_LOGOUT, form, function (response: any) {
+
+      console.info('退出成功！');
+
+      that.assign(new User())
+
+      SafeUtil.safeCallback(successCallback)(response);
+
+    }, errorCallback, finalCallback);
+
+  }
 
 }
 

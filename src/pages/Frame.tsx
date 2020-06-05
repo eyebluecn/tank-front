@@ -53,10 +53,13 @@ class RawFrame extends TankComponent<IProps, IState> {
 
     //装载全局的路由
     Sun.getSingleton().reactRouter = this.props.history;
+    //装在全局Frame
+    Sun.getSingleton().frameComponent = this
 
     this.fetchInfo();
 
   }
+
 
   //获取当前登录者的信息
   fetchInfo() {
@@ -65,8 +68,9 @@ class RawFrame extends TankComponent<IProps, IState> {
     let whitePaths = ['/user/login', '/user/register'];
     //如果当前本身是登录界面，那么不去获取。
     if (whitePaths.indexOf(this.props.location.pathname) == -1) {
-
-      that.updateUI();
+      this.user.httpInfo(function () {
+        that.updateUI();
+      });
     }
 
   }
