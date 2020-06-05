@@ -121,7 +121,7 @@ export default class BaseEntity extends HttpBase {
   getUrlList(): string {
     let prefix = this.getUrlPrefix();
 
-    return prefix + '/list';
+    return prefix + '/page';
   }
 
   getUrlSort(): string {

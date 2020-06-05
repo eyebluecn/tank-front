@@ -1,0 +1,111 @@
+import React from 'react';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import './Detail.less';
+import BambooComponent from '../../common/component/BambooComponent';
+import Matter from '../../common/model/matter/Matter';
+import { Button, Col, Row, Spin } from 'antd';
+import InfoCell from '../widget/InfoCell';
+import StringUtil from '../../common/util/StringUtil';
+import BambooTitle from '../widget/BambooTitle';
+
+interface RouteParam {
+  uuid: string
+}
+
+interface IProps extends RouteComponentProps<RouteParam> {
+
+}
+
+interface IState {
+}
+
+export default class Detail extends BambooComponent<IProps, IState> {
+
+  matter: Matter = new Matter(this);
+
+  constructor(props: IProps) {
+    super(props);
+
+
+    this.state = {};
+
+    //matter的id设置晚了就来不及了
+    let match = this.props.match;
+    if (match.params.uuid) {
+      this.matter.uuid = match.params.uuid;
+    }
+
+  }
+
+
+  componentDidMount() {
+    //刷新一下列表
+    let that = this;
+
+    let match = this.props.match;
+    let matter = that.matter;
+
+    matter.httpDetail(function() {
+
+    });
+
+  }
+
+
+  render() {
+
+    let that = this;
+    let matter: Matter = that.matter;
+    //router中传入的路由相关对象
+    let match = this.props.match;
+
+
+    return (
+      <div className="matter-detail">
+
+        <BambooTitle name={'文件详情'}>
+          <Link title="编辑"
+                to={StringUtil.prePath(match.path, 2) + '/edit/' + matter.uuid}>
+            <Button className="mh10" type="primary" icon="edit">
+              编辑
+            </Button>
+          </Link>
+        </BambooTitle>
+
+        <Spin tip="加载中" spinning={matter.detailLoading}>
+
+          <div className="info">
+
+            {/*<Row>*/}
+            {/*  <Col span={12}>*/}
+            {/*    <InfoCell name="文件名称">*/}
+            {/*      {matter.title}*/}
+            {/*    </InfoCell>*/}
+            {/*  </Col>*/}
+            {/*  <Col span={12}>*/}
+            {/*    <InfoCell name="作者">*/}
+            {/*      {matter.author}*/}
+            {/*    </InfoCell>*/}
+            {/*  </Col>*/}
+            {/*  <Col span={12}>*/}
+            {/*    <InfoCell name="路径">*/}
+            {/*      {matter.path}*/}
+            {/*    </InfoCell>*/}
+            {/*  </Col>*/}
+
+
+            {/*</Row>*/}
+
+            <div className="matter" dangerouslySetInnerHTML={{__html: ''+ matter.html}} />
+
+          </div>
+
+
+        </Spin>
+
+      </div>
+    );
+  }
+}
+
+
