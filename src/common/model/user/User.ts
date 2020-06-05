@@ -33,9 +33,9 @@ export default class User extends BaseEntity {
   //是否已经登录
   isLogin: boolean = false;
 
-  constructor(reactComponent?: React.Component) {
+  constructor() {
 
-    super(reactComponent);
+    super();
 
   }
 

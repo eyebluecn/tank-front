@@ -22,9 +22,9 @@ export default class Matter extends BaseEntity {
   hit: number = 0;
   commentNum: number = 0;
 
-  constructor(reactComponent?: React.Component) {
+  constructor() {
 
-    super(reactComponent);
+    super();
 
   }
 

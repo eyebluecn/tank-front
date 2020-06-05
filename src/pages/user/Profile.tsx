@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Profile.less"
-import BambooComponent from "../../common/component/BambooComponent";
+import TankComponent from "../../common/component/TankComponent";
 import {Button} from 'antd';
 import InfoCell from "../widget/InfoCell";
 import User from "../../common/model/user/User";
@@ -18,7 +18,7 @@ interface IState {
 
 }
 
-export default class Profile extends BambooComponent <IProps, IState> {
+export default class Profile extends TankComponent <IProps, IState> {
 
   constructor(props: IProps) {
     super(props)

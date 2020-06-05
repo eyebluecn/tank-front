@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import './Index.less';
-import BambooComponent from '../../common/component/BambooComponent';
+import TankComponent from '../../common/component/TankComponent';
 import Moon from '../../common/model/global/Moon';
 import User from '../../common/model/user/User';
 
@@ -14,7 +14,7 @@ interface IState {
 }
 
 
-export default class Index extends BambooComponent<IProps, IState> {
+export default class Index extends TankComponent<IProps, IState> {
 
   user: User = Moon.getSingleton().user;
 

@@ -9,24 +9,10 @@ import DateUtil from "../../util/DateUtil";
  */
 export default class Base {
 
-  //id自增长值
-  private static AUTO_INCREMENT_ID = 0
-
-  //当前对象的ID，这个字段让我们可以很轻松的统计出共创建了多少个实体类。
-  autoId: number = 0
-
-
   //我们认为每个实体都会存放于某个react组件中，当然可以不传入。
   constructor() {
 
-    this.autoId = Base.generateAutoId()
   }
-
-  static generateAutoId() {
-    Base.AUTO_INCREMENT_ID++
-    return Base.AUTO_INCREMENT_ID
-  }
-
 
   //把obj中的属性，赋值到this中来。采用深拷贝。
   assign(obj: any) {

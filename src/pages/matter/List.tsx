@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import './List.less';
-import BambooComponent from '../../common/component/BambooComponent';
+import TankComponent from '../../common/component/TankComponent';
 import SortDirection from '../../common/model/base/SortDirection';
 import Pager from '../../common/model/base/Pager';
 import Matter from '../../common/model/matter/Matter';
@@ -24,10 +24,10 @@ interface IState {
 }
 
 
-export default class List extends BambooComponent<IProps, IState> {
+export default class List extends TankComponent<IProps, IState> {
 
   //获取分页的一个帮助器
-  pager: Pager<Matter> = new Pager<Matter>(this, Matter, 10);
+  pager: Pager<Matter> = new Pager<Matter>(Matter, 10);
 
   constructor(props: IProps) {
     super(props);

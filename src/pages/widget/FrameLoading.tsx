@@ -1,6 +1,6 @@
 import React from 'react';
 import "./TableEmpty.less"
-import BambooComponent from "../../common/component/BambooComponent";
+import TankComponent from "../../common/component/TankComponent";
 import LogoBluePng from "../../assets/image/logo-blue.png";
 
 interface IProps {
@@ -14,7 +14,7 @@ interface IState {
  * 在主站加载过程中或者在工作台加载过程中使用
  * 该控件采用fixed布局，会占据全屏
  */
-export default class FrameLoading extends BambooComponent<IProps, IState> {
+export default class FrameLoading extends TankComponent<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
