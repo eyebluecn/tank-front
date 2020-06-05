@@ -1,0 +1,41 @@
+@import "variables";
+
+#radius {
+  .border-radius(@from,@end,@step) {
+    .mX(@f,@e,@s) when (@e >= @f) {
+      .border-radius-@{e} {
+        -webkit-border-radius: @e*1px;
+        -moz-border-radius: @e*1px;
+        border-radius: @e*1px;
+      }
+      .br@{e} {
+        -webkit-border-radius: @e*1px;
+        -moz-border-radius: @e*1px;
+        border-radius: @e*1px;
+      }
+
+      .mX(@f, @e - @s, @s);
+    }
+    .mX(@from, @end, @step);
+  }
+
+}
+
+#radius > .border-radius(1, 10, 1);
+
+.border-dash {
+  border: 1px dashed #ccc;
+}
+
+.border {
+  border: 1px solid #eee;
+}
+
+.border-danger {
+  border: 1px solid @brand-danger;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #F9F9F9;
+}
+

@@ -1,16 +1,20 @@
 import React from 'react';
 import './App.less';
 import {Button} from "antd";
+import {BrowserRouter as Router} from "react-router-dom";
+import {ConfigProvider} from 'antd';
+import Frame from "./pages/Frame";
+import zhCN from 'antd/lib/locale-provider/zh_CN';
+
 
 function App() {
   return (
-    <div className="App">
+    <Router>
+      <ConfigProvider locale={zhCN}>
+        <Frame/>
+      </ConfigProvider>
 
-      <Button>你好</Button>
-
-      <div className="good">good</div>
-
-    </div>
+    </Router>
   );
 }
 

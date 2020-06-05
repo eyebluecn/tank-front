@@ -1,0 +1,11 @@
+//超出三行使用点点点
+.line-ellipsis(@rows,@line-height) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  position: relative;
+  line-height: @line-height;
+  max-height: @line-height * @rows;
+  -webkit-line-clamp: @rows;
+  text-overflow: ellipsis;
+}

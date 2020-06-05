@@ -1,0 +1,143 @@
+/**
+全局常用样式定义
+使用ml、pt等缩写表示常用的布局方式，数字表示像素值
+比如ml10表示margin-left:10px;
+ */
+#layout {
+  .margin(@from,@end,@step) {
+    .mX(@f,@e,@s) when (@e >= @f) {
+      .m@{e} {
+        margin: @e*1px;
+      }
+      .mt@{e} {
+        margin-top: @e*1px;
+      }
+      .mr@{e} {
+        margin-right: @e*1px;
+      }
+      .mb@{e} {
+        margin-bottom: @e*1px;
+      }
+      .ml@{e} {
+        margin-left: @e*1px;
+      }
+      .mv@{e} {
+        margin-top: @e*1px;
+        margin-bottom: @e*1px;
+      }
+      .mh@{e} {
+        margin-left: @e*1px;
+        margin-right: @e*1px*1px;
+      }
+      .mX(@f, @e - @s, @s);
+    }
+    .mX(@from, @end, @step);
+  }
+  .padding(@from,@end,@step) {
+    .pX(@f,@e,@s) when (@e >= @f) {
+      .p@{e} {
+        padding: @e*1px;
+      }
+      .pt@{e} {
+        padding-top: @e*1px;
+      }
+      .pr@{e} {
+        padding-right: @e*1px;
+      }
+      .pb@{e} {
+        padding-bottom: @e*1px;
+      }
+      .pl@{e} {
+        padding-left: @e*1px;
+      }
+      .pv@{e} {
+        padding-top: @e*1px;
+        padding-bottom: @e*1px;
+      }
+      .ph@{e} {
+        padding-left: @e*1px;
+        padding-right: @e*1px;
+      }
+      .pX(@f, @e - @s, @s);
+    }
+    .pX(@from, @end, @step);
+  }
+  .width(@from,@end,@step) {
+    .wX(@f,@e,@s) when (@e >= @f) {
+      .w@{e} {
+        width: @e*1px;
+      }
+      .w@{e}m {
+        max-width: @e*1px;
+      }
+      .w@{e}n {
+        min-width: @e*1px;
+      }
+      .w@{e}i {
+        width: @e*1px !important;
+      }
+      .wX(@f, @e - @s, @s);
+    }
+    .wX(@from, @end, @step);
+  }
+  .height(@from,@end,@step) {
+    .hX(@f,@e,@s) when (@e >= @f) {
+      .h@{e} {
+        height: @e*1px;
+      }
+      .lh@{e} {
+        line-height: @e*1px;
+      }
+      .h@{e}m {
+        max-height: @e*1px;
+      }
+      .h@{e}n {
+        min-height: @e*1px;
+      }
+      .h@{e}i {
+        height: @e*1px !important;
+      }
+      .hX(@f, @e - @s, @s);
+    }
+    .hX(@from, @end, @step);
+  }
+}
+
+.wp20 {
+  width: 20%;
+}
+
+.wp25 {
+  width: 25%;
+}
+
+.wp33 {
+  width: 33%;
+}
+
+.wp100 {
+  width: 100%;
+}
+
+.wp50 {
+  width: 50%;
+}
+
+.hp100 {
+  height: 100%;
+}
+
+.hp50 {
+  height: 50%;
+}
+
+#layout > .margin(20, 200, 5);
+#layout > .margin(0, 19, 1);
+#layout > .padding(20, 200, 5);
+#layout > .padding(0, 19, 1);
+#layout > .width(20, 400, 5);
+#layout > .width(0, 19, 1);
+#layout > .height(20, 400, 5);
+#layout > .height(0, 19, 1);
+
+

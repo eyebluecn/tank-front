@@ -1,0 +1,38 @@
+#font{
+  .f(@from,@end,@step){
+    .mX(@f,@e,@s) when (@e >= @f){
+      .f@{e}{
+        font-size:@e*1px!important;
+      }
+      .mX(@f,@e - @s,@s);
+    }
+    .mX(@from,@end,@step);
+  }
+
+}
+
+#font > .f(10,80,1);
+
+#font{
+  .ln(@from,@end,@step){
+    .mX(@f,@e,@s) when (@e >= @f){
+      .ln@{e}{
+        line-height:@e*1px!important;
+      }
+      .mX(@f,@e - @s,@s);
+    }
+    .mX(@from,@end,@step);
+  }
+
+}
+
+#font > .ln(10,100,1);
+
+
+
+.bold{
+  font-weight:bold;
+}
+.italic{
+  font-style:italic;
+}
