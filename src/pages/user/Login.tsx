@@ -5,6 +5,8 @@ import TankComponent from "../../common/component/TankComponent";
 import {Button, Col, Form, Input, message as MessageBox, Row} from 'antd';
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
+import {LockOutlined, UserOutlined} from '@ant-design/icons';
+
 
 interface IProps extends RouteComponentProps {
 
@@ -28,7 +30,6 @@ class RawLogin extends TankComponent<IProps, IState> {
 
 
   }
-
 
 
   onFinish(values: any) {
@@ -57,14 +58,6 @@ class RawLogin extends TankComponent<IProps, IState> {
 
     let that = this
 
-    const layout = {
-      labelCol: {span: 8},
-      wrapperCol: {span: 16},
-    };
-    const tailLayout = {
-      wrapperCol: {offset: 8, span: 16},
-    };
-
     return (
       <div className="user-login">
 
@@ -76,35 +69,32 @@ class RawLogin extends TankComponent<IProps, IState> {
             </div>
 
             <Form
-              {...layout}
               name="basic"
               initialValues={{remember: true}}
               onFinish={this.onFinish.bind(this)}
               onFinishFailed={this.onFinishFailed.bind(this)}
             >
               <Form.Item
-                label="Username"
                 name="username"
                 rules={[{required: true, message: 'Please input your username!'}]}
               >
-                <Input/>
+                <Input size="large" placeholder="请输入用户名" prefix={<UserOutlined/>}/>
               </Form.Item>
 
               <Form.Item
-                label="Password"
                 name="password"
                 rules={[{required: true, message: 'Please input your password!'}]}
               >
-                <Input.Password/>
+                <Input.Password size="large" placeholder="请输入密码" prefix={<LockOutlined/>}/>
               </Form.Item>
 
-              <Form.Item {...tailLayout}>
-                <Button type="primary" htmlType="submit">
-                  Submit
+              <Form.Item>
+                <Button type="primary" icon={<UserOutlined/>} block={true} htmlType="submit">
+                  登录
                 </Button>
               </Form.Item>
-            </Form>
 
+            </Form>
 
           </Col>
         </Row>
