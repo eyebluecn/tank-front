@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import './Detail.less';
-import BambooComponent from '../../common/component/BambooComponent';
+import TankComponent from '../../common/component/TankComponent';
 import Matter from '../../common/model/matter/Matter';
 import { Button, Col, Row, Spin } from 'antd';
 import InfoCell from '../widget/InfoCell';
@@ -19,7 +19,7 @@ interface IProps extends RouteComponentProps<RouteParam> {
 interface IState {
 }
 
-export default class Detail extends BambooComponent<IProps, IState> {
+export default class Detail extends TankComponent<IProps, IState> {
 
   matter: Matter = new Matter(this);
 

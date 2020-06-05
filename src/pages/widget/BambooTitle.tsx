@@ -1,6 +1,6 @@
 import React from 'react';
 import "./BambooTitle.less"
-import BambooComponent from '../../common/component/BambooComponent';
+import TankComponent from '../../common/component/TankComponent';
 
 interface IProps {
   name: React.ReactNode
@@ -13,7 +13,7 @@ interface IState {
 /**
  * 标题导航快捷插件
  */
-export default class BambooTitle extends BambooComponent<IProps, IState> {
+export default class BambooTitle extends TankComponent<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);

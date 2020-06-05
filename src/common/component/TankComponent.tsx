@@ -4,7 +4,7 @@ import React from 'react';
 /**
  * 带有挂载状态的自定义组件
  */
-export default class BambooComponent<P, S> extends React.Component <P, S> {
+export default class TankComponent<P, S> extends React.Component <P, S> {
 
   //是否处于挂载的状态。
   mounted: boolean = false
