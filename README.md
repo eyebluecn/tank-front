@@ -1,73 +1,44 @@
-![蓝眼云盘logo](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/logo.png)
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-# 蓝眼云盘前端
+## Available Scripts
 
-##### [在线Demo](http://tank.eyeblue.cn) (体验账号： demo 密码：123456)
+In the project directory, you can run:
 
-##### [配套后端tank](https://github.com/eyebluecn/tank)
+### `yarn start`
 
-### 简介
-蓝眼云盘是前后端彻底分离的项目，本项目主要为后端提供静态资源文件。更多关于蓝眼云盘的介绍，请参考[蓝眼云盘后端](https://github.com/eyebluecn/tank)
+Runs the app in the development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-如果您觉得蓝眼云盘对您有帮助，请不要吝惜您的star :smile:
+The page will reload if you make edits.<br />
+You will also see any lint errors in the console.
 
-### 技术栈
+### `yarn test`
 
-vue2.0 + vue-router + vuex + vue-resource + webpack + es6 + less
+Launches the test runner in the interactive watch mode.<br />
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
+### `yarn build`
 
-### 运行
+Builds the app for production to the `build` folder.<br />
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-```
-npm install
+The build is minified and the filenames include the hashes.<br />
+Your app is ready to be deployed!
 
-npm run serve
-```
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### 打包
+### `yarn eject`
 
-```
-npm run build
-```
- 打包的结果在`dist`文件夹下，将该文件夹下的内容放置在[后端tank](https://github.com/eyebluecn/tank)的`build/html`文件夹下即可。
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-### 配套后端
-此项目有配套后端项目，对golang感兴趣的同学可以猛戳 [配套后端tank](https://github.com/eyebluecn/tank)
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-### 总结
-1、 蓝眼的宗旨是专注于开源精致而优雅的软件，所以在代码的构建过程中我们不停地思考与迭代，追求最优质的代码。
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-2、 蓝眼云盘前端代码的构建完全面向对象，可扩展能力强，涉及多用户，多权限功能。
- 
-3、 蓝眼云盘后端采用了更贴近底层golang语言，更加适用于文件传输类的软件，速度更快，用户体验更好。  
+## Learn More
 
-### Contribution
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-感谢所有蓝眼云盘的贡献者 [@zicla](https://github.com/zicla)，[@seaheart](https://github.com/seaheart)，@heying，[@hxsherry](https://github.com/hxsherry)
-
-如果您也想参与进来，请尽情的fork, star, post issue, pull requests
-
-### 软件截图
-
-#### PC端截图
-
-![](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/tank0.png)
-
-![](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/tank1.png)
-
-![](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/tank2.png)
-
-![](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/tank3.png)
-
-![](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/tank4.png)
-
-#### 手机端截图
-
-![](https://raw.githubusercontent.com/eyebluecn/tank/master/build/doc/img/mobile.png)
-
-### License
-
-[MIT](http://opensource.org/licenses/MIT)
-
-Copyright (c) 2017-present, eyeblue.cn
+To learn React, check out the [React documentation](https://reactjs.org/).
