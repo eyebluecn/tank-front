@@ -1,7 +1,7 @@
 import React from 'react';
 import {RouteComponentProps} from "react-router-dom";
 import "./Login.less"
-import TankComponent from "../../common/component/TankComponent";
+import BambooComponent from "../../common/component/BambooComponent";
 import {Button, Col, Form, Input, message as MessageBox, Row} from 'antd';
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
@@ -14,7 +14,7 @@ interface IState {
 
 }
 
-class RawLogin extends TankComponent<IProps, IState> {
+class RawLogin extends BambooComponent<IProps, IState> {
 
   user: User = Moon.getSingleton().user
 

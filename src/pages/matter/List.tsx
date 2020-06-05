@@ -1,13 +1,13 @@
 import React from 'react';
-import {Link, RouteComponentProps} from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import './List.less';
 import TankComponent from '../../common/component/TankComponent';
 import SortDirection from '../../common/model/base/SortDirection';
 import Pager from '../../common/model/base/Pager';
 import Matter from '../../common/model/matter/Matter';
-import Table, {ColumnProps} from 'antd/lib/table';
+import Table, { ColumnProps } from 'antd/lib/table';
 import StringUtil from '../../common/util/StringUtil';
-import {Button, message as MessageBox, Popconfirm} from 'antd';
+import { Button, message as MessageBox, Popconfirm } from 'antd';
 import DateUtil from '../../common/util/DateUtil';
 import FilterPanel from '../widget/filter/FilterPanel';
 import TableEmpty from '../widget/TableEmpty';
@@ -27,7 +27,7 @@ interface IState {
 export default class List extends TankComponent<IProps, IState> {
 
   //获取分页的一个帮助器
-  pager: Pager<Matter> = new Pager<Matter>(Matter, 10);
+  pager: Pager<Matter> = new Pager<Matter>(this, Matter, 10);
 
   constructor(props: IProps) {
     super(props);
@@ -35,6 +35,7 @@ export default class List extends TankComponent<IProps, IState> {
 
     this.state = {};
   }
+
 
 
   componentDidMount() {
@@ -62,13 +63,7 @@ export default class List extends TankComponent<IProps, IState> {
       that.pager.setFilterValue('orderCreateTime', SortDirection.DESC);
     }
 
-    that.updateUI()
-    that.pager.httpList(function () {
-      that.updateUI()
-    }, null, function () {
-      that.updateUI()
-    });
-
+    that.pager.httpList();
   }
 
   createMatter() {
@@ -137,7 +132,7 @@ export default class List extends TankComponent<IProps, IState> {
           </Link>
 
           <Popconfirm title="确认删除该文件，删除后不可恢复?" onConfirm={(e: any) => {
-            record.httpDel(function () {
+            record.httpDel(function() {
               MessageBox.success('删除成功！');
               that.refresh();
             });
@@ -168,7 +163,7 @@ export default class List extends TankComponent<IProps, IState> {
           columns={columns}
           pagination={pager.getPagination()}
           onChange={pager.tableOnChange.bind(pager)}
-          locale={{emptyText: (<TableEmpty pager={pager} onRefresh={this.refresh.bind(this)}/>)}}
+          locale={{ emptyText: (<TableEmpty pager={pager} onRefresh={this.refresh.bind(this)}/>) }}
         />
       </div>
     );

@@ -6,7 +6,7 @@ import SafeUtil from "../../../common/util/SafeUtil";
 import SelectionOption from "../../../common/model/base/option/SelectionOption";
 import HttpSelectionFilter from "../../../common/model/base/filter/HttpSelectionFilter";
 import SelectionFilterType from "../../../common/model/base/filter/SelectionFilterType";
-import TankComponent from "../../../common/component/TankComponent";
+import BambooComponent from "../../../common/component/BambooComponent";
 
 
 const Option = Select.Option;
@@ -21,7 +21,7 @@ interface IState {
 }
 
 
-export default class HttpSelectionFilterBox extends TankComponent<IProps, IState> {
+export default class HttpSelectionFilterBox extends BambooComponent<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);

@@ -2,7 +2,7 @@ import React from 'react';
 import {Link, Redirect, Route, RouteComponentProps, withRouter} from 'react-router-dom';
 
 import './Frame.less';
-import TankComponent from '../common/component/TankComponent';
+import BambooComponent from '../common/component/BambooComponent';
 import UserLogin from './user/Login';
 
 import UserProfile from './user/Profile';
@@ -35,7 +35,7 @@ interface IState {
 }
 
 
-class RawFrame extends TankComponent<IProps, IState> {
+class RawFrame extends BambooComponent<IProps, IState> {
 
   user: User = Moon.getSingleton().user;
 

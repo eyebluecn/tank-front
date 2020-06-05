@@ -1,7 +1,7 @@
 import React from 'react';
 import "./StringsPicker.less"
 import {Input, Tag, Tooltip} from 'antd';
-import TankComponent from "../../common/component/TankComponent";
+import BambooComponent from "../../common/component/BambooComponent";
 import SafeUtil from "../../common/util/SafeUtil";
 
 interface IProps {
@@ -20,7 +20,7 @@ interface IState {
  * 这个控件可以填充一组字符串，同时具备回填的能力。
  * 格式为 json list 的字符串形式
  */
-export default class StringsPicker extends TankComponent<IProps, IState> {
+export default class StringsPicker extends BambooComponent<IProps, IState> {
 
   innerValue: string | null = null
 

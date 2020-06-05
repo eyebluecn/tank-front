@@ -2,17 +2,21 @@ import HttpUtil from "../../util/HttpUtil";
 import SafeUtil from "../../util/SafeUtil";
 import qs from "qs"
 import {message as MessageBox} from 'antd';
+import React from "react";
+import ViewBase from "./ViewBase";
 import Sun from "../global/Sun";
 import {WebResultCode} from "./WebResultCode";
-import Base from "./Base";
 
 /**
  * 基类。带有网络请求能力的基类
  * 继承了该类就表示具有了去服务器请求的能力。
  */
-export default class HttpBase extends Base {
+export default class HttpBase extends ViewBase {
 
   static lastLoginErrorTimestamp = 0
+
+  //是否需要自动刷新State
+  needReactComponentUpdate: boolean = true
 
   //当前是否正在进行http请求
   loading: boolean = false
@@ -21,11 +25,24 @@ export default class HttpBase extends Base {
   errorMessage: string | null = null
 
   //我们认为每个实体都会存放于某个react组件中，当然可以不传入。
-  constructor() {
+  constructor(reactComponent?: React.Component | null) {
 
     super()
 
+    if (reactComponent) {
+      this.reactComponent = reactComponent
+    }
+
   }
+
+
+  //更新当前的视图，只在需要更新的情况下才更新。
+  updateUI() {
+    if (this.needReactComponentUpdate && this.reactComponent) {
+      ViewBase.updateComponentUI(this.reactComponent, this)
+    }
+  }
+
 
 
   /**
@@ -132,7 +149,11 @@ export default class HttpBase extends Base {
       opts = {}
     }
 
+
     that.loading = true
+
+    //更新react控件的状态
+    that.updateUI()
 
     HttpUtil.httpGet(url, params, function (response: any) {
       //有可能正常接口回来的数据也是错误的。交给错误处理器处理。
@@ -162,6 +183,9 @@ export default class HttpBase extends Base {
 
       that.loading = false
 
+      //更新react控件的状态
+      that.updateUI()
+
       SafeUtil.safeCallback(finallyCallback)(res)
 
     }, opts);
@@ -182,6 +206,10 @@ export default class HttpBase extends Base {
     }
 
     that.loading = true
+
+    //更新react控件的状态
+    that.updateUI()
+
 
     let formData = qs.stringify(params);
 
@@ -218,6 +246,9 @@ export default class HttpBase extends Base {
     }, function (res: any) {
 
       that.loading = false
+
+      //更新react控件的状态
+      that.updateUI()
 
       SafeUtil.safeCallback(finallyCallback)(res)
 

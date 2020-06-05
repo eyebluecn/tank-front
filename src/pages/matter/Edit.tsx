@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, DatePicker, Input, message as MessageBox, Row, Spin } from 'antd';
-import TankComponent from '../../common/component/TankComponent';
+import BambooComponent from '../../common/component/BambooComponent';
 import Matter from '../../common/model/matter/Matter';
 import StringUtil from '../../common/util/StringUtil';
 import './Edit.less';
@@ -22,10 +22,10 @@ interface IProps {
 interface IState {
 }
 
-class RawEdit extends TankComponent<IProps, IState> {
+class RawEdit extends BambooComponent<IProps, IState> {
 
   createMode: boolean = true;
-  matter: Matter = new Matter();
+  matter: Matter = new Matter(this);
 
   constructor(props: IProps) {
     super(props);

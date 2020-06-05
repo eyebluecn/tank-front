@@ -36,9 +36,12 @@ export default class BaseEntity extends HttpBase {
   //加载详情的指示
   detailLoading: boolean = false;
 
+
   //我们认为每个实体都会存放于某个react组件中，当然可以不传入。
-  constructor() {
-    super()
+  constructor(reactComponent?: React.Component | null) {
+
+    super(reactComponent);
+
   }
 
   //把obj中的属性，赋值到this中来。采用深拷贝。
@@ -145,7 +148,7 @@ export default class BaseEntity extends HttpBase {
       return;
     }
 
-    this.httpPost(url, this.getForm(), function (response: any) {
+    this.httpPost(url, this.getForm(), function(response: any) {
 
       that.assign(response.data.data);
 
@@ -173,14 +176,14 @@ export default class BaseEntity extends HttpBase {
 
     this.detailLoading = true;
 
-    this.httpGet(url, {}, function (response: any) {
+    this.httpGet(url, {}, function(response: any) {
       that.detailLoading = false;
 
       that.assign(response.data.data);
 
       SafeUtil.safeCallback(successCallback)(response);
 
-    }, function (response: any) {
+    }, function(response: any) {
 
       that.detailLoading = false;
 
@@ -208,7 +211,7 @@ export default class BaseEntity extends HttpBase {
 
     let url = this.getUrlDel() + '?uuid=' + this.uuid;
 
-    this.httpPost(url, {}, function (response: any) {
+    this.httpPost(url, {}, function(response: any) {
 
       SafeUtil.safeCallback(successCallback)(response);
 

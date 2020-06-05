@@ -59,9 +59,9 @@ export default class Pager<T> extends HttpBase {
   history: boolean = false;
 
 
-  constructor( Clazz: any, pageSize = 20) {
+  constructor(reactComponent: React.Component | null, Clazz: any, pageSize = 20) {
 
-    super();
+    super(reactComponent);
 
     this.pageSize = pageSize;
 
