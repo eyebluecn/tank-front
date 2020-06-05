@@ -1,28 +1,28 @@
 import React from 'react';
-import { Link, Redirect, Route, RouteComponentProps, withRouter } from 'react-router-dom';
+import {Link, Redirect, Route, RouteComponentProps, withRouter} from 'react-router-dom';
 
 import './Frame.less';
 import BambooComponent from '../common/component/BambooComponent';
 import UserLogin from './user/Login';
 
 import UserProfile from './user/Profile';
-import ArticleDetail from './article/Detail';
-import ArticleList from './article/List';
-import ArticleEdit from './article/Edit';
+import MatterDetail from './matter/Detail';
+import MatterList from './matter/List';
+import MatterEdit from './matter/Edit';
 
-import { Layout, Menu } from 'antd';
+import {Layout, Menu} from 'antd';
 import MenuManager from '../common/menu/MenuManager';
 import MenuItem from '../common/menu/MenuItem';
-import { SelectParam } from 'antd/lib/menu';
+import {SelectParam} from 'antd/lib/menu';
 import LogoSvg from '../assets/image/logo.png';
 import Index from './index/Index';
 import User from '../common/model/user/User';
 import Moon from '../common/model/global/Moon';
 import Sun from '../common/model/global/Sun';
-import { UserRole } from '../common/model/user/UserRole';
+import {UserRole} from '../common/model/user/UserRole';
 
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
+const {Header, Content, Footer, Sider} = Layout;
+const {SubMenu} = Menu;
 
 
 interface IProps extends RouteComponentProps<{}> {
@@ -65,9 +65,8 @@ class RawFrame extends BambooComponent<IProps, IState> {
     let whitePaths = ['/user/login', '/user/register'];
     //如果当前本身是登录界面，那么不去获取。
     if (whitePaths.indexOf(this.props.location.pathname) == -1) {
-      this.user.httpInfo(function() {
-        that.updateUI();
-      });
+
+      that.updateUI();
     }
 
   }
@@ -75,7 +74,7 @@ class RawFrame extends BambooComponent<IProps, IState> {
 
   onCollapse(collapsed: boolean) {
     console.log(collapsed);
-    this.setState({ collapsed });
+    this.setState({collapsed});
   };
 
   onSelect(param: SelectParam) {
@@ -111,7 +110,7 @@ class RawFrame extends BambooComponent<IProps, IState> {
     return (
 
       <div className="pages-frame">
-        <Layout style={{ minHeight: '100vh' }}>
+        <Layout style={{minHeight: '100vh'}}>
           <Sider>
             <div className="username">
               {user.role === UserRole.GUEST ?
@@ -146,21 +145,21 @@ class RawFrame extends BambooComponent<IProps, IState> {
 
               <div className="pages-content">
                 <Route exact path="/" render={() =>
-                  <Redirect to="/article/list"/>
+                  <Redirect to="/matter/list"/>
                 }/>
                 <Route path="/index" component={Index}/>
                 <Route path="/user/login" component={UserLogin}/>
                 <Route path="/user/profile" component={UserProfile}/>
-                <Route path="/article/detail/:uuid" component={ArticleDetail}/>
-                <Route exact path="/article" render={() =>
-                  <Redirect to="/article/list"/>
+                <Route path="/matter/detail/:uuid" component={MatterDetail}/>
+                <Route exact path="/matter" render={() =>
+                  <Redirect to="/matter/list"/>
                 }/>
-                <Route path="/article/list" component={ArticleList}/>
-                <Route path="/article/create" component={ArticleEdit}/>
-                <Route path="/article/edit/:uuid" component={ArticleEdit}/>
+                <Route path="/matter/list" component={MatterList}/>
+                <Route path="/matter/create" component={MatterEdit}/>
+                <Route path="/matter/edit/:uuid" component={MatterEdit}/>
               </div>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>Eyeblue ©2020 Copyright</Footer>
+            <Footer style={{textAlign: 'center'}}>Eyeblue ©2020 Copyright</Footer>
           </Layout>
         </Layout>
       </div>

@@ -4,7 +4,7 @@
 import MenuItem from './MenuItem';
 import Moon from '../model/global/Moon';
 import User from '../model/user/User';
-import { UserRole } from '../model/user/UserRole';
+import {UserRole} from '../model/user/UserRole';
 
 export default class MenuManager {
 
@@ -63,7 +63,7 @@ export default class MenuManager {
       ];
     } else {
       menuItems = [
-        new MenuItem('文章', '/article/list', 'bar-chart'),
+        new MenuItem('所有文件', '/matter/list', 'bar-chart'),
         new MenuItem('退出', '/user/logout', 'poweroff'),
       ];
     }

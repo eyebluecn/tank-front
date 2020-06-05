@@ -6,7 +6,6 @@ import InfoCell from "../widget/InfoCell";
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
 import DateUtil from "../../common/util/DateUtil";
-import ChangePasswordModal from "./ChangePasswordModal";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import BambooTitle from '../widget/BambooTitle';
 
@@ -33,9 +32,6 @@ export default class Profile extends BambooComponent <IProps, IState> {
 
   changePassword() {
 
-    ChangePasswordModal.open(() => {
-      MessageBoxUtil.success("修改密码成功！")
-    })
   }
 
   render() {

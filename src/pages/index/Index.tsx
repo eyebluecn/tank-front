@@ -28,11 +28,7 @@ export default class Index extends BambooComponent<IProps, IState> {
   componentDidMount() {
     let that = this;
 
-    //假装获取一下详情
-    this.user.httpInfo(function() {
-      that.updateUI();
-    });
-
+    that.updateUI();
   }
 
 

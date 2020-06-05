@@ -1,10 +1,9 @@
 import BaseEntity from '../base/BaseEntity';
 import Filter from '../base/filter/Filter';
-import SortFilter from '../base/filter/SortFilter';
 import InputFilter from '../base/filter/InputFilter';
 
 
-export default class Article extends BaseEntity {
+export default class Matter extends BaseEntity {
 
   userUuid: string | null = null;
   title: string | null = null;

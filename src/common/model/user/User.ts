@@ -1,40 +1,35 @@
 import SafeUtil from '../../util/SafeUtil';
 import BaseEntity from '../base/BaseEntity';
-import { UserRole } from './UserRole';
-
+import {UserRole} from './UserRole';
+import {UserStatus} from "./UserStatus";
 
 export default class User extends BaseEntity {
 
   //获取当前登录者的信息
   static URL_INFO = '/api/user/info';
 
-  //用户登录
-  static URL_LOGIN = '/api/user/login';
+  static URL_LOGIN = '/api/user/login'
+  static URL_AUTHENTICATION_LOGIN = '/api/user/authentication/login'
+  static URL_REGISTER = '/api/user/register'
+  static URL_LOGOUT = '/api/user/logout'
+  static URL_USER_CHANGE_PASSWORD = '/api/user/change/password'
+  static URL_USER_RESET_PASSWORD = '/api/user/reset/password'
+  static URL_USER_TOGGLE_STATUS = '/api/user/toggle/status'
+  static URL_USER_TRANSFIGURATION = '/api/user/transfiguration'
 
-  //用户注册
-  static URL_REGISTER = '/api/user/register';
+  role: UserRole = UserRole.GUEST
+  username: string | null = null
+  password: string | null = null
+  avatarUrl: string | null = null
+  lastIp: string | null = null
+  lastTime: string | null = null
+  //默认大小限制100Mb.
+  sizeLimit: number = 104857600
+  totalSize: number = 0
+  totalSizeLimit: number = -1
+  status: UserStatus = UserStatus.OK
 
-  //退出登录
-  static URL_LOGOUT = '/api/user/logout';
-
-  //修改密码
-  static URL_CHANGE_PASSWORD = '/api/user/change/password';
-
-  //用户角色
-  role: UserRole = UserRole.GUEST;
-  //用户名
-  username: string | null = null;
-  //密码
-  password: string | null = null;
-  //头像
-  avatarUrl: string | null = null;
-  //上次登录ip
-  lastIp: string | null = null;
-  //上次登录时间
-  lastTime: string | null = null;
-  //状态
-  status: string | null = null;
-
+  //****************本地临时变量****************/
   //是否已经登录
   isLogin: boolean = false;
 
@@ -59,24 +54,6 @@ export default class User extends BaseEntity {
   }
 
   //登录
-  httpInfo(successCallback?: any, errorCallback?: any, finalCallback?: any) {
-
-    let that = this;
-
-    let form = {};
-
-    this.httpGet(User.URL_INFO, form, function(response: any) {
-
-      that.assign(response.data.data);
-
-      SafeUtil.safeCallback(successCallback)(response);
-
-    }, errorCallback, finalCallback);
-
-  }
-
-
-  //登录
   httpLogin(username: string, password: string, successCallback?: any, errorCallback?: any, finalCallback?: any) {
 
     let that = this;
@@ -86,71 +63,9 @@ export default class User extends BaseEntity {
       password,
     };
 
-    this.httpGet(User.URL_LOGIN, form, function(response: any) {
+    this.httpGet(User.URL_LOGIN, form, function (response: any) {
 
       that.assign(response.data.data);
-
-      SafeUtil.safeCallback(successCallback)(response);
-
-    }, errorCallback, finalCallback);
-
-  }
-
-
-  //注册
-  httpRegister(username: string, password: string, successCallback?: any, errorCallback?: any, finalCallback?: any) {
-
-    let that = this;
-
-    let form = {
-      username,
-      password,
-    };
-
-    this.httpGet(User.URL_REGISTER, form, function(response: any) {
-
-      that.assign(response.data.data);
-
-      SafeUtil.safeCallback(successCallback)(response);
-
-    }, errorCallback, finalCallback);
-
-  }
-
-
-  //注册
-  httpLogout(successCallback?: any, errorCallback?: any, finalCallback?: any) {
-
-    let that = this;
-
-    let form = {};
-
-    this.httpGet(User.URL_LOGOUT, form, function(response: any) {
-
-      console.info('退出成功！');
-
-      that.role = UserRole.GUEST;
-
-      SafeUtil.safeCallback(successCallback)(response);
-
-    }, errorCallback, finalCallback);
-
-  }
-
-
-  //修改密码
-  httpChangePassword(oldPassword: string, newPassword: string, successCallback?: any, errorCallback?: any, finalCallback?: any) {
-
-    let that = this;
-
-    let form = {
-      oldPassword,
-      newPassword,
-    };
-
-    this.httpPost(User.URL_CHANGE_PASSWORD, form, function(response: any) {
-
-      console.info('修改密码成功！');
 
       SafeUtil.safeCallback(successCallback)(response);
 
