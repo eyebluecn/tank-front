@@ -1,7 +1,7 @@
 import React from 'react';
-import "./TableEmpty.less"
+import "./FrameLoading.less"
 import TankComponent from "../../common/component/TankComponent";
-import LogoBluePng from "../../assets/image/logo-blue.png";
+import {LoadingOutlined} from '@ant-design/icons';
 
 interface IProps {
 }
@@ -30,9 +30,9 @@ export default class FrameLoading extends TankComponent<IProps, IState> {
       <div className="app-frame-loading">
         <div className="loading-box">
           <div>
-            <img alt="加载按钮" className="loading-logo" src={LogoBluePng}/>
+            <LoadingOutlined className={'loading-icon'}/>
           </div>
-          <div>
+          <div className={'loading-text'}>
             加载中...
           </div>
         </div>

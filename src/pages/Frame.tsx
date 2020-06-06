@@ -23,6 +23,8 @@ import User from '../common/model/user/User';
 import Moon from '../common/model/global/Moon';
 import Sun from '../common/model/global/Sun';
 import {UserRole} from '../common/model/user/UserRole';
+import FrameLoading from "./widget/FrameLoading";
+import Preference from "../common/model/preference/Preference";
 
 const {Header, Content, Footer, Sider} = Layout;
 const {SubMenu} = Menu;
@@ -33,7 +35,6 @@ interface IProps extends RouteComponentProps<{}> {
 }
 
 interface IState {
-  collapsed: boolean
 
 }
 
@@ -42,15 +43,14 @@ class RawFrame extends TankComponent<IProps, IState> {
 
   user: User = Moon.getSingleton().user;
 
+  preference: Preference = Moon.getSingleton().preference;
+
+  //是否已经完成初始化
+  initialized: boolean = false
+
   constructor(props: IProps) {
     super(props);
-
-
-    this.state = {
-      collapsed: false,
-    };
   }
-
 
   componentDidMount() {
 
@@ -59,30 +59,35 @@ class RawFrame extends TankComponent<IProps, IState> {
     //装在全局Frame
     Sun.getSingleton().frameComponent = this
 
-    this.fetchInfo();
+    this.initialize();
 
   }
 
 
   //获取当前登录者的信息
-  fetchInfo() {
+  initialize() {
     let that = this;
 
-    let whitePaths = ['/user/login', '/user/register'];
-    //如果当前本身是登录界面，那么不去获取。
-    if (whitePaths.indexOf(this.props.location.pathname) == -1) {
-      this.user.httpInfo(function () {
+    this.preference.httpFetch(function () {
+
+      let whitePaths = ['/user/login', '/user/register'];
+      //如果当前本身是登录界面，那么不用去获取。
+      if (whitePaths.indexOf(that.props.location.pathname) == -1) {
+
+        that.user.httpInfo(null, null, function () {
+          that.initialized = true
+          that.updateUI();
+        });
+
+      } else {
+        that.initialized = true
         that.updateUI();
-      });
-    }
+      }
+
+    })
+
 
   }
-
-
-  onCollapse(collapsed: boolean) {
-    console.log(collapsed);
-    this.setState({collapsed});
-  };
 
   onSelect(param: SelectParam) {
     let that = this;
@@ -107,16 +112,15 @@ class RawFrame extends TankComponent<IProps, IState> {
   render() {
 
     let that = this;
-
     let menuManager: MenuManager = MenuManager.getSingleton();
-
     let menuItems: MenuItem[] = menuManager.getMenuItems();
 
-    let user: User = Moon.getSingleton().user;
+    let user: User = that.user
 
-    return (
+    let content: React.ReactNode;
 
-      <div className="pages-frame">
+    if (that.initialized) {
+      content = (
         <Layout style={{minHeight: '100vh'}}>
           <Sider>
             <div className="username">
@@ -174,6 +178,16 @@ class RawFrame extends TankComponent<IProps, IState> {
             <Footer style={{textAlign: 'center'}}>Eyeblue ©2020 Copyright</Footer>
           </Layout>
         </Layout>
+      )
+    } else {
+      content = (
+        <FrameLoading/>
+      )
+    }
+
+    return (
+      <div className="pages-frame">
+        {content}
       </div>
     );
   }

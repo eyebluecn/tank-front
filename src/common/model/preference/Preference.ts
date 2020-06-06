@@ -87,7 +87,7 @@ export default class Preference extends BaseEntity {
 
       SafeUtil.safeCallback(successCallback)(response);
 
-    }, errorCallback)
+    }, errorCallback, finalCallback)
   }
 
   httpSystemCleanup(password: string, successCallback?: any, errorCallback?: any, finalCallback?: any) {

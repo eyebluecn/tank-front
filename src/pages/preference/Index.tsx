@@ -33,6 +33,8 @@ export default class Index extends TankComponent<IProps, IState> {
 
   componentDidMount() {
 
+    this.refresh()
+
   }
 
   //refresh preference.
@@ -56,31 +58,50 @@ export default class Index extends TankComponent<IProps, IState> {
           <Button type={"primary"} icon={<EditOutlined/>}>编辑</Button>
         </TankTitle>
 
-        <InfoCell name={'网站名称'}>
-          {this.preference.name}
-        </InfoCell>
+        <div className={'content-card'}>
+          <InfoCell name={'网站名称'}>
+            {this.preference.name}
+          </InfoCell>
 
-        <InfoCell name={'logo'}>
-          {this.preference.logoUrl}
-        </InfoCell>
+          <InfoCell name={'logo'}>
+            {this.preference.logoUrl}
+          </InfoCell>
 
-        <InfoCell name={'favicon'}>
-          {this.preference.faviconUrl}
-        </InfoCell>
+          <InfoCell name={'favicon'}>
+            {this.preference.faviconUrl}
+          </InfoCell>
 
-        <InfoCell name={'版权信息'}>
-          {this.preference.copyright}
-        </InfoCell>
+          <InfoCell name={'版权信息'}>
+            {this.preference.copyright}
+          </InfoCell>
 
-        <InfoCell name={'备案信息'}>
-          {this.preference.record}
-        </InfoCell>
+          <InfoCell name={'备案信息'}>
+            {this.preference.record}
+          </InfoCell>
 
+          <InfoCell name={'zip下载数量限制'}>
+            {this.preference.downloadDirMaxNum === -1 ? '无限制' : this.preference.downloadDirMaxNum}
+          </InfoCell>
 
-        <InfoCell name={'zip下载数量限制'}>
-          {this.preference.downloadDirMaxNum}
-        </InfoCell>
+          <InfoCell name={'zip下载带下限制(B)'}>
+            {this.preference.downloadDirMaxSize === -1 ? '无限制' : this.preference.downloadDirMaxSize}
+          </InfoCell>
 
+          <InfoCell name={'用户默认总大小限制(B)'}>
+            {this.preference.defaultTotalSizeLimit === -1 ? '无限制' : this.preference.defaultTotalSizeLimit}
+          </InfoCell>
+
+          <InfoCell name={'允许自主注册'}>
+            {this.preference.allowRegister ? '是' : '否'}
+          </InfoCell>
+
+          <InfoCell name={'文档链接'}>
+            <a href={'https://tank-doc.eyeblue.cn/zh'} target="_blank">
+              https://tank-doc.eyeblue.cn/zh
+            </a>
+          </InfoCell>
+
+        </div>
 
       </div>
     );
