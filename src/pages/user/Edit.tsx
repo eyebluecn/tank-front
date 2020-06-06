@@ -96,9 +96,16 @@ export default class Edit extends TankComponent<IProps, IState> {
       wrapperCol: {span: 18},
     };
 
+    //当前是否为编辑自己的模式。
     let editSelf: boolean = false
     if (!this.createMode && user.uuid === currentUser.uuid) {
       editSelf = true
+    }
+
+    //是否可以编辑角色。
+    let roleEditable: boolean = false
+    if (this.createMode || (user.uuid !== currentUser.uuid && user.role === UserRole.ADMINISTRATOR)) {
+      roleEditable = true
     }
 
     return (
@@ -137,9 +144,8 @@ export default class Edit extends TankComponent<IProps, IState> {
               initialValue={currentUser.username}
               rules={[{required: true, message: '用户名必填!'}]}
             >
-              <Input/>
+              <Input disabled={!this.createMode}/>
             </Form.Item>
-
 
             {
               this.createMode && (
@@ -184,7 +190,7 @@ export default class Edit extends TankComponent<IProps, IState> {
               name="role"
               initialValue={currentUser.role}
             >
-              <Select>
+              <Select disabled={!roleEditable}>
                 {
                   UserRoleList.filter((item: ColorSelectionOption, index: number) => {
                     return item.value !== UserRole.GUEST

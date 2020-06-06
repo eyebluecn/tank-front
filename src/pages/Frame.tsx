@@ -6,7 +6,7 @@ import TankComponent from '../common/component/TankComponent';
 import UserLogin from './user/Login';
 
 import UserList from './user/List';
-import UserProfile from './user/Profile';
+import UserDetail from './user/Detail';
 import UserEdit from './user/Edit';
 
 import MatterDetail from './matter/Detail';
@@ -165,7 +165,7 @@ class RawFrame extends TankComponent<IProps, IState> {
                 }/>
                 <Route path="/index" component={Index}/>
                 <Route path="/user/login" component={UserLogin}/>
-                <Route path="/user/profile" component={UserProfile}/>
+                <Route path="/user/detail/:uuid" component={UserDetail}/>
                 <Route path="/user/list" component={UserList}/>
                 <Route path="/user/create" component={UserEdit}/>
                 <Route path="/user/edit/:uuid" component={UserEdit}/>

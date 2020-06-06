@@ -1,5 +1,5 @@
 import React from 'react';
-import "./Profile.less"
+import "./Detail.less"
 import TankComponent from "../../common/component/TankComponent";
 import {Button} from 'antd';
 import InfoCell from "../widget/InfoCell";
@@ -18,7 +18,7 @@ interface IState {
 
 }
 
-export default class Profile extends TankComponent <IProps, IState> {
+export default class Detail extends TankComponent <IProps, IState> {
 
   constructor(props: IProps) {
     super(props)
