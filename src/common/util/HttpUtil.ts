@@ -8,7 +8,7 @@ export default class HttpUtil {
 
   static httpGet(url: any, params = {}, successCallback?: any, errorCallback?: any, finallyCallback?: any, opts?: any) {
 
-    return axios
+    axios
       .get(url, {
         params: params
       })
@@ -31,7 +31,7 @@ export default class HttpUtil {
 
   static httpPost(url: any, params = {}, successCallback?: any, errorCallback?: any, finallyCallback?: any, opts?: any) {
 
-    return axios
+    axios
       .post(url, params, opts)
       .then(function (response) {
 
@@ -68,7 +68,7 @@ export default class HttpUtil {
       onUploadProgress: processCallback
     }
 
-    return axios
+    axios
       .post(url, formData, config)
       .then(function (response) {
 

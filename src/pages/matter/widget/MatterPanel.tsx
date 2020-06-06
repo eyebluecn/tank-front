@@ -87,37 +87,34 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     const { matter, director } = this.props;
     this.renamingLoading = true;
 
-    matter.httpRename(this.renameMatterName).then(() => {
+    matter.httpRename(this.renameMatterName, () => {
       this.renamingLoading = false;
       message.success('操作成功');
       //告诉导演，自己编辑完毕
       director.renameMode = false;
       matter.editMode = false
-    }).catch(msg => {
+    },(msg:string) => {
       this.renamingLoading = false;
       message.error(msg);
       //告诉导演，自己编辑完毕
       director.renameMode = false;
       matter.editMode = false;
-    }).finally(() => {
-      this.updateUI();
-    })
-
+    }, () => this.updateUI())
   };
 
   finishCreateDirectory = () => {
     const { matter, director, onCreateDirectorySuccess } = this.props;
     matter.name = this.renameMatterName;
-    matter.httpCreateDirectory( () => {
+    matter.httpCreateDirectory(() => {
       director.createMode = false;
       matter.editMode = false;
       matter.assign(new Matter());
       SafeUtil.safeCallback(onCreateDirectorySuccess);
-    },  (msg: string) => {
+    }, (msg: string) => {
       director.createMode = false;
       matter.editMode = false;
       message.error(msg)
-    })
+    }, () => this.updateUI());
   };
 
   blurTrigger = () => {
@@ -130,7 +127,12 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
       }
     }
   };
-  enterTrigger = () => {};
+
+  enterTrigger = (e: any) => {
+    if(e.key.toLowerCase() === 'enter') {
+      this.inputRef.current!.blur();
+    }
+  };
 
   changePrivacy = (privacy: boolean) => {
     this.props.matter.httpChangePrivacy(privacy, () => {

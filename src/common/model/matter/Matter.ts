@@ -220,14 +220,14 @@ export default class Matter extends BaseEntity {
     // }
   }
 
-  httpCreateDirectory(successCallback?: any, errorCallback?: any) {
+  httpCreateDirectory(successCallback?: any, errorCallback?: any, finallyCallback?: any) {
     let that = this
     let form = {'userUuid': that.userUuid, 'name': that.name, 'puuid': that.puuid}
 
-    this.httpPost(Matter.URL_MATTER_CREATE_DIRECTORY, form, function (response: any) {
+    return this.httpPost(Matter.URL_MATTER_CREATE_DIRECTORY, form, function (response: any) {
       that.assign(response.data.data)
       typeof successCallback === 'function' && successCallback(response)
-    }, errorCallback)
+    }, errorCallback, finallyCallback)
   }
 
   httpDelete(successCallback?: any, errorCallback?: any) {
@@ -242,12 +242,12 @@ export default class Matter extends BaseEntity {
     }, errorCallback)
   }
 
-  httpRename(name: string, successCallback?: any, errorCallback?: any) {
+  httpRename(name: string, successCallback?: any, errorCallback?: any, finallyCallback?: any) {
     let that = this
-    return this.httpPost(Matter.URL_MATTER_RENAME, {'uuid': this.uuid, 'name': name}, function (response: any) {
+    this.httpPost(Matter.URL_MATTER_RENAME, {'uuid': this.uuid, 'name': name}, function (response: any) {
       that.assign(response.data.data)
       typeof successCallback === 'function' && successCallback(response)
-    }, errorCallback)
+    }, errorCallback, finallyCallback)
   }
 
   httpChangePrivacy(privacy:boolean, successCallback?: any, errorCallback?: any) {
