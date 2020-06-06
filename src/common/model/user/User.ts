@@ -174,13 +174,12 @@ export default class User extends BaseEntity {
     }, errorCallback)
   }
 
-  httpTransfiguration(successCallback?: any, errorCallback?: any, finalCallback?: any) {
+  httpTransfiguration(successCallback: (text: string) => void, errorCallback?: any, finalCallback?: any) {
     let that = this
     let form = {'uuid': this.uuid}
     this.httpPost(User.URL_USER_TRANSFIGURATION, form, function (response: any) {
 
-      SafeUtil.safeCallback(successCallback)(response);
-
+      successCallback(response.data.msg)
 
     }, errorCallback)
   }

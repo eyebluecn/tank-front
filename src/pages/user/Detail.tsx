@@ -18,6 +18,7 @@ import SingleTextModal from "../widget/SingleTextModal";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import ChangePasswordModal from "./widget/ChangePasswordModal";
 import {EditOutlined, UnlockOutlined, UserSwitchOutlined} from '@ant-design/icons';
+import TransfigurationModal from "./widget/TransfigurationModal";
 
 interface RouteParam {
   uuid: string
@@ -64,6 +65,11 @@ export default class Detail extends TankComponent <IProps, IState> {
   }
 
   transfiguration() {
+
+    let that = this
+    let user: User = this.user
+    let currentUser: User = this.currentUser
+    TransfigurationModal.open(currentUser)
 
   }
 
