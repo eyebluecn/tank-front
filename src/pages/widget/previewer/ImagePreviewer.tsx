@@ -99,14 +99,24 @@ export default class ImagePreviewer extends TankComponent<IProps, IState> {
   }
 
   //展示一张图片
-  static showSinglePhoto(url: string, width: number = 0, height: number = 0) {
+  static showSinglePhoto(url: string) {
+
+    ImagePreviewer.showMultiPhoto([url], 0)
+
+  }
+
+  //展示一系列图片
+  static showMultiPhoto(urls: string[], index: number = 0) {
 
     let that = this;
-    let items = [{
-      src: url,
-      w: width,
-      h: height
-    }];
+    let items: PhotoSwipe.Item[] = [];
+    urls.forEach((url) => {
+      items.push({
+        src: url,
+        w: 0,
+        h: 0
+      })
+    })
 
     let options = {
       //不需要历史纪录
@@ -118,7 +128,7 @@ export default class ImagePreviewer extends TankComponent<IProps, IState> {
       //点击不要让控制按钮消失
       tapToToggleControls: false,
       //当前从第0张展示。
-      index: 0
+      index: index
     };
 
     //获取dom节点
@@ -153,7 +163,6 @@ export default class ImagePreviewer extends TankComponent<IProps, IState> {
     photoSwipe.listen('afterChange', () => {
 
     })
-
 
   }
 
