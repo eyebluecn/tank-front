@@ -12,8 +12,9 @@ import Sun from '../../common/model/global/Sun';
 import User from "../../common/model/user/User";
 import TankComponent from "../../common/component/TankComponent";
 import TankTitle from "../widget/TankTitle";
-import {Button} from "antd";
+import {Button, Tag} from "antd";
 import {PlusOutlined} from '@ant-design/icons';
+import {UserRoleMap} from "../../common/model/user/UserRole";
 
 
 interface IProps extends RouteComponentProps {
@@ -104,6 +105,9 @@ export default class List extends TankComponent<IProps, IState> {
     }, {
       title: '角色',
       dataIndex: 'role',
+      render: (text: any, record: User, index: number): React.ReactNode => (
+        <Tag color={UserRoleMap[record.role].color}>{UserRoleMap[record.role].name}</Tag>
+      ),
     }, {
       title: '单文件限制',
       dataIndex: 'sizeLimit',

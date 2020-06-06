@@ -14,7 +14,7 @@ import SortFilter from '../../../common/model/base/filter/SortFilter';
 import SortFilterBox from './SortFilterBox';
 import HttpSelectionFilter from '../../../common/model/base/filter/HttpSelectionFilter';
 import HttpSelectionFilterBox from './HttpSelectionFilterBox';
-import { Button } from 'antd';
+import {Button} from 'antd';
 
 import DateFilterBox from './DateFilterBox';
 import DateFilter from '../../../common/model/base/filter/DateFilter';
@@ -171,14 +171,13 @@ export default class FilterPanel extends React.Component<IProps, IState> {
         <div className="operation-area">
           <Button
             className={`${needResetButton ? '' : 'display-none'}`}
-            icon="close-circle"
+
             onClick={this.onReset.bind(this)}>
             重置条件
           </Button>
 
           <Button
             className={`${needSearchButton ? '' : 'display-none'}`}
-            icon="search"
             type="primary"
             onClick={this.onSearch.bind(this)}>
             搜索

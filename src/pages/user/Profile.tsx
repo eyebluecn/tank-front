@@ -45,7 +45,7 @@ export default class Profile extends TankComponent <IProps, IState> {
       <div className="page-profile">
 
         <TankTitle name={'个人资料'}>
-          <Button type="primary" icon="plus" onClick={this.changePassword.bind(this)}>
+          <Button type="primary" onClick={this.changePassword.bind(this)}>
             修改密码
           </Button>
         </TankTitle>

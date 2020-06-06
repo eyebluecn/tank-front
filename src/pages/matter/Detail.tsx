@@ -66,7 +66,7 @@ export default class Detail extends TankComponent<IProps, IState> {
         <TankTitle name={'文件详情'}>
           <Link title="编辑"
                 to={StringUtil.prePath(match.path, 2) + '/edit/' + matter.uuid}>
-            <Button className="mh10" type="primary" icon="edit">
+            <Button className="mh10" type="primary">
               编辑
             </Button>
           </Link>
