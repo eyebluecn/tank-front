@@ -1,5 +1,5 @@
 import React from 'react';
-import "./BambooTitle.less"
+import "./TankTitle.less"
 import TankComponent from '../../common/component/TankComponent';
 
 interface IProps {
@@ -13,7 +13,7 @@ interface IState {
 /**
  * 标题导航快捷插件
  */
-export default class BambooTitle extends TankComponent<IProps, IState> {
+export default class TankTitle extends TankComponent<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);

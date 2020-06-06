@@ -4,6 +4,8 @@ import "./Index.less"
 import TankComponent from "../../common/component/TankComponent";
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
+import TankTitle from "../widget/TankTitle";
+import {Button} from "antd";
 
 
 interface IProps extends RouteComponentProps {
@@ -34,7 +36,11 @@ export default class Index extends TankComponent<IProps, IState> {
 
     return (
       <div className="page-preference-index">
-        欢迎来到偏好设置页面
+
+        <TankTitle name={'网站偏好'}>
+          <Button>编辑</Button>
+        </TankTitle>
+
       </div>
     );
   }

@@ -6,7 +6,7 @@ import Matter from '../../common/model/matter/Matter';
 import { Button, Col, Row, Spin } from 'antd';
 import InfoCell from '../widget/InfoCell';
 import StringUtil from '../../common/util/StringUtil';
-import BambooTitle from '../widget/BambooTitle';
+import TankTitle from '../widget/TankTitle';
 
 interface RouteParam {
   uuid: string
@@ -63,14 +63,14 @@ export default class Detail extends TankComponent<IProps, IState> {
     return (
       <div className="matter-detail">
 
-        <BambooTitle name={'文件详情'}>
+        <TankTitle name={'文件详情'}>
           <Link title="编辑"
                 to={StringUtil.prePath(match.path, 2) + '/edit/' + matter.uuid}>
             <Button className="mh10" type="primary" icon="edit">
               编辑
             </Button>
           </Link>
-        </BambooTitle>
+        </TankTitle>
 
         <Spin tip="加载中" spinning={matter.detailLoading}>
 

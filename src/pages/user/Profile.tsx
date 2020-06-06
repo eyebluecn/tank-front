@@ -7,7 +7,7 @@ import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
 import DateUtil from "../../common/util/DateUtil";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
-import BambooTitle from '../widget/BambooTitle';
+import TankTitle from '../widget/TankTitle';
 
 interface IProps {
   name: string
@@ -44,11 +44,11 @@ export default class Profile extends TankComponent <IProps, IState> {
 
       <div className="page-profile">
 
-        <BambooTitle name={'个人资料'}>
+        <TankTitle name={'个人资料'}>
           <Button type="primary" icon="plus" onClick={this.changePassword.bind(this)}>
             修改密码
           </Button>
-        </BambooTitle>
+        </TankTitle>
 
         <div>
           <InfoCell name="用户名">

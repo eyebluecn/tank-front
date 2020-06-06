@@ -12,7 +12,7 @@ import DateUtil from '../../common/util/DateUtil';
 import FilterPanel from '../widget/filter/FilterPanel';
 import TableEmpty from '../widget/TableEmpty';
 import Sun from '../../common/model/global/Sun';
-import BambooTitle from '../widget/BambooTitle';
+import TankTitle from '../widget/TankTitle';
 
 
 interface IProps extends RouteComponentProps {
@@ -146,11 +146,11 @@ export default class List extends TankComponent<IProps, IState> {
     return (
       <div className="matter-list">
 
-        <BambooTitle name={'文件管理'}>
+        <TankTitle name={'文件管理'}>
           <Button type="primary" onClick={this.createMatter.bind(this)}>
             新建文件
           </Button>
-        </BambooTitle>
+        </TankTitle>
 
 
         <div>

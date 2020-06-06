@@ -5,7 +5,7 @@ import TankComponent from '../../common/component/TankComponent';
 import Matter from '../../common/model/matter/Matter';
 import StringUtil from '../../common/util/StringUtil';
 import './Edit.less';
-import BambooTitle from '../widget/BambooTitle';
+import TankTitle from '../widget/TankTitle';
 
 const { MonthPicker, RangePicker } = DatePicker;
 
@@ -69,9 +69,9 @@ class RawEdit extends TankComponent<IProps, IState> {
     return (
       <div className="matter-edit">
 
-        <BambooTitle name={this.createMode ? '创建文件' : '编辑文件'}>
+        <TankTitle name={this.createMode ? '创建文件' : '编辑文件'}>
 
-        </BambooTitle>
+        </TankTitle>
 
       </div>
     );
