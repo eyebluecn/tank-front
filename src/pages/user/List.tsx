@@ -98,7 +98,7 @@ export default class List extends TankComponent<IProps, IState> {
       dataIndex: 'avatarUrl',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <Link to={StringUtil.prePath(match.path) + '/detail/' + record.uuid}>
-          <img alt="avatar" className='avatar-middle cursor' src={record.getAvatarUrl()}/>
+          <img alt="avatar" className='avatar-small cursor' src={record.getAvatarUrl()}/>
         </Link>
       ),
     }, {

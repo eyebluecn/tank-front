@@ -8,6 +8,7 @@ import UserLogin from './user/Login';
 import UserList from './user/List';
 import UserDetail from './user/Detail';
 import UserEdit from './user/Edit';
+import UserAuthentication from './user/Authentication';
 
 import MatterDetail from './matter/Detail';
 import PreferenceIndex from './preference/Index';
@@ -71,12 +72,15 @@ class RawFrame extends TankComponent<IProps, IState> {
   //获取当前登录者的信息
   initialize() {
     let that = this;
+    let pathname: string = that.props.location.pathname
+
+    console.log(pathname)
 
     this.preference.httpFetch(function () {
 
       let whitePaths = ['/user/login', '/user/register'];
       //如果当前本身是登录界面，那么不用去获取。
-      if (whitePaths.indexOf(that.props.location.pathname) == -1) {
+      if (whitePaths.indexOf(pathname) == -1 && !pathname.startsWith("/user/authentication")) {
 
         that.user.httpInfo(null, null, function () {
           that.initialized = true
@@ -127,10 +131,18 @@ class RawFrame extends TankComponent<IProps, IState> {
       content = (
         <Layout style={{minHeight: '100vh'}}>
           <Sider>
-            <div className="username">
+
+            <div className="avatar-area">
+              <Link className="username-text" to={"/user/detail/" + user.uuid}>
+                <img alt="avatar" className="avatar-middle" src={user.getAvatarUrl()}/>
+              </Link>
+            </div>
+            <div className="username-area">
               {user.role === UserRole.GUEST ?
                 '未登录' :
-                <Link className="username-text" to="/user/profile">{user.username}</Link>
+                <Link to={"/user/detail/" + user.uuid}>
+                  <span className="username-text">{user.username}</span>
+                </Link>
               }
             </div>
             <Menu
@@ -169,6 +181,7 @@ class RawFrame extends TankComponent<IProps, IState> {
                 <Route path="/user/list" component={UserList}/>
                 <Route path="/user/create" component={UserEdit}/>
                 <Route path="/user/edit/:uuid" component={UserEdit}/>
+                <Route path="/user/authentication/:authentication" component={UserAuthentication}/>
 
                 <Route path="/preference/index" component={PreferenceIndex}/>
                 <Route path="/preference/edit" component={PreferenceEdit}/>

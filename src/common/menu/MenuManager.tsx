@@ -14,6 +14,7 @@ import {
   ShareAltOutlined,
   TeamOutlined
 } from '@ant-design/icons';
+import {LoginOutlined} from "@ant-design/icons/lib";
 
 
 export default class MenuManager {
@@ -67,18 +68,20 @@ export default class MenuManager {
 
     if (user.role === UserRole.GUEST) {
       menuItems = [
-        new MenuItem('登录', '/user/login', 'user'),
+        new MenuItem('登录', '/user/login', <LoginOutlined/>),
       ];
     } else {
 
-      menuItems = [
-        new MenuItem('所有文件', '/matter/list', <AppstoreOutlined/>),
-        new MenuItem('我的分享', '/share/index', <ShareAltOutlined/>),
-        new MenuItem('网站偏好', '/preference/index', <SettingOutlined/>),
-        new MenuItem('监控统计', '/dashboard/index', <DashboardOutlined/>),
-        new MenuItem('用户列表', '/user/list', <TeamOutlined/>),
-        new MenuItem('退出登录', '/user/logout', <PoweroffOutlined/>),
-      ];
+      menuItems.push(new MenuItem('所有文件', '/matter/list', <AppstoreOutlined/>))
+      menuItems.push(new MenuItem('我的分享', '/share/index', <ShareAltOutlined/>))
+
+      if (user.role === UserRole.ADMINISTRATOR) {
+        menuItems.push(new MenuItem('网站偏好', '/preference/index', <SettingOutlined/>))
+        menuItems.push(new MenuItem('监控统计', '/dashboard/index', <DashboardOutlined/>))
+        menuItems.push(new MenuItem('用户列表', '/user/list', <TeamOutlined/>))
+      }
+      menuItems.push(new MenuItem('退出登录', '/user/logout', <PoweroffOutlined/>))
+
 
     }
 
