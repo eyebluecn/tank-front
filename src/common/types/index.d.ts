@@ -1,3 +1,5 @@
+import * as React from "react";
+
 /**
  * 定义了一个图标行为的对象，这个可以辅助一些组件。
  */
@@ -27,7 +29,7 @@ export interface ToolItem {
   active: boolean
 
   //antd的图标样式
-  iconType: string
+  icon: React.ReactNode
 
 }
 

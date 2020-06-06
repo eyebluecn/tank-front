@@ -7,6 +7,9 @@ import UserLogin from './user/Login';
 
 import UserProfile from './user/Profile';
 import MatterDetail from './matter/Detail';
+import PreferenceIndex from './preference/Index';
+import PreferenceEdit from './preference/Edit';
+
 import MatterList from './matter/List';
 import MatterEdit from './matter/Edit';
 
@@ -131,6 +134,7 @@ class RawFrame extends TankComponent<IProps, IState> {
                 menuItems.map((menuItem: MenuItem, index: number) => {
                   return (
                     <Menu.Item key={menuItem.url}>
+                      {menuItem.icon}
                       <span>{menuItem.name}</span>
                     </Menu.Item>
                   );
@@ -154,6 +158,10 @@ class RawFrame extends TankComponent<IProps, IState> {
                 <Route path="/index" component={Index}/>
                 <Route path="/user/login" component={UserLogin}/>
                 <Route path="/user/profile" component={UserProfile}/>
+
+                <Route path="/preference/index" component={PreferenceIndex}/>
+                <Route path="/preference/edit" component={PreferenceEdit}/>
+
                 <Route path="/matter/detail/:uuid" component={MatterDetail}/>
                 <Route exact path="/matter" render={() =>
                   <Redirect to="/matter/list"/>
