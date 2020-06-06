@@ -11,7 +11,8 @@ import TankContentCard from "../widget/TankContentCard";
 import Preference from "../../common/model/preference/Preference";
 import FileUtil from "../../common/util/FileUtil";
 import {FormInstance} from "antd/lib/form";
-
+import MessageBoxUtil from "../../common/util/MessageBoxUtil";
+import Sun from "../../common/model/global/Sun";
 
 interface IProps extends RouteComponentProps {
 
@@ -60,6 +61,12 @@ export default class Edit extends TankComponent<IProps, IState> {
 
     let user = that.user
 
+    that.preference.assign(values)
+
+    that.preference.httpSave(function () {
+      MessageBoxUtil.success("修改成功！")
+      Sun.navigateTo("/preference/index")
+    })
 
   };
 
@@ -152,11 +159,13 @@ export default class Edit extends TankComponent<IProps, IState> {
             <Form.Item
               label="zip最大数量限制"
               name="downloadDirMaxNum"
+              rules={[{required: true, message: 'zip最大数量限制必填!'}]}
             >
               <InputNumber min={-1} max={1000} className='w150'/>
             </Form.Item>
 
-            <Form.Item label="zip大小限制(B)">
+            <Form.Item label="zip大小限制(B)"
+            >
               <Form.Item
                 name="downloadDirMaxSize"
                 noStyle
@@ -171,7 +180,8 @@ export default class Edit extends TankComponent<IProps, IState> {
               </span>
             </Form.Item>
 
-            <Form.Item label="默认用户空间大小(B)">
+            <Form.Item label="默认用户空间大小(B)"
+                       rules={[{required: true, message: '默认用户空间大小必填!'}]}>
               <Form.Item
                 name="defaultTotalSizeLimit"
                 noStyle
