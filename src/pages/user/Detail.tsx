@@ -42,7 +42,7 @@ export default class Detail extends TankComponent <IProps, IState> {
 
     return (
 
-      <div className="page-profile">
+      <div className="page-user-detail">
 
         <TankTitle name={'个人资料'}>
           <Button type="primary" onClick={this.changePassword.bind(this)}>

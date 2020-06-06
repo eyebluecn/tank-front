@@ -17,6 +17,7 @@ import {Avatar, Button, Tag} from "antd";
 import {PlusOutlined} from '@ant-design/icons';
 import {UserRoleMap} from "../../common/model/user/UserRole";
 import {UserStatusMap} from "../../common/model/user/UserStatus";
+import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 
 
 interface IProps extends RouteComponentProps {
@@ -96,7 +97,11 @@ export default class List extends TankComponent<IProps, IState> {
       title: '头像',
       dataIndex: 'avatarUrl',
       render: (text: any, record: User, index: number): React.ReactNode => (
-        <Avatar size="large" src={record.getAvatarUrl()}/>
+        <img alt="avatar" className='avatar-middle cursor' src={record.getAvatarUrl()} onClick={() => {
+
+          ImagePreviewer.showSinglePhoto(record.getAvatarUrl(), 200, 200)
+
+        }}/>
       ),
     }, {
       title: '用户名',
