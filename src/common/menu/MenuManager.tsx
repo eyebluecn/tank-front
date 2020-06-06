@@ -6,7 +6,14 @@ import MenuItem from './MenuItem';
 import Moon from '../model/global/Moon';
 import User from '../model/user/User';
 import {UserRole} from '../model/user/UserRole';
-import {AppstoreOutlined, DashboardOutlined, PoweroffOutlined, SettingOutlined, TeamOutlined} from '@ant-design/icons';
+import {
+  AppstoreOutlined,
+  DashboardOutlined,
+  PoweroffOutlined,
+  SettingOutlined,
+  ShareAltOutlined,
+  TeamOutlined
+} from '@ant-design/icons';
 
 
 export default class MenuManager {
@@ -66,6 +73,7 @@ export default class MenuManager {
 
       menuItems = [
         new MenuItem('所有文件', '/matter/list', <AppstoreOutlined/>),
+        new MenuItem('我的分享', '/share/index', <ShareAltOutlined/>),
         new MenuItem('网站偏好', '/preference/index', <SettingOutlined/>),
         new MenuItem('监控统计', '/dashboard/index', <DashboardOutlined/>),
         new MenuItem('用户列表', '/user/list', <TeamOutlined/>),

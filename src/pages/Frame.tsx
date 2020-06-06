@@ -10,6 +10,8 @@ import MatterDetail from './matter/Detail';
 import PreferenceIndex from './preference/Index';
 import PreferenceEdit from './preference/Edit';
 
+import UserList from './user/List';
+
 import MatterList from './matter/List';
 import MatterEdit from './matter/Edit';
 
@@ -162,6 +164,7 @@ class RawFrame extends TankComponent<IProps, IState> {
                 <Route path="/index" component={Index}/>
                 <Route path="/user/login" component={UserLogin}/>
                 <Route path="/user/profile" component={UserProfile}/>
+                <Route path="/user/list" component={UserList}/>
 
                 <Route path="/preference/index" component={PreferenceIndex}/>
                 <Route path="/preference/edit" component={PreferenceEdit}/>
