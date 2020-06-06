@@ -23,16 +23,6 @@ export default class ViewBase extends Base {
     }
   }
 
-  //获取ReactComponent
-  getReactComponent(): React.ReactElement | null {
-
-    console.error(`你必须在子类 ${this.constructor.name} 中 override getReactComponent 方法`)
-
-    return React.createElement(
-      'div',
-    );
-  }
-
   //更新当前的视图
   updateUI() {
 
