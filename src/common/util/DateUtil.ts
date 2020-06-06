@@ -3,12 +3,20 @@ import moment from "moment"
 export default class DateUtil {
 
   static DEFAULT_FORMAT = "YYYY-MM-DD HH:mm:ss";
+  static DEFAULT_HOUR_MINUTE = "YYYY-MM-DD HH:mm";
   static SLASH_DATE_FORMAT = "YYYY/MM/DD";
   static TIME_FORMAT = "HH:mm:ss";
   static DATE_FORMAT = "YYYY-MM-DD";
   //紧凑型的时间格式
   static COMPACT_DATE_FORMAT = "YYYYMMDD";
 
+  static simpleDateHourMinute(date: Date |null): string {
+    if (date == null) {
+      return ""
+    } else {
+      return moment(date).format(DateUtil.DEFAULT_HOUR_MINUTE)
+    }
+  }
   static simpleDateTime(date: Date | null): string {
     if (date == null) {
       return ""

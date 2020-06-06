@@ -29,6 +29,7 @@ export default class Matter extends BaseEntity {
    */
   //作为勾选变量
   check: boolean = false;
+  editMode: boolean = false;
 
   //允许用户选择的文件类型
   filter: string = "*";
@@ -255,6 +256,7 @@ export default class Matter extends BaseEntity {
       that.privacy = privacy
       if (typeof successCallback === "function") {
         successCallback(response)
+        message.success(response.data.msg)
       } else {
         message.success(response.data.msg)
       }

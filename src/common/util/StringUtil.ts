@@ -49,6 +49,24 @@ export default class StringUtil {
     return father.indexOf(child) !== -1
   }
 
+  //把一个大小转变成方便读的格式
+  //human readable file size
+  static humanFileSize(bytes: number, si:boolean = false) {
+    let thresh = si ? 1000 : 1024
+    if (Math.abs(bytes) < thresh) {
+      return bytes + ' B'
+    }
+    let units = si
+      ? ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+      : ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    let u = -1
+    do {
+      bytes /= thresh
+      ++u
+    } while (Math.abs(bytes) >= thresh && u < units.length - 1)
+    return bytes.toFixed(1) + ' ' + units[u]
+  }
+
   //将首字母大写
   static capitalize(str: any) {
 

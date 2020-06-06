@@ -72,4 +72,21 @@ export default class AnimateUtil {
 
   }
 
+  static setInputSelection(input: HTMLInputElement, startPos: number, endPos: number) {
+    input.focus();
+    if (typeof input.selectionStart !== "undefined") {
+      input.selectionStart = startPos;
+      input.selectionEnd = endPos;
+    } else if ((document as any).selection && (document as any).selection.createRange) {
+      // IE branch
+      input.select();
+      let range = (document as any).selection.createRange();
+      range.collapse(true);
+      range.moveEnd("character", endPos);
+      range.moveStart("character", startPos);
+      range.select();
+    }
+  }
+
+
 }
