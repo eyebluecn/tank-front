@@ -88,11 +88,6 @@ export default class Edit extends TankComponent<IProps, IState> {
 
     let initialValues: any = preference.getForm()
 
-    if (this.formRef && this.formRef.current) {
-      let zipMaxSizeLimit = this.formRef.current.getFieldValue("zipMaxSizeLimit")
-      console.log(zipMaxSizeLimit)
-    }
-
     return (
       <div className="page-preference-edit">
 
@@ -165,9 +160,11 @@ export default class Edit extends TankComponent<IProps, IState> {
             </Form.Item>
 
             <Form.Item label="zip大小限制(B)"
+                       required={true}
             >
               <Form.Item
                 name="downloadDirMaxSize"
+                rules={[{required: true, message: 'zip大小限制必填!'}]}
                 noStyle
               >
                 <InputNumber min={-1} className='w150'/>
@@ -181,9 +178,11 @@ export default class Edit extends TankComponent<IProps, IState> {
             </Form.Item>
 
             <Form.Item label="默认用户空间大小(B)"
-                       rules={[{required: true, message: '默认用户空间大小必填!'}]}>
+                       required={true}
+            >
               <Form.Item
                 name="defaultTotalSizeLimit"
+                rules={[{required: true, message: '默认用户空间大小必填!'}]}
                 noStyle
               >
                 <InputNumber min={-1} className='w150'/>
@@ -199,6 +198,7 @@ export default class Edit extends TankComponent<IProps, IState> {
             <Form.Item
               label="开放注册"
               name="allowRegister"
+              required={true}
               valuePropName="checked"
             >
               <Switch/>
