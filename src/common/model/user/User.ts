@@ -47,7 +47,11 @@ export default class User extends BaseEntity {
     return {
       username: this.username,
       password: this.password,
-      uuid: this.uuid ? this.uuid : null,
+      role: this.role,
+      avatarUrl: this.avatarUrl,
+      sizeLimit: this.sizeLimit,
+      totalSizeLimit: this.totalSizeLimit,
+      uuid: this.uuid ? this.uuid : null
     };
   }
 
@@ -115,6 +119,68 @@ export default class User extends BaseEntity {
 
     }, errorCallback, finalCallback);
 
+  }
+
+
+  httpChangePassword(oldPassword: string, newPassword: string, successCallback?: any, errorCallback?: any, finalCallback?: any) {
+    let that = this
+    this.httpPost(User.URL_USER_CHANGE_PASSWORD, {
+      'oldPassword': oldPassword,
+      'newPassword': newPassword
+    }, function (response: any) {
+
+      SafeUtil.safeCallback(successCallback)(response);
+
+
+    }, errorCallback)
+  }
+
+  httpResetPassword(password: string, successCallback?: any, errorCallback?: any, finalCallback?: any) {
+    this.httpPost(User.URL_USER_RESET_PASSWORD, {
+      'userUuid': this.uuid,
+      'password': password
+    }, function (response: any) {
+
+
+      SafeUtil.safeCallback(successCallback)(response);
+
+
+    }, errorCallback)
+  }
+
+
+  httpToggleStatus(successCallback?: any, errorCallback?: any, finalCallback?: any) {
+    let that = this
+    this.httpPost(User.URL_USER_TOGGLE_STATUS, {'uuid': this.uuid}, function (response: any) {
+
+
+      SafeUtil.safeCallback(successCallback)(response);
+
+
+    }, errorCallback)
+  }
+
+  httpAuthenticationLogin(authentication: string, successCallback?: any, errorCallback?: any, finalCallback?: any) {
+    let that = this
+    let form = {authentication}
+    this.httpPost(User.URL_AUTHENTICATION_LOGIN, form, function (response: any) {
+
+
+      SafeUtil.safeCallback(successCallback)(response);
+
+
+    }, errorCallback)
+  }
+
+  httpTransfiguration(successCallback?: any, errorCallback?: any, finalCallback?: any) {
+    let that = this
+    let form = {'uuid': this.uuid}
+    this.httpPost(User.URL_USER_TRANSFIGURATION, form, function (response: any) {
+
+      SafeUtil.safeCallback(successCallback)(response);
+
+
+    }, errorCallback)
   }
 
 }

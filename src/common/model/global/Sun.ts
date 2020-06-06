@@ -41,6 +41,17 @@ export default class Sun {
     }
   }
 
+  /**
+   * 回到上一页
+   */
+  static navigateBack() {
+    if (Sun.getSingleton().reactRouter) {
+      Sun.getSingleton().reactRouter.go(-1)
+    } else {
+      console.error("全局的 reactRouter 未定义，请检查代码！")
+    }
+  }
+
   //******************* 和路由相关的方法 结束 *******************//
 
   //*******************和全局视图相关的方法 开始 *******************//
