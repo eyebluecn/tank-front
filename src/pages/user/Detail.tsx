@@ -14,6 +14,10 @@ import {UserRole, UserRoleMap} from "../../common/model/user/UserRole";
 import FileUtil from "../../common/util/FileUtil";
 import {UserStatusMap} from "../../common/model/user/UserStatus";
 import BrowserUtil from "../../common/util/BrowserUtil";
+import SingleTextModal from "../widget/SingleTextModal";
+import MessageBoxUtil from "../../common/util/MessageBoxUtil";
+import ChangePasswordModal from "./widget/ChangePasswordModal";
+import {EditOutlined, UnlockOutlined, UserSwitchOutlined} from '@ant-design/icons';
 
 interface RouteParam {
   uuid: string
@@ -51,6 +55,11 @@ export default class Detail extends TankComponent <IProps, IState> {
   resetPassword() {
     let that = this
 
+    SingleTextModal.open("请输入新密码", "", function (text: string) {
+      that.currentUser.httpResetPassword(text, function (response: any) {
+        MessageBoxUtil.success("操作成功!")
+      })
+    })
 
   }
 
@@ -59,6 +68,16 @@ export default class Detail extends TankComponent <IProps, IState> {
   }
 
   changePassword() {
+
+    let that = this
+
+    let user: User = this.user
+    let currentUser: User = this.currentUser
+    ChangePasswordModal.open(currentUser, function () {
+      MessageBoxUtil.success("修改密码成功!")
+
+
+    })
 
   }
 
@@ -76,8 +95,9 @@ export default class Detail extends TankComponent <IProps, IState> {
         <TankTitle name={'个人资料'}>
 
           {
-            currentUser.role === UserRole.ADMINISTRATOR && (
+            user.role === UserRole.ADMINISTRATOR && (
               <Button className='ml10' type="primary"
+                      icon={<UnlockOutlined/>}
                       onClick={this.resetPassword.bind(this)}>
                 重置密码
               </Button>
@@ -85,8 +105,10 @@ export default class Detail extends TankComponent <IProps, IState> {
           }
 
           {
-            currentUser.role === UserRole.ADMINISTRATOR && (
-              <Button className='ml10' type="primary" onClick={this.transfiguration.bind(this)}>
+            user.role === UserRole.ADMINISTRATOR && (
+              <Button className='ml10' type="primary"
+                      icon={<UserSwitchOutlined/>}
+                      onClick={this.transfiguration.bind(this)}>
                 变身
               </Button>
             )
@@ -94,18 +116,17 @@ export default class Detail extends TankComponent <IProps, IState> {
 
           {
             currentUser.uuid === user.uuid && (
-              <Button className='ml10' type="primary" onClick={this.changePassword.bind(this)}>
+              <Button className='ml10' type="primary" onClick={this.changePassword.bind(this)} icon={<UnlockOutlined/>}>
                 修改密码
               </Button>
             )
           }
 
           <Link to={'/user/edit/' + currentUser.uuid}>
-            <Button className='ml10' type="primary">
+            <Button className='ml10' type="primary" icon={<EditOutlined/>}>
               编辑
             </Button>
           </Link>
-
         </TankTitle>
 
         <TankContentCard loading={currentUser.detailLoading}>

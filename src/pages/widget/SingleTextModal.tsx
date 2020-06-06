@@ -1,20 +1,22 @@
 import React from 'react';
 import Button from 'antd/lib/button';
-import {message as MessageBox, Input} from "antd"
+import {Input, Modal} from "antd"
+import TankComponent from "../../common/component/TankComponent";
+import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 
 interface IProps {
-  value: number
+  value: string
   title?: string
-  onSuccess: (val: number) => void
+  onSuccess: (val: string) => void
   onClose: () => void
 }
 
 interface IState {
 
-  innerValue: number
+  innerValue: string
 }
 
-export default class ChangeNumModal extends React.Component<IProps, IState> {
+export default class SingleTextModal extends TankComponent<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
@@ -23,16 +25,41 @@ export default class ChangeNumModal extends React.Component<IProps, IState> {
     };
   }
 
-
   componentDidMount() {
 
   }
+
+  static open(title: string, initialValue: string, onSuccess: (text: string) => void) {
+
+    let modal = Modal.success({
+      okCancel: false,
+      okButtonProps: {
+        className: "display-none"
+      },
+      icon: null,
+      content: <SingleTextModal
+        title={title}
+        value={initialValue}
+        onSuccess={(val: string) => {
+
+          modal.destroy()
+
+          onSuccess(val)
+
+        }}
+        onClose={() => {
+          modal.destroy()
+        }}/>,
+    })
+
+  }
+
 
   onSubmitClick() {
     if (this.state.innerValue) {
       this.props.onSuccess(this.state.innerValue)
     } else {
-      MessageBox.error("没有填写值，提交失败！")
+      MessageBoxUtil.error("没有填写值，提交失败！")
     }
   }
 
@@ -40,9 +67,8 @@ export default class ChangeNumModal extends React.Component<IProps, IState> {
 
     let that = this
 
-
     return (
-      <div className="widget-change-num-modal">
+      <div className="widget-single-text-modal">
 
         <div className="text-center">
           <h2>
@@ -52,7 +78,7 @@ export default class ChangeNumModal extends React.Component<IProps, IState> {
 
         <Input value={this.state.innerValue} onChange={(e) => {
           that.setState({
-            innerValue: parseInt(e.target.value)
+            innerValue: e.target.value
           })
 
         }}/>
