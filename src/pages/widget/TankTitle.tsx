@@ -37,7 +37,7 @@ export default class TankTitle extends TankComponent<IProps, IState> {
     let that = this
 
     return (
-      <div className="widget-bamboo-title">
+      <div className="widget-tank-title">
         <span className="item active">
           {that.props.name}
         </span>

@@ -104,7 +104,7 @@ export default class BrowserUtil {
   /**
    * 获取完整的host
    * eg:
-   * https://bamboo.eyeblue.cn
+   * https://tank.eyeblue.cn
    */
   static fullHost() {
     return window.location.protocol + "//" + window.location.host

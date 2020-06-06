@@ -146,7 +146,7 @@ class RawFrame extends TankComponent<IProps, IState> {
             <Header>
               <div className="logo-title-area" onClick={this.goHome.bind(this)}>
                 <img className="header-logo" src={LogoSvg} alt="logo"/>
-                <span className="header-title">bamboo</span>
+                <span className="header-title">蓝眼云盘</span>
               </div>
             </Header>
             <Content>

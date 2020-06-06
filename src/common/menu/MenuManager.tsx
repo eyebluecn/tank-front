@@ -67,8 +67,8 @@ export default class MenuManager {
       menuItems = [
         new MenuItem('所有文件', '/matter/list', <AppstoreOutlined/>),
         new MenuItem('网站偏好', '/preference/index', <SettingOutlined/>),
-        new MenuItem('监控统计', '', <DashboardOutlined/>),
-        new MenuItem('用户列表', '', <TeamOutlined/>),
+        new MenuItem('监控统计', '/dashboard/index', <DashboardOutlined/>),
+        new MenuItem('用户列表', '/user/list', <TeamOutlined/>),
         new MenuItem('退出登录', '/user/logout', <PoweroffOutlined/>),
       ];
 

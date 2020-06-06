@@ -13,14 +13,6 @@ export default class ViewBase extends Base {
   //该类对应的React视图。
   reactComponent: React.Component | null = null
 
-  //我们认为每个实体都会存放于某个react组件中，当然可以不传入。
-  constructor() {
-
-    super()
-
-  }
-
-
   //更新某一个组件对应的UI
   static updateComponentUI(component: React.Component | null, entity?: any) {
     if (component) {

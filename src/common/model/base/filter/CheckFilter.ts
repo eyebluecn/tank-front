@@ -15,6 +15,7 @@ export default class CheckFilter extends Filter {
     super(name, code, visible)
   }
 
+
   //获取值字符串，[null,true,false] => ["","true","false"]
   getValueString(): string {
     let stringValue = ""

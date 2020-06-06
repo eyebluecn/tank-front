@@ -97,7 +97,7 @@ export default class StringUtil {
 
   /**
    * 获取到上num级路径
-   * 例子： /bamboo/setting/notification -> /bamboo/setting
+   * 例子： /tank/setting/notification -> /tank/setting
    * @param path 原路径
    * @param num 上几级，默认1级
    */
