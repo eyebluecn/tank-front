@@ -1,5 +1,5 @@
 import React from 'react';
-import {RouteComponentProps} from "react-router-dom";
+import {Link, RouteComponentProps} from "react-router-dom";
 import "./Index.less"
 import TankComponent from "../../common/component/TankComponent";
 import User from "../../common/model/user/User";
@@ -9,6 +9,7 @@ import {Button} from "antd";
 import {EditOutlined} from '@ant-design/icons';
 import InfoCell from "../widget/InfoCell";
 import Preference from "../../common/model/preference/Preference";
+import TankContentCard from '../widget/TankContentCard';
 
 
 interface IProps extends RouteComponentProps {
@@ -55,10 +56,12 @@ export default class Index extends TankComponent<IProps, IState> {
       <div className="page-preference-index">
 
         <TankTitle name={'网站偏好'}>
-          <Button type={"primary"} icon={<EditOutlined/>}>编辑</Button>
+          <Link to={'/preference/edit'}>
+            <Button type={"primary"} icon={<EditOutlined/>}>编辑</Button>
+          </Link>
         </TankTitle>
 
-        <div className={'content-card'}>
+        <TankContentCard>
           <InfoCell name={'网站名称'}>
             {this.preference.name}
           </InfoCell>
@@ -100,8 +103,7 @@ export default class Index extends TankComponent<IProps, IState> {
               https://tank-doc.eyeblue.cn/zh
             </a>
           </InfoCell>
-
-        </div>
+        </TankContentCard>
 
       </div>
     );
