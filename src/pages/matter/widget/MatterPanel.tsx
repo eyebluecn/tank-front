@@ -1,4 +1,5 @@
 import React from "react";
+import copy from 'copy-to-clipboard';
 import Matter from "../../../common/model/matter/Matter";
 import TankComponent from "../../../common/component/TankComponent";
 import Director from "./Director";
@@ -7,6 +8,7 @@ import Sun from "../../../common/model/global/Sun";
 import StringUtil from "../../../common/util/StringUtil";
 import DateUtil from "../../../common/util/DateUtil";
 import AnimateUtil from "../../../common/util/AnimateUtil";
+import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import {
   LockFilled,
   UnlockFilled,
@@ -15,14 +17,16 @@ import {
   EditFilled,
   DownloadOutlined,
   DeleteFilled,
+  InfoCircleTwoTone,
 } from "@ant-design/icons";
-import { Input, message } from 'antd';
+import { Modal } from 'antd';
 import SafeUtil from "../../../common/util/SafeUtil";
 
 interface IProps {
   matter: Matter;
   director: Director;
-  onCreateDirectorySuccess?: () => any
+  onCreateDirectorySuccess?: () => any,
+  onDeleteSuccess?: () => any
 }
 
 interface IState {}
@@ -55,7 +59,6 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     this.updateUI();
     setTimeout(() => {
       if (!this.inputRef.current) return;
-      console.log(this.inputRef.current);
       //如果是文件夹，全选中
       let dotIndex = matter.name!.lastIndexOf(".");
       if (dotIndex === -1) {
@@ -70,9 +73,24 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     });
   };
 
-  clipboard = () => {};
+  clipboard = () => {
+    let textToCopy = this.props.matter.getDownloadUrl();
+    copy(textToCopy);
+    MessageBoxUtil.success('操作成功');
+  };
 
-  deleteMatter = () => {};
+  deleteMatter = () => {
+    Modal.confirm({
+      title: '此操作不可撤回, 是否继续?',
+      icon: <InfoCircleTwoTone twoToneColor="#FFDC00"/>,
+      onOk: () => {
+        this.props.matter.httpDelete(() => {
+          MessageBoxUtil.success('操作成功');
+          this.props.onDeleteSuccess!();
+        })
+      }
+    });
+  };
 
   changeMatterName = (e: any) => {
     this.renameMatterName = e.currentTarget.value;
@@ -89,13 +107,13 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
 
     matter.httpRename(this.renameMatterName, () => {
       this.renamingLoading = false;
-      message.success('操作成功');
+      MessageBoxUtil.success('操作成功');
       //告诉导演，自己编辑完毕
       director.renameMode = false;
       matter.editMode = false
     },(msg:string) => {
       this.renamingLoading = false;
-      message.error(msg);
+      MessageBoxUtil.error(msg);
       //告诉导演，自己编辑完毕
       director.renameMode = false;
       matter.editMode = false;
@@ -113,7 +131,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     }, (msg: string) => {
       director.createMode = false;
       matter.editMode = false;
-      message.error(msg)
+      MessageBoxUtil.error(msg)
     }, () => this.updateUI());
   };
 

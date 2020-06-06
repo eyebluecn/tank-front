@@ -77,6 +77,7 @@ export default class List extends TankComponent<IProps, IState> {
               director={director}
               matter={matter}
               onCreateDirectorySuccess={this.refresh.bind(this)}
+              onDeleteSuccess={this.refresh.bind(this)}
              />
           )}
 
