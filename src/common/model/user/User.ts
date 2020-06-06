@@ -2,6 +2,8 @@ import SafeUtil from '../../util/SafeUtil';
 import BaseEntity from '../base/BaseEntity';
 import {UserRole} from './UserRole';
 import {UserStatus} from "./UserStatus";
+import ImageUtil from "../../util/ImageUtil";
+import defaultAvatarPath from "../../../assets/image/avatar.png";
 
 export default class User extends BaseEntity {
 
@@ -47,6 +49,15 @@ export default class User extends BaseEntity {
       password: this.password,
       uuid: this.uuid ? this.uuid : null,
     };
+  }
+
+
+  getAvatarUrl() {
+    if (this.avatarUrl) {
+      return ImageUtil.handleImageUrl(this.avatarUrl)
+    } else {
+      return defaultAvatarPath
+    }
   }
 
   //登录

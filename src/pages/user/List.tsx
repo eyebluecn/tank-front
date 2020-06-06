@@ -5,6 +5,7 @@ import SortDirection from '../../common/model/base/SortDirection';
 import Pager from '../../common/model/base/Pager';
 import Table, {ColumnProps} from 'antd/lib/table';
 import StringUtil from '../../common/util/StringUtil';
+import FileUtil from '../../common/util/FileUtil';
 import DateUtil from '../../common/util/DateUtil';
 import FilterPanel from '../widget/filter/FilterPanel';
 import TableEmpty from '../widget/TableEmpty';
@@ -12,9 +13,10 @@ import Sun from '../../common/model/global/Sun';
 import User from "../../common/model/user/User";
 import TankComponent from "../../common/component/TankComponent";
 import TankTitle from "../widget/TankTitle";
-import {Button, Tag} from "antd";
+import {Avatar, Button, Tag} from "antd";
 import {PlusOutlined} from '@ant-design/icons';
 import {UserRoleMap} from "../../common/model/user/UserRole";
+import {UserStatusMap} from "../../common/model/user/UserStatus";
 
 
 interface IProps extends RouteComponentProps {
@@ -94,7 +96,7 @@ export default class List extends TankComponent<IProps, IState> {
       title: '头像',
       dataIndex: 'avatarUrl',
       render: (text: any, record: User, index: number): React.ReactNode => (
-        <Link to={StringUtil.prePath(match.path) + '/detail/' + record.uuid}>{record.username}</Link>
+        <Avatar size="large" src={record.getAvatarUrl()}/>
       ),
     }, {
       title: '用户名',
@@ -111,15 +113,27 @@ export default class List extends TankComponent<IProps, IState> {
     }, {
       title: '单文件限制',
       dataIndex: 'sizeLimit',
+      render: (text: any, record: User, index: number): React.ReactNode => (
+        <span>{FileUtil.humanFileSize(record.sizeLimit)}</span>
+      ),
     }, {
       title: '已使用空间',
       dataIndex: 'totalSize',
+      render: (text: any, record: User, index: number): React.ReactNode => (
+        <span>{FileUtil.humanFileSize(record.totalSize)}</span>
+      ),
     }, {
       title: '空间限制',
       dataIndex: 'totalSizeLimit',
+      render: (text: any, record: User, index: number): React.ReactNode => (
+        <span>{FileUtil.humanFileSize(record.totalSizeLimit)}</span>
+      ),
     }, {
       title: '状态',
       dataIndex: 'status',
+      render: (text: any, record: User, index: number): React.ReactNode => (
+        <Tag color={UserStatusMap[record.status].color}>{UserStatusMap[record.status].name}</Tag>
+      ),
     }, {
       title: '上次ip',
       dataIndex: 'lastIp',

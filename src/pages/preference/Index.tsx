@@ -10,6 +10,7 @@ import {EditOutlined} from '@ant-design/icons';
 import InfoCell from "../widget/InfoCell";
 import Preference from "../../common/model/preference/Preference";
 import TankContentCard from '../widget/TankContentCard';
+import FileUtil from "../../common/util/FileUtil";
 
 
 interface IProps extends RouteComponentProps {
@@ -86,12 +87,12 @@ export default class Index extends TankComponent<IProps, IState> {
             {this.preference.downloadDirMaxNum === -1 ? '无限制' : this.preference.downloadDirMaxNum}
           </InfoCell>
 
-          <InfoCell name={'zip下载带下限制(B)'}>
-            {this.preference.downloadDirMaxSize === -1 ? '无限制' : this.preference.downloadDirMaxSize}
+          <InfoCell name={'zip下载大小限制'}>
+            {FileUtil.humanFileSize(this.preference.downloadDirMaxSize)}
           </InfoCell>
 
-          <InfoCell name={'用户默认总大小限制(B)'}>
-            {this.preference.defaultTotalSizeLimit === -1 ? '无限制' : this.preference.defaultTotalSizeLimit}
+          <InfoCell name={'用户默认总大小限制'}>
+            {FileUtil.humanFileSize(this.preference.defaultTotalSizeLimit)}
           </InfoCell>
 
           <InfoCell name={'允许自主注册'}>

@@ -5,12 +5,14 @@ import './Frame.less';
 import TankComponent from '../common/component/TankComponent';
 import UserLogin from './user/Login';
 
+import UserList from './user/List';
 import UserProfile from './user/Profile';
+import UserEdit from './user/Edit';
+
 import MatterDetail from './matter/Detail';
 import PreferenceIndex from './preference/Index';
 import PreferenceEdit from './preference/Edit';
 
-import UserList from './user/List';
 
 import MatterList from './matter/List';
 import MatterEdit from './matter/Edit';
@@ -165,6 +167,8 @@ class RawFrame extends TankComponent<IProps, IState> {
                 <Route path="/user/login" component={UserLogin}/>
                 <Route path="/user/profile" component={UserProfile}/>
                 <Route path="/user/list" component={UserList}/>
+                <Route path="/user/create" component={UserEdit}/>
+                <Route path="/user/edit/:uuid" component={UserEdit}/>
 
                 <Route path="/preference/index" component={PreferenceIndex}/>
                 <Route path="/preference/edit" component={PreferenceEdit}/>

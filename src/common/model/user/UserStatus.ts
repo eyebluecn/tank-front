@@ -1,4 +1,5 @@
-import SelectionOption from '../base/option/SelectionOption';
+import ColorSelectionOption from '../base/option/ColorSelectionOption';
+import Color from "../base/option/Color";
 
 
 enum UserStatus {
@@ -8,18 +9,20 @@ enum UserStatus {
 
 let UserStatuss: UserStatus[] = Object.keys(UserStatus).map(k => k as UserStatus);
 
-let UserStatusMap: { [key in keyof typeof UserStatus]: SelectionOption } = {
+let UserStatusMap: { [key in keyof typeof UserStatus]: ColorSelectionOption } = {
   OK: {
     'name': '正常',
     'value': 'OK',
+    'color': Color.SUCCESS,
   },
   DISABLED: {
     'name': '禁用',
     'value': 'DISABLED',
+    'color': Color.DANGER,
   },
 };
 
-let UserStatusList: SelectionOption[] = [];
+let UserStatusList: ColorSelectionOption[] = [];
 UserStatuss.forEach((type: UserStatus, index: number) => {
   UserStatusList.push(UserStatusMap[type]);
 });

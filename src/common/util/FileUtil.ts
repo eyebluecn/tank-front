@@ -109,4 +109,28 @@ export default class FileUtil {
       return require("../../assets/image/file/file.svg");
     }
   }
+
+
+  //把一个大小转变成方便读的格式
+  //human readable file size
+  static humanFileSize(bytes: number, si: boolean = false): string {
+    if (bytes == -1) {
+      return "无限制"
+    }
+
+    let thresh = si ? 1000 : 1024
+    if (Math.abs(bytes) < thresh) {
+      return bytes + ' B'
+    }
+    let units = si
+      ? ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+      : ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    let u = -1
+    do {
+      bytes /= thresh
+      ++u
+    } while (Math.abs(bytes) >= thresh && u < units.length - 1)
+    return bytes.toFixed(1) + ' ' + units[u]
+  }
+
 }
