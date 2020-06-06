@@ -126,23 +126,17 @@ export default class ImagePreviewer extends TankComponent<IProps, IState> {
     //添加到body
     document.body.appendChild(div);
 
-    console.log("路径", url, items)
-
     let photoSwipe = new PhotoSwipe(div, PhotoSwipeUIDefault, items, options);
 
     photoSwipe.listen('gettingData', function (index, item) {
 
-      console.log("在gettingData", index, item)
       if (!item.w || !item.h || item.w < 1 || item.h < 1) {
 
+        //这里为了获取图片真实大小
         const img: HTMLImageElement = new Image()
-
         img.onload = function () {
-          console.log("图片加载好了", img.width, img.height)
-
-          item.w = width
-          item.h = height
-
+          item.w = img.width
+          item.h = img.height
           photoSwipe.updateSize(true); // reinit Items
         }
         img.src = item.src!
@@ -151,14 +145,12 @@ export default class ImagePreviewer extends TankComponent<IProps, IState> {
     photoSwipe.init();
 
     photoSwipe.listen('close', () => {
-      console.log("photoSwipe close")
       if (div.parentNode) {
         //移除节点
         div.parentNode.removeChild(div);
       }
     })
     photoSwipe.listen('afterChange', () => {
-      console.log("photoSwipe afterChange")
 
     })
 

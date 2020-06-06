@@ -99,7 +99,7 @@ export default class List extends TankComponent<IProps, IState> {
       render: (text: any, record: User, index: number): React.ReactNode => (
         <img alt="avatar" className='avatar-middle cursor' src={record.getAvatarUrl()} onClick={() => {
 
-          ImagePreviewer.showSinglePhoto(record.getAvatarUrl(), 200, 200)
+          ImagePreviewer.showSinglePhoto(record.getAvatarUrl(true))
 
         }}/>
       ),

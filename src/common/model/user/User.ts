@@ -56,9 +56,9 @@ export default class User extends BaseEntity {
   }
 
 
-  getAvatarUrl() {
+  getAvatarUrl(origin: boolean = false) {
     if (this.avatarUrl) {
-      return ImageUtil.handleImageUrl(this.avatarUrl)
+      return ImageUtil.handleImageUrl(this.avatarUrl, origin)
     } else {
       return defaultAvatarPath
     }
