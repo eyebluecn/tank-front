@@ -23,7 +23,7 @@ export default class User extends BaseEntity {
   password: string | null = null
   avatarUrl: string | null = null
   lastIp: string | null = null
-  lastTime: string | null = null
+  lastTime: Date = new Date()
   //默认大小限制100Mb.
   sizeLimit: number = 104857600
   totalSize: number = 0
@@ -40,6 +40,8 @@ export default class User extends BaseEntity {
 
   assign(obj: any) {
     super.assign(obj);
+
+    this.assignEntity("lastTime", Date)
 
   }
 

@@ -165,7 +165,7 @@ export default class BaseEntity extends HttpBase {
     let that = this;
     if (!this.uuid) {
 
-      this.errorMessage = 'id未指定，无法获取到详情！';
+      this.errorMessage = 'uuid未指定，无法获取到详情！';
 
       this.defaultErrorHandler(this.errorMessage, errorCallback);
 
