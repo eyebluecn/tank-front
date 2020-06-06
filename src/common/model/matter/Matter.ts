@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import BaseEntity from "../base/BaseEntity";
 import Filter from "../base/filter/Filter";
 import FileUtil from "../../util/FileUtil";
@@ -6,10 +7,13 @@ import EnvUtil from "../../util/EnvUtil";
 import InputFilter from "../base/filter/InputFilter";
 import CheckFilter from "../base/filter/CheckFilter";
 import SortFilter from "../base/filter/SortFilter";
+import MimeUtil from "../../util/MimeUtil";
+import StringUtil from "../../util/StringUtil";
+import NumberUtil from "../../util/NumberUtil";
 
 export default class Matter extends BaseEntity {
-  puuid: string | null = null;
-  userUuid: string | null = null;
+  puuid: string = '';
+  userUuid: string = '';
   dir: boolean = false;
   alien: boolean = false;
   name: string | null = null;
@@ -32,7 +36,7 @@ export default class Matter extends BaseEntity {
   //给用户的提示文字
   uploadHint: string | null = null;
   //浏览器中选择好的原生file，未作任何处理。
-  file: string | null = null;
+  file: File | null = null;
   //当前上传进度的数值 0-1之间
   progress: number = 0;
   //实时上传速度 byte/s
@@ -144,8 +148,336 @@ export default class Matter extends BaseEntity {
     }
   }
 
-  getPreviewUrl(downloadTokenUuid = null) {
+  //下载文件
+  download(downloadUrl?: string | null) {
+    if (!downloadUrl) {
+      downloadUrl = this.getDownloadUrl()
+    }
+    window.open(downloadUrl)
+  }
+
+  //下载zip包
+  downloadZip(uuidsString: string) {
+    window.open(EnvUtil.currentHost() + Matter.URL_MATTER_ZIP + "?uuids=" + uuidsString)
+  }
+
+  //预览文件 在分享的预览中才主动传入previewUrl.
+  preview(previewUrl?: string | null) {
+    let that = this;
+
+    let shareMode = true
+    if (previewUrl) {
+      shareMode = true
+    } else {
+      shareMode = false
+      previewUrl = that.getPreviewUrl()
+    }
+
+    // todo preview
+    // if (that.isImage()) {
+    //
+    //   Vue.$photoSwipePlugin.showPhoto(previewUrl)
+    //
+    // } else if (that.isPdf()) {
+    //
+    //   Vue.$previewer.previewPdf(that.name, previewUrl, that.size)
+    //
+    // } else if (that.isDoc() || that.isPpt() || that.isXls()) {
+    //
+    //   //如果是分享中的预览，直接就可以公有访问。
+    //   if (shareMode) {
+    //     Vue.$previewer.previewOffice(that.name, previewUrl, that.size)
+    //   } else {
+    //
+    //     //如果是共有文件 office文件的预览请求一次性链接。
+    //     if (this.privacy) {
+    //
+    //       let downloadToken = new DownloadToken()
+    //       downloadToken.httpFetchDownloadToken(that.uuid, function () {
+    //         Vue.$previewer.previewOffice(that.name, that.getPreviewUrl(downloadToken.uuid), that.size)
+    //       })
+    //     } else {
+    //       Vue.$previewer.previewOffice(that.name, previewUrl, that.size)
+    //     }
+    //   }
+    //
+    //
+    // } else if (that.isText()) {
+    //
+    //   Vue.$previewer.previewText(that.name, previewUrl, that.size)
+    //
+    // } else if (that.isAudio()) {
+    //
+    //   Vue.$previewer.previewAudio(that.name, previewUrl, that.size)
+    //
+    // } else if (that.isVideo()) {
+    //
+    //   Vue.$previewer.previewVideo(that.name, previewUrl, that.size)
+    //
+    // } else {
+    //   window.open(this.getPreviewUrl())
+    // }
+  }
+
+  httpCreateDirectory(successCallback?: any, errorCallback?: any) {
+    let that = this
+    let form = {'userUuid': that.userUuid, 'name': that.name, 'puuid': that.puuid}
+
+    this.httpPost(Matter.URL_MATTER_CREATE_DIRECTORY, form, function (response: any) {
+      that.assign(response.data.data)
+      typeof successCallback === 'function' && successCallback(response)
+    }, errorCallback)
+  }
+
+  httpDelete(successCallback?: any, errorCallback?: any) {
+    this.httpPost(Matter.URL_MATTER_DELETE, {'uuid': this.uuid}, function (response: any) {
+      typeof successCallback === 'function' && successCallback(response)
+    }, errorCallback)
+  }
+
+  httpDeleteBatch(uuids: string, successCallback?: any, errorCallback?: any) {
+    this.httpPost(Matter.URL_MATTER_DELETE_BATCH, {'uuids': uuids}, function (response: any) {
+      typeof successCallback === 'function' && successCallback(response)
+    }, errorCallback)
+  }
+
+  httpRename(name: string, successCallback?: any, errorCallback?: any) {
+    let that = this
+    this.httpPost(Matter.URL_MATTER_RENAME, {'uuid': this.uuid, 'name': name}, function (response: any) {
+      that.assign(response.data.data)
+      typeof successCallback === 'function' && successCallback(response)
+    }, errorCallback)
+  }
+
+  httpChangePrivacy(privacy:boolean, successCallback?: any, errorCallback?: any) {
+    let that = this
+    this.httpPost(Matter.URL_CHANGE_PRIVACY, {'uuid': this.uuid, 'privacy': privacy}, function (response:any) {
+      that.privacy = privacy
+      if (typeof successCallback === "function") {
+        successCallback(response)
+      } else {
+        message.success(response.data.msg)
+      }
+    }, errorCallback)
+  }
+
+  httpMove(srcUuids: string, destUuid:string, successCallback?:any, errorCallback?:any) {
+    let form: any = {'srcUuids': srcUuids}
+    if (destUuid) {
+      form.destUuid = destUuid
+    } else {
+      form.destUuid = 'root'
+    }
+    this.httpPost(Matter.URL_MATTER_MOVE, form, function (response: any) {
+      typeof successCallback === 'function' && successCallback(response)
+    }, errorCallback)
+  }
+
+  /*
+  以下是和上传相关的内容。
+   */
+
+  //从file中装填metaData
+  validate() {
+
+    if (!this.file) {
+      this.errorMessage = '请选择上传文件'
+      return false
+    }
+
+    this.name = this.file.name
+    if (!this.name) {
+      this.errorMessage = '请选择上传文件'
+      return false
+    }
+
+    this.size = this.file.size
+
+    this.errorMessage = null
+    return true
+
+  }
+
+  //验证过滤器有没有误填写，这个方法主要给开发者使用。
+  validateFilter() {
+
+    let filter = this.filter
+    if (filter === null || filter === '') {
+      this.errorMessage = '过滤器设置错误，请检查-1'
+      console.error('过滤器设置错误，请检查.-1')
+      return false
+    }
+    if (filter !== '*') {
+      let regex1 = /^(image|audio|video|text)(\|(image|audio|video|text))*$/g
+      let regex2 = /^(\.[\w]+)(\|\.[\w]+)*$/
+      // 测试几种特殊类型 image|audio|video|text
+
+      if (!regex1.test(filter)) {
+        //测试后缀名
+        if (!regex2.test(filter)) {
+          this.errorMessage = '过滤器设置错误，请检查-2'
+          console.error('过滤器设置错误，请检查.-2')
+          return false
+        }
+      }
+    }
+
+    //validate privacy
+    let privacy = this.privacy
+    if (!privacy) {
+      if (privacy !== false) {
+        this.errorMessage = 'privacy属性为Boolean类型'
+        console.error('privacy属性为Boolean类型.')
+        return false
+      }
+    }
+
+    return true
+  }
+
+  //验证用户上传的文件是否符合过滤器
+  validateFileType() {
+    if (!this.filter) {
+      this.errorMessage = '该过滤条件有问题'
+      return false
+    }
+    if (this.filter === '*') {
+      this.errorMessage = null
+      return true
+    }
+
+    let type = MimeUtil.getMimeType(this.name)
+    let extension = MimeUtil.getExtension(this.name)
+    let simpleType = type.substring(0, type.indexOf('/'))
+
+    //专门解决android微信浏览器中名字乱命名的bug.
+    if (StringUtil.startWith(this.name, 'image%3A')) {
+      extension = 'jpg'
+      simpleType = 'image'
+    } else if (StringUtil.startWith(this.name, 'video%3A')) {
+      extension = 'mp4'
+      simpleType = 'video'
+    } else if (StringUtil.startWith(this.name, 'audio%3A')) {
+      extension = 'mp3'
+      simpleType = 'audio'
+    }
+
+    if (StringUtil.containStr(this.filter, extension)) {
+      this.errorMessage = null
+      return true
+    }
+
+    if (simpleType) {
+      if (StringUtil.containStr(this.filter, simpleType)) {
+        this.errorMessage = null
+        return true
+      }
+    }
+    this.errorMessage = '您上传的文件格式不符合要求'
+    return false
+  }
+
+  //文件上传
+  httpUpload(successCallback?: any, failureCallback?:any) {
+
+    let that = this
+
+    //验证是否装填好
+    if (!this.validate()) {
+      return
+    }
+
+    //验证用户填写的过滤条件是否正确
+    if (!this.validateFilter()) {
+      return
+    }
+
+    //验证是否满足过滤器
+    if (!this.validateFileType()) {
+      return
+    }
+
+    //（兼容性：chrome，ff，IE9及以上）
+    let formData = new FormData()
+
+    formData.append('userUuid', that.userUuid)
+    formData.append('puuid', that.puuid)
+    formData.append('file', that.file!)
+    formData.append('alien', that.alien.toString())
+    formData.append('privacy', that.privacy.toString())
+
+
+    //闭包
+    let lastTimeStamp = new Date().getTime()
+    let lastSize = 0
+    that.httpPost(Matter.URL_MATTER_UPLOAD, formData, function (response: any) {
+
+      that.uuid = response.data.data.uuid
+
+      if (typeof successCallback === "function") {
+        successCallback()
+      }
+
+    }, function (response: any) {
+
+
+      that.errorMessage = '上传出错，请稍后重试'
+      that.clear()
+
+      that.defaultErrorHandler(response, failureCallback)
+
+    }, {
+      progress: function (event: any) {
+
+        //上传进度。
+        that.progress = event.loaded / event.total
+
+        let currentTime = (new Date()).getTime();
+        let deltaTime = currentTime - lastTimeStamp;
+
+
+        //每2s计算一次速度
+        if (deltaTime > 1000) {
+          lastTimeStamp = currentTime;
+
+          let currentSize = event.loaded;
+          let deltaSize = currentSize - lastSize;
+          lastSize = currentSize;
+
+
+          that.speed = NumberUtil.parseInt((deltaSize / (deltaTime / 1000)).toFixed(0));
+        }
+
+      }
+    })
+
+  }
+
+  //清除文件
+  clear() {
+    //filter,privacy不变
+    let matter = new Matter()
+    matter.filter = this.filter
+    matter.privacy = this.privacy
+    matter.errorMessage = this.errorMessage
+    matter.uploadHint = this.uploadHint
+    this.assign(matter)
+  }
+
+  getPreviewUrl(downloadTokenUuid?: ''): string {
     return EnvUtil.currentHost() + '/api/alien/preview/' + this.uuid + '/' + this.name + (downloadTokenUuid ? '?downloadTokenUuid=' + downloadTokenUuid : '')
+  }
+
+  getDownloadUrl(downloadTokenUuid?: ''): string {
+    return EnvUtil.currentHost() + '/api/alien/download/' + this.uuid + '/' + this.name + (downloadTokenUuid ? '?downloadTokenUuid=' + downloadTokenUuid : '')
+  }
+
+  getShareDownloadUrl(shareUuid: string, shareCode:string, shareRootUuid:string): string {
+    return EnvUtil.currentHost() + '/api/alien/download/' + this.uuid + '/' + this.name + '?shareUuid=' + shareUuid + "&shareCode=" + shareCode + "&shareRootUuid=" + shareRootUuid
+  }
+
+  getSharePreviewUrl(shareUuid:string, shareCode:string, shareRootUuid:String): string {
+    return EnvUtil.currentHost() + '/api/alien/preview/' + this.uuid + '/' + this.name + '?shareUuid=' + shareUuid + "&shareCode=" + shareCode + "&shareRootUuid=" + shareRootUuid
   }
 
 }

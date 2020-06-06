@@ -40,6 +40,14 @@ export default class StringUtil {
     }).replace(/\s+/g, '')
   }
 
+  //一个字符串包含子字符串
+  static containStr(father: string | null, child: string): boolean {
+
+    if (father === null || father === '') {
+      return false
+    }
+    return father.indexOf(child) !== -1
+  }
 
   //将首字母大写
   static capitalize(str: any) {

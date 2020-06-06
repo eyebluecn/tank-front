@@ -63,7 +63,7 @@ export default class BaseEntity extends HttpBase {
 
 
   //提交之前对自己进行验证。返回错误信息，null表示没有错误。
-  validate() {
+  validate(): any {
 
     return null;
   }

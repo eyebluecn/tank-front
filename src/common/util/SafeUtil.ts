@@ -5,8 +5,7 @@ export default class SafeUtil {
     if (typeof callback === "function") {
       return callback
     } else {
-      return function () {
-      }
+      return SafeUtil.noop
     }
   }
 
