@@ -16,10 +16,13 @@ import {
   DownloadOutlined,
   DeleteFilled,
 } from "@ant-design/icons";
+import { Input, message } from 'antd';
+import SafeUtil from "../../../common/util/SafeUtil";
 
 interface IProps {
   matter: Matter;
   director: Director;
+  onCreateDirectorySuccess?: () => any
 }
 
 interface IState {}
@@ -27,6 +30,9 @@ interface IState {}
 export default class MatterPanel extends TankComponent<IProps, IState> {
   //正在重命名的临时字段
   renameMatterName: string = "";
+  //正在向服务器提交rename的请求
+  renamingLoading:boolean = false;
+  showMore: boolean = false;
 
   inputRef = React.createRef<HTMLInputElement>();
 
@@ -49,6 +55,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     this.updateUI();
     setTimeout(() => {
       if (!this.inputRef.current) return;
+      console.log(this.inputRef.current);
       //如果是文件夹，全选中
       let dotIndex = matter.name!.lastIndexOf(".");
       if (dotIndex === -1) {
@@ -67,7 +74,62 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
 
   deleteMatter = () => {};
 
-  blurTrigger = () => {};
+  changeMatterName = (e: any) => {
+    this.renameMatterName = e.currentTarget.value;
+    this.updateUI();
+  };
+
+  finishRename = () => {
+    //有可能按enter的时候和blur同时了。
+    if (this.renamingLoading) {
+      return
+    }
+    const { matter, director } = this.props;
+    this.renamingLoading = true;
+
+    matter.httpRename(this.renameMatterName).then(() => {
+      this.renamingLoading = false;
+      message.success('操作成功');
+      //告诉导演，自己编辑完毕
+      director.renameMode = false;
+      matter.editMode = false
+    }).catch(msg => {
+      this.renamingLoading = false;
+      message.error(msg);
+      //告诉导演，自己编辑完毕
+      director.renameMode = false;
+      matter.editMode = false;
+    }).finally(() => {
+      this.updateUI();
+    })
+
+  };
+
+  finishCreateDirectory = () => {
+    const { matter, director, onCreateDirectorySuccess } = this.props;
+    matter.name = this.renameMatterName;
+    matter.httpCreateDirectory( () => {
+      director.createMode = false;
+      matter.editMode = false;
+      matter.assign(new Matter());
+      SafeUtil.safeCallback(onCreateDirectorySuccess);
+    },  (msg: string) => {
+      director.createMode = false;
+      matter.editMode = false;
+      message.error(msg)
+    })
+  };
+
+  blurTrigger = () => {
+    const { matter, director } = this.props;
+    if(matter.editMode) {
+      if (director.createMode) {
+        this.finishCreateDirectory()
+      } else if (director.renameMode) {
+        this.finishRename()
+      }
+    }
+  };
   enterTrigger = () => {};
 
   changePrivacy = (privacy: boolean) => {
@@ -152,7 +214,9 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                     <input
                       ref={this.inputRef}
                       className={matter.uuid!}
-                      placeholder=""
+                      value={this.renameMatterName}
+                      onChange={this.changeMatterName.bind(this)}
+                      placeholder="请输入名称"
                       onBlur={this.blurTrigger.bind(this)}
                       onKeyUp={this.enterTrigger.bind(this)}
                     />

@@ -244,7 +244,7 @@ export default class Matter extends BaseEntity {
 
   httpRename(name: string, successCallback?: any, errorCallback?: any) {
     let that = this
-    this.httpPost(Matter.URL_MATTER_RENAME, {'uuid': this.uuid, 'name': name}, function (response: any) {
+    return this.httpPost(Matter.URL_MATTER_RENAME, {'uuid': this.uuid, 'name': name}, function (response: any) {
       that.assign(response.data.data)
       typeof successCallback === 'function' && successCallback(response)
     }, errorCallback)

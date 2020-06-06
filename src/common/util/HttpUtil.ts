@@ -8,7 +8,7 @@ export default class HttpUtil {
 
   static httpGet(url: any, params = {}, successCallback?: any, errorCallback?: any, finallyCallback?: any, opts?: any) {
 
-    axios
+    return axios
       .get(url, {
         params: params
       })
@@ -21,9 +21,9 @@ export default class HttpUtil {
         SafeUtil.safeCallback(errorCallback)(error)
 
       })
-      .then(function (res) {
+      .finally(function () {
 
-        SafeUtil.safeCallback(finallyCallback)(res)
+        SafeUtil.safeCallback(finallyCallback)()
 
       });
   }
@@ -31,8 +31,7 @@ export default class HttpUtil {
 
   static httpPost(url: any, params = {}, successCallback?: any, errorCallback?: any, finallyCallback?: any, opts?: any) {
 
-
-    axios
+    return axios
       .post(url, params, opts)
       .then(function (response) {
 
@@ -44,9 +43,9 @@ export default class HttpUtil {
         SafeUtil.safeCallback(errorCallback)(error)
 
       })
-      .then(function (res) {
+      .finally(function () {
 
-        SafeUtil.safeCallback(finallyCallback)(res)
+        SafeUtil.safeCallback(finallyCallback)()
 
       });
   }
@@ -69,7 +68,7 @@ export default class HttpUtil {
       onUploadProgress: processCallback
     }
 
-    axios
+    return axios
       .post(url, formData, config)
       .then(function (response) {
 

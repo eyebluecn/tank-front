@@ -155,7 +155,7 @@ export default class HttpBase extends ViewBase {
     //更新react控件的状态
     that.updateUI()
 
-    HttpUtil.httpGet(url, params, function (response: any) {
+    return HttpUtil.httpGet(url, params, function (response: any) {
       //有可能正常接口回来的数据也是错误的。交给错误处理器处理。
       if (that.specialErrorHandler(response)) {
 
@@ -219,7 +219,7 @@ export default class HttpBase extends ViewBase {
     opts["headers"]['Content-Type'] = 'application/x-www-form-urlencoded'
 
 
-    HttpUtil.httpPost(url, formData, function (response: any) {
+    return HttpUtil.httpPost(url, formData, function (response: any) {
 
       //有可能正常接口回来的数据也是错误的。交给错误处理器处理。
       if (that.specialErrorHandler(response)) {
