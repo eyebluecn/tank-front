@@ -2,22 +2,22 @@ import MimeUtil from "./MimeUtil";
 import StringUtil from "./StringUtil";
 
 export default class FileUtil {
-  static isImage(name: string | null) {
+  static isImage(name: string | null): boolean {
     let mimeType = MimeUtil.getMimeType(name);
     return StringUtil.startWith(mimeType, "image");
   }
 
-  static isPdf(name: string | null) {
+  static isPdf(name: string | null): boolean {
     let mimeType = MimeUtil.getMimeType(name);
     return StringUtil.startWith(mimeType, "application/pdf");
   }
 
-  static isText(name: string | null) {
+  static isText(name: string | null): boolean {
     let mimeType = MimeUtil.getMimeType(name);
     return StringUtil.startWith(mimeType, "text");
   }
 
-  static isDoc(name: string | null) {
+  static isDoc(name: string | null): boolean {
     let mimeType = MimeUtil.getMimeType(name);
     return (
       StringUtil.startWith(mimeType, "application/msword") ||
@@ -28,7 +28,7 @@ export default class FileUtil {
     );
   }
 
-  static isPpt(name: string | null) {
+  static isPpt(name: string | null): boolean {
     let mimeType = MimeUtil.getMimeType(name);
     return (
       StringUtil.startWith(mimeType, "application/vnd.ms-powerpoint") ||
@@ -39,7 +39,7 @@ export default class FileUtil {
     );
   }
 
-  static isXls(name: string | null) {
+  static isXls(name: string | null): boolean {
     let mimeType = MimeUtil.getMimeType(name);
     return (
       StringUtil.startWith(mimeType, "application/vnd.ms-excel") ||
@@ -50,17 +50,17 @@ export default class FileUtil {
     );
   }
 
-  static isAudio(name: string | null) {
+  static isAudio(name: string | null): boolean {
     let mimeType = MimeUtil.getMimeType(name);
     return StringUtil.startWith(mimeType, "audio");
   }
 
-  static isVideo(name: string | null) {
+  static isVideo(name: string | null): boolean {
     let mimeType = MimeUtil.getMimeType(name);
     return StringUtil.startWith(mimeType, "video");
   }
 
-  static isPsd(name: string | null) {
+  static isPsd(name: string | null): boolean {
     let extension = MimeUtil.getExtension(name);
     return extension === ".psd";
   }
@@ -70,32 +70,32 @@ export default class FileUtil {
    * @param name
    * @param idDir
    */
-  static getIcon(name: string | null, idDir: boolean = false) {
+  static getIcon(name: string | null, idDir: boolean = false): any {
     if (idDir) {
-      return require("../../assets/img/file/folder.svg");
+      return require("../../assets/image/file/folder.svg");
     }
 
     if (FileUtil.isPdf(name)) {
-      return require("../../assets/img/file/pdf.svg");
+      return require("../../assets/image/file/pdf.svg");
     } else if (FileUtil.isDoc(name)) {
-      return require("../../assets/img/file/doc.svg");
+      return require("../../assets/image/file/doc.svg");
     } else if (FileUtil.isPpt(name)) {
-      return require("../../assets/img/file/ppt.svg");
+      return require("../../assets/image/file/ppt.svg");
     } else if (FileUtil.isXls(name)) {
-      return require("../../assets/img/file/xls.svg");
+      return require("../../assets/image/file/xls.svg");
     } else if (FileUtil.isAudio(name)) {
-      return require("../../assets/img/file/audio.svg");
+      return require("../../assets/image/file/audio.svg");
     } else if (
       FileUtil.isVideo(name) ||
       MimeUtil.getExtension(name) === ".mkv"
     ) {
-      return require("../../assets/img/file/video.svg");
+      return require("../../assets/image/file/video.svg");
     } else if (FileUtil.isText(name)) {
-      return require("../../assets/img/file/text.svg");
+      return require("../../assets/image/file/text.svg");
     } else if (FileUtil.isPsd(name)) {
-      return require("../../assets/img/file/psd.svg");
+      return require("../../assets/image/file/psd.svg");
     } else if (FileUtil.isImage(name)) {
-      return require("../../assets/img/file/image.svg");
+      return require("../../assets/image/file/image.svg");
     } else if (
       StringUtil.endWith(name, "zip") ||
       StringUtil.endWith(name, "rar") ||
@@ -104,9 +104,9 @@ export default class FileUtil {
       StringUtil.endWith(name, "tar") ||
       StringUtil.endWith(name, "gz")
     ) {
-      return require("../../assets/img/file/archive.svg");
+      return require("../../assets/image/file/archive.svg");
     } else {
-      return require("../../assets/img/file/file.svg");
+      return require("../../assets/image/file/file.svg");
     }
   }
 }

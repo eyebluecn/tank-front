@@ -76,27 +76,7 @@ export default class Detail extends TankComponent<IProps, IState> {
 
           <div className="info">
 
-            {/*<Row>*/}
-            {/*  <Col span={12}>*/}
-            {/*    <InfoCell name="文件名称">*/}
-            {/*      {matter.title}*/}
-            {/*    </InfoCell>*/}
-            {/*  </Col>*/}
-            {/*  <Col span={12}>*/}
-            {/*    <InfoCell name="作者">*/}
-            {/*      {matter.author}*/}
-            {/*    </InfoCell>*/}
-            {/*  </Col>*/}
-            {/*  <Col span={12}>*/}
-            {/*    <InfoCell name="路径">*/}
-            {/*      {matter.path}*/}
-            {/*    </InfoCell>*/}
-            {/*  </Col>*/}
 
-
-            {/*</Row>*/}
-
-            <div className="matter" dangerouslySetInnerHTML={{__html: ''+ matter.html}} />
 
           </div>
 

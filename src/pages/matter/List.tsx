@@ -94,7 +94,7 @@ export default class List extends TankComponent<IProps, IState> {
       title: '文件名称',
       dataIndex: 'title',
       render: (text: any, record: Matter, index: number): React.ReactNode => (
-        <Link to={StringUtil.prePath(match.path) + '/detail/' + record.uuid}>{record.title}</Link>
+        <Link to={StringUtil.prePath(match.path) + '/detail/' + record.uuid}>{record}</Link>
       ),
     }, {
       title: '路径',
