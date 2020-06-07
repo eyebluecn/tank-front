@@ -9,15 +9,17 @@ import FileUtil from '../../common/util/FileUtil';
 import DateUtil from '../../common/util/DateUtil';
 import FilterPanel from '../widget/filter/FilterPanel';
 import TableEmpty from '../widget/TableEmpty';
-import Sun from '../../common/model/global/Sun';
 import User from "../../common/model/user/User";
 import TankComponent from "../../common/component/TankComponent";
 import TankTitle from "../widget/TankTitle";
-import {Avatar, Button, Tag} from "antd";
-import {PlusOutlined} from '@ant-design/icons';
+import {Button, Tag, Tooltip} from "antd";
+import {CheckCircleOutlined, PlusOutlined, StopOutlined, UserSwitchOutlined} from '@ant-design/icons';
 import {UserRoleMap} from "../../common/model/user/UserRole";
-import {UserStatusMap} from "../../common/model/user/UserStatus";
-import ImagePreviewer from "../widget/previewer/ImagePreviewer";
+import {UserStatus, UserStatusMap} from "../../common/model/user/UserStatus";
+import {EditOutlined} from "@ant-design/icons/lib";
+import MessageBoxUtil from "../../common/util/MessageBoxUtil";
+import Color from "../../common/model/base/option/Color";
+import TransfigurationModal from "./widget/TransfigurationModal";
 
 
 interface IProps extends RouteComponentProps {
@@ -69,19 +71,22 @@ export default class List extends TankComponent<IProps, IState> {
     that.pager.httpList();
   }
 
-  createUser() {
-
-    let that = this;
-
-
-    //router中传入的路由相关对象
-    let match = this.props.match;
-
-
-    let url: string = StringUtil.prePath(match.path) + `/create`;
-
-    Sun.navigateTo(url);
+  toggleStatus(user: User) {
+    let that = this
+    user.httpToggleStatus(function () {
+      MessageBoxUtil.success("操作成功！")
+      that.updateUI()
+    })
   }
+
+
+  transfiguration(user: User) {
+
+    let that = this
+    TransfigurationModal.open(user)
+
+  }
+
 
   render() {
 
@@ -160,8 +165,34 @@ export default class List extends TankComponent<IProps, IState> {
 
           <Link title="编辑"
                 to={StringUtil.prePath(match.path) + '/edit/' + record.uuid}>
-            <span>编辑</span>
+            <Tooltip title="编辑">
+              <EditOutlined className="btn-action"/>
+            </Tooltip>
           </Link>
+
+          {
+            record.status === UserStatus.OK && (
+              <Tooltip title="禁用">
+                <StopOutlined className="btn-action" style={{color: Color.DANGER}}
+                              onClick={this.toggleStatus.bind(this, record)}/>
+              </Tooltip>
+            )
+          }
+
+          {
+            record.status === UserStatus.DISABLED && (
+              <Tooltip title="激活">
+                <CheckCircleOutlined className="btn-action" style={{color: Color.SUCCESS}}
+                                     onClick={this.toggleStatus.bind(this, record)}/>
+              </Tooltip>
+            )
+          }
+
+          <Tooltip title="变身">
+                <UserSwitchOutlined className="btn-action" style={{color: Color.PRIMARY}}
+                                    onClick={this.transfiguration.bind(this, record)}/>
+              </Tooltip>
+
 
         </span>
       ),

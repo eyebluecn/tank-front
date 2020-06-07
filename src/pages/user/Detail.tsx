@@ -12,13 +12,14 @@ import {Link, RouteComponentProps} from "react-router-dom";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import {UserRole, UserRoleMap} from "../../common/model/user/UserRole";
 import FileUtil from "../../common/util/FileUtil";
-import {UserStatusMap} from "../../common/model/user/UserStatus";
+import {UserStatus, UserStatusMap} from "../../common/model/user/UserStatus";
 import BrowserUtil from "../../common/util/BrowserUtil";
 import SingleTextModal from "../widget/SingleTextModal";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import ChangePasswordModal from "./widget/ChangePasswordModal";
 import {EditOutlined, UnlockOutlined, UserSwitchOutlined} from '@ant-design/icons';
 import TransfigurationModal from "./widget/TransfigurationModal";
+import {StopOutlined} from "@ant-design/icons/lib";
 
 interface RouteParam {
   uuid: string
@@ -71,6 +72,16 @@ export default class Detail extends TankComponent <IProps, IState> {
     let currentUser: User = this.currentUser
     TransfigurationModal.open(currentUser)
 
+  }
+
+  toggleStatus() {
+    let that = this
+    let user: User = this.user
+    let currentUser: User = this.currentUser
+    currentUser.httpToggleStatus(function () {
+      MessageBoxUtil.success("操作成功！")
+      that.updateUI()
+    })
   }
 
   changePassword() {
@@ -133,6 +144,18 @@ export default class Detail extends TankComponent <IProps, IState> {
               编辑
             </Button>
           </Link>
+
+          {
+            (user.role === UserRole.ADMINISTRATOR && currentUser.uuid !== user.uuid) && (
+              <Button className='ml10' type="primary"
+                      danger={currentUser.status === UserStatus.OK}
+                      icon={<StopOutlined/>}
+                      onClick={this.toggleStatus.bind(this)}>
+                {currentUser.status === UserStatus.OK ? '禁用' : '激活'}
+              </Button>
+            )
+          }
+
         </TankTitle>
 
         <TankContentCard loading={currentUser.detailLoading}>

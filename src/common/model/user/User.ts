@@ -1,9 +1,13 @@
 import SafeUtil from '../../util/SafeUtil';
 import BaseEntity from '../base/BaseEntity';
 import {UserRole} from './UserRole';
-import {UserStatus} from "./UserStatus";
+import {UserStatus, UserStatusList} from "./UserStatus";
 import ImageUtil from "../../util/ImageUtil";
 import defaultAvatarPath from "../../../assets/image/avatar.png";
+import Filter from "../base/filter/Filter";
+import SortFilter from "../base/filter/SortFilter";
+import InputFilter from '../base/filter/InputFilter';
+import SelectionFilter from "../base/filter/SelectionFilter";
 
 export default class User extends BaseEntity {
 
@@ -43,6 +47,17 @@ export default class User extends BaseEntity {
 
     this.assignEntity("lastTime", Date)
 
+  }
+
+
+  getFilters(): Filter[] {
+    return [
+      ...super.getFilters(),
+      new SortFilter("按上次登录时间排序", "orderLastTime"),
+      new InputFilter("用户名", "username", "按用户名搜索"),
+      new SelectionFilter("状态", "status", UserStatusList),
+
+    ]
   }
 
   getForm(): any {
@@ -155,7 +170,7 @@ export default class User extends BaseEntity {
     let that = this
     this.httpPost(User.URL_USER_TOGGLE_STATUS, {'uuid': this.uuid}, function (response: any) {
 
-
+      that.assign(response.data.data);
       SafeUtil.safeCallback(successCallback)(response);
 
 
