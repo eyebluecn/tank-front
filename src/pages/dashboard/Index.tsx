@@ -3,7 +3,7 @@ import {Link, RouteComponentProps} from "react-router-dom";
 import "./Index.less"
 import TankComponent from "../../common/component/TankComponent";
 import TankTitle from "../widget/TankTitle";
-import {Col, Row} from 'antd';
+import {Alert, Col, Row} from 'antd';
 import RatePanel from "./widget/RatePanel";
 import ReactEcharts from 'echarts-for-react';
 import Echarts from 'echarts';
@@ -415,6 +415,13 @@ export default class Index extends TankComponent<IProps, IState> {
 
 
         </Row>
+
+        <div>
+          <Alert
+            message="温馨提示：本页面数据每日凌晨5点清洗一次"
+            type="warning"
+          />
+        </div>
 
 
       </div>
