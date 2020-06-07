@@ -31,6 +31,19 @@ export default class FinishPanel extends TankComponent<IProps, IState> {
     that.updateUI();
   }
 
+  finish() {
+
+    let that = this
+    let install: Install = this.props.install
+
+    install.httpFinish(function () {
+
+
+      window.location.href = "/"
+
+    })
+
+  }
 
   render() {
 
@@ -43,7 +56,7 @@ export default class FinishPanel extends TankComponent<IProps, IState> {
           title="安装信息配置完毕!"
           subTitle="点击下方按钮来完成安装过程并进入首页。"
           extra={[
-            <Button icon={<HomeOutlined/>} type="primary" key="home">
+            <Button icon={<HomeOutlined/>} type="primary" key="home" onClick={this.finish.bind(this)}>
               完成，并进入首页
             </Button>
           ]}

@@ -56,12 +56,12 @@ export default class SetAdminPanel extends TankComponent<IProps, IState> {
     let that = this
     let install: Install = this.props.install
 
-    if (install.tableCreated()) {
+    if (install.adminConfigured) {
 
       this.props.onNextStep()
 
     } else {
-      MessageBoxUtil.error("请首先完成建表")
+      MessageBoxUtil.error("请首先完成管理员设置")
     }
 
   }
@@ -89,7 +89,7 @@ export default class SetAdminPanel extends TankComponent<IProps, IState> {
                                  that.phase = Phase.VERIFY
                                  that.updateUI()
                                }} onSelectCreate={() => {
-            that.phase = Phase.VERIFY
+            that.phase = Phase.CREATE
             that.updateUI()
           }} onPreStep={this.goToPrevious.bind(this)} onNextStep={this.goToNext.bind(this)}
           />
@@ -98,7 +98,6 @@ export default class SetAdminPanel extends TankComponent<IProps, IState> {
 
         {phase === Phase.VERIFY && (
           <PhaseVerifyPanel install={install} onSuccess={() => {
-            that.phase = Phase.SELECTING
 
             that.props.onNextStep()
 
@@ -110,7 +109,15 @@ export default class SetAdminPanel extends TankComponent<IProps, IState> {
         )}
 
         {phase === Phase.CREATE && (
-          <PhaseCreatePanel install={install}/>
+          <PhaseCreatePanel install={install} onSuccess={() => {
+
+            that.props.onNextStep()
+
+          }} onPreStep={() => {
+            that.phase = Phase.SELECTING
+            that.updateUI()
+
+          }}/>
         )}
 
       </div>

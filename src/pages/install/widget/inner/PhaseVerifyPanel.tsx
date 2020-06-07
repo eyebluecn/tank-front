@@ -71,6 +71,10 @@ export default class PhaseVerifyPanel extends TankComponent<IProps, IState> {
     return (
       <div className="widget-phase-verify-panel">
 
+        <div className="text-center">
+          <h2>验证管理员账户</h2>
+        </div>
+
         <Form
           {...layout}
           name="basic"
@@ -95,7 +99,6 @@ export default class PhaseVerifyPanel extends TankComponent<IProps, IState> {
           >
             <Input.Password/>
           </Form.Item>
-
 
           <div className="text-right mt15">
 
