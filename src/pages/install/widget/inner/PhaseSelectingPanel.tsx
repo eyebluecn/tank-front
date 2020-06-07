@@ -11,7 +11,6 @@ import {
   SyncOutlined,
   UserAddOutlined
 } from "@ant-design/icons/lib";
-import MessageBoxUtil from "../../../../common/util/MessageBoxUtil";
 
 interface IProps {
   install: Install
@@ -30,6 +29,8 @@ interface IState {
 
 export default class PhaseSelectingPanel extends TankComponent<IProps, IState> {
 
+  loadingAdminList: boolean = false
+
   constructor(props: IProps) {
     super(props);
 
@@ -40,7 +41,25 @@ export default class PhaseSelectingPanel extends TankComponent<IProps, IState> {
   componentDidMount() {
     let that = this;
 
+    this.refreshAdminList()
   }
+
+
+  refreshAdminList() {
+    //开始创建管理员
+    let that = this;
+    let install: Install = this.props.install
+
+    that.loadingAdminList = true
+    that.updateUI()
+
+    install.httpAdminList(null, null, function () {
+      that.loadingAdminList = false
+      that.updateUI()
+      that.props.onRefresh()
+    })
+  }
+
 
   render() {
 
@@ -50,55 +69,56 @@ export default class PhaseSelectingPanel extends TankComponent<IProps, IState> {
     return (
       <div className="widget-phase-selecting-panel">
 
-          <div>
-            检测到系统中已经存在有以下管理员：
-          </div>
-          {
-            install.adminList.map(function (admin: User, index: number) {
-              return (
-                <div className="mv10 bold">
-                  {admin.username}
-                </div>
-              )
-            })
-          }
+        <div>
+          检测到系统中已经存在有以下管理员：
+        </div>
+        {
+          install.adminList.map(function (admin: User, index: number) {
+            return (
+              <div key={index} className="mv10 bold">
+                {admin.username}
+              </div>
+            )
+          })
+        }
 
-          <div>
-            你可以使用其中一位管理员的用户名和密码进行验证，或者创建一位新的管理员账户
-          </div>
+        <div>
+          你可以使用其中一位管理员的用户名和密码进行验证，或者创建一位新的管理员账户
+        </div>
 
-          <div className="text-right mt15">
-            <Button className={'ml10'} type={"default"}
-                    icon={<SyncOutlined/>}
-                    onClick={this.props.onRefresh.bind(this)}
-            >
-              刷新
-            </Button>
+        <div className="text-right mt15">
+          <Button className={'ml10'} type={"default"}
+                  icon={<SyncOutlined/>}
+                  onClick={this.refreshAdminList.bind(this)}
+                  loading={this.loadingAdminList}
+          >
+            刷新
+          </Button>
 
-            <Button className={'ml10'} type={"default"}
-                    icon={<SecurityScanOutlined/>}
-                    onClick={this.props.onSelectVerify.bind(this)}
-            >
-              验证管理员账户
-            </Button>
+          <Button className={'ml10'} type={"default"}
+                  icon={<SecurityScanOutlined/>}
+                  onClick={this.props.onSelectVerify.bind(this)}
+          >
+            验证管理员账户
+          </Button>
 
-            <Button className={'ml10'} type={"default"}
-                    icon={<UserAddOutlined/>}
-                    onClick={this.props.onSelectCreate.bind(this)}
-            >
-              创建管理员账户
-            </Button>
+          <Button className={'ml10'} type={"default"}
+                  icon={<UserAddOutlined/>}
+                  onClick={this.props.onSelectCreate.bind(this)}
+          >
+            创建管理员账户
+          </Button>
 
-            <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowLeftOutlined/>}
-                    onClick={this.props.onPreStep.bind(this)}>
-              上一步
-            </Button>
-            <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowRightOutlined/>}
-                    onClick={this.props.onNextStep.bind(this)}>
-              下一步
-            </Button>
+          <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowLeftOutlined/>}
+                  onClick={this.props.onPreStep.bind(this)}>
+            上一步
+          </Button>
+          <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowRightOutlined/>}
+                  onClick={this.props.onNextStep.bind(this)}>
+            下一步
+          </Button>
 
-          </div>
+        </div>
 
       </div>
     );

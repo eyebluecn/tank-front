@@ -42,23 +42,8 @@ export default class SetAdminPanel extends TankComponent<IProps, IState> {
   componentDidMount() {
     let that = this;
 
-    that.refreshAdminList();
   }
 
-
-  refreshAdminList() {
-    //开始创建管理员
-    let that = this;
-    let install: Install = this.props.install
-    install.httpAdminList(function () {
-      if (install.adminList.length) {
-        that.phase = Phase.SELECTING
-      } else {
-        that.phase = Phase.CREATE
-      }
-      that.updateUI()
-    })
-  }
 
   goToPrevious() {
     let that = this
@@ -92,7 +77,14 @@ export default class SetAdminPanel extends TankComponent<IProps, IState> {
       <div className="widget-set-admin-panel">
         {phase === Phase.SELECTING && (
 
-          <PhaseSelectingPanel install={install} onRefresh={this.refreshAdminList.bind(this)}
+          <PhaseSelectingPanel install={install} onRefresh={() => {
+            if (install.adminList.length) {
+              that.phase = Phase.SELECTING
+            } else {
+              that.phase = Phase.CREATE
+            }
+            that.updateUI()
+          }}
                                onSelectVerify={() => {
                                  that.phase = Phase.VERIFY
                                  that.updateUI()
@@ -103,8 +95,18 @@ export default class SetAdminPanel extends TankComponent<IProps, IState> {
           />
         )}
 
+
         {phase === Phase.VERIFY && (
-          <PhaseVerifyPanel install={install}/>
+          <PhaseVerifyPanel install={install} onSuccess={() => {
+            that.phase = Phase.SELECTING
+
+            that.props.onNextStep()
+
+          }} onPreStep={() => {
+            that.phase = Phase.SELECTING
+            that.updateUI()
+
+          }}/>
         )}
 
         {phase === Phase.CREATE && (
