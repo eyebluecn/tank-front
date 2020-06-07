@@ -1,5 +1,10 @@
 import SafeUtil from '../../util/SafeUtil';
 import BaseEntity from '../base/BaseEntity';
+import Filter from "../base/filter/Filter";
+import SortFilter from "../base/filter/SortFilter";
+import InputFilter from "../base/filter/InputFilter";
+import SelectionFilter from "../base/filter/SelectionFilter";
+import {UserStatusList} from "../user/UserStatus";
 
 
 export default class Dashboard extends BaseEntity {
@@ -28,6 +33,15 @@ export default class Dashboard extends BaseEntity {
     super.assign(obj);
 
   }
+
+  getFilters(): Filter[] {
+    return [
+      ...super.getFilters(),
+      new SortFilter("按DT排序", "orderDt"),
+
+    ]
+  }
+
 
   httpActiveIpTop10(password: string, successCallback?: any, errorCallback?: any, finalCallback?: any) {
     let that = this

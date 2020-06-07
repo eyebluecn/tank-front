@@ -66,12 +66,12 @@ export default class RatePanel extends TankComponent <IProps, IState> {
 
         {
           (!noData && value < 0) &&
-          (<ArrowUpOutlined style={{fontSize: 16, color: Color.SUCCESS}}/>)
+          (<ArrowDownOutlined style={{fontSize: 16, color: Color.SUCCESS}}/>)
         }
 
         {
           (!noData && (infinite || value >= 0)) &&
-          (<ArrowDownOutlined style={{fontSize: 16, color: Color.DANGER}}/>)
+          (<ArrowUpOutlined style={{fontSize: 16, color: Color.DANGER}}/>)
         }
 
       </span>
