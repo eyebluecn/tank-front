@@ -82,7 +82,13 @@ export default class Index extends TankComponent<IProps, IState> {
               }}/>
             </TabPane>
             <TabPane tab="设置管理员" disabled={!install.tableCreated()} key="third">
-              <SetAdminPanel install={install}/>
+              <SetAdminPanel install={install} onPreStep={() => {
+                this.activeName = "second"
+                this.updateUI()
+              }} onNextStep={() => {
+                this.activeName = "forth"
+                this.updateUI()
+              }}/>
             </TabPane>
             <TabPane tab="完成" disabled={!install.adminConfigured} key="forth">
               <FinishPanel install={install}/>

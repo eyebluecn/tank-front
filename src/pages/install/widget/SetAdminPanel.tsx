@@ -1,15 +1,27 @@
 import React from 'react';
-import {RouteComponentProps} from 'react-router-dom';
 import './SetAdminPanel.less';
-import {Tabs} from 'antd';
 import Install from "../../../common/model/install/Install";
 import TankComponent from "../../../common/component/TankComponent";
+import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
+import PhaseSelectingPanel from "./inner/PhaseSelectingPanel";
+import PhaseVerifyPanel from "./inner/PhaseVerifyPanel";
+import PhaseCreatePanel from "./inner/PhaseCreatePanel";
 
-const {TabPane} = Tabs;
+enum Phase {
+  //选择界面
+  SELECTING = "SELECTING",
+  //验证管理员
+  VERIFY = "VERIFY",
+  //创建管理员
+  CREATE = "CREATE",
+}
 
-interface IProps  {
+interface IProps {
 
   install: Install
+
+  onPreStep: () => void
+  onNextStep: () => void
 }
 
 interface IState {
@@ -18,6 +30,7 @@ interface IState {
 
 export default class SetAdminPanel extends TankComponent<IProps, IState> {
 
+  phase: Phase = Phase.SELECTING
 
   constructor(props: IProps) {
     super(props);
@@ -29,20 +42,77 @@ export default class SetAdminPanel extends TankComponent<IProps, IState> {
   componentDidMount() {
     let that = this;
 
-    that.updateUI();
+    that.refreshAdminList();
+  }
+
+
+  refreshAdminList() {
+    //开始创建管理员
+    let that = this;
+    let install: Install = this.props.install
+    install.httpAdminList(function () {
+      if (install.adminList.length) {
+        that.phase = Phase.SELECTING
+      } else {
+        that.phase = Phase.CREATE
+      }
+      that.updateUI()
+    })
+  }
+
+  goToPrevious() {
+    let that = this
+
+    this.props.onPreStep()
+
+  }
+
+  goToNext() {
+    let that = this
+    let install: Install = this.props.install
+
+    if (install.tableCreated()) {
+
+      this.props.onNextStep()
+
+    } else {
+      MessageBoxUtil.error("请首先完成建表")
+    }
+
   }
 
 
   render() {
 
     let that = this;
+    let install: Install = this.props.install
+    let phase: Phase = this.phase
 
     return (
       <div className="widget-set-admin-panel">
-        设置管理员
+        {phase === Phase.SELECTING && (
+
+          <PhaseSelectingPanel install={install} onRefresh={this.refreshAdminList.bind(this)}
+                               onSelectVerify={() => {
+                                 that.phase = Phase.VERIFY
+                                 that.updateUI()
+                               }} onSelectCreate={() => {
+            that.phase = Phase.VERIFY
+            that.updateUI()
+          }} onPreStep={this.goToPrevious.bind(this)} onNextStep={this.goToNext.bind(this)}
+          />
+        )}
+
+        {phase === Phase.VERIFY && (
+          <PhaseVerifyPanel install={install}/>
+        )}
+
+        {phase === Phase.CREATE && (
+          <PhaseCreatePanel install={install}/>
+        )}
+
       </div>
-    );
+    )
+
   }
 }
-
-

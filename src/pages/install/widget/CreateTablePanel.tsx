@@ -1,6 +1,6 @@
 import React from 'react';
 import './CreateTablePanel.less';
-import {Button, Spin, Tabs, Tag} from 'antd';
+import {Button, Spin, Tag} from 'antd';
 import Install from "../../../common/model/install/Install";
 import TankComponent from "../../../common/component/TankComponent";
 import Color from "../../../common/model/base/option/Color";
@@ -12,8 +12,6 @@ import {
   SyncOutlined
 } from "@ant-design/icons/lib";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
-
-const {TabPane} = Tabs;
 
 interface IProps {
 

@@ -1,5 +1,6 @@
 import SafeUtil from '../../util/SafeUtil';
 import BaseEntity from '../base/BaseEntity';
+import User from "../user/User";
 
 export default class Install extends BaseEntity {
 
@@ -28,7 +29,7 @@ export default class Install extends BaseEntity {
   tableInfoList: any[] = []
 
   //管理员列表
-  adminList: any[] = []
+  adminList: User[] = []
 
   //数据库连接是否可用
   verified: boolean = false
@@ -153,11 +154,7 @@ export default class Install extends BaseEntity {
 
     this.httpPost(Install.URL_ADMIN_LIST, form, function (response: any) {
 
-
-      that.adminList.splice(0, that.adminList.length);
-      that.adminList.push(...response.data.data)
-
-
+      that.adminList = BaseEntity.renderList(response.data.data, User)
       SafeUtil.safeCallback(successCallback)(response);
 
     }, errorCallback, finalCallback)

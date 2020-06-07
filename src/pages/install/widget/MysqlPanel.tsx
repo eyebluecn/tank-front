@@ -1,13 +1,11 @@
 import React from 'react';
 import './MysqlPanel.less';
-import {Alert, Button, Form, Input, Select, Tabs} from 'antd';
+import {Alert, Button, Form, Input, Select} from 'antd';
 import Install from "../../../common/model/install/Install";
 import TankComponent from "../../../common/component/TankComponent";
 import {FormInstance} from "antd/lib/form";
 import {ArrowRightOutlined, DisconnectOutlined, LinkOutlined, SoundOutlined} from "@ant-design/icons/lib";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
-
-const {TabPane} = Tabs;
 
 interface IProps {
   install: Install

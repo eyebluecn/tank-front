@@ -1,11 +1,7 @@
 import React from 'react';
-import {RouteComponentProps} from 'react-router-dom';
 import './FinishPanel.less';
-import {Tabs} from 'antd';
 import Install from "../../../common/model/install/Install";
 import TankComponent from "../../../common/component/TankComponent";
-
-const {TabPane} = Tabs;
 
 interface IProps {
 
