@@ -237,6 +237,16 @@ export default class Pager<T> extends HttpBase {
     return null;
   };
 
+  //根据一个key来获取某个filter
+  getFilterValue(key: string) {
+    let filter = this.getFilter(key);
+    if (!filter) {
+      return null
+    } else {
+      return filter.getValueString()
+    }
+  };
+
 
   /**
    * 获取当前进行sort的那个filter

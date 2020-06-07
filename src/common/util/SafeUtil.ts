@@ -31,4 +31,12 @@ export default class SafeUtil {
     }
   }
 
+  // 停止事件冒泡包装函数
+  static stopPropagationWrap(e: any) {
+    SafeUtil.stopPropagation(e);
+    return (func?: any) => {
+      SafeUtil.safeCallback(func);
+    }
+  }
+
 }

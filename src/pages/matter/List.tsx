@@ -1,21 +1,20 @@
 import React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import {RouteComponentProps} from "react-router-dom";
 import "./List.less";
 import TankComponent from "../../common/component/TankComponent";
 import Pager from "../../common/model/base/Pager";
 import Matter from "../../common/model/matter/Matter";
 import TankTitle from "../widget/TankTitle";
-import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
-import Preference from "../../common/model/preference/Preference";
 import Director from "./widget/Director";
 import SortDirection from "../../common/model/base/SortDirection";
 import MatterPanel from "./widget/MatterPanel";
-import { Row, Col, Modal } from "antd";
+import {Col, Modal, Row} from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import {ExclamationCircleFilled} from "@ant-design/icons";
 import ImagePreviewer from '../widget/previewer/ImagePreviewer';
 import Sun from "../../common/model/global/Sun";
+import {UserRole} from "../../common/model/user/UserRole";
 
 interface IProps extends RouteComponentProps {}
 
@@ -55,6 +54,11 @@ export default class List extends TankComponent<IProps, IState> {
 
   componentDidMount() {
     //刷新一下列表
+    if(this.user.role === UserRole.ADMINISTRATOR) {
+      this.pager.getFilter('userUuid')!.visible = true
+    } else {
+      this.pager.setFilterValue('userUuid', this.user.uuid)
+    }
     this.pager.enableHistory();
     this.refresh();
   }
@@ -67,23 +71,49 @@ export default class List extends TankComponent<IProps, IState> {
   }
 
   refresh = () => {
-    //如果没有任何的排序，默认使用时间倒序
-    if (!this.pager.getCurrentSortFilter()) {
-      this.pager.setFilterValue("orderCreateTime", SortDirection.DESC);
-    }
+    // 清空暂存区
+    this.selectedMatters = [];
 
+    // 初始化matter
+    this.matter.uuid = this.pager.getFilterValue('puuid') || 'root';
+    if(this.matter.uuid !== 'root') this.matter.httpDetail();
+
+    this.prepareRefresh();
     this.pager.httpList();
   };
 
-  checkMatter = () => {
-    // todo 可以做优化，并不必要每次都把数组清空然后重新填充，这样效率比较低
-    //统计所有的勾选
-    this.selectedMatters.splice(0, this.selectedMatters.length);
-    this.pager.data.forEach((matter) => {
-      if (matter.check) {
+  prepareRefresh = () => {
+    this.pager.setFilterValue('puuid', this.matter.uuid);
+
+    //如果没有任何的排序，默认使用时间倒序和文件夹在顶部
+    if (!this.pager.getCurrentSortFilter()) {
+      this.pager.setFilterValue("orderCreateTime", SortDirection.DESC);
+      this.pager.setFilterValue("orderDir", SortDirection.DESC);
+    }
+
+    //如果没有设置用户的话，那么默认显示当前登录用户的资料
+    if (!this.pager.getFilterValue('userUuid')) {
+      this.pager.setFilterValue('userUuid', this.user.uuid)
+    }
+  };
+
+  checkMatter = (matter?: Matter) => {
+    if(matter) {
+      if(matter.check) {
         this.selectedMatters.push(matter);
+      } else {
+        const index = this.selectedMatters.findIndex(item => item.uuid === matter.uuid);
+        this.selectedMatters.splice(index, 1);
       }
-    });
+    } else {
+      //统计所有的勾选
+      this.selectedMatters.splice(0, this.selectedMatters.length);
+      this.pager.data.forEach((matter) => {
+        if (matter.check) {
+          this.selectedMatters.push(matter);
+        }
+      });
+    }
     this.updateUI();
   };
 

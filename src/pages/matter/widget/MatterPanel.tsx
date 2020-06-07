@@ -1,5 +1,5 @@
 import React from "react";
-import copy from 'copy-to-clipboard';
+import copy from "copy-to-clipboard";
 import Matter from "../../../common/model/matter/Matter";
 import TankComponent from "../../../common/component/TankComponent";
 import Director from "./Director";
@@ -19,18 +19,18 @@ import {
   DeleteFilled,
   ExclamationCircleFilled,
 } from "@ant-design/icons";
-import { Modal, Checkbox } from 'antd';
-import {CheckboxChangeEvent} from "antd/es/checkbox";
+import { Modal, Checkbox } from "antd";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
+import SafeUtil from "../../../common/util/SafeUtil";
 
 interface IProps {
   matter: Matter;
   director: Director;
-  onCreateDirectoryCallback?: () => any,
-  onDeleteSuccess?: () => any,
-  onCheckMatter?: () => any,
-  onPreviewImage?: (matter: Matter) => any,
-  onGoToDirectory?: (id: string) => any
-
+  onCreateDirectoryCallback?: () => any;
+  onDeleteSuccess?: () => any;
+  onCheckMatter?: (matter?: Matter) => any;
+  onPreviewImage?: (matter: Matter) => any;
+  onGoToDirectory?: (id: string) => any;
 }
 
 interface IState {}
@@ -39,7 +39,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   //正在重命名的临时字段
   renameMatterName: string = "";
   //正在向服务器提交rename的请求
-  renamingLoading:boolean = false;
+  renamingLoading: boolean = false;
   showMore: boolean = false;
 
   inputRef = React.createRef<HTMLInputElement>();
@@ -80,19 +80,19 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   clipboard = () => {
     let textToCopy = this.props.matter.getDownloadUrl();
     copy(textToCopy);
-    MessageBoxUtil.success('操作成功');
+    MessageBoxUtil.success("操作成功");
   };
 
   deleteMatter = () => {
     Modal.confirm({
-      title: '此操作不可撤回, 是否继续?',
-      icon: <ExclamationCircleFilled twoToneColor="#FFDC00"/>,
+      title: "此操作不可撤回, 是否继续?",
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         this.props.matter.httpDelete(() => {
-          MessageBoxUtil.success('操作成功');
+          MessageBoxUtil.success("操作成功");
           this.props.onDeleteSuccess!();
-        })
-      }
+        });
+      },
     });
   };
 
@@ -104,55 +104,62 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   finishRename = () => {
     //有可能按enter的时候和blur同时了。
     if (this.renamingLoading) {
-      return
+      return;
     }
     const { matter, director } = this.props;
     this.renamingLoading = true;
 
-    matter.httpRename(this.renameMatterName, () => {
-      this.renamingLoading = false;
-      MessageBoxUtil.success('操作成功');
-      //告诉导演，自己编辑完毕
-      director.renameMode = false;
-      matter.editMode = false
-    },(msg:string) => {
-      this.renamingLoading = false;
-      MessageBoxUtil.error(msg);
-      //告诉导演，自己编辑完毕
-      director.renameMode = false;
-      matter.editMode = false;
-    }, () => this.updateUI())
+    matter.httpRename(
+      this.renameMatterName,
+      () => {
+        this.renamingLoading = false;
+        MessageBoxUtil.success("操作成功");
+        //告诉导演，自己编辑完毕
+        director.renameMode = false;
+        matter.editMode = false;
+      },
+      (msg: string) => {
+        this.renamingLoading = false;
+        MessageBoxUtil.error(msg);
+        //告诉导演，自己编辑完毕
+        director.renameMode = false;
+        matter.editMode = false;
+      },
+      () => this.updateUI()
+    );
   };
 
   finishCreateDirectory = () => {
     const { matter, director, onCreateDirectoryCallback } = this.props;
     matter.name = this.renameMatterName;
-    matter.httpCreateDirectory(() => {
-      director.createMode = false;
-      matter.editMode = false;
-      matter.assign(new Matter());
-    }, (msg: string) => {
-      director.createMode = false;
-      matter.editMode = false;
-      MessageBoxUtil.error(msg)
-    }, () =>
-      onCreateDirectoryCallback!()
+    matter.httpCreateDirectory(
+      () => {
+        director.createMode = false;
+        matter.editMode = false;
+        matter.assign(new Matter());
+      },
+      (msg: string) => {
+        director.createMode = false;
+        matter.editMode = false;
+        MessageBoxUtil.error(msg);
+      },
+      () => onCreateDirectoryCallback!()
     );
   };
 
   blurTrigger = () => {
     const { matter, director } = this.props;
-    if(matter.editMode) {
+    if (matter.editMode) {
       if (director.createMode) {
-        this.finishCreateDirectory()
+        this.finishCreateDirectory();
       } else if (director.renameMode) {
-        this.finishRename()
+        this.finishRename();
       }
     }
   };
 
   enterTrigger = (e: any) => {
-    if(e.key.toLowerCase() === 'enter') {
+    if (e.key.toLowerCase() === "enter") {
       this.inputRef.current!.blur();
     }
   };
@@ -165,7 +172,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
 
   checkToggle = (e: CheckboxChangeEvent) => {
     this.props.matter.check = e.target.checked;
-    this.props.onCheckMatter!();
+    this.props.onCheckMatter!(this.props.matter);
   };
 
   highLight = () => {
@@ -175,8 +182,8 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   clickRow = () => {
     const { matter, director, onGoToDirectory, onPreviewImage } = this.props;
     if (director.isEditing()) {
-      console.error('导演正忙着，不予执行');
-      return
+      console.error("导演正忙着，不予执行");
+      return;
     }
 
     if (matter.dir) {
@@ -186,7 +193,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
       if (matter.isImage()) {
         onPreviewImage!(matter);
       } else {
-        matter.preview()
+        matter.preview();
       }
     }
   };
@@ -195,12 +202,16 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     const { matter } = this.props;
     return (
       <div className="widget-matter-panel">
-        <div onClick={this.clickRow}>
+        <div onClick={e => SafeUtil.stopPropagationWrap(e)(this.clickRow())}>
           <div className="media">
             <div className="pull-left">
               <div className="left-part">
-                <span className="basic-span">
-                  <Checkbox checked={matter.check} onChange={this.checkToggle} />
+                <span className="basic-span basic-span-hot">
+                  <Checkbox
+                    onClick={e => SafeUtil.stopPropagationWrap(e)}
+                    checked={matter.check}
+                    onChange={this.checkToggle}
+                  />
                 </span>
                 <span className="basic-span">
                   <img className="matter-icon" src={matter.getIcon()} />
@@ -216,13 +227,21 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                     {!matter.dir && matter.privacy && (
                       <UnlockFilled
                         className="btn-action blue"
-                        onClick={() => this.changePrivacy(false)}
+                        onClick={(e) =>
+                          SafeUtil.stopPropagationWrap(e)(
+                            this.changePrivacy(false)
+                          )
+                        }
                       />
                     )}
                     {!matter.dir && !matter.privacy && (
                       <LockFilled
                         className="btn-action blue"
-                        onClick={() => this.changePrivacy(true)}
+                        onClick={(e) =>
+                          SafeUtil.stopPropagationWrap(e)(
+                            this.changePrivacy(true)
+                          )
+                        }
                       />
                     )}
                     <AppstoreFilled
@@ -233,19 +252,19 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                     />
                     <EditFilled
                       className="btn-action blue"
-                      onClick={this.prepareRename.bind(this)}
+                      onClick={e => SafeUtil.stopPropagationWrap(e)(this.prepareRename())}
                     />
                     <ApiFilled
                       className="btn-action blue"
-                      onClick={this.clipboard.bind(this)}
+                      onClick={e => SafeUtil.stopPropagationWrap(e)(this.clipboard())}
                     />
                     <DownloadOutlined
                       className="btn-action blue"
-                      onClick={() => matter.download()}
+                      onClick={e => SafeUtil.stopPropagationWrap(e)(matter.download())}
                     />
                     <DeleteFilled
                       className="btn-action red"
-                      onClick={this.deleteMatter.bind(this)}
+                      onClick={e => SafeUtil.stopPropagationWrap(e)(this.deleteMatter())}
                     />
                   </span>
                   <span className="matter-size">
