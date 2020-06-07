@@ -32,9 +32,10 @@ import Sun from '../common/model/global/Sun';
 import {UserRole} from '../common/model/user/UserRole';
 import FrameLoading from "./widget/FrameLoading";
 import Preference from "../common/model/preference/Preference";
+import {WebResultCode} from "../common/model/base/WebResultCode";
+import MessageBoxUtil from "../common/util/MessageBoxUtil";
 
 const {Header, Content, Footer, Sider} = Layout;
-const {SubMenu} = Menu;
 
 
 interface IProps extends RouteComponentProps<{}> {
@@ -76,8 +77,6 @@ class RawFrame extends TankComponent<IProps, IState> {
     let that = this;
     let pathname: string = that.props.location.pathname
 
-    console.log(pathname)
-
     this.preference.httpFetch(function () {
 
       let whitePaths = ['/user/login', '/user/register'];
@@ -94,6 +93,15 @@ class RawFrame extends TankComponent<IProps, IState> {
         that.updateUI();
       }
 
+    }, function (errMessage: string, response: any) {
+
+      if (response && response.data && response.data["code"] === WebResultCode.NOT_INSTALLED) {
+        MessageBoxUtil.warning("网站尚未安装，即将引导进入安装页面！")
+        that.preference.installed = false
+      }
+
+      that.initialized = true
+      that.updateUI()
     })
 
 
@@ -134,19 +142,28 @@ class RawFrame extends TankComponent<IProps, IState> {
         <Layout style={{minHeight: '100vh'}}>
           <Sider>
 
-            <div className="avatar-area">
-              <Link className="username-text" to={"/user/detail/" + user.uuid}>
-                <img alt="avatar" className="avatar-middle" src={user.getAvatarUrl()}/>
-              </Link>
-            </div>
-            <div className="username-area">
-              {user.role === UserRole.GUEST ?
-                '未登录' :
-                <Link to={"/user/detail/" + user.uuid}>
-                  <span className="username-text">{user.username}</span>
-                </Link>
-              }
-            </div>
+            {this.preference.installed?(
+              <div>
+                <div className="avatar-area">
+                  <Link className="username-text" to={"/user/detail/" + user.uuid}>
+                    <img alt="avatar" className="avatar-middle" src={user.getAvatarUrl()}/>
+                  </Link>
+                </div>
+                <div className="username-area">
+                  {user.role === UserRole.GUEST ?
+                    '未登录' :
+                    <Link to={"/user/detail/" + user.uuid}>
+                      <span className="username-text">{user.username}</span>
+                    </Link>
+                  }
+                </div>
+              </div>
+            ):(
+              <div className="install-area">
+                <img alt="avatar" className="install-logo" src={LogoSvg}/>
+              </div>
+            )}
+
             <Menu
               theme="dark"
               selectedKeys={menuManager.getSelectedKeys()}
@@ -173,33 +190,40 @@ class RawFrame extends TankComponent<IProps, IState> {
             </Header>
             <Content>
 
-              <div className="pages-content">
-                <Route exact path="/" render={() =>
-                  <Redirect to="/matter/list"/>
-                }/>
-                <Route path="/index" component={Index}/>
-                <Route path="/user/login" component={UserLogin}/>
-                <Route path="/user/detail/:uuid" component={UserDetail}/>
-                <Route path="/user/list" component={UserList}/>
-                <Route path="/user/create" component={UserEdit}/>
-                <Route path="/user/edit/:uuid" component={UserEdit}/>
-                <Route path="/user/authentication/:authentication" component={UserAuthentication}/>
+              {
+                this.preference.installed?(
+                  <div className="pages-content">
+                    <Route exact path="/" render={() =>
+                      <Redirect to="/matter/list"/>
+                    }/>
+                    <Route path="/index" component={Index}/>
+                    <Route path="/user/login" component={UserLogin}/>
+                    <Route path="/user/detail/:uuid" component={UserDetail}/>
+                    <Route path="/user/list" component={UserList}/>
+                    <Route path="/user/create" component={UserEdit}/>
+                    <Route path="/user/edit/:uuid" component={UserEdit}/>
+                    <Route path="/user/authentication/:authentication" component={UserAuthentication}/>
 
-                <Route path="/dashboard/index" component={DashboardIndex}/>
+                    <Route path="/dashboard/index" component={DashboardIndex}/>
 
-                <Route path="/install/index" component={InstallIndex}/>
+                    <Route path="/preference/index" component={PreferenceIndex}/>
+                    <Route path="/preference/edit" component={PreferenceEdit}/>
 
-                <Route path="/preference/index" component={PreferenceIndex}/>
-                <Route path="/preference/edit" component={PreferenceEdit}/>
+                    <Route path="/matter/detail/:uuid" component={MatterDetail}/>
+                    <Route exact path="/matter" render={() =>
+                      <Redirect to="/matter/list"/>
+                    }/>
+                    <Route path="/matter/list" component={MatterList}/>
+                    <Route path="/matter/create" component={MatterEdit}/>
+                    <Route path="/matter/edit/:uuid" component={MatterEdit}/>
+                  </div>
+                ):(
+                  <div className="pages-content">
+                    <Route path="/install/index" component={InstallIndex}/>
+                  </div>
+                )
+              }
 
-                <Route path="/matter/detail/:uuid" component={MatterDetail}/>
-                <Route exact path="/matter" render={() =>
-                  <Redirect to="/matter/list"/>
-                }/>
-                <Route path="/matter/list" component={MatterList}/>
-                <Route path="/matter/create" component={MatterEdit}/>
-                <Route path="/matter/edit/:uuid" component={MatterEdit}/>
-              </div>
             </Content>
             <Footer style={{textAlign: 'center'}}>Eyeblue ©2020 Copyright</Footer>
           </Layout>

@@ -45,13 +45,21 @@ export default class HttpBase extends ViewBase {
 
 
   /**
-   * 转跳到ACL页面
+   * 转跳到登录页面
    */
   jumpLogin() {
 
     Sun.navigateTo("/user/login")
 
-    console.error("这里是需要跳转的")
+
+  }
+
+  /**
+   * 转跳到网站安装页面
+   */
+  jumpInstall() {
+
+    Sun.navigateTo("/install/index")
 
   }
 
@@ -127,10 +135,6 @@ export default class HttpBase extends ViewBase {
       this.jumpLogin()
 
       return true;
-    } else if (response.data["code"] === WebResultCode.NOT_INSTALLED) {
-
-
-      return true
     }
 
 

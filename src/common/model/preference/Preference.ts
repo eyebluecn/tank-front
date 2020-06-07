@@ -33,6 +33,10 @@ export default class Preference extends BaseEntity {
   version: string | null = null
 
 
+  //*****************前端辅助变量***********************/
+  //网站是否完成了安装
+  installed: boolean = true
+
   constructor(reactComponent?: React.Component) {
 
     super(reactComponent);
