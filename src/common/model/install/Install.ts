@@ -47,6 +47,17 @@ export default class Install extends BaseEntity {
 
   }
 
+  getMysqlForm() {
+    return {
+      mysqlHost: this.mysqlHost,
+      mysqlPort: this.mysqlPort,
+      mysqlSchema: this.mysqlSchema,
+      mysqlUsername: this.mysqlUsername,
+      mysqlPassword: this.mysqlPassword,
+      mysqlCharset: this.mysqlCharset,
+    }
+  }
+
   getForm() {
     return {
       mysqlPort: this.mysqlPort,
@@ -83,12 +94,7 @@ export default class Install extends BaseEntity {
   httpVerify(successCallback?: any, errorCallback?: any, finalCallback?: any) {
     let that = this
 
-    if (!this.validate()) {
-      this.defaultErrorHandler("Validate error", errorCallback)
-      return
-    }
-
-    this.httpPost(Install.URL_VERIFY, this.getForm(), function (response: any) {
+    this.httpPost(Install.URL_VERIFY, this.getMysqlForm(), function (response: any) {
 
       SafeUtil.safeCallback(successCallback)(response);
 

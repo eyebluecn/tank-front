@@ -61,9 +61,16 @@ export default class Index extends TankComponent<IProps, IState> {
         </TankTitle>
 
         <TankContentCard>
-          <Tabs activeKey={this.activeName}>
+          <Tabs activeKey={this.activeName} onTabClick={(activeKey: string) => {
+
+            this.activeName = activeKey
+            this.updateUI()
+          }}>
             <TabPane tab="配置MySQL" key="first">
-              <MysqlPanel install={install}/>
+              <MysqlPanel install={install} onNextStep={() => {
+                this.activeName = "second"
+                this.updateUI()
+              }}/>
             </TabPane>
             <TabPane tab="创建表" disabled={!install.verified} key="second">
               <CreateTablePanel install={install}/>
