@@ -1,5 +1,5 @@
 import React from 'react';
-import {RouteComponentProps} from "react-router-dom";
+import {Link, RouteComponentProps} from "react-router-dom";
 import "./Index.less"
 import TankComponent from "../../common/component/TankComponent";
 import TankTitle from "../widget/TankTitle";
@@ -13,6 +13,7 @@ import Dashboard from '../../common/model/dashboard/Dashboard';
 import DateUtil from '../../common/util/DateUtil';
 import SortDirection from "../../common/model/base/SortDirection";
 import FileUtil from "../../common/util/FileUtil";
+import Matter from '../../common/model/matter/Matter';
 
 Echarts.registerTheme('tank_theme', theme);
 
@@ -24,6 +25,11 @@ interface IState {
 
 }
 
+interface IpStruct {
+  ip: string
+  times: number
+}
+
 export default class Index extends TankComponent<IProps, IState> {
 
 
@@ -31,7 +37,11 @@ export default class Index extends TankComponent<IProps, IState> {
   pager: Pager<Dashboard> = new Pager<Dashboard>(this, Dashboard, 15);
 
   //昨天的统计情况
-  dashboard: Dashboard = new Dashboard()
+  dashboard: Dashboard = new Dashboard(this)
+
+  matterPager: Pager<Matter> = new Pager<Matter>(this, Matter, 10);
+
+  activeIpTop10: IpStruct[] = []
 
   //****************作图需要的对象******************/
   days: number = 15
@@ -97,6 +107,8 @@ export default class Index extends TankComponent<IProps, IState> {
 
     this.updateDateStrings()
     this.refreshDashboardPager()
+    this.refreshMatterPager()
+    this.refreshActiveIpTop10()
 
   }
 
@@ -219,6 +231,21 @@ export default class Index extends TankComponent<IProps, IState> {
 
   }
 
+  //获取下载前10的文件
+  refreshMatterPager() {
+    let that = this;
+    that.matterPager.setFilterValue("orderTimes", SortDirection.DESC)
+    that.matterPager.httpList()
+  }
+
+  refreshActiveIpTop10() {
+    let that = this
+    that.dashboard.httpActiveIpTop10(function (data: any) {
+      that.activeIpTop10 = data
+      that.updateUI()
+    })
+  }
+
   onChartReady() {
 
   }
@@ -332,6 +359,63 @@ export default class Index extends TankComponent<IProps, IState> {
 
           </Col>
         </Row>
+
+        <Row gutter={18}>
+          <Col sm={24} md={12}>
+
+            <div className="figure-block">
+              <div className="title">
+                文件下载量TOP10
+              </div>
+              <div className="list-rank">
+                <ul>
+                  {
+                    this.matterPager.data.map((matter: Matter, index: number) => {
+                      return (
+                        <li key={index}>
+                          <span className={`rank ${index < 3 ? 'top3' : ''}`}>{index + 1}</span>
+                          <Link className="name" to={'/matter/detail/' + matter.uuid}>{matter.name}</Link>
+                          <span className="info">{matter.times}</span>
+                        </li>
+                      )
+                    })
+                  }
+                </ul>
+              </div>
+            </div>
+
+
+          </Col>
+
+
+          <Col sm={24} md={12}>
+
+            <div className="figure-block">
+              <div className="title">
+                活跃IP TOP10
+              </div>
+              <div className="list-rank">
+                <ul>
+                  {
+                    this.activeIpTop10.map((item: IpStruct, index: number) => {
+                      return (
+                        <li key={index}>
+                          <span className={`rank ${index < 3 ? 'top3' : ''}`}>{index + 1}</span>
+                          <span className="name">{item.ip}</span>
+                          <span className="info">{item.times}</span>
+                        </li>
+                      )
+                    })
+                  }
+                </ul>
+              </div>
+            </div>
+
+          </Col>
+
+
+        </Row>
+
 
       </div>
     );

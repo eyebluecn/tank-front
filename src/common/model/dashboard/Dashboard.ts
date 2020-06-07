@@ -43,7 +43,7 @@ export default class Dashboard extends BaseEntity {
   }
 
 
-  httpActiveIpTop10(password: string, successCallback?: any, errorCallback?: any, finalCallback?: any) {
+  httpActiveIpTop10(successCallback?: any, errorCallback?: any, finalCallback?: any) {
     let that = this
     this.httpPost(Dashboard.URL_ACTIVE_IP_TOP10, {}, function (response: any) {
 
