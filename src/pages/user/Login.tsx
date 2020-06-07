@@ -2,11 +2,12 @@ import React from 'react';
 import {RouteComponentProps} from "react-router-dom";
 import "./Login.less"
 import TankComponent from "../../common/component/TankComponent";
-import {Button, Col, Form, Input, message as MessageBox, Row} from 'antd';
+import {Button, Col, Form, Input, Row} from 'antd';
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import Sun from "../../common/model/global/Sun";
+import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 
 
 interface IProps extends RouteComponentProps {
@@ -53,7 +54,7 @@ export default class Login extends TankComponent<IProps, IState> {
     let user = that.user
 
     user.httpLogin(values["username"], values["password"], function () {
-      MessageBox.success("登录成功！")
+      MessageBoxUtil.success("登录成功！")
 
       that.props.history.push('/')
 

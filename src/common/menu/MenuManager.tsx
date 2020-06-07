@@ -15,6 +15,7 @@ import {
   TeamOutlined
 } from '@ant-design/icons';
 import {LoginOutlined} from "@ant-design/icons/lib";
+import Preference from "../model/preference/Preference";
 
 
 export default class MenuManager {
@@ -63,15 +64,19 @@ export default class MenuManager {
 
   getMenuItems(): MenuItem[] {
     let user: User = Moon.getSingleton().user;
+    let preference: Preference = Moon.getSingleton().preference;
 
     let menuItems: MenuItem[] = [];
 
-    if (user.role === UserRole.GUEST) {
+    if (!preference.installed) {
+      menuItems = [
+        new MenuItem('安装网站', '/install/index', <SettingOutlined/>),
+      ];
+    } else if (user.role === UserRole.GUEST) {
       menuItems = [
         new MenuItem('登录', '/user/login', <LoginOutlined/>),
       ];
     } else {
-
       menuItems.push(new MenuItem('所有文件', '/matter/list', <AppstoreOutlined/>))
       menuItems.push(new MenuItem('我的分享', '/share/index', <ShareAltOutlined/>))
 
