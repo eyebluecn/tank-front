@@ -17,16 +17,20 @@ import {
   EditFilled,
   DownloadOutlined,
   DeleteFilled,
-  InfoCircleTwoTone,
+  ExclamationCircleFilled,
 } from "@ant-design/icons";
-import { Modal } from 'antd';
-import SafeUtil from "../../../common/util/SafeUtil";
+import { Modal, Checkbox } from 'antd';
+import {CheckboxChangeEvent} from "antd/es/checkbox";
 
 interface IProps {
   matter: Matter;
   director: Director;
-  onCreateDirectorySuccess?: () => any,
-  onDeleteSuccess?: () => any
+  onCreateDirectoryCallback?: () => any,
+  onDeleteSuccess?: () => any,
+  onCheckMatter?: () => any,
+  onPreviewImage?: (matter: Matter) => any,
+  onGoToDirectory?: (id: string) => any
+
 }
 
 interface IState {}
@@ -82,7 +86,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   deleteMatter = () => {
     Modal.confirm({
       title: '此操作不可撤回, 是否继续?',
-      icon: <InfoCircleTwoTone twoToneColor="#FFDC00"/>,
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00"/>,
       onOk: () => {
         this.props.matter.httpDelete(() => {
           MessageBoxUtil.success('操作成功');
@@ -121,18 +125,19 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   };
 
   finishCreateDirectory = () => {
-    const { matter, director, onCreateDirectorySuccess } = this.props;
+    const { matter, director, onCreateDirectoryCallback } = this.props;
     matter.name = this.renameMatterName;
     matter.httpCreateDirectory(() => {
       director.createMode = false;
       matter.editMode = false;
       matter.assign(new Matter());
-      SafeUtil.safeCallback(onCreateDirectorySuccess);
     }, (msg: string) => {
       director.createMode = false;
       matter.editMode = false;
       MessageBoxUtil.error(msg)
-    }, () => this.updateUI());
+    }, () =>
+      onCreateDirectoryCallback!()
+    );
   };
 
   blurTrigger = () => {
@@ -158,16 +163,44 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     });
   };
 
+  checkToggle = (e: CheckboxChangeEvent) => {
+    this.props.matter.check = e.target.checked;
+    this.props.onCheckMatter!();
+  };
+
+  highLight = () => {
+    this.inputRef.current!.select();
+  };
+
+  clickRow = () => {
+    const { matter, director, onGoToDirectory, onPreviewImage } = this.props;
+    if (director.isEditing()) {
+      console.error('导演正忙着，不予执行');
+      return
+    }
+
+    if (matter.dir) {
+      onGoToDirectory!(matter.uuid!);
+    } else {
+      //图片进行预览操作
+      if (matter.isImage()) {
+        onPreviewImage!(matter);
+      } else {
+        matter.preview()
+      }
+    }
+  };
+
   render() {
     const { matter } = this.props;
     return (
       <div className="widget-matter-panel">
-        <div>
+        <div onClick={this.clickRow}>
           <div className="media">
             <div className="pull-left">
               <div className="left-part">
                 <span className="basic-span">
-                  {/*todo checkbox <NbCheckbox v-model="matter.check"/>*/}
+                  <Checkbox checked={matter.check} onChange={this.checkToggle} />
                 </span>
                 <span className="basic-span">
                   <img className="matter-icon" src={matter.getIcon()} />

@@ -42,6 +42,19 @@ export default class Sun {
   }
 
   /**
+   * 跳转到某个页面去，带query
+   * route: {path: '', query: {}}
+   */
+  static navigateQueryTo(route: any) {
+    let path = route.path;
+    if(Object.keys(route.query).length) {
+      const params = new URLSearchParams(route.query).toString();
+      path += `?${params}`;
+    }
+    Sun.navigateTo(path);
+  }
+
+  /**
    * 回到上一页
    */
   static navigateBack() {

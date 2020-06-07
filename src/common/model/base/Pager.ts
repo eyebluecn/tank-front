@@ -138,6 +138,8 @@ export default class Pager<T> extends HttpBase {
 
         filter.putValue(queryValue);
 
+      } else {
+        filter.reset();
       }
     }
   }
