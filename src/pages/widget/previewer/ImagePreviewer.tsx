@@ -1,25 +1,11 @@
-import React from 'react';
 import "./ImagePreviewer.less"
-import TankComponent from "../../../common/component/TankComponent";
 import PhotoSwipe from 'photoswipe'
 import PhotoSwipeUIDefault from 'photoswipe/dist/photoswipe-ui-default'
 //PhotoSwipe的样式
 import "photoswipe/dist/photoswipe.css";
 import "photoswipe/dist/default-skin/default-skin.css";
 
-interface IProps {
-}
-
-interface IState {
-}
-
-export default class ImagePreviewer extends TankComponent<IProps, IState> {
-
-  constructor(props: IProps) {
-    super(props);
-
-    this.state = {};
-  }
+export default class ImagePreviewer {
 
   static pswpDom(): HTMLElement {
     let innerHTML = `
@@ -167,15 +153,5 @@ export default class ImagePreviewer extends TankComponent<IProps, IState> {
   }
 
 
-  render() {
-
-    let that = this
-
-    return (
-      <div className="widget-image-previewer">
-
-      </div>
-    );
-  }
 }
 
