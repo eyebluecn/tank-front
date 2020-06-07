@@ -117,7 +117,7 @@ export default class Install extends BaseEntity {
 
       SafeUtil.safeCallback(successCallback)(response);
 
-    }, errorCallback)
+    }, errorCallback, finalCallback)
   }
 
   httpCreateTable(successCallback?: any, errorCallback?: any, finalCallback?: any) {
@@ -135,7 +135,7 @@ export default class Install extends BaseEntity {
 
       SafeUtil.safeCallback(successCallback)(response);
 
-    }, errorCallback)
+    }, errorCallback, finalCallback)
   }
 
   //获取管理员列表
@@ -160,7 +160,7 @@ export default class Install extends BaseEntity {
 
       SafeUtil.safeCallback(successCallback)(response);
 
-    }, errorCallback)
+    }, errorCallback, finalCallback)
   }
 
 
@@ -186,7 +186,7 @@ export default class Install extends BaseEntity {
       that.adminConfigured = true
       SafeUtil.safeCallback(successCallback)(response);
 
-    }, errorCallback)
+    }, errorCallback, finalCallback)
   }
 
 
@@ -211,7 +211,7 @@ export default class Install extends BaseEntity {
       that.adminConfigured = true
       SafeUtil.safeCallback(successCallback)(response);
 
-    }, errorCallback)
+    }, errorCallback, finalCallback)
   }
 
 
@@ -227,7 +227,7 @@ export default class Install extends BaseEntity {
 
       SafeUtil.safeCallback(successCallback)(response);
 
-    }, errorCallback)
+    }, errorCallback, finalCallback)
   }
 
 }
