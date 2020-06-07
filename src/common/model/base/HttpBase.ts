@@ -1,11 +1,11 @@
 import HttpUtil from "../../util/HttpUtil";
 import SafeUtil from "../../util/SafeUtil";
 import qs from "qs"
-import {message as MessageBox} from 'antd';
 import React from "react";
 import ViewBase from "./ViewBase";
 import Sun from "../global/Sun";
 import {WebResultCode} from "./WebResultCode";
+import MessageBoxUtil from "../../util/MessageBoxUtil";
 
 /**
  * 基类。带有网络请求能力的基类
@@ -42,7 +42,6 @@ export default class HttpBase extends ViewBase {
       ViewBase.updateComponentUI(this.reactComponent, this)
     }
   }
-
 
 
   /**
@@ -99,7 +98,7 @@ export default class HttpBase extends ViewBase {
     if (typeof errorCallback === 'function') {
       errorCallback(msg, response)
     } else {
-      MessageBox.error(msg)
+      MessageBoxUtil.error(msg)
     }
 
   }
@@ -122,12 +121,16 @@ export default class HttpBase extends ViewBase {
         HttpBase.lastLoginErrorTimestamp = (new Date().getTime());
       }
 
-      MessageBox.error("您尚未登录，请登录后访问！")
+      MessageBoxUtil.error("您尚未登录，请登录后访问！")
 
       //立即进行登录跳转。
       this.jumpLogin()
 
       return true;
+    } else if (response.data["code"] === WebResultCode.NOT_INSTALLED) {
+
+
+      return true
     }
 
 

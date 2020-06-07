@@ -2,18 +2,20 @@ import SelectionOption from "../base/option/SelectionOption";
 
 
 enum WebResultCode {
-  SUCCESS = "SUCCESS",
+  OK = "OK",
   BAD_REQUEST = "BAD_REQUEST",
   LOGIN = "LOGIN",
-  ERROR = "ERROR",
+  NOT_INSTALLED = "NOT_INSTALLED",
+  SERVER = "SERVER",
+  UNKNOWN = "UNKNOWN",
 }
 
 let WebResultCodes: WebResultCode[] = Object.keys(WebResultCode).map(k => k as WebResultCode)
 
 let WebResultCodeMap: { [key in keyof typeof WebResultCode]: SelectionOption } = {
-  SUCCESS: {
+  OK: {
     "name": "成功",
-    "value": "SUCCESS",
+    "value": "OK",
   },
   BAD_REQUEST: {
     "name": "请求错误",
@@ -23,9 +25,17 @@ let WebResultCodeMap: { [key in keyof typeof WebResultCode]: SelectionOption } =
     "name": "未登录",
     "value": "LOGIN",
   },
-  ERROR: {
+  NOT_INSTALLED: {
+    "name": "未安装",
+    "value": "NOT_INSTALLED",
+  },
+  SERVER: {
+    "name": "服务器出错",
+    "value": "SERVER",
+  },
+  UNKNOWN: {
     "name": "未知错误",
-    "value": "ERROR",
+    "value": "UNKNOWN",
   },
 }
 

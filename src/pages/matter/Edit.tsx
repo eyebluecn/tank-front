@@ -1,13 +1,8 @@
 import React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, DatePicker, Input, message as MessageBox, Row, Spin } from 'antd';
 import TankComponent from '../../common/component/TankComponent';
 import Matter from '../../common/model/matter/Matter';
-import StringUtil from '../../common/util/StringUtil';
 import './Edit.less';
 import TankTitle from '../widget/TankTitle';
-
-const { MonthPicker, RangePicker } = DatePicker;
 
 
 interface RouteParam {
@@ -29,9 +24,7 @@ class RawEdit extends TankComponent<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    this.state = {
-
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -62,8 +55,6 @@ class RawEdit extends TankComponent<IProps, IState> {
 
     //router中传入的路由相关对象
     let matter = this.matter;
-
-
 
 
     return (

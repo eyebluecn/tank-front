@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from 'antd/lib/button';
-import {message as MessageBox, Input} from "antd"
+import {Input} from "antd"
+import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 
 interface IProps {
   value: number
@@ -32,7 +33,7 @@ export default class ChangeNumModal extends React.Component<IProps, IState> {
     if (this.state.innerValue) {
       this.props.onSuccess(this.state.innerValue)
     } else {
-      MessageBox.error("没有填写值，提交失败！")
+      MessageBoxUtil.error("没有填写值，提交失败！")
     }
   }
 
