@@ -95,13 +95,14 @@ class RawFrame extends TankComponent<IProps, IState> {
 
     }, function (errMessage: string, response: any) {
 
+      that.initialized = true
+      that.updateUI()
       if (response && response.data && response.data["code"] === WebResultCode.NOT_INSTALLED) {
         MessageBoxUtil.warning("网站尚未安装，即将引导进入安装页面！")
         that.preference.installed = false
+        Sun.navigateTo("/install/index")
       }
 
-      that.initialized = true
-      that.updateUI()
     })
 
 
@@ -142,7 +143,7 @@ class RawFrame extends TankComponent<IProps, IState> {
         <Layout style={{minHeight: '100vh'}}>
           <Sider>
 
-            {this.preference.installed?(
+            {this.preference.installed ? (
               <div>
                 <div className="avatar-area">
                   <Link className="username-text" to={"/user/detail/" + user.uuid}>
@@ -158,7 +159,7 @@ class RawFrame extends TankComponent<IProps, IState> {
                   }
                 </div>
               </div>
-            ):(
+            ) : (
               <div className="install-area">
                 <img alt="avatar" className="install-logo" src={LogoSvg}/>
               </div>
@@ -191,7 +192,7 @@ class RawFrame extends TankComponent<IProps, IState> {
             <Content>
 
               {
-                this.preference.installed?(
+                this.preference.installed ? (
                   <div className="pages-content">
                     <Route exact path="/" render={() =>
                       <Redirect to="/matter/list"/>
@@ -217,7 +218,7 @@ class RawFrame extends TankComponent<IProps, IState> {
                     <Route path="/matter/create" component={MatterEdit}/>
                     <Route path="/matter/edit/:uuid" component={MatterEdit}/>
                   </div>
-                ):(
+                ) : (
                   <div className="pages-content">
                     <Route path="/install/index" component={InstallIndex}/>
                   </div>

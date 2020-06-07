@@ -18,6 +18,8 @@ interface IState {
 export default class FinishPanel extends TankComponent<IProps, IState> {
 
 
+  loading: boolean = false
+
   constructor(props: IProps) {
     super(props);
 
@@ -36,10 +38,18 @@ export default class FinishPanel extends TankComponent<IProps, IState> {
     let that = this
     let install: Install = this.props.install
 
+    that.loading = true
+    that.updateUI()
+
     install.httpFinish(function () {
 
 
       window.location.href = "/"
+
+    }, null, function () {
+
+      that.loading = false
+      that.updateUI()
 
     })
 
@@ -56,7 +66,8 @@ export default class FinishPanel extends TankComponent<IProps, IState> {
           title="安装信息配置完毕!"
           subTitle="点击下方按钮来完成安装过程并进入首页。"
           extra={[
-            <Button icon={<HomeOutlined/>} type="primary" key="home" onClick={this.finish.bind(this)}>
+            <Button icon={<HomeOutlined/>} type="primary" key="home" loading={that.loading}
+                    onClick={this.finish.bind(this)}>
               完成，并进入首页
             </Button>
           ]}
