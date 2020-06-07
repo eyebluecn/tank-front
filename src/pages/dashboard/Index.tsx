@@ -8,7 +8,11 @@ import TankTitle from "../widget/TankTitle";
 import Preference from "../../common/model/preference/Preference";
 import {Col, Row} from 'antd';
 import RatePanel from "./widget/RatePanel";
+import ReactEcharts from 'echarts-for-react';
+import Echarts from 'echarts';
+import theme from "./theme.json"
 
+Echarts.registerTheme('tank_theme', theme);
 
 interface IProps extends RouteComponentProps {
 
@@ -24,6 +28,29 @@ export default class Index extends TankComponent<IProps, IState> {
 
   preference: Preference = Moon.getSingleton().preference
 
+  cntOption: any = {
+    tooltip: {},
+    legend: {
+      data: ['PV', 'UV']
+    },
+    xAxis: {
+      name: "日期",
+      data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    },
+    yAxis: {
+      name: "数量"
+    },
+    series: [{
+      name: 'PV',
+      type: 'bar',
+      data: [0, 0, 110, 0, 0, 0, 0, 0, 0, 0,10, 0, 0, 0, 0]
+    }, {
+      name: 'UV',
+      type: 'line',
+      data: [0, 0, 0, 0, 220, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0]
+    }]
+  };
+
   constructor(props: IProps) {
     super(props);
 
@@ -32,6 +59,10 @@ export default class Index extends TankComponent<IProps, IState> {
 
   componentDidMount() {
 
+
+  }
+
+  onChartReady() {
 
   }
 
@@ -45,7 +76,7 @@ export default class Index extends TankComponent<IProps, IState> {
         <TankTitle name={'监控统计'}>
         </TankTitle>
 
-        <Row gutter={{xs: 8, sm: 16, md: 24, lg: 32}}>
+        <Row gutter={18}>
           <Col xs={24} sm={24} md={12} lg={6}>
             <div className="text-block">
               <div className="upper">
@@ -119,6 +150,29 @@ export default class Index extends TankComponent<IProps, IState> {
             </div>
           </Col>
 
+        </Row>
+
+        <Row>
+          <Col span={24}>
+
+            <div className="figure-block">
+              <div className="title">
+                最近15日PV/UV
+              </div>
+              <figure>
+                <ReactEcharts
+                  option={that.cntOption}
+                  notMerge={true}
+                  lazyUpdate={false}
+                  theme={"tank_theme"}
+                  onChartReady={this.onChartReady.bind(this)}
+                  showLoading={false}
+                  opts={{renderer: "svg"}}/>
+              </figure>
+            </div>
+
+
+          </Col>
         </Row>
 
       </div>
