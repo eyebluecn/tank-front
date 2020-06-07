@@ -2,6 +2,7 @@ import React from 'react';
 import "./RatePanel.less"
 import TankComponent from "../../../common/component/TankComponent";
 import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons/lib";
+import Color from "../../../common/model/base/option/Color";
 
 interface IProps {
   name: string
@@ -51,7 +52,7 @@ export default class RatePanel extends TankComponent <IProps, IState> {
     return (
       <span className="widget-rate-panel">
 
-            <span className="name">{{name}}</span>
+            <span className="name">{name}</span>
 
         {infinite ? (
           <span className="infinite">∞</span>
@@ -65,12 +66,12 @@ export default class RatePanel extends TankComponent <IProps, IState> {
 
         {
           (!noData && value < 0) &&
-          (<ArrowUpOutlined/>)
+          (<ArrowUpOutlined style={{fontSize: 16, color: Color.SUCCESS}}/>)
         }
 
         {
           (!noData && (infinite || value >= 0)) &&
-          (<ArrowDownOutlined/>)
+          (<ArrowDownOutlined style={{fontSize: 16, color: Color.DANGER}}/>)
         }
 
       </span>
