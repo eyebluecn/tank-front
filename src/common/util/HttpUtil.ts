@@ -80,9 +80,9 @@ export default class HttpUtil {
         SafeUtil.safeCallback(errorCallback)(error)
 
       })
-      .then(function (res) {
+      .finally(function () {
 
-        SafeUtil.safeCallback(finallyCallback)(res)
+        SafeUtil.safeCallback(finallyCallback)()
 
       });
   }

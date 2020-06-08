@@ -1,5 +1,5 @@
 import React from "react";
-import {RouteComponentProps} from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import "./List.less";
 import TankComponent from "../../common/component/TankComponent";
 import Pager from "../../common/model/base/Pager";
@@ -9,12 +9,14 @@ import Moon from "../../common/model/global/Moon";
 import Director from "./widget/Director";
 import SortDirection from "../../common/model/base/SortDirection";
 import MatterPanel from "./widget/MatterPanel";
-import {Col, Modal, Row} from "antd";
+import { Col, Modal, Row, Upload } from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
-import {ExclamationCircleFilled} from "@ant-design/icons";
-import ImagePreviewer from '../widget/previewer/ImagePreviewer';
+import { ExclamationCircleFilled } from "@ant-design/icons";
+import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Sun from "../../common/model/global/Sun";
-import {UserRole} from "../../common/model/user/UserRole";
+import { UserRole } from "../../common/model/user/UserRole";
+import {RcFile} from "antd/lib/upload";
+import StringUtil from "../../common/util/StringUtil";
 
 interface IProps extends RouteComponentProps {}
 
@@ -54,17 +56,17 @@ export default class List extends TankComponent<IProps, IState> {
 
   componentDidMount() {
     //刷新一下列表
-    if(this.user.role === UserRole.ADMINISTRATOR) {
-      this.pager.getFilter('userUuid')!.visible = true
+    if (this.user.role === UserRole.ADMINISTRATOR) {
+      this.pager.getFilter("userUuid")!.visible = true;
     } else {
-      this.pager.setFilterValue('userUuid', this.user.uuid)
+      this.pager.setFilterValue("userUuid", this.user.uuid);
     }
     this.pager.enableHistory();
     this.refresh();
   }
 
   componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any) {
-    if(this.props.location.search !== nextProps.location.search) {
+    if (this.props.location.search !== nextProps.location.search) {
       this.pager.enableHistory();
       this.refresh();
     }
@@ -75,15 +77,15 @@ export default class List extends TankComponent<IProps, IState> {
     this.selectedMatters = [];
 
     // 初始化matter
-    this.matter.uuid = this.pager.getFilterValue('puuid') || 'root';
-    if(this.matter.uuid !== 'root') this.matter.httpDetail();
+    this.matter.uuid = this.pager.getFilterValue("puuid") || "root";
+    if (this.matter.uuid !== "root") this.matter.httpDetail();
 
     this.prepareRefresh();
     this.pager.httpList();
   };
 
   prepareRefresh = () => {
-    this.pager.setFilterValue('puuid', this.matter.uuid);
+    this.pager.setFilterValue("puuid", this.matter.uuid);
 
     //如果没有任何的排序，默认使用时间倒序和文件夹在顶部
     if (!this.pager.getCurrentSortFilter()) {
@@ -92,17 +94,19 @@ export default class List extends TankComponent<IProps, IState> {
     }
 
     //如果没有设置用户的话，那么默认显示当前登录用户的资料
-    if (!this.pager.getFilterValue('userUuid')) {
-      this.pager.setFilterValue('userUuid', this.user.uuid)
+    if (!this.pager.getFilterValue("userUuid")) {
+      this.pager.setFilterValue("userUuid", this.user.uuid);
     }
   };
 
   checkMatter = (matter?: Matter) => {
-    if(matter) {
-      if(matter.check) {
+    if (matter) {
+      if (matter.check) {
         this.selectedMatters.push(matter);
       } else {
-        const index = this.selectedMatters.findIndex(item => item.uuid === matter.uuid);
+        const index = this.selectedMatters.findIndex(
+          (item) => item.uuid === matter.uuid
+        );
         this.selectedMatters.splice(index, 1);
       }
     } else {
@@ -154,8 +158,28 @@ export default class List extends TankComponent<IProps, IState> {
     console.log("moveBatch");
   };
 
-  triggerUpload = () => {
-    console.log("triggerUpload");
+  triggerUpload = (fileObj: any) => {
+    const { file } = fileObj;
+    if(file) this.launchUpload(file);
+  };
+
+  launchUpload = (file: any) => {
+    const m = new Matter();
+    m.dir = false;
+    m.puuid = this.matter.uuid!;
+    m.userUuid = this.user.uuid!;
+
+    //判断文件大小。
+    if (this.user.sizeLimit >= 0) {
+      if (file.size > this.user.sizeLimit) {
+        MessageBoxUtil.error(`文件大小超过了限制 ${StringUtil.humanFileSize(file.size)}>${StringUtil.humanFileSize(this.user.sizeLimit)}`);
+      }
+    }
+    m.file = file;
+
+    // todo 上传有问题
+    m.httpUpload();
+    this.uploadMatters.push(m);
   };
 
   share = () => {
@@ -177,24 +201,24 @@ export default class List extends TankComponent<IProps, IState> {
   previewImage = (matter: Matter) => {
     let imageArray: string[] = [];
     let startIndex = -1;
-    this.pager.data.forEach(item => {
+    this.pager.data.forEach((item) => {
       if (item.isImage()) {
         imageArray.push(item.getPreviewUrl());
         if (item.uuid === matter.uuid) {
-          startIndex = imageArray.length - 1
+          startIndex = imageArray.length - 1;
         }
       }
     });
 
-    ImagePreviewer.showMultiPhoto(imageArray, startIndex)
+    ImagePreviewer.showMultiPhoto(imageArray, startIndex);
   };
 
   goToDirectory = (id: string) => {
     this.searchText = null;
-    this.pager.setFilterValue('puuid', id);
+    this.pager.setFilterValue("puuid", id);
     this.pager.page = 0;
     const query = this.pager.getParams();
-    Sun.navigateQueryTo({path: '/matter/list', query});
+    Sun.navigateQueryTo({ path: "/matter/list", query });
     this.refresh();
   };
 
@@ -256,12 +280,9 @@ export default class List extends TankComponent<IProps, IState> {
               </>
             ) : null}
 
-            <button
-              className="btn btn-primary btn-sm mr5 mb5"
-              onClick={this.triggerUpload}
-            >
-              上传
-            </button>
+            <Upload className="ant-upload" customRequest={this.triggerUpload} showUploadList={false} multiple>
+              <button className="btn btn-primary btn-sm mr5 mb5">上传</button>
+            </Upload>
 
             <button
               className="btn btn-primary btn-sm mr5 mb5"

@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import BaseEntity from "../base/BaseEntity";
 import Filter from "../base/filter/Filter";
+import HttpUtil from "../../util/HttpUtil";
 import FileUtil from "../../util/FileUtil";
 import ImageUtil from "../../util/ImageUtil";
 import EnvUtil from "../../util/EnvUtil";
@@ -412,7 +413,7 @@ export default class Matter extends BaseEntity {
     //闭包
     let lastTimeStamp = new Date().getTime()
     let lastSize = 0
-    that.httpPost(Matter.URL_MATTER_UPLOAD, formData, function (response: any) {
+    HttpUtil.httpPostFile(Matter.URL_MATTER_UPLOAD, formData, function (response: any) {
 
       that.uuid = response.data.data.uuid
 
@@ -420,10 +421,9 @@ export default class Matter extends BaseEntity {
         successCallback()
       }
 
-    }, function (response: any) {
-
-
-      that.errorMessage = '上传出错，请稍后重试'
+    }, function (err: any) {
+      const response = err.response;
+      that.errorMessage = response;
       that.clear()
 
       that.defaultErrorHandler(response, failureCallback)
