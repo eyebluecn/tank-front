@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import "./List.less";
 import TankComponent from "../../common/component/TankComponent";
@@ -9,13 +9,13 @@ import Moon from "../../common/model/global/Moon";
 import Director from "./widget/Director";
 import SortDirection from "../../common/model/base/SortDirection";
 import MatterPanel from "./widget/MatterPanel";
+import UploadMatterPanel from "./widget/UploadMatterPanel";
 import { Col, Modal, Row, Upload } from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Sun from "../../common/model/global/Sun";
 import { UserRole } from "../../common/model/user/UserRole";
-import {RcFile} from "antd/lib/upload";
 import StringUtil from "../../common/util/StringUtil";
 
 interface IProps extends RouteComponentProps {}
@@ -34,7 +34,7 @@ export default class List extends TankComponent<IProps, IState> {
   //搜索的文字
   searchText: string | null = null;
   //获取分页的一个帮助器
-  pager = new Pager<Matter>(this, Matter, 10);
+  pager = new Pager<Matter>(this, Matter, 10); // todo 分页
   //移动的目标文件夹
   targetMatterUuid: string | null = null;
   user = Moon.getSingleton().user;
@@ -160,7 +160,7 @@ export default class List extends TankComponent<IProps, IState> {
 
   triggerUpload = (fileObj: any) => {
     const { file } = fileObj;
-    if(file) this.launchUpload(file);
+    if (file) this.launchUpload(file);
   };
 
   launchUpload = (file: any) => {
@@ -172,14 +172,29 @@ export default class List extends TankComponent<IProps, IState> {
     //判断文件大小。
     if (this.user.sizeLimit >= 0) {
       if (file.size > this.user.sizeLimit) {
-        MessageBoxUtil.error(`文件大小超过了限制 ${StringUtil.humanFileSize(file.size)}>${StringUtil.humanFileSize(this.user.sizeLimit)}`);
+        MessageBoxUtil.error(
+          `文件大小超过了限制 ${StringUtil.humanFileSize(
+            file.size
+          )}>${StringUtil.humanFileSize(this.user.sizeLimit)}`
+        );
       }
     }
     m.file = file;
 
-    // todo 上传有问题
-    m.httpUpload();
+    m.httpUpload(
+      () => {
+        this.refresh();
+      },
+      () => {
+        this.updateUI();
+      },
+      () => {
+        this.updateUI();
+      }
+    );
+
     this.uploadMatters.push(m);
+    this.updateUI();
   };
 
   share = () => {
@@ -223,8 +238,7 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   render() {
-    const { pager, director, selectedMatters } = this;
-
+    const { pager, director, selectedMatters, uploadMatters } = this;
     return (
       <div className="matter-list">
         <TankTitle name={"所有文件"}></TankTitle>
@@ -280,7 +294,12 @@ export default class List extends TankComponent<IProps, IState> {
               </>
             ) : null}
 
-            <Upload className="ant-upload" customRequest={this.triggerUpload} showUploadList={false} multiple>
+            <Upload
+              className="ant-upload"
+              customRequest={this.triggerUpload}
+              showUploadList={false}
+              multiple
+            >
               <button className="btn btn-primary btn-sm mr5 mb5">上传</button>
             </Upload>
 
@@ -300,6 +319,10 @@ export default class List extends TankComponent<IProps, IState> {
           </Col>
           <Col md={8}></Col>
         </Row>
+
+        {Children.toArray(
+          uploadMatters.map((m) => <UploadMatterPanel matter={m} />)
+        )}
 
         {director.createMode ? (
           <MatterPanel

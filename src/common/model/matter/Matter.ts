@@ -1,4 +1,4 @@
-import { message } from 'antd';
+import { message } from "antd";
 import BaseEntity from "../base/BaseEntity";
 import Filter from "../base/filter/Filter";
 import HttpUtil from "../../util/HttpUtil";
@@ -11,10 +11,11 @@ import SortFilter from "../base/filter/SortFilter";
 import MimeUtil from "../../util/MimeUtil";
 import StringUtil from "../../util/StringUtil";
 import NumberUtil from "../../util/NumberUtil";
+import SafeUtil from "../../util/SafeUtil";
 
 export default class Matter extends BaseEntity {
-  puuid: string = '';
-  userUuid: string = '';
+  puuid: string = "";
+  userUuid: string = "";
   dir: boolean = false;
   alien: boolean = false;
   name: string | null = null;
@@ -102,77 +103,78 @@ export default class Matter extends BaseEntity {
   }
 
   getUrlPrefix() {
-    return "/api/matter"
+    return "/api/matter";
   }
 
   isImage() {
-    return FileUtil.isImage(this.name)
+    return FileUtil.isImage(this.name);
   }
 
-
   isPdf() {
-    return FileUtil.isPdf(this.name)
+    return FileUtil.isPdf(this.name);
   }
 
   isText() {
-    return FileUtil.isText(this.name)
+    return FileUtil.isText(this.name);
   }
 
   isDoc() {
-    return FileUtil.isDoc(this.name)
+    return FileUtil.isDoc(this.name);
   }
 
   isPpt() {
-    return FileUtil.isPpt(this.name)
+    return FileUtil.isPpt(this.name);
   }
 
   isXls() {
-    return FileUtil.isXls(this.name)
+    return FileUtil.isXls(this.name);
   }
 
   isAudio() {
-    return FileUtil.isAudio(this.name)
+    return FileUtil.isAudio(this.name);
   }
 
   isVideo() {
-    return FileUtil.isVideo(this.name)
+    return FileUtil.isVideo(this.name);
   }
 
   isPsd() {
-    return FileUtil.isPsd(this.name)
+    return FileUtil.isPsd(this.name);
   }
 
   getIcon() {
     if (FileUtil.isImage(this.name)) {
-      return ImageUtil.handleImageUrl(this.getPreviewUrl(), false, 100, 100)
+      return ImageUtil.handleImageUrl(this.getPreviewUrl(), false, 100, 100);
     } else {
-      return FileUtil.getIcon(this.name, this.dir)
+      return FileUtil.getIcon(this.name, this.dir);
     }
   }
 
   //下载文件
   download(downloadUrl?: string | null) {
     if (!downloadUrl) {
-      downloadUrl = this.getDownloadUrl()
+      downloadUrl = this.getDownloadUrl();
     }
-    window.open(downloadUrl)
+    window.open(downloadUrl);
   }
 
   //下载zip包
   downloadZip(uuidsString: string) {
-    window.open(EnvUtil.currentHost() + Matter.URL_MATTER_ZIP + "?uuids=" + uuidsString)
+    window.open(
+      EnvUtil.currentHost() + Matter.URL_MATTER_ZIP + "?uuids=" + uuidsString
+    );
   }
 
   //预览文件 在分享的预览中才主动传入previewUrl.
   preview(previewUrl?: string | null) {
     let that = this;
 
-    let shareMode = true
+    let shareMode = true;
     if (previewUrl) {
-      shareMode = true
+      shareMode = true;
     } else {
-      shareMode = false
-      previewUrl = that.getPreviewUrl()
+      shareMode = false;
+      previewUrl = that.getPreviewUrl();
     }
 
     // todo preview
@@ -221,59 +223,109 @@ export default class Matter extends BaseEntity {
     // }
   }
 
-  httpCreateDirectory(successCallback?: any, errorCallback?: any, finallyCallback?: any) {
-    let that = this
-    let form = {'userUuid': that.userUuid, 'name': that.name, 'puuid': that.puuid}
+  httpCreateDirectory(
+    successCallback?: any,
+    errorCallback?: any,
+    finallyCallback?: any
+  ) {
+    let that = this;
+    let form = { userUuid: that.userUuid, name: that.name, puuid: that.puuid };
 
-    return this.httpPost(Matter.URL_MATTER_CREATE_DIRECTORY, form, function (response: any) {
-      that.assign(response.data.data)
-      typeof successCallback === 'function' && successCallback(response)
-    }, errorCallback, finallyCallback)
+    return this.httpPost(
+      Matter.URL_MATTER_CREATE_DIRECTORY,
+      form,
+      function (response: any) {
+        that.assign(response.data.data);
+        typeof successCallback === "function" && successCallback(response);
+      },
+      errorCallback,
+      finallyCallback
+    );
   }
 
   httpDelete(successCallback?: any, errorCallback?: any) {
-    this.httpPost(Matter.URL_MATTER_DELETE, {'uuid': this.uuid}, function (response: any) {
-      typeof successCallback === 'function' && successCallback(response)
-    }, errorCallback)
+    this.httpPost(
+      Matter.URL_MATTER_DELETE,
+      { uuid: this.uuid },
+      function (response: any) {
+        typeof successCallback === "function" && successCallback(response);
+      },
+      errorCallback
+    );
   }
 
   httpDeleteBatch(uuids: string, successCallback?: any, errorCallback?: any) {
-    this.httpPost(Matter.URL_MATTER_DELETE_BATCH, {'uuids': uuids}, function (response: any) {
-      typeof successCallback === 'function' && successCallback(response)
-    }, errorCallback)
+    this.httpPost(
+      Matter.URL_MATTER_DELETE_BATCH,
+      { uuids: uuids },
+      function (response: any) {
+        typeof successCallback === "function" && successCallback(response);
+      },
+      errorCallback
+    );
   }
 
-  httpRename(name: string, successCallback?: any, errorCallback?: any, finallyCallback?: any) {
-    let that = this
-    this.httpPost(Matter.URL_MATTER_RENAME, {'uuid': this.uuid, 'name': name}, function (response: any) {
-      that.assign(response.data.data)
-      typeof successCallback === 'function' && successCallback(response)
-    }, errorCallback, finallyCallback)
+  httpRename(
+    name: string,
+    successCallback?: any,
+    errorCallback?: any,
+    finallyCallback?: any
+  ) {
+    let that = this;
+    this.httpPost(
+      Matter.URL_MATTER_RENAME,
+      { uuid: this.uuid, name: name },
+      function (response: any) {
+        that.assign(response.data.data);
+        typeof successCallback === "function" && successCallback(response);
+      },
+      errorCallback,
+      finallyCallback
+    );
   }
 
-  httpChangePrivacy(privacy:boolean, successCallback?: any, errorCallback?: any) {
-    let that = this
-    this.httpPost(Matter.URL_CHANGE_PRIVACY, {'uuid': this.uuid, 'privacy': privacy}, function (response:any) {
-      that.privacy = privacy
-      if (typeof successCallback === "function") {
-        successCallback(response)
-        message.success(response.data.msg)
-      } else {
-        message.success(response.data.msg)
-      }
-    }, errorCallback)
+  httpChangePrivacy(
+    privacy: boolean,
+    successCallback?: any,
+    errorCallback?: any
+  ) {
+    let that = this;
+    this.httpPost(
+      Matter.URL_CHANGE_PRIVACY,
+      { uuid: this.uuid, privacy: privacy },
+      function (response: any) {
+        that.privacy = privacy;
+        if (typeof successCallback === "function") {
+          successCallback(response);
+          message.success(response.data.msg);
+        } else {
+          message.success(response.data.msg);
+        }
+      },
+      errorCallback
+    );
   }
 
-  httpMove(srcUuids: string, destUuid:string, successCallback?:any, errorCallback?:any) {
-    let form: any = {'srcUuids': srcUuids}
+  httpMove(
+    srcUuids: string,
+    destUuid: string,
+    successCallback?: any,
+    errorCallback?: any
+  ) {
+    let form: any = { srcUuids: srcUuids };
     if (destUuid) {
-      form.destUuid = destUuid
+      form.destUuid = destUuid;
     } else {
-      form.destUuid = 'root'
+      form.destUuid = "root";
     }
-    this.httpPost(Matter.URL_MATTER_MOVE, form, function (response: any) {
-      typeof successCallback === 'function' && successCallback(response)
-    }, errorCallback)
+    this.httpPost(
+      Matter.URL_MATTER_MOVE,
+      form,
+      function (response: any) {
+        typeof successCallback === "function" && successCallback(response);
+      },
+      errorCallback
+    );
   }
 
   /*
@@ -282,163 +334,160 @@ export default class Matter extends BaseEntity {
 
   //从file中装填metaData
   validate() {
-
     if (!this.file) {
-      this.errorMessage = '请选择上传文件'
-      return false
+      this.errorMessage = "请选择上传文件";
+      return false;
     }
 
-    this.name = this.file.name
+    this.name = this.file.name;
     if (!this.name) {
-      this.errorMessage = '请选择上传文件'
-      return false
+      this.errorMessage = "请选择上传文件";
+      return false;
     }
 
-    this.size = this.file.size
+    this.size = this.file.size;
 
-    this.errorMessage = null
-    return true
-
+    this.errorMessage = null;
+    return true;
   }
 
   //验证过滤器有没有误填写，这个方法主要给开发者使用。
   validateFilter() {
-
-    let filter = this.filter
-    if (filter === null || filter === '') {
-      this.errorMessage = '过滤器设置错误，请检查-1'
-      console.error('过滤器设置错误，请检查.-1')
-      return false
+    let filter = this.filter;
+    if (filter === null || filter === "") {
+      this.errorMessage = "过滤器设置错误，请检查-1";
+      console.error("过滤器设置错误，请检查.-1");
+      return false;
     }
-    if (filter !== '*') {
-      let regex1 = /^(image|audio|video|text)(\|(image|audio|video|text))*$/g
-      let regex2 = /^(\.[\w]+)(\|\.[\w]+)*$/
+    if (filter !== "*") {
+      let regex1 = /^(image|audio|video|text)(\|(image|audio|video|text))*$/g;
+      let regex2 = /^(\.[\w]+)(\|\.[\w]+)*$/;
       // 测试几种特殊类型 image|audio|video|text
 
       if (!regex1.test(filter)) {
         //测试后缀名
         if (!regex2.test(filter)) {
-          this.errorMessage = '过滤器设置错误，请检查-2'
-          console.error('过滤器设置错误，请检查.-2')
-          return false
+          this.errorMessage = "过滤器设置错误，请检查-2";
+          console.error("过滤器设置错误，请检查.-2");
+          return false;
         }
       }
     }
 
     //validate privacy
-    let privacy = this.privacy
+    let privacy = this.privacy;
     if (!privacy) {
       if (privacy !== false) {
-        this.errorMessage = 'privacy属性为Boolean类型'
-        console.error('privacy属性为Boolean类型.')
-        return false
+        this.errorMessage = "privacy属性为Boolean类型";
+        console.error("privacy属性为Boolean类型.");
+        return false;
       }
     }
 
-    return true
+    return true;
   }
 
   //验证用户上传的文件是否符合过滤器
   validateFileType() {
     if (!this.filter) {
-      this.errorMessage = '该过滤条件有问题'
-      return false
+      this.errorMessage = "该过滤条件有问题";
+      return false;
     }
-    if (this.filter === '*') {
-      this.errorMessage = null
-      return true
+    if (this.filter === "*") {
+      this.errorMessage = null;
+      return true;
     }
 
-    let type = MimeUtil.getMimeType(this.name)
-    let extension = MimeUtil.getExtension(this.name)
-    let simpleType = type.substring(0, type.indexOf('/'))
+    let type = MimeUtil.getMimeType(this.name);
+    let extension = MimeUtil.getExtension(this.name);
+    let simpleType = type.substring(0, type.indexOf("/"));
 
     //专门解决android微信浏览器中名字乱命名的bug.
-    if (StringUtil.startWith(this.name, 'image%3A')) {
-      extension = 'jpg'
-      simpleType = 'image'
-    } else if (StringUtil.startWith(this.name, 'video%3A')) {
-      extension = 'mp4'
-      simpleType = 'video'
-    } else if (StringUtil.startWith(this.name, 'audio%3A')) {
-      extension = 'mp3'
-      simpleType = 'audio'
+    if (StringUtil.startWith(this.name, "image%3A")) {
+      extension = "jpg";
+      simpleType = "image";
+    } else if (StringUtil.startWith(this.name, "video%3A")) {
+      extension = "mp4";
+      simpleType = "video";
+    } else if (StringUtil.startWith(this.name, "audio%3A")) {
+      extension = "mp3";
+      simpleType = "audio";
     }
 
     if (StringUtil.containStr(this.filter, extension)) {
-      this.errorMessage = null
-      return true
+      this.errorMessage = null;
+      return true;
     }
 
     if (simpleType) {
       if (StringUtil.containStr(this.filter, simpleType)) {
-        this.errorMessage = null
-        return true
+        this.errorMessage = null;
+        return true;
       }
     }
-    this.errorMessage = '您上传的文件格式不符合要求'
-    return false
+    this.errorMessage = "您上传的文件格式不符合要求";
+    return false;
   }
 
   //文件上传
-  httpUpload(successCallback?: any, failureCallback?:any) {
-
-    let that = this
+  httpUpload(successCallback?: any, failureCallback?: any, processCallback?: any) {
+    let that = this;
 
     //验证是否装填好
     if (!this.validate()) {
-      return
+      return;
     }
 
     //验证用户填写的过滤条件是否正确
     if (!this.validateFilter()) {
-      return
+      return;
     }
 
     //验证是否满足过滤器
     if (!this.validateFileType()) {
-      return
+      return;
     }
 
     //（兼容性：chrome，ff，IE9及以上）
-    let formData = new FormData()
+    let formData = new FormData();
 
-    formData.append('userUuid', that.userUuid)
-    formData.append('puuid', that.puuid)
-    formData.append('file', that.file!)
-    formData.append('alien', that.alien.toString())
-    formData.append('privacy', that.privacy.toString())
-
+    formData.append("userUuid", that.userUuid);
+    formData.append("puuid", that.puuid);
+    formData.append("file", that.file!);
+    formData.append("alien", that.alien.toString());
+    formData.append("privacy", that.privacy.toString());
 
     //闭包
-    let lastTimeStamp = new Date().getTime()
-    let lastSize = 0
-    HttpUtil.httpPostFile(Matter.URL_MATTER_UPLOAD, formData, function (response: any) {
+    let lastTimeStamp = new Date().getTime();
+    let lastSize = 0;
 
-      that.uuid = response.data.data.uuid
+    that.loading = true;
 
-      if (typeof successCallback === "function") {
-        successCallback()
-      }
-
-    }, function (err: any) {
-      const response = err.response;
-      that.errorMessage = response;
-      that.clear()
-
-      that.defaultErrorHandler(response, failureCallback)
-
-    }, {
-      progress: function (event: any) {
-
+    HttpUtil.httpPostFile(
+      Matter.URL_MATTER_UPLOAD,
+      formData,
+      function (response: any) {
+        that.uuid = response.data.data.uuid;
+        SafeUtil.safeCallback(successCallback)(response);
+      },
+      function (err: any) {
+        const response = err.response;
+        that.errorMessage = response;
+        that.clear();
+        that.defaultErrorHandler(response);
+        SafeUtil.safeCallback(failureCallback)(response);
+      },
+      function () {
+        that.loading = false;
+      },
+      function (event) {
         //上传进度。
-        that.progress = event.loaded / event.total
+        that.progress = event.loaded / event.total;
 
-        let currentTime = (new Date()).getTime();
+        let currentTime = new Date().getTime();
         let deltaTime = currentTime - lastTimeStamp;
 
-
-        //每2s计算一次速度
+        //每1s计算一次速度
         if (deltaTime > 1000) {
           lastTimeStamp = currentTime;
 
@@ -446,40 +495,85 @@ export default class Matter extends BaseEntity {
           let deltaSize = currentSize - lastSize;
           lastSize = currentSize;
 
-
-          that.speed = NumberUtil.parseInt((deltaSize / (deltaTime / 1000)).toFixed(0));
+          that.speed = NumberUtil.parseInt(
+            (deltaSize / (deltaTime / 1000)).toFixed(0)
+          );
         }
-
+        SafeUtil.safeCallback(processCallback)();
       }
-    })
-
+    );
   }
 
   //清除文件
   clear() {
     //filter,privacy不变
-    let matter = new Matter()
-    matter.filter = this.filter
-    matter.privacy = this.privacy
-    matter.errorMessage = this.errorMessage
-    matter.uploadHint = this.uploadHint
-    this.assign(matter)
+    let matter = new Matter();
+    matter.filter = this.filter;
+    matter.privacy = this.privacy;
+    matter.errorMessage = this.errorMessage;
+    matter.uploadHint = this.uploadHint;
+    this.assign(matter);
   }
 
-  getPreviewUrl(downloadTokenUuid?: ''): string {
-    return EnvUtil.currentHost() + '/api/alien/preview/' + this.uuid + '/' + this.name + (downloadTokenUuid ? '?downloadTokenUuid=' + downloadTokenUuid : '')
+  getPreviewUrl(downloadTokenUuid?: ""): string {
+    return (
+      EnvUtil.currentHost() +
+      "/api/alien/preview/" +
+      this.uuid +
+      "/" +
+      this.name +
+      (downloadTokenUuid ? "?downloadTokenUuid=" + downloadTokenUuid : "")
+    );
   }
 
-  getDownloadUrl(downloadTokenUuid?: ''): string {
-    return EnvUtil.currentHost() + '/api/alien/download/' + this.uuid + '/' + this.name + (downloadTokenUuid ? '?downloadTokenUuid=' + downloadTokenUuid : '')
+  getDownloadUrl(downloadTokenUuid?: ""): string {
+    return (
+      EnvUtil.currentHost() +
+      "/api/alien/download/" +
+      this.uuid +
+      "/" +
+      this.name +
+      (downloadTokenUuid ? "?downloadTokenUuid=" + downloadTokenUuid : "")
+    );
   }
 
-  getShareDownloadUrl(shareUuid: string, shareCode:string, shareRootUuid:string): string {
-    return EnvUtil.currentHost() + '/api/alien/download/' + this.uuid + '/' + this.name + '?shareUuid=' + shareUuid + "&shareCode=" + shareCode + "&shareRootUuid=" + shareRootUuid
+  getShareDownloadUrl(
+    shareUuid: string,
+    shareCode: string,
+    shareRootUuid: string
+  ): string {
+    return (
+      EnvUtil.currentHost() +
+      "/api/alien/download/" +
+      this.uuid +
+      "/" +
+      this.name +
+      "?shareUuid=" +
+      shareUuid +
+      "&shareCode=" +
+      shareCode +
+      "&shareRootUuid=" +
+      shareRootUuid
+    );
   }
 
-  getSharePreviewUrl(shareUuid:string, shareCode:string, shareRootUuid:String): string {
-    return EnvUtil.currentHost() + '/api/alien/preview/' + this.uuid + '/' + this.name + '?shareUuid=' + shareUuid + "&shareCode=" + shareCode + "&shareRootUuid=" + shareRootUuid
+  getSharePreviewUrl(
+    shareUuid: string,
+    shareCode: string,
+    shareRootUuid: String
+  ): string {
+    return (
+      EnvUtil.currentHost() +
+      "/api/alien/preview/" +
+      this.uuid +
+      "/" +
+      this.name +
+      "?shareUuid=" +
+      shareUuid +
+      "&shareCode=" +
+      shareCode +
+      "&shareRootUuid=" +
+      shareRootUuid
+    );
   }
-
 }
