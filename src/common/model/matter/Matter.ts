@@ -430,7 +430,7 @@ export default class Matter extends BaseEntity {
   }
 
   //文件上传
-  httpUpload(successCallback?: any, failureCallback?: any, processCallback?: any) {
+  httpUpload(successCallback?: any, failureCallback?: any) {
     let that = this;
 
     //验证是否装填好
@@ -475,7 +475,7 @@ export default class Matter extends BaseEntity {
         that.errorMessage = response;
         that.clear();
         that.defaultErrorHandler(response);
-        SafeUtil.safeCallback(failureCallback)(response);
+        SafeUtil.safeCallback(failureCallback)();
       },
       function () {
         that.loading = false;
@@ -499,7 +499,7 @@ export default class Matter extends BaseEntity {
             (deltaSize / (deltaTime / 1000)).toFixed(0)
           );
         }
-        SafeUtil.safeCallback(processCallback)();
+        that.updateUI();
       }
     );
   }

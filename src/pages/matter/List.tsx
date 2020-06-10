@@ -164,7 +164,7 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   launchUpload = (file: any) => {
-    const m = new Matter();
+    const m = new Matter(this);
     m.dir = false;
     m.puuid = this.matter.uuid!;
     m.userUuid = this.user.uuid!;
@@ -180,21 +180,12 @@ export default class List extends TankComponent<IProps, IState> {
       }
     }
     m.file = file;
-
     m.httpUpload(
-      () => {
-        this.refresh();
-      },
-      () => {
-        this.updateUI();
-      },
-      () => {
-        this.updateUI();
-      }
+      () => this.refresh(),
+      () => this.updateUI()
     );
 
     this.uploadMatters.push(m);
-    this.updateUI();
   };
 
   share = () => {
