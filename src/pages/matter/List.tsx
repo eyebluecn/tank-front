@@ -10,7 +10,7 @@ import Director from "./widget/Director";
 import SortDirection from "../../common/model/base/SortDirection";
 import MatterPanel from "./widget/MatterPanel";
 import UploadMatterPanel from "./widget/UploadMatterPanel";
-import { Col, Modal, Row, Upload } from "antd";
+import { Col, Modal, Row, Upload, Tree, Button, Space } from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
@@ -46,6 +46,8 @@ export default class List extends TankComponent<IProps, IState> {
 
   //分享的弹框
   shareDialogVisible = false;
+  moveModalVisible = false;
+
   newMatterRef = React.createRef<MatterPanel>();
 
   constructor(props: IProps) {
@@ -154,8 +156,9 @@ export default class List extends TankComponent<IProps, IState> {
     this.matter.downloadZip(uuids);
   };
 
-  moveBatch = () => {
-    console.log("moveBatch");
+  toggleMoveBatch = () => {
+    this.moveModalVisible = !this.moveModalVisible;
+    this.updateUI();
   };
 
   triggerUpload = (fileObj: any) => {
@@ -229,87 +232,105 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   render() {
-    const { pager, director, selectedMatters, uploadMatters } = this;
+    const { pager, director, selectedMatters, uploadMatters, moveModalVisible } = this;
     return (
       <div className="matter-list">
         <TankTitle name={"所有文件"}></TankTitle>
 
         <Row className="mb10">
-          <Col md={16}>
-            {selectedMatters.length !== pager.data.length ? (
-              <button
-                className="btn btn-primary btn-sm mr5 mb5"
-                onClick={this.checkAll}
+          <Col md={16} sm={24}>
+            <Space className="buttons">
+              {selectedMatters.length !== pager.data.length ? (
+                <Button
+                  type="primary"
+                  className="mb10"
+                  onClick={this.checkAll}
+                >
+                  全选
+                </Button>
+              ) : null}
+              {pager.data.length &&
+              selectedMatters.length === pager.data.length ? (
+                <Button
+                  type="primary"
+                  className="mb10"
+                  onClick={this.checkNone}
+                >
+                  取消
+                </Button>
+              ) : null}
+              {selectedMatters.length ? (
+                <>
+                  <Button
+                    type="primary"
+                    className="mb10"
+                    onClick={this.deleteBatch}
+                  >
+                    删除
+                  </Button>
+
+                  <Button
+                    type="primary"
+                    className="mb10"
+                    onClick={this.downloadZip}
+                  >
+                    下载
+                  </Button>
+
+                  <Button
+                    type="primary"
+                    className="mb10"
+                    onClick={this.toggleMoveBatch}
+                  >
+                    移动
+                  </Button>
+
+                  <Button
+                    type="primary"
+                    className="mb10"
+                    onClick={this.share}
+                  >
+                    分享
+                  </Button>
+                </>
+              ) : null}
+
+              <Upload
+                className="ant-upload"
+                customRequest={this.triggerUpload}
+                showUploadList={false}
+                multiple
               >
-                全选
-              </button>
-            ) : null}
-            {pager.data.length &&
-            selectedMatters.length === pager.data.length ? (
-              <button
-                className="btn btn-primary btn-sm mr5 mb5"
-                onClick={this.checkNone}
+                <Button type="primary" className="mb10">上传</Button>
+              </Upload>
+              <Button
+                type="primary"
+                className="mb10"
+                onClick={this.createDirectory}
               >
-                取消
-              </button>
-            ) : null}
-            {selectedMatters.length ? (
-              <>
-                <button
-                  className="btn btn-primary btn-sm mr5 mb5"
-                  onClick={this.deleteBatch}
-                >
-                  删除
-                </button>
+                新建
+              </Button>
 
-                <button
-                  className="btn btn-primary btn-sm mr5 mb5"
-                  onClick={this.downloadZip}
-                >
-                  下载
-                </button>
+              <Button
+                type="primary"
+                className="mb10"
+                onClick={this.refresh}
+              >
+                刷新
+              </Button>
+            </Space>
 
-                <button
-                  className="btn btn-primary btn-sm mr5 mb5"
-                  onClick={this.moveBatch}
-                >
-                  移动
-                </button>
-
-                <button
-                  className="btn btn-primary btn-sm mr5 mb5"
-                  onClick={this.share}
-                >
-                  分享
-                </button>
-              </>
-            ) : null}
-
-            <Upload
-              className="ant-upload"
-              customRequest={this.triggerUpload}
-              showUploadList={false}
-              multiple
-            >
-              <button className="btn btn-primary btn-sm mr5 mb5">上传</button>
-            </Upload>
-
-            <button
-              className="btn btn-primary btn-sm mr5 mb5"
-              onClick={this.createDirectory}
-            >
-              新建
-            </button>
-
-            <button
-              className="btn btn-primary btn-sm mr5 mb5"
-              onClick={this.refresh}
-            >
-              刷新
-            </button>
           </Col>
-          <Col md={8}></Col>
+          <Col md={8} sm={24}></Col>
         </Row>
+
+        <Modal
+          visible={moveModalVisible}
+          onCancel={this.toggleMoveBatch}
+          footer={null}
+        >
+          <Tree.DirectoryTree />
+        </Modal>
 
         {Children.toArray(
           uploadMatters.map((m) => <UploadMatterPanel matter={m} />)
