@@ -3,7 +3,6 @@ import React from "react";
 import * as ReactDOM from 'react-dom';
 import FileUtil from "../../../common/util/FileUtil";
 import {CloseOutlined} from "@ant-design/icons";
-import {Tooltip} from "antd";
 
 interface IProps {
   name: string

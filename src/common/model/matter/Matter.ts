@@ -14,6 +14,7 @@ import NumberUtil from "../../util/NumberUtil";
 import SafeUtil from "../../util/SafeUtil";
 import ImagePreviewer from "../../../pages/widget/previewer/ImagePreviewer";
 import BrowserPreviewer from "../../../pages/widget/previewer/BrowserPreviewer";
+import MessageBoxUtil from "../../util/MessageBoxUtil";
 
 export default class Matter extends BaseEntity {
   puuid: string = "";
@@ -184,46 +185,35 @@ export default class Matter extends BaseEntity {
 
       ImagePreviewer.showSinglePhoto(previewUrl)
 
-    } else if (that.isPdf()) {
+    } else if (that.isPdf() || that.isText() || that.isAudio() || that.isVideo()) {
 
       BrowserPreviewer.show(that.name, previewUrl, that.size)
 
+    } else if (that.isDoc() || that.isPpt() || that.isXls()) {
+
+
+      MessageBoxUtil.warning("Office的预览还没做好")
+      // //如果是分享中的预览，直接就可以公有访问。
+      // if (shareMode) {
+      //   Vue.$previewer.previewOffice(that.name, previewUrl, that.size)
+      // } else {
+      //
+      //   //如果是共有文件 office文件的预览请求一次性链接。
+      //   if (this.privacy) {
+      //
+      //     let downloadToken = new DownloadToken()
+      //     downloadToken.httpFetchDownloadToken(that.uuid, function () {
+      //       Vue.$previewer.previewOffice(that.name, that.getPreviewUrl(downloadToken.uuid), that.size)
+      //     })
+      //   } else {
+      //     Vue.$previewer.previewOffice(that.name, previewUrl, that.size)
+      //   }
+      // }
+
+
+    } else {
+      window.open(this.getPreviewUrl())
     }
-    // } else if (that.isDoc() || that.isPpt() || that.isXls()) {
-    //
-    //   //如果是分享中的预览，直接就可以公有访问。
-    //   if (shareMode) {
-    //     Vue.$previewer.previewOffice(that.name, previewUrl, that.size)
-    //   } else {
-    //
-    //     //如果是共有文件 office文件的预览请求一次性链接。
-    //     if (this.privacy) {
-    //
-    //       let downloadToken = new DownloadToken()
-    //       downloadToken.httpFetchDownloadToken(that.uuid, function () {
-    //         Vue.$previewer.previewOffice(that.name, that.getPreviewUrl(downloadToken.uuid), that.size)
-    //       })
-    //     } else {
-    //       Vue.$previewer.previewOffice(that.name, previewUrl, that.size)
-    //     }
-    //   }
-    //
-    //
-    // } else if (that.isText()) {
-    //
-    //   Vue.$previewer.previewText(that.name, previewUrl, that.size)
-    //
-    // } else if (that.isAudio()) {
-    //
-    //   Vue.$previewer.previewAudio(that.name, previewUrl, that.size)
-    //
-    // } else if (that.isVideo()) {
-    //
-    //   Vue.$previewer.previewVideo(that.name, previewUrl, that.size)
-    //
-    // } else {
-    //   window.open(this.getPreviewUrl())
-    // }
   }
 
   httpCreateDirectory(
