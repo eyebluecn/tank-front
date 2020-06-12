@@ -1,7 +1,6 @@
 import React from "react";
 import TankComponent from "../../../common/component/TankComponent";
 import Matter from "../../../common/model/matter/Matter";
-import Director from "./Director";
 import StringUtil from "../../../common/util/StringUtil";
 import { Progress } from "antd";
 import "./UploadMatterPanel.less";

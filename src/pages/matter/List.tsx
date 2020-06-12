@@ -17,6 +17,7 @@ import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Sun from "../../common/model/global/Sun";
 import { UserRole } from "../../common/model/user/UserRole";
 import StringUtil from "../../common/util/StringUtil";
+import MoveBatchPanel from "./widget/MoveBatchPanel";
 
 interface IProps extends RouteComponentProps {}
 
@@ -34,7 +35,7 @@ export default class List extends TankComponent<IProps, IState> {
   //搜索的文字
   searchText: string | null = null;
   //获取分页的一个帮助器
-  pager = new Pager<Matter>(this, Matter, 10); // todo 分页
+  pager = new Pager<Matter>(this, Matter, 100); // todo 分页
   //移动的目标文件夹
   targetMatterUuid: string | null = null;
   user = Moon.getSingleton().user;
@@ -326,10 +327,11 @@ export default class List extends TankComponent<IProps, IState> {
 
         <Modal
           visible={moveModalVisible}
+          title="移动到"
+          width="50vw"
           onCancel={this.toggleMoveBatch}
-          footer={null}
         >
-          <Tree.DirectoryTree />
+          <MoveBatchPanel />
         </Modal>
 
         {Children.toArray(
