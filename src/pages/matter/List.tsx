@@ -17,7 +17,7 @@ import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Sun from "../../common/model/global/Sun";
 import { UserRole } from "../../common/model/user/UserRole";
 import StringUtil from "../../common/util/StringUtil";
-import MoveBatchPanel from "./widget/MoveBatchPanel";
+import MoveBatchModal from "./widget/MoveBatchModal";
 
 interface IProps extends RouteComponentProps {}
 
@@ -47,7 +47,6 @@ export default class List extends TankComponent<IProps, IState> {
 
   //分享的弹框
   shareDialogVisible = false;
-  moveModalVisible = false;
 
   newMatterRef = React.createRef<MatterPanel>();
 
@@ -158,8 +157,7 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   toggleMoveBatch = () => {
-    this.moveModalVisible = !this.moveModalVisible;
-    this.updateUI();
+    MoveBatchModal.open(() => {});
   };
 
   triggerUpload = (fileObj: any) => {
@@ -233,7 +231,7 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   render() {
-    const { pager, director, selectedMatters, uploadMatters, moveModalVisible } = this;
+    const { pager, director, selectedMatters, uploadMatters } = this;
     return (
       <div className="matter-list">
         <TankTitle name={"所有文件"}></TankTitle>
@@ -324,15 +322,6 @@ export default class List extends TankComponent<IProps, IState> {
           </Col>
           <Col md={8} sm={24}></Col>
         </Row>
-
-        <Modal
-          visible={moveModalVisible}
-          title="移动到"
-          width="50vw"
-          onCancel={this.toggleMoveBatch}
-        >
-          <MoveBatchPanel />
-        </Modal>
 
         {Children.toArray(
           uploadMatters.map((m) => <UploadMatterPanel matter={m} />)
