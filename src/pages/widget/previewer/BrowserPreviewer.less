@@ -1,0 +1,38 @@
+.browser-previewer {
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  z-index: 1000;
+  background: #333;
+  color: #eee;
+
+  display: flex;
+  flex-direction: column;
+
+  .title-bar {
+    height: 40px;
+
+    text-align: center;
+    line-height: 40px;
+    font-size: 16px;
+    border-bottom: 1px solid #555;
+
+    .close {
+      float: right;
+      margin-right: 20px;
+
+    }
+  }
+
+  .frame-area {
+    flex: 1;
+
+    iframe {
+      border: 0;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { message } from "antd";
+import {message} from "antd";
 import BaseEntity from "../base/BaseEntity";
 import Filter from "../base/filter/Filter";
 import HttpUtil from "../../util/HttpUtil";
@@ -12,13 +12,15 @@ import MimeUtil from "../../util/MimeUtil";
 import StringUtil from "../../util/StringUtil";
 import NumberUtil from "../../util/NumberUtil";
 import SafeUtil from "../../util/SafeUtil";
+import ImagePreviewer from "../../../pages/widget/previewer/ImagePreviewer";
+import BrowserPreviewer from "../../../pages/widget/previewer/BrowserPreviewer";
 
 export default class Matter extends BaseEntity {
   puuid: string = "";
   userUuid: string = "";
   dir: boolean = false;
   alien: boolean = false;
-  name: string | null = null;
+  name: string = "";
   md5: string | null = null;
   size: number = 0;
   privacy: boolean = true;
@@ -177,15 +179,16 @@ export default class Matter extends BaseEntity {
       previewUrl = that.getPreviewUrl();
     }
 
-    // todo preview
-    // if (that.isImage()) {
-    //
-    //   Vue.$photoSwipePlugin.showPhoto(previewUrl)
-    //
-    // } else if (that.isPdf()) {
-    //
-    //   Vue.$previewer.previewPdf(that.name, previewUrl, that.size)
-    //
+
+    if (that.isImage()) {
+
+      ImagePreviewer.showSinglePhoto(previewUrl)
+
+    } else if (that.isPdf()) {
+
+      BrowserPreviewer.show(that.name, previewUrl, that.size)
+
+    }
     // } else if (that.isDoc() || that.isPpt() || that.isXls()) {
     //
     //   //如果是分享中的预览，直接就可以公有访问。
@@ -229,7 +232,7 @@ export default class Matter extends BaseEntity {
     finallyCallback?: any
   ) {
     let that = this;
-    let form = { userUuid: that.userUuid, name: that.name, puuid: that.puuid };
+    let form = {userUuid: that.userUuid, name: that.name, puuid: that.puuid};
 
     return this.httpPost(
       Matter.URL_MATTER_CREATE_DIRECTORY,
@@ -246,7 +249,7 @@ export default class Matter extends BaseEntity {
   httpDelete(successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_DELETE,
-      { uuid: this.uuid },
+      {uuid: this.uuid},
       function (response: any) {
         typeof successCallback === "function" && successCallback(response);
       },
@@ -257,7 +260,7 @@ export default class Matter extends BaseEntity {
   httpDeleteBatch(uuids: string, successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_DELETE_BATCH,
-      { uuids: uuids },
+      {uuids: uuids},
       function (response: any) {
         typeof successCallback === "function" && successCallback(response);
       },
@@ -274,7 +277,7 @@ export default class Matter extends BaseEntity {
     let that = this;
     this.httpPost(
       Matter.URL_MATTER_RENAME,
-      { uuid: this.uuid, name: name },
+      {uuid: this.uuid, name: name},
       function (response: any) {
         that.assign(response.data.data);
         typeof successCallback === "function" && successCallback(response);
@@ -292,7 +295,7 @@ export default class Matter extends BaseEntity {
     let that = this;
     this.httpPost(
       Matter.URL_CHANGE_PRIVACY,
-      { uuid: this.uuid, privacy: privacy },
+      {uuid: this.uuid, privacy: privacy},
       function (response: any) {
         that.privacy = privacy;
         if (typeof successCallback === "function") {
@@ -312,7 +315,7 @@ export default class Matter extends BaseEntity {
     successCallback?: any,
     errorCallback?: any
   ) {
-    let form: any = { srcUuids: srcUuids };
+    let form: any = {srcUuids: srcUuids};
     if (destUuid) {
       form.destUuid = destUuid;
     } else {

@@ -5,9 +5,14 @@ import PhotoSwipeUIDefault from 'photoswipe/dist/photoswipe-ui-default'
 import "photoswipe/dist/photoswipe.css";
 import "photoswipe/dist/default-skin/default-skin.css";
 
+
+/**
+ * 图片预览器
+ * 支持预览一张图片或者多张图片
+ */
 export default class ImagePreviewer {
 
-  static pswpDom(): HTMLElement {
+  private static pswpDom(): HTMLElement {
     let innerHTML = `
     <!-- Background of PhotoSwipe.
          It's a separate element as animating opacity is faster than rgba(). -->
