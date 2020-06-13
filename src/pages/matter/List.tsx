@@ -10,7 +10,16 @@ import Director from "./widget/Director";
 import SortDirection from "../../common/model/base/SortDirection";
 import MatterPanel from "./widget/MatterPanel";
 import UploadMatterPanel from "./widget/UploadMatterPanel";
-import { Col, Modal, Row, Upload, Input, Button, Space } from "antd";
+import {
+  Col,
+  Modal,
+  Row,
+  Upload,
+  Input,
+  Button,
+  Space,
+  Pagination,
+} from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
@@ -35,7 +44,7 @@ export default class List extends TankComponent<IProps, IState> {
   //搜索的文字
   searchText: string | null = null;
   //获取分页的一个帮助器
-  pager = new Pager<Matter>(this, Matter, 100); // todo 分页
+  pager = new Pager<Matter>(this, Matter, 100);
   //移动的目标文件夹
   targetMatterUuid: string | null = null;
   user = Moon.getSingleton().user;
@@ -200,7 +209,7 @@ export default class List extends TankComponent<IProps, IState> {
     console.log("share");
   };
 
-  searchFile = (value: string) => {
+  searchFile = (value?: string) => {
     this.pager.resetFilter();
     if (value) {
       this.pager.setFilterValue("orderCreateTime", SortDirection.DESC);
@@ -210,6 +219,16 @@ export default class List extends TankComponent<IProps, IState> {
     } else {
       this.refresh();
     }
+  };
+
+  changeSearch = (e: any) => {
+    if (!e.currentTarget.value) this.searchFile();
+  };
+
+  changePage = (page: number) => {
+    this.pager.page = page - 1; // page的页数0基
+    this.pager.httpList();
+    this.updateUI();
   };
 
   createDirectory = () => {
@@ -331,6 +350,7 @@ export default class List extends TankComponent<IProps, IState> {
             <Input.Search
               placeholder="搜索文件"
               onSearch={(value) => this.searchFile(value)}
+              onChange={this.changeSearch}
               enterButton
             />
           </Col>
@@ -361,6 +381,14 @@ export default class List extends TankComponent<IProps, IState> {
             />
           ))}
         </div>
+        <Pagination
+          className="mt10 pull-right"
+          onChange={this.changePage}
+          current={pager.page + 1}
+          total={pager.totalItems}
+          pageSize={pager.pageSize}
+          hideOnSinglePage
+        />
       </div>
     );
   }
