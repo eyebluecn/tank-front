@@ -1,11 +1,12 @@
 import React from "react";
 import TankComponent from "../../../common/component/TankComponent";
-import { Modal, Tree } from "antd";
+import { Modal, Tree, Button } from "antd";
 import Pager from "../../../common/model/base/Pager";
 import Matter from "../../../common/model/matter/Matter";
+import "./MoveBatchModal.less";
 
 interface IProps {
-  onSuccess: () => any;
+  onSuccess: (uuid: string) => any;
   onClose: () => any;
 }
 
@@ -31,15 +32,19 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
     this.pager.setFilterValue("dir", true);
   }
 
-  static open(onSuccess: () => void) {
+  static open(onSuccess: (uuid: string) => void) {
     let modal = Modal.confirm({
       title: "移动到",
       width: "50vw",
+      okCancel: false,
+      okButtonProps: {
+        className: "display-none"
+      },
       content: (
         <MoveBatchModal
-          onSuccess={() => {
+          onSuccess={(uuid: string) => {
             modal.destroy();
-            onSuccess();
+            onSuccess(uuid);
           }}
           onClose={() => {
             modal.destroy();
@@ -92,7 +97,13 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
 
   render() {
     return (
-      <Tree.DirectoryTree treeData={this.treeData} selectedKeys={[this.targetUuid]} loadData={this.onLoadData} onSelect={this.onSelect} />
+      <div>
+        <Tree.DirectoryTree className="tree-wrapper" treeData={this.treeData} defaultExpandedKeys={['root']} selectedKeys={[this.targetUuid]} loadData={this.onLoadData} onSelect={this.onSelect} />
+        <div className="mt10 text-right">
+          <Button className="mr10" onClick={() => this.props.onClose()}>关闭</Button>
+          <Button type="primary" onClick={() => this.props.onSuccess(this.targetUuid)}>确定</Button>
+        </div>
+      </div>
     );
   }
 }

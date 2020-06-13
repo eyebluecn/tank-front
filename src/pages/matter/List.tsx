@@ -157,7 +157,13 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   toggleMoveBatch = () => {
-    MoveBatchModal.open(() => {});
+    MoveBatchModal.open((targetUuid) => {
+      const uuids = this.selectedMatters.map(i => i.uuid).join(',');
+      this.matter.httpMove(uuids, targetUuid, () => {
+        MessageBoxUtil.success('操作成功');
+        this.refresh();
+      })
+    });
   };
 
   triggerUpload = (fileObj: any) => {
