@@ -10,7 +10,7 @@ import Director from "./widget/Director";
 import SortDirection from "../../common/model/base/SortDirection";
 import MatterPanel from "./widget/MatterPanel";
 import UploadMatterPanel from "./widget/UploadMatterPanel";
-import { Col, Modal, Row, Upload, Tree, Button, Space } from "antd";
+import { Col, Modal, Row, Upload, Input, Button, Space } from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
@@ -158,11 +158,11 @@ export default class List extends TankComponent<IProps, IState> {
 
   toggleMoveBatch = () => {
     MoveBatchModal.open((targetUuid) => {
-      const uuids = this.selectedMatters.map(i => i.uuid).join(',');
+      const uuids = this.selectedMatters.map((i) => i.uuid).join(",");
       this.matter.httpMove(uuids, targetUuid, () => {
-        MessageBoxUtil.success('操作成功');
+        MessageBoxUtil.success("操作成功");
         this.refresh();
-      })
+      });
     });
   };
 
@@ -198,6 +198,18 @@ export default class List extends TankComponent<IProps, IState> {
 
   share = () => {
     console.log("share");
+  };
+
+  searchFile = (value: string) => {
+    this.pager.resetFilter();
+    if (value) {
+      this.pager.setFilterValue("orderCreateTime", SortDirection.DESC);
+      this.pager.setFilterValue("orderDir", SortDirection.DESC);
+      this.pager.setFilterValue("name", value);
+      this.pager.httpList();
+    } else {
+      this.refresh();
+    }
   };
 
   createDirectory = () => {
@@ -246,11 +258,7 @@ export default class List extends TankComponent<IProps, IState> {
           <Col md={16} sm={24}>
             <Space className="buttons">
               {selectedMatters.length !== pager.data.length ? (
-                <Button
-                  type="primary"
-                  className="mb10"
-                  onClick={this.checkAll}
-                >
+                <Button type="primary" className="mb10" onClick={this.checkAll}>
                   全选
                 </Button>
               ) : null}
@@ -290,11 +298,7 @@ export default class List extends TankComponent<IProps, IState> {
                     移动
                   </Button>
 
-                  <Button
-                    type="primary"
-                    className="mb10"
-                    onClick={this.share}
-                  >
+                  <Button type="primary" className="mb10" onClick={this.share}>
                     分享
                   </Button>
                 </>
@@ -306,7 +310,9 @@ export default class List extends TankComponent<IProps, IState> {
                 showUploadList={false}
                 multiple
               >
-                <Button type="primary" className="mb10">上传</Button>
+                <Button type="primary" className="mb10">
+                  上传
+                </Button>
               </Upload>
               <Button
                 type="primary"
@@ -316,17 +322,18 @@ export default class List extends TankComponent<IProps, IState> {
                 新建
               </Button>
 
-              <Button
-                type="primary"
-                className="mb10"
-                onClick={this.refresh}
-              >
+              <Button type="primary" className="mb10" onClick={this.refresh}>
                 刷新
               </Button>
             </Space>
-
           </Col>
-          <Col md={8} sm={24}></Col>
+          <Col md={8} sm={24}>
+            <Input.Search
+              placeholder="搜索文件"
+              onSearch={(value) => this.searchFile(value)}
+              enterButton
+            />
+          </Col>
         </Row>
 
         {Children.toArray(
