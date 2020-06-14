@@ -18,7 +18,6 @@ import DashboardIndex from './dashboard/Index';
 import InstallIndex from './install/Index';
 
 import MatterList from './matter/List';
-import MatterEdit from './matter/Edit';
 
 import {Layout, Menu} from 'antd';
 import MenuManager from '../common/menu/MenuManager';
@@ -215,8 +214,6 @@ class RawFrame extends TankComponent<IProps, IState> {
                       <Redirect to="/matter/list"/>
                     }/>
                     <Route path="/matter/list" component={MatterList}/>
-                    <Route path="/matter/create" component={MatterEdit}/>
-                    <Route path="/matter/edit/:uuid" component={MatterEdit}/>
                   </div>
                 ) : (
                   <div className="pages-content">

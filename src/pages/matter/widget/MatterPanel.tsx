@@ -19,8 +19,8 @@ import {
   DeleteFilled,
   ExclamationCircleFilled,
 } from "@ant-design/icons";
-import {Modal, Checkbox} from "antd";
-import {CheckboxChangeEvent} from "antd/es/checkbox";
+import { Modal, Checkbox } from "antd";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 import SafeUtil from "../../../common/util/SafeUtil";
 
 interface IProps {
@@ -33,8 +33,7 @@ interface IProps {
   onGoToDirectory?: (id: string) => any;
 }
 
-interface IState {
-}
+interface IState {}
 
 export default class MatterPanel extends TankComponent<IProps, IState> {
   //正在重命名的临时字段
@@ -51,7 +50,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   }
 
   prepareRename = () => {
-    const {matter, director} = this.props;
+    const { matter, director } = this.props;
     if (director.isEditing()) {
       console.error("导演正忙着，不予执行");
       return;
@@ -87,7 +86,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   deleteMatter = () => {
     Modal.confirm({
       title: "此操作不可撤回, 是否继续?",
-      icon: <ExclamationCircleFilled twoToneColor="#FFDC00"/>,
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         this.props.matter.httpDelete(() => {
           MessageBoxUtil.success("操作成功");
@@ -107,7 +106,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     if (this.renamingLoading) {
       return;
     }
-    const {matter, director} = this.props;
+    const { matter, director } = this.props;
     this.renamingLoading = true;
 
     matter.httpRename(
@@ -131,7 +130,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   };
 
   finishCreateDirectory = () => {
-    const {matter, director, onCreateDirectoryCallback} = this.props;
+    const { matter, director, onCreateDirectoryCallback } = this.props;
     matter.name = this.renameMatterName;
     matter.httpCreateDirectory(
       () => {
@@ -149,7 +148,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   };
 
   blurTrigger = () => {
-    const {matter, director} = this.props;
+    const { matter, director } = this.props;
     if (matter.editMode) {
       if (director.createMode) {
         this.finishCreateDirectory();
@@ -181,15 +180,11 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   };
 
   clickRow = () => {
-
-
-    const {matter, director, onGoToDirectory, onPreviewImage} = this.props;
+    const { matter, director, onGoToDirectory, onPreviewImage } = this.props;
     if (director.isEditing()) {
       console.error("导演正忙着，不予执行");
       return;
     }
-
-
 
     if (matter.dir) {
       onGoToDirectory!(matter.uuid!);
@@ -198,30 +193,28 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
       if (matter.isImage()) {
         onPreviewImage!(matter);
       } else {
-
-
         matter.preview();
       }
     }
   };
 
   render() {
-    const {matter} = this.props;
+    const { matter } = this.props;
     return (
       <div className="widget-matter-panel">
-        <div onClick={e => SafeUtil.stopPropagationWrap(e)(this.clickRow())}>
+        <div onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.clickRow())}>
           <div className="media">
             <div className="pull-left">
               <div className="left-part">
                 <span className="basic-span basic-span-hot">
                   <Checkbox
-                    onClick={e => SafeUtil.stopPropagationWrap(e)}
+                    onClick={(e) => SafeUtil.stopPropagationWrap(e)}
                     checked={matter.check}
                     onChange={this.checkToggle}
                   />
                 </span>
                 <span className="basic-span">
-                  <img className="matter-icon" src={matter.getIcon()}/>
+                  <img className="matter-icon" src={matter.getIcon()} />
                 </span>
               </div>
             </div>
@@ -253,25 +246,35 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                     )}
                     <AppstoreFilled
                       className="btn-action blue"
-                      onClick={() =>
-                        Sun.navigateTo("/matter/detail/" + matter.uuid)
+                      onClick={(e) =>
+                        SafeUtil.stopPropagationWrap(e)(
+                          Sun.navigateTo("/matter/detail/" + matter.uuid)
+                        )
                       }
                     />
                     <EditFilled
                       className="btn-action blue"
-                      onClick={e => SafeUtil.stopPropagationWrap(e)(this.prepareRename())}
+                      onClick={(e) =>
+                        SafeUtil.stopPropagationWrap(e)(this.prepareRename())
+                      }
                     />
                     <ApiFilled
                       className="btn-action blue"
-                      onClick={e => SafeUtil.stopPropagationWrap(e)(this.clipboard())}
+                      onClick={(e) =>
+                        SafeUtil.stopPropagationWrap(e)(this.clipboard())
+                      }
                     />
                     <DownloadOutlined
                       className="btn-action blue"
-                      onClick={e => SafeUtil.stopPropagationWrap(e)(matter.download())}
+                      onClick={(e) =>
+                        SafeUtil.stopPropagationWrap(e)(matter.download())
+                      }
                     />
                     <DeleteFilled
                       className="btn-action red"
-                      onClick={e => SafeUtil.stopPropagationWrap(e)(this.deleteMatter())}
+                      onClick={(e) =>
+                        SafeUtil.stopPropagationWrap(e)(this.deleteMatter())
+                      }
                     />
                   </span>
                   <span className="matter-size">
@@ -304,7 +307,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                   <span className="matter-name">
                     {matter.name}
                     {!matter.dir && !matter.privacy && (
-                      <UnlockFilled className="icon"/>
+                      <UnlockFilled className="icon" />
                     )}
                   </span>
                 )}

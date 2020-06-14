@@ -1,91 +1,119 @@
-import React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import './Detail.less';
-import TankComponent from '../../common/component/TankComponent';
-import Matter from '../../common/model/matter/Matter';
-import { Button, Col, Row, Spin } from 'antd';
-import InfoCell from '../widget/InfoCell';
-import StringUtil from '../../common/util/StringUtil';
-import TankTitle from '../widget/TankTitle';
+import React from "react";
+import { RouteComponentProps } from "react-router-dom";
+import "./Detail.less";
+import TankComponent from "../../common/component/TankComponent";
+import Matter from "../../common/model/matter/Matter";
+import { Spin, Space } from "antd";
+import copy from "copy-to-clipboard";
+import StringUtil from "../../common/util/StringUtil";
+import TankTitle from "../widget/TankTitle";
+import DownloadToken from "../../common/model/download/token/DownloadToken";
+import DateUtil from "../../common/util/DateUtil";
+import MessageBoxUtil from "../../common/util/MessageBoxUtil";
+import ImageCacheList from "./widget/imageCache/ImageCacheList";
 
 interface RouteParam {
-  uuid: string
+  uuid: string;
 }
 
-interface IProps extends RouteComponentProps<RouteParam> {
+interface IProps extends RouteComponentProps<RouteParam> {}
 
-}
-
-interface IState {
-}
+interface IState {}
 
 export default class Detail extends TankComponent<IProps, IState> {
-
-  matter: Matter = new Matter(this);
+  matter = new Matter();
+  downloadToken = new DownloadToken();
 
   constructor(props: IProps) {
     super(props);
-
-
     this.state = {};
-
-    //matter的id设置晚了就来不及了
-    let match = this.props.match;
-    if (match.params.uuid) {
-      this.matter.uuid = match.params.uuid;
-    }
-
   }
-
 
   componentDidMount() {
-    //刷新一下列表
+    const { uuid } = this.props.match.params;
+    this.matter.uuid = uuid;
     let that = this;
-
-    let match = this.props.match;
-    let matter = that.matter;
-
-    matter.httpDetail(function() {
-
+    this.matter.httpDetail((response: any) => {
+      that.updateUI();
+      if (!response.data.data.dir) {
+        that.downloadToken.httpFetchDownloadToken(that.matter.uuid!);
+      }
     });
-
   }
 
+  copyLink = () => {
+    const { privacy } = this.matter;
+    const textToCopy = this.matter.getDownloadUrl(
+      privacy ? this.downloadToken.uuid! : undefined
+    );
+    copy(textToCopy);
+    MessageBoxUtil.success("操作成功");
+  };
 
   render() {
-
-    let that = this;
-    let matter: Matter = that.matter;
-    //router中传入的路由相关对象
-    let match = this.props.match;
-
-
+    const { matter } = this;
     return (
-      <div className="matter-detail">
-
-        <TankTitle name={'文件详情'}>
-          <Link title="编辑"
-                to={StringUtil.prePath(match.path, 2) + '/edit/' + matter.uuid}>
-            <Button className="mh10" type="primary">
-              编辑
-            </Button>
-          </Link>
-        </TankTitle>
-
-        <Spin tip="加载中" spinning={matter.detailLoading}>
+      <Spin tip="加载中" spinning={matter.detailLoading}>
+        <div className="matter-detail">
+          <TankTitle name={"文件详情"}></TankTitle>
 
           <div className="info">
-
-
-
+            <p>
+              <span>文件基本信息：</span>
+              <span>{matter.name}</span>
+            </p>
+            <p>
+              {/*todo move to breadhead, linkable path*/}
+              <span>路径：</span>
+              <span>{matter.path}</span>
+            </p>
+            <p>
+              <span>创建日期：</span>
+              <span>{DateUtil.simpleDateTime(matter.createTime)}</span>
+            </p>
+            <p>
+              <span>修改日期：</span>
+              <span>{DateUtil.simpleDateTime(matter.updateTime)}</span>
+            </p>
+            {!matter.dir ? (
+              <>
+                <p>
+                  <span>大小：</span>
+                  <span>{StringUtil.humanFileSize(matter.size)}</span>
+                </p>
+                <p>
+                  <span>文件公开性：</span>
+                  <span>
+                    {matter.privacy
+                      ? "私有文件，只有自己或者授权的用户可以下载"
+                      : "公有文件，任何人可以通过链接下载"}
+                  </span>
+                </p>
+                <p>
+                  <span>下载次数：</span>
+                  <span>{matter.times}</span>
+                </p>
+                <div>
+                  <span>操作：</span>
+                  <Space>
+                    <a onClick={() => matter.download()}>下载</a>
+                    <a onClick={() => matter.preview()}>预览</a>
+                    <a onClick={this.copyLink}>
+                      {matter.privacy ? "一次性链接" : "复制链接"}
+                    </a>
+                  </Space>
+                </div>
+              </>
+            ) : null}
           </div>
+        </div>
 
-
-        </Spin>
-
-      </div>
+        {!matter.dir && matter.uuid && matter.isImage() ? (
+          <div className="matter-detail">
+            <ImageCacheList initFilter={{ matterUuid: matter.uuid }} />
+          </div>
+        ) : null}
+      </Spin>
     );
   }
 }
-
-

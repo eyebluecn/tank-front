@@ -519,7 +519,7 @@ export default class Matter extends BaseEntity {
     );
   }
 
-  getDownloadUrl(downloadTokenUuid?: ""): string {
+  getDownloadUrl(downloadTokenUuid?: string): string {
     return (
       EnvUtil.currentHost() +
       "/api/alien/download/" +
