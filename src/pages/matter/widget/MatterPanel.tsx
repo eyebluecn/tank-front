@@ -1,5 +1,6 @@
 import React from "react";
 import copy from "copy-to-clipboard";
+import { CSSTransition } from "react-transition-group";
 import Matter from "../../../common/model/matter/Matter";
 import TankComponent from "../../../common/component/TankComponent";
 import Director from "./Director";
@@ -12,12 +13,14 @@ import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import {
   LockFilled,
   UnlockFilled,
-  AppstoreFilled,
-  ApiFilled,
-  EditFilled,
   DownloadOutlined,
-  DeleteFilled,
   ExclamationCircleFilled,
+  SmallDashOutlined,
+  LinkOutlined,
+  DeleteOutlined,
+  InfoCircleTwoTone,
+  EditOutlined,
+  InfoCircleOutlined,
 } from "@ant-design/icons";
 import { Modal, Checkbox } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
@@ -36,10 +39,11 @@ interface IProps {
 interface IState {}
 
 export default class MatterPanel extends TankComponent<IProps, IState> {
-  //正在重命名的临时字段
+  // 正在重命名的临时字段
   renameMatterName: string = "";
-  //正在向服务器提交rename的请求
+  // 正在向服务器提交rename的请求
   renamingLoading: boolean = false;
+  // 小屏幕下操作栏
   showMore: boolean = false;
 
   inputRef = React.createRef<HTMLInputElement>();
@@ -198,7 +202,13 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     }
   };
 
+  toggleHandles = () => {
+    this.showMore = !this.showMore;
+    this.updateUI();
+  };
+
   render() {
+    console.log(this.showMore);
     const { matter } = this.props;
     return (
       <div className="widget-matter-panel">
@@ -244,7 +254,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                         }
                       />
                     )}
-                    <AppstoreFilled
+                    <InfoCircleTwoTone
                       className="btn-action blue"
                       onClick={(e) =>
                         SafeUtil.stopPropagationWrap(e)(
@@ -252,13 +262,13 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                         )
                       }
                     />
-                    <EditFilled
+                    <EditOutlined
                       className="btn-action blue"
                       onClick={(e) =>
                         SafeUtil.stopPropagationWrap(e)(this.prepareRename())
                       }
                     />
-                    <ApiFilled
+                    <LinkOutlined
                       className="btn-action blue"
                       onClick={(e) =>
                         SafeUtil.stopPropagationWrap(e)(this.clipboard())
@@ -270,7 +280,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                         SafeUtil.stopPropagationWrap(e)(matter.download())
                       }
                     />
-                    <DeleteFilled
+                    <DeleteOutlined
                       className="btn-action red"
                       onClick={(e) =>
                         SafeUtil.stopPropagationWrap(e)(this.deleteMatter())
@@ -287,7 +297,16 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
               )}
             </div>
 
-            {/*todo 在小屏幕下的操作栏*/}
+            <div className="pull-right visible-mobile">
+              <span
+                className="more-btn"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.toggleHandles())
+                }
+              >
+                <SmallDashOutlined className="btn-action navy f18" />
+              </span>
+            </div>
 
             <div className="media-body">
               <div className="middle-part">
@@ -315,6 +334,87 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
             </div>
           </div>
         </div>
+
+        <CSSTransition in={this.showMore} timeout={200} classNames="drop">
+          <div className="visible-mobile more-panel">
+            <div className="cell-btn navy">
+              <span>{DateUtil.simpleDateHourMinute(matter.updateTime)}</span>
+              <span className="matter-size">
+                {StringUtil.humanFileSize(matter.size)}
+              </span>
+            </div>
+
+            {!matter.dir && matter.privacy && (
+              <div
+                className="cell-btn navy"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.changePrivacy(false))
+                }
+              >
+                <UnlockFilled className="btn-action mr5" />
+                设置为公有文件
+              </div>
+            )}
+
+            {!matter.dir && !matter.privacy && (
+              <div
+                className="cell-btn navy"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.changePrivacy(true))
+                }
+              >
+                <LockFilled className="btn-action mr5" />
+                设置为私有文件
+              </div>
+            )}
+
+            <div
+              className="cell-btn navy"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(
+                  Sun.navigateTo("/matter/detail/" + matter.uuid)
+                )
+              }
+            >
+              <InfoCircleOutlined className="btn-action mr5" />
+              文件详情
+            </div>
+            <div
+              className="cell-btn navy"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(this.prepareRename())
+              }
+            >
+              <EditOutlined className="btn-action mr5" />
+              重命名
+            </div>
+            <div
+              className="cell-btn navy"
+              onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.clipboard())}
+            >
+              <LinkOutlined className="btn-action mr5" />
+              复制下载链接
+            </div>
+            <div
+              className="cell-btn navy"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(matter.download())
+              }
+            >
+              <DownloadOutlined className="btn-action mr5" />
+              下载
+            </div>
+            <div
+              className="cell-btn red"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(this.deleteMatter())
+              }
+            >
+              <DeleteOutlined className="btn-action mr5" />
+              删除
+            </div>
+          </div>
+        </CSSTransition>
       </div>
     );
   }

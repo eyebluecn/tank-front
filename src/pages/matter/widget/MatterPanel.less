@@ -7,7 +7,7 @@
   display: inline-block;
   vertical-align: middle;
   line-height: @base-height;
-  margin-right: 5px;
+  margin-right: 10px;
   &-hot {
     padding-left: 10px;
   }
@@ -111,13 +111,38 @@
     border-top: 1px solid #eee;
     padding-left: 35px;
 
-    .info {
+    .matter-size {
+      margin-left: 15px;
     }
 
     .cell-btn {
       border-top: 1px solid #eee;
       line-height: @inner-cell-height;
       vertical-align: middle;
+      &:first-child {
+        border-top: none;
+      }
     }
   }
+
+  //.drop-enter {
+  //  transform: translateY(-100%);
+  //}
+  //.drop-enter-active {
+  //  transform: translateY(0);
+  //  transition: transform 2000ms linear;
+  //}
+  //.drop-enter-done {
+  //  transform: translateY(0);
+  //}
+  //.drop-exit {
+  //  transform: translateY(0);
+  //}
+  //.drop-exit-active {
+  //  transform: translateY(-100%);
+  //  transition: transform 2000ms linear;
+  //}
+  //.drop-exit-done {
+  //  transform: translateY(-100%);
+  //}
 }
