@@ -29,7 +29,8 @@
     "react-transition-group": "^4.4.1",
     "semver": "6.3.0",
     "ts-pnp": "1.1.6",
-    "velocity-animate": "^1.5.2"
+    "velocity-animate": "^1.5.2",
+    "velocity-react": "^1.4.3"
   },
   "scripts": {
     "start": "node scripts/start.js",
