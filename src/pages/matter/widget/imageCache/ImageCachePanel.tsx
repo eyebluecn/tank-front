@@ -5,11 +5,17 @@ import SafeUtil from "../../../../common/util/SafeUtil";
 import ImageCache from "../../../../common/model/image/cache/ImageCache";
 import ImageUtil from "../../../../common/util/ImageUtil";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
-import { DeleteFilled, ExclamationCircleFilled } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  ExclamationCircleFilled,
+  SmallDashOutlined,
+} from "@ant-design/icons";
 import MessageBoxUtil from "../../../../common/util/MessageBoxUtil";
 import FileUtil from "../../../../common/util/FileUtil";
 import DateUtil from "../../../../common/util/DateUtil";
+import Expanding from "../../../widget/Expanding";
 import "./ImageCachePanel.less";
+import StringUtil from "../../../../common/util/StringUtil";
 
 interface IProps {
   imageCache: ImageCache;
@@ -23,6 +29,7 @@ interface IState {}
 export default class ImageCachePanel extends TankComponent<IProps, IState> {
   //正在向服务器提交rename的请求
   renamingLoading = false;
+  // 小屏幕下操作栏
   showMore = false;
 
   clickRow = () => {};
@@ -46,6 +53,11 @@ export default class ImageCachePanel extends TankComponent<IProps, IState> {
     });
   };
 
+  toggleHandles = () => {
+    this.showMore = !this.showMore;
+    this.updateUI();
+  };
+
   render() {
     const { imageCache } = this.props;
 
@@ -58,7 +70,7 @@ export default class ImageCachePanel extends TankComponent<IProps, IState> {
             )
           }
         >
-          <div className="media">
+          <div className="media clearfix">
             <div className="pull-left">
               <div className="left-part">
                 <span className="basic-span basic-span-hot">
@@ -86,7 +98,8 @@ export default class ImageCachePanel extends TankComponent<IProps, IState> {
             <div className="pull-right visible-pc">
               {imageCache.uuid ? (
                 <div className="right-part">
-                  <DeleteFilled
+                  <DeleteOutlined
+                    title="删除"
                     className="image-cache-operation btn-action red"
                     onClick={(e) =>
                       SafeUtil.stopPropagationWrap(e)(this.deleteImageCache())
@@ -101,14 +114,48 @@ export default class ImageCachePanel extends TankComponent<IProps, IState> {
                 </div>
               ) : null}
             </div>
+
+            {/*在小屏下的操作栏*/}
+            <div className="pull-right visible-mobile">
+              <span
+                className="more-btn"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.toggleHandles())
+                }
+              >
+                <SmallDashOutlined className="btn-action navy f18" />
+              </span>
+            </div>
+
             <div className="media-body">
               <div className="middle-part">
                 <span className="image-cache-name">{imageCache.name}</span>
               </div>
             </div>
-
-            {/*todo 在小屏下的操作栏*/}
           </div>
+          <Expanding>
+            {this.showMore ? (
+              <div className="more-panel">
+                <div className="cell-btn text">
+                  <span>
+                    {DateUtil.simpleDateHourMinute(imageCache.updateTime)}
+                  </span>
+                  <span className="matter-size">
+                    {StringUtil.humanFileSize(imageCache.size)}
+                  </span>
+                </div>
+                <div
+                  className="cell-btn red"
+                  onClick={(e) =>
+                    SafeUtil.stopPropagationWrap(e)(this.deleteImageCache())
+                  }
+                >
+                  <DeleteOutlined className="btn-action mr5" />
+                  删除
+                </div>
+              </div>
+            ) : null}
+          </Expanding>
         </div>
       </div>
     );

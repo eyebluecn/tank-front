@@ -11,7 +11,7 @@
     display: inline-block;
     vertical-align: middle;
     line-height: @base-height;
-    margin-right: 5px;
+    margin-right: 10px;
   }
 
   .image-cache-icon {
@@ -88,13 +88,20 @@
 
   .more-panel {
     border-top: 1px solid #eee;
-    padding-left: 35px;
-    .info {
-    }
+    padding-left: 32px;
     .cell-btn {
       border-top: 1px solid #eee;
       line-height: @inner-cell-height;
       vertical-align: middle;
+      &:first-child {
+        border: 0;
+      }
+    }
+    .text {
+      margin-left: 5px;
+    }
+    .matter-size {
+      margin-left: 15px;
     }
   }
 }

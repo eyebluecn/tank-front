@@ -1,6 +1,5 @@
 import React from "react";
 import copy from "copy-to-clipboard";
-import VelocityReact from 'velocity-react';
 import Matter from "../../../common/model/matter/Matter";
 import TankComponent from "../../../common/component/TankComponent";
 import Director from "./Director";
@@ -46,7 +45,6 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   renamingLoading: boolean = false;
   // 小屏幕下操作栏
   showMore: boolean = false;
-  transitionStatus: boolean = false;
 
   inputRef = React.createRef<HTMLInputElement>();
 
@@ -337,95 +335,90 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
           </div>
         </div>
 
-
-          <VelocityReact.VelocityTransitionGroup  enter={{animation: "slideDown"}} leave={{animation: "slideUp"}}>
-
-            {this.showMore ? (
-              <div>
-                <div className="visible-mobile more-panel">
-                  <div className="cell-btn navy">
-                    <span>{DateUtil.simpleDateHourMinute(matter.updateTime)}</span>
-                    <span className="matter-size">
+        <Expanding>
+          {this.showMore ? (
+            <div className="more-panel">
+              <div className="cell-btn navy text">
+                <span>{DateUtil.simpleDateHourMinute(matter.updateTime)}</span>
+                <span className="matter-size">
                   {StringUtil.humanFileSize(matter.size)}
                 </span>
-                  </div>
-
-                  {!matter.dir && matter.privacy && (
-                    <div
-                      className="cell-btn navy"
-                      onClick={(e) =>
-                        SafeUtil.stopPropagationWrap(e)(this.changePrivacy(false))
-                      }
-                    >
-                      <UnlockFilled className="btn-action mr5" />
-                      设置为公有文件
-                    </div>
-                  )}
-
-                  {!matter.dir && !matter.privacy && (
-                    <div
-                      className="cell-btn navy"
-                      onClick={(e) =>
-                        SafeUtil.stopPropagationWrap(e)(this.changePrivacy(true))
-                      }
-                    >
-                      <LockFilled className="btn-action mr5" />
-                      设置为私有文件
-                    </div>
-                  )}
-
-                  <div
-                    className="cell-btn navy"
-                    onClick={(e) =>
-                      SafeUtil.stopPropagationWrap(e)(
-                        Sun.navigateTo("/matter/detail/" + matter.uuid)
-                      )
-                    }
-                  >
-                    <InfoCircleOutlined className="btn-action mr5" />
-                    文件详情
-                  </div>
-                  <div
-                    className="cell-btn navy"
-                    onClick={(e) =>
-                      SafeUtil.stopPropagationWrap(e)(this.prepareRename())
-                    }
-                  >
-                    <EditOutlined className="btn-action mr5" />
-                    重命名
-                  </div>
-                  <div
-                    className="cell-btn navy"
-                    onClick={(e) =>
-                      SafeUtil.stopPropagationWrap(e)(this.clipboard())
-                    }
-                  >
-                    <LinkOutlined className="btn-action mr5" />
-                    复制下载链接
-                  </div>
-                  <div
-                    className="cell-btn navy"
-                    onClick={(e) =>
-                      SafeUtil.stopPropagationWrap(e)(matter.download())
-                    }
-                  >
-                    <DownloadOutlined className="btn-action mr5" />
-                    下载
-                  </div>
-                  <div
-                    className="cell-btn red"
-                    onClick={(e) =>
-                      SafeUtil.stopPropagationWrap(e)(this.deleteMatter())
-                    }
-                  >
-                    <DeleteOutlined className="btn-action mr5" />
-                    删除
-                  </div>
-                </div>
               </div>
-            ) : undefined}
-          </VelocityReact.VelocityTransitionGroup>
 
+              {!matter.dir && matter.privacy && (
+                <div
+                  className="cell-btn navy"
+                  onClick={(e) =>
+                    SafeUtil.stopPropagationWrap(e)(this.changePrivacy(false))
+                  }
+                >
+                  <UnlockFilled className="btn-action mr5" />
+                  设置为公有文件
+                </div>
+              )}
+
+              {!matter.dir && !matter.privacy && (
+                <div
+                  className="cell-btn navy"
+                  onClick={(e) =>
+                    SafeUtil.stopPropagationWrap(e)(this.changePrivacy(true))
+                  }
+                >
+                  <LockFilled className="btn-action mr5" />
+                  设置为私有文件
+                </div>
+              )}
+
+              <div
+                className="cell-btn navy"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(
+                    Sun.navigateTo("/matter/detail/" + matter.uuid)
+                  )
+                }
+              >
+                <InfoCircleOutlined className="btn-action mr5" />
+                文件详情
+              </div>
+              <div
+                className="cell-btn navy"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.prepareRename())
+                }
+              >
+                <EditOutlined className="btn-action mr5" />
+                重命名
+              </div>
+              <div
+                className="cell-btn navy"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.clipboard())
+                }
+              >
+                <LinkOutlined className="btn-action mr5" />
+                复制下载链接
+              </div>
+              <div
+                className="cell-btn navy"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(matter.download())
+                }
+              >
+                <DownloadOutlined className="btn-action mr5" />
+                下载
+              </div>
+              <div
+                className="cell-btn red"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.deleteMatter())
+                }
+              >
+                <DeleteOutlined className="btn-action mr5" />
+                删除
+              </div>
+            </div>
+          ) : null}
+        </Expanding>
       </div>
     );
   }
