@@ -1,5 +1,4 @@
 import React from "react";
-import { RouteComponentProps } from "react-router-dom";
 import {
   InfoCircleOutlined,
   DeleteOutlined,
@@ -9,9 +8,11 @@ import TankComponent from "../../../common/component/TankComponent";
 import SafeUtil from "../../../common/util/SafeUtil";
 import DateUtil from "../../../common/util/DateUtil";
 import Expanding from "../../widget/Expanding";
+import Share from "../../../common/model/share/Share";
+import Sun from "../../../common/model/global/Sun";
 
-interface IProps extends RouteComponentProps {
-  share: any;
+interface IProps {
+  share: Share;
   onDeleteSuccess: () => any;
 }
 
@@ -35,11 +36,11 @@ export default class ShareBar extends TankComponent<IProps, IState> {
   };
 
   render() {
-    const { history, share } = this.props;
+    const { share } = this.props;
     const { showMore } = this;
     return (
       <div className="widget-share-bar">
-        <div onClick={() => history.push(`/share/detail/${share.uuid}`)}>
+        <div onClick={e => SafeUtil.stopPropagationWrap(e)(Sun.navigateTo(`/share/detail/${share.uuid}`))}>
           <div className="media">
             <div className="pull-left">
               <div className="left-part">

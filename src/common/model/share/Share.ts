@@ -15,7 +15,7 @@ export default class Share extends BaseEntity {
   downloadTimes: number = 0;
   code: string | null = null;
   expireInfinity: boolean = false;
-  expireTime: string | null = null;
+  expireTime: Date | null = null;
 
   //当前正在查看的文件夹
   dirMatter: Matter = new Matter();
