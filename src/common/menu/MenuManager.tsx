@@ -78,7 +78,7 @@ export default class MenuManager {
       ];
     } else {
       menuItems.push(new MenuItem('所有文件', '/matter/list', <AppstoreOutlined/>))
-      menuItems.push(new MenuItem('我的分享', '/share/index', <ShareAltOutlined/>))
+      menuItems.push(new MenuItem('我的分享', '/share/list', <ShareAltOutlined/>))
 
       if (user.role === UserRole.ADMINISTRATOR) {
         menuItems.push(new MenuItem('网站偏好', '/preference/index', <SettingOutlined/>))

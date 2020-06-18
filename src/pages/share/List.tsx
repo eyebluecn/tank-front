@@ -12,7 +12,7 @@ interface IProps extends RouteComponentProps {}
 
 interface IState {}
 
-export class List extends TankComponent<IProps, IState> {
+export default class List extends TankComponent<IProps, IState> {
   pager = new Pager<Share>(this, Share, Pager.MAX_PAGE_SIZE);
 
   constructor(props: IProps) {
@@ -40,7 +40,7 @@ export class List extends TankComponent<IProps, IState> {
     return (
       <div className="page-share-list">
         {pager.data.map((share) => (
-          <ShareBar share={share} onDeleteSuccess={this.refresh} />
+          <ShareBar key={share.uuid!} share={share} onDeleteSuccess={this.refresh} />
         ))}
 
         <Pagination

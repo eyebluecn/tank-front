@@ -10,7 +10,6 @@ import UserDetail from './user/Detail';
 import UserEdit from './user/Edit';
 import UserAuthentication from './user/Authentication';
 
-import MatterDetail from './matter/Detail';
 import PreferenceIndex from './preference/Index';
 import PreferenceEdit from './preference/Edit';
 
@@ -18,6 +17,10 @@ import DashboardIndex from './dashboard/Index';
 import InstallIndex from './install/Index';
 
 import MatterList from './matter/List';
+import MatterDetail from './matter/Detail';
+
+import ShareList from './share/List';
+import ShareDetail from './share/Detail';
 
 import {Layout, Menu} from 'antd';
 import MenuManager from '../common/menu/MenuManager';
@@ -214,6 +217,9 @@ class RawFrame extends TankComponent<IProps, IState> {
                       <Redirect to="/matter/list"/>
                     }/>
                     <Route path="/matter/list" component={MatterList}/>
+
+                    <Route path="/share/list" component={ShareList}/>
+                    <Route path="/share/detail" component={ShareDetail}/>
                   </div>
                 ) : (
                   <div className="pages-content">

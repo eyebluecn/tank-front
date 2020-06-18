@@ -34,11 +34,12 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
 
   static open(onSuccess: (uuid: string) => void) {
     let modal = Modal.confirm({
+      className: "move-modal",
       title: "移动到",
-      width: "50vw",
+      width: "90vw",
       okCancel: false,
       okButtonProps: {
-        className: "display-none"
+        className: "display-none",
       },
       content: (
         <MoveBatchModal
@@ -89,19 +90,33 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
   };
 
   onSelect = (selectedKeys: any) => {
-      if(selectedKeys.length) {
-        this.targetUuid = selectedKeys[0];
-        this.updateUI();
-      }
+    if (selectedKeys.length) {
+      this.targetUuid = selectedKeys[0];
+      this.updateUI();
+    }
   };
 
   render() {
     return (
       <div>
-        <Tree.DirectoryTree className="tree-wrapper" treeData={this.treeData} defaultExpandedKeys={['root']} selectedKeys={[this.targetUuid]} loadData={this.onLoadData} onSelect={this.onSelect} />
+        <Tree.DirectoryTree
+          className="tree-wrapper"
+          treeData={this.treeData}
+          defaultExpandedKeys={["root"]}
+          selectedKeys={[this.targetUuid]}
+          loadData={this.onLoadData}
+          onSelect={this.onSelect}
+        />
         <div className="mt10 text-right">
-          <Button className="mr10" onClick={() => this.props.onClose()}>关闭</Button>
-          <Button type="primary" onClick={() => this.props.onSuccess(this.targetUuid)}>确定</Button>
+          <Button className="mr10" onClick={() => this.props.onClose()}>
+            关闭
+          </Button>
+          <Button
+            type="primary"
+            onClick={() => this.props.onSuccess(this.targetUuid)}
+          >
+            确定
+          </Button>
         </div>
       </div>
     );

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './Detail.less';
 
-export class Detail extends Component {
+export default class Detail extends Component {
 
 	render() {
 		return (

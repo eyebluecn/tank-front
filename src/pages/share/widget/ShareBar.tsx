@@ -3,6 +3,7 @@ import {
   InfoCircleOutlined,
   DeleteOutlined,
   SmallDashOutlined,
+  ExclamationCircleFilled
 } from "@ant-design/icons";
 import TankComponent from "../../../common/component/TankComponent";
 import SafeUtil from "../../../common/util/SafeUtil";
@@ -10,6 +11,10 @@ import DateUtil from "../../../common/util/DateUtil";
 import Expanding from "../../widget/Expanding";
 import Share from "../../../common/model/share/Share";
 import Sun from "../../../common/model/global/Sun";
+import "./ShareBar.less";
+import {Modal} from "antd";
+import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
+import ShareDialogModal from "./ShareDialogModal";
 
 interface IProps {
   share: Share;
@@ -26,9 +31,22 @@ export default class ShareBar extends TankComponent<IProps, IState> {
     super(props);
   }
 
-  showShare = () => {};
+  showShare = () => {
+    ShareDialogModal.open(this.props.share)
+  };
 
-  delShare = () => {};
+  delShare = () => {
+    Modal.confirm({
+      title: "此操作不可撤回, 是否继续?",
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
+      onOk: () => {
+        this.props.share.httpDel(() => {
+          MessageBoxUtil.success("操作成功");
+          this.props.onDeleteSuccess();
+        });
+      },
+    });
+  };
 
   toggleHandles = () => {
     this.showMore = !this.showMore;
@@ -40,7 +58,13 @@ export default class ShareBar extends TankComponent<IProps, IState> {
     const { showMore } = this;
     return (
       <div className="widget-share-bar">
-        <div onClick={e => SafeUtil.stopPropagationWrap(e)(Sun.navigateTo(`/share/detail/${share.uuid}`))}>
+        <div
+          onClick={(e) =>
+            SafeUtil.stopPropagationWrap(e)(
+              Sun.navigateTo(`/share/detail/${share.uuid}`)
+            )
+          }
+        >
           <div className="media">
             <div className="pull-left">
               <div className="left-part">
@@ -55,19 +79,14 @@ export default class ShareBar extends TankComponent<IProps, IState> {
               <div className="right-part">
                 <span
                   className="share-operation"
-                  onClick={(e) =>
+                >
+                  <InfoCircleOutlined className="btn-action mr5 blue" onClick={(e) =>
                     SafeUtil.stopPropagationWrap(e)(this.showShare())
-                  }
-                >
-                  <InfoCircleOutlined className="btn-action mr5" />
-                </span>
-                <span
-                  className="share-operation"
-                  onClick={(e) =>
+                  }/>
+
+                  <DeleteOutlined className="btn-action red" onClick={(e) =>
                     SafeUtil.stopPropagationWrap(e)(this.delShare())
-                  }
-                >
-                  <DeleteOutlined className="btn-action red" />
+                  }/>
                 </span>
 
                 <span className="share-date">
@@ -110,14 +129,16 @@ export default class ShareBar extends TankComponent<IProps, IState> {
         <Expanding>
           {showMore ? (
             <div className="more-panel">
-              <div className="cell-btn">
+              <div className="cell-btn text">
                 <span>
                   分享时间: {DateUtil.simpleDateHourMinute(share.createTime)}
                 </span>
-                <span>
+                <span className="ml10">
                   {share.expireInfinity
                     ? "永久有效"
-                    : DateUtil.simpleDateHourMinute(share.expireTime)}
+                    : `失效时间：${DateUtil.simpleDateHourMinute(
+                        share.expireTime
+                      )}`}
                 </span>
               </div>
 
@@ -128,15 +149,17 @@ export default class ShareBar extends TankComponent<IProps, IState> {
                 }
               >
                 <InfoCircleOutlined className="btn-action mr5" />
+                分享详情
               </div>
 
               <div
-                className="cell-btn"
+                className="cell-btn red"
                 onClick={(e) =>
                   SafeUtil.stopPropagationWrap(e)(this.delShare())
                 }
               >
-                <DeleteOutlined className="btn-action red" />
+                <DeleteOutlined className="btn-action" />
+                删除
               </div>
             </div>
           ) : null}
