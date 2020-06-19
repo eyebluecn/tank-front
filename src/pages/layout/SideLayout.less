@@ -9,20 +9,24 @@
   @left-border-color: @brand-primary;
 
   transition: all 0.4s;
-
   position: fixed;
   width: @sidebar-width;
-
-  left: -@sidebar-width;
+  left: 0;
   top: 0;
   bottom: 0;
   z-index: 1000;
 
   background: #001529;
 
-  &.show-drawer {
-    left: 0;
+
+  //show-drawer只在手机屏幕生效
+  @media (max-width: @screen-xs-max) {
+    left: -@sidebar-width;
+    &.show-drawer {
+      left: 0;
+    }
   }
+
 
   .avatar-area {
     text-align: center;

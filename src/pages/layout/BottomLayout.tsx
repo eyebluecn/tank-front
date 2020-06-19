@@ -43,9 +43,9 @@ export default class BottomLayout extends TankComponent <IProps, IState> {
 			<span>{preference.record}</span>
 		</span>
         <span className="item">
-			<a href="javascript:void(0)" onClick={this.changeLang.bind(this)}>
+			<span onClick={this.changeLang.bind(this)}>
         {Moon.getSingleton().lang === 'zh' ? 'English' : '中文'}
-      </a>
+      </span>
       </span>
 
         {/*开源不易，请不要移除掉这里的代码，蓝眼云盘谢谢您 ^_^*/}

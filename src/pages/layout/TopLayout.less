@@ -4,6 +4,7 @@
 //上边布局
 .layout-top {
 
+  transition: all 0.4s;
   height: @top-navigation-height;
   background-color: white;
   border-bottom: 1px solid #eeeeee;
@@ -47,12 +48,18 @@
     line-height: @top-navigation-height;
     font-size: 24px;
     padding-right: 15px;
+    cursor: pointer;
+
+    &:hover {
+      color: black;
+      font-size: 25px;
+    }
   }
 
   //小屏幕
   @media (min-width: @screen-sm-min) {
     .drawer-trigger {
-      //display: none;
+      display: none;
     }
   }
 

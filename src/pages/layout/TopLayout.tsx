@@ -5,7 +5,7 @@ import Preference from "../../common/model/preference/Preference";
 import Moon from "../../common/model/global/Moon";
 import DefaultLogoPng from '../../assets/image/logo.png';
 import Sun from "../../common/model/global/Sun";
-import {MenuFoldOutlined} from "@ant-design/icons/lib";
+import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons/lib";
 import ImageUtil from "../../common/util/ImageUtil";
 
 interface IProps {
@@ -46,6 +46,11 @@ export default class TopLayout extends TankComponent <IProps, IState> {
     }
   }
 
+  toggleDrawer() {
+    Sun.getSingleton().showDrawer = !Sun.getSingleton().showDrawer
+    Sun.updateFrame()
+  }
+
 
   render() {
 
@@ -62,7 +67,14 @@ export default class TopLayout extends TankComponent <IProps, IState> {
         </div>
 
         <div className="drawer-trigger">
-          <MenuFoldOutlined/>
+          {
+            Sun.getSingleton().showDrawer ? (
+
+              <MenuFoldOutlined onClick={this.toggleDrawer.bind(this)}/>
+            ) : (
+              <MenuUnfoldOutlined onClick={this.toggleDrawer.bind(this)}/>
+            )
+          }
         </div>
 
       </div>
