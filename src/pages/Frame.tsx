@@ -37,7 +37,8 @@ import Preference from "../common/model/preference/Preference";
 import {WebResultCode} from "../common/model/base/WebResultCode";
 import MessageBoxUtil from "../common/util/MessageBoxUtil";
 import ImageUtil from "../common/util/ImageUtil";
-import BottomLayout from "./layout/BottomLayout";
+import BottomPanel from "./layout/BottomPanel";
+import {MenuFoldOutlined} from "@ant-design/icons/lib";
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -154,8 +155,10 @@ class RawFrame extends TankComponent<IProps, IState> {
 
     if (that.initialized) {
       content = (
-        <Layout style={{minHeight: '100vh'}}>
-          <Sider>
+
+        <div className="pages-frame-inner">
+
+          <div className={`layout-side ${Sun.getSingleton().showDrawer ? 'show-drawer' : ''}`}>
 
             {this.preference.installed ? (
               <div>
@@ -195,57 +198,73 @@ class RawFrame extends TankComponent<IProps, IState> {
                 })
               }
             </Menu>
-          </Sider>
+          </div>
+          <div className="layout-top">
+
+            <div className="logo-title-area" onClick={this.goHome.bind(this)}>
+              <img className="header-logo" src={this.logoUrl()} alt="logo"/>
+              <span className="header-title">蓝眼云盘</span>
+            </div>
+
+            <div className="drawer-trigger">
+              <MenuFoldOutlined/>
+            </div>
+
+          </div>
+
+          <div className="layout-content">
+
+            {
+              this.preference.installed ? (
+                <div className="pages-content">
+                  <Route exact path="/" render={() =>
+                    <Redirect to="/matter/list"/>
+                  }/>
+                  <Route path="/index" component={Index}/>
+                  <Route path="/user/login" component={UserLogin}/>
+                  <Route path="/user/detail/:uuid" component={UserDetail}/>
+                  <Route path="/user/list" component={UserList}/>
+                  <Route path="/user/create" component={UserEdit}/>
+                  <Route path="/user/edit/:uuid" component={UserEdit}/>
+                  <Route path="/user/authentication/:authentication" component={UserAuthentication}/>
+
+                  <Route path="/dashboard/index" component={DashboardIndex}/>
+
+                  <Route path="/preference/index" component={PreferenceIndex}/>
+                  <Route path="/preference/edit" component={PreferenceEdit}/>
+
+                  <Route path="/matter/detail/:uuid" component={MatterDetail}/>
+                  <Route exact path="/matter" render={() =>
+                    <Redirect to="/matter/list"/>
+                  }/>
+                  <Route path="/matter/list" component={MatterList}/>
+
+                  <Route path="/share/list" component={ShareList}/>
+                  <Route path="/share/detail" component={ShareDetail}/>
+                </div>
+              ) : (
+                <div className="pages-content">
+                  <Route path="/install/index" component={InstallIndex}/>
+                </div>
+              )
+            }
+
+          </div>
+
+          <div className="layout-bottom">
+            <BottomPanel/>
+          </div>
+
           <Layout>
-            <Header>
-              <div className="logo-title-area" onClick={this.goHome.bind(this)}>
-                <img className="header-logo" src={this.logoUrl()} alt="logo"/>
-                <span className="header-title">蓝眼云盘</span>
-              </div>
-            </Header>
             <Content>
 
-              {
-                this.preference.installed ? (
-                  <div className="pages-content">
-                    <Route exact path="/" render={() =>
-                      <Redirect to="/matter/list"/>
-                    }/>
-                    <Route path="/index" component={Index}/>
-                    <Route path="/user/login" component={UserLogin}/>
-                    <Route path="/user/detail/:uuid" component={UserDetail}/>
-                    <Route path="/user/list" component={UserList}/>
-                    <Route path="/user/create" component={UserEdit}/>
-                    <Route path="/user/edit/:uuid" component={UserEdit}/>
-                    <Route path="/user/authentication/:authentication" component={UserAuthentication}/>
-
-                    <Route path="/dashboard/index" component={DashboardIndex}/>
-
-                    <Route path="/preference/index" component={PreferenceIndex}/>
-                    <Route path="/preference/edit" component={PreferenceEdit}/>
-
-                    <Route path="/matter/detail/:uuid" component={MatterDetail}/>
-                    <Route exact path="/matter" render={() =>
-                      <Redirect to="/matter/list"/>
-                    }/>
-                    <Route path="/matter/list" component={MatterList}/>
-
-                    <Route path="/share/list" component={ShareList}/>
-                    <Route path="/share/detail" component={ShareDetail}/>
-                  </div>
-                ) : (
-                  <div className="pages-content">
-                    <Route path="/install/index" component={InstallIndex}/>
-                  </div>
-                )
-              }
 
             </Content>
             <Footer>
-              <BottomLayout/>
+
             </Footer>
           </Layout>
-        </Layout>
+        </div>
       )
     } else {
       content = (

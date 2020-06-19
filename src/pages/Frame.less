@@ -1,6 +1,6 @@
+@import "../assets/css/global/variables";
 
 .pages-frame {
-
 
   position: fixed;
   left: 0;
@@ -10,12 +10,34 @@
   z-index: 10;
 
 
-  .ant-layout {
-
-    @header-height: 50px;
+  .pages-frame-inner {
+    width: 100%;
     height: 100%;
 
-    .ant-layout-sider {
+
+    //旁边布局
+    .layout-side {
+
+      @nav-text-color: white;
+      @font-highlight-color: #ddd;
+      @left-border-color: @brand-primary;
+
+      transition: all 0.4s;
+
+      position: fixed;
+      width: @sidebar-width;
+
+      left: -@sidebar-width;
+      top: 0;
+      bottom: 0;
+      z-index: 1000;
+
+      background: #001529;
+
+      &.show-drawer {
+        left: 0;
+      }
+
       .avatar-area {
         text-align: center;
         margin-top: 40px;
@@ -32,6 +54,7 @@
         }
       }
 
+
       .install-area {
         text-align: center;
         margin-top: 40px;
@@ -43,57 +66,106 @@
       }
     }
 
-    .ant-layout-header {
+  }
 
-      padding: 0 20px;
-      line-height: @header-height;
-      height: @header-height;
-      background: white;
-      border-bottom: 1px solid #eee;
+  .layout-top {
 
-      .logo-title-area {
+    height: @top-navigation-height;
+    background-color: white;
+    border-bottom: 1px solid #eeeeee;
+    position: fixed;
+    top: 0;
+    left: @sidebar-width;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
 
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-
-        cursor: pointer;
-
-        .header-logo {
-          width: 30px;
-        }
-
-        .header-title {
-          font-size: 20px;
-          font-weight: bold;
-          padding-left: 10px;
-        }
-      }
-
-
+    //手机屏幕
+    @media (max-width: @screen-xs-max) {
+      padding-left: 0;
     }
 
-    .ant-layout-content {
+    .logo-title-area {
 
-      padding: 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: @top-navigation-height;
 
-      .pages-content {
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        padding: 10px;
+      cursor: pointer;
+
+      .header-logo {
+        width: 30px;
       }
 
+      .header-title {
+        font-size: 20px;
+        font-weight: bold;
+        padding-left: 10px;
+      }
     }
 
-    .ant-layout-footer {
+    .drawer-trigger {
+      height: @top-navigation-height;
+      line-height: @top-navigation-height;
+      font-size: 24px;
+      padding-right: 15px;
+    }
 
-      background: white;
-      border-top: 1px solid #eee;
-      padding: 10px;
-
+    //小屏幕
+    @media (min-width: @screen-sm-min) {
+      .drawer-trigger {
+        //display: none;
+      }
     }
 
   }
+
+
+  .layout-content {
+
+    position: fixed;
+    left: @sidebar-width;
+    top: @top-navigation-height;
+    right: 0;
+    bottom: @power-footer-height;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 10;
+
+    padding: 10px;
+
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+
+    background-color: #f3f3f4;
+
+    //大屏幕
+    @media (min-width: @screen-sm-min) {
+      left: @sidebar-width;
+    }
+    //小屏幕
+    @media (max-width: @screen-xs-max) {
+      left: 0;
+      bottom: 0;
+    }
+
+    &.show-drawer {
+      //大屏幕
+      @media (min-width: @screen-sm-min) {
+        left: @sidebar-width;
+      }
+
+      //小屏幕
+      @media (max-width: @screen-xs-max) {
+        left: 0;
+        bottom: 0;
+      }
+    }
+  }
+
 
 }

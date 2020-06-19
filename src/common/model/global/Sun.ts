@@ -14,6 +14,9 @@ export default class Sun {
   //持有全局的react-router对象，方便我们在非jsx环境中控制路由跳转
   reactRouter: any = null;
 
+  //全局布局样式，是否展示出左边的菜单.
+  showDrawer: boolean = true
+
   //由于这个类采用单例模式，因此所有属性都是独一份的。
   constructor() {
 
@@ -47,7 +50,7 @@ export default class Sun {
    */
   static navigateQueryTo(route: any) {
     let path = route.path;
-    if(Object.keys(route.query).length) {
+    if (Object.keys(route.query).length) {
       const params = new URLSearchParams(route.query).toString();
       path += `?${params}`;
     }
