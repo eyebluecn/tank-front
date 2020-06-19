@@ -65,6 +65,9 @@ export default class Edit extends TankComponent<IProps, IState> {
 
     that.preference.httpSave(function () {
       MessageBoxUtil.success("修改成功！")
+
+      Sun.updateFrame()
+
       Sun.navigateTo("/preference/index")
     })
 

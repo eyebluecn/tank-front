@@ -11,6 +11,7 @@ import InfoCell from "../widget/InfoCell";
 import Preference from "../../common/model/preference/Preference";
 import TankContentCard from '../widget/TankContentCard';
 import FileUtil from "../../common/util/FileUtil";
+import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 
 
 interface IProps extends RouteComponentProps {
@@ -68,11 +69,21 @@ export default class Index extends TankComponent<IProps, IState> {
           </InfoCell>
 
           <InfoCell name={'logo'}>
-            {this.preference.logoUrl}
+            {this.preference.logoUrl && (
+              <img src={this.preference.logoUrl} alt="logo"
+                   className="img-logo" onClick={() => {
+                ImagePreviewer.showSinglePhoto(this.preference.logoUrl!)
+              }}/>
+            )}
           </InfoCell>
 
           <InfoCell name={'favicon'}>
-            {this.preference.faviconUrl}
+            {this.preference.faviconUrl && (
+              <img src={this.preference.faviconUrl} alt="logo"
+                   className="img-favicon" onClick={() => {
+                ImagePreviewer.showSinglePhoto(this.preference.faviconUrl!)
+              }}/>
+            )}
           </InfoCell>
 
           <InfoCell name={'版权信息'}>

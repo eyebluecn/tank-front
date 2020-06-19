@@ -26,7 +26,7 @@ import {Layout, Menu} from 'antd';
 import MenuManager from '../common/menu/MenuManager';
 import MenuItem from '../common/menu/MenuItem';
 import {SelectParam} from 'antd/lib/menu';
-import LogoSvg from '../assets/image/logo.png';
+import DefaultLogoPng from '../assets/image/logo.png';
 import Index from './index/Index';
 import User from '../common/model/user/User';
 import Moon from '../common/model/global/Moon';
@@ -36,6 +36,7 @@ import FrameLoading from "./widget/FrameLoading";
 import Preference from "../common/model/preference/Preference";
 import {WebResultCode} from "../common/model/base/WebResultCode";
 import MessageBoxUtil from "../common/util/MessageBoxUtil";
+import ImageUtil from "../common/util/ImageUtil";
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -130,6 +131,16 @@ class RawFrame extends TankComponent<IProps, IState> {
     this.props.history.push('/');
   }
 
+  //logo可以使用自定义的。
+  logoUrl() {
+    if (this.preference.logoUrl) {
+      return ImageUtil.handleImageUrl(this.preference.logoUrl,false,200,200)
+
+    } else {
+      return DefaultLogoPng
+    }
+  }
+
   render() {
 
     let that = this;
@@ -163,7 +174,7 @@ class RawFrame extends TankComponent<IProps, IState> {
               </div>
             ) : (
               <div className="install-area">
-                <img alt="avatar" className="install-logo" src={LogoSvg}/>
+                <img alt="avatar" className="install-logo" src={DefaultLogoPng}/>
               </div>
             )}
 
@@ -187,7 +198,7 @@ class RawFrame extends TankComponent<IProps, IState> {
           <Layout>
             <Header>
               <div className="logo-title-area" onClick={this.goHome.bind(this)}>
-                <img className="header-logo" src={LogoSvg} alt="logo"/>
+                <img className="header-logo" src={this.logoUrl()} alt="logo"/>
                 <span className="header-title">蓝眼云盘</span>
               </div>
             </Header>
