@@ -37,6 +37,7 @@ import Preference from "../common/model/preference/Preference";
 import {WebResultCode} from "../common/model/base/WebResultCode";
 import MessageBoxUtil from "../common/util/MessageBoxUtil";
 import ImageUtil from "../common/util/ImageUtil";
+import BottomLayout from "./layout/BottomLayout";
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -134,7 +135,7 @@ class RawFrame extends TankComponent<IProps, IState> {
   //logo可以使用自定义的。
   logoUrl() {
     if (this.preference.logoUrl) {
-      return ImageUtil.handleImageUrl(this.preference.logoUrl,false,200,200)
+      return ImageUtil.handleImageUrl(this.preference.logoUrl, false, 200, 200)
 
     } else {
       return DefaultLogoPng
@@ -240,7 +241,9 @@ class RawFrame extends TankComponent<IProps, IState> {
               }
 
             </Content>
-            <Footer style={{textAlign: 'center'}}>Eyeblue ©2020 Copyright</Footer>
+            <Footer>
+              <BottomLayout/>
+            </Footer>
           </Layout>
         </Layout>
       )

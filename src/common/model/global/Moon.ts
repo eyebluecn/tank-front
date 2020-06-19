@@ -14,6 +14,9 @@ export default class Moon {
   //全局唯一的偏好设置
   preference: Preference = new Preference()
 
+  //当前使用的语言，默认中文
+  lang: string = "zh"
+
   //全局的一个store对象
   private static singleton: Moon | null = null
 
