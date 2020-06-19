@@ -4,13 +4,13 @@ import "./Detail.less";
 import TankComponent from "../../common/component/TankComponent";
 import Matter from "../../common/model/matter/Matter";
 import { Spin, Space } from "antd";
-import copy from "copy-to-clipboard";
 import StringUtil from "../../common/util/StringUtil";
 import TankTitle from "../widget/TankTitle";
 import DownloadToken from "../../common/model/download/token/DownloadToken";
 import DateUtil from "../../common/util/DateUtil";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import ImageCacheList from "./widget/imageCache/ImageCacheList";
+import ClipboardUtil from "../../common/util/ClipboardUtil";
 
 interface RouteParam {
   uuid: string;
@@ -46,8 +46,9 @@ export default class Detail extends TankComponent<IProps, IState> {
     const textToCopy = this.matter.getDownloadUrl(
       privacy ? this.downloadToken.uuid! : undefined
     );
-    copy(textToCopy);
-    MessageBoxUtil.success("操作成功");
+    ClipboardUtil.copy(textToCopy, () => {
+      MessageBoxUtil.success("操作成功");
+    })
   };
 
   render() {

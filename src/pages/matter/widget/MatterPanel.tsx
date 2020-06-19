@@ -1,5 +1,4 @@
 import React from "react";
-import copy from "copy-to-clipboard";
 import Matter from "../../../common/model/matter/Matter";
 import TankComponent from "../../../common/component/TankComponent";
 import Director from "./Director";
@@ -25,6 +24,7 @@ import {
 import { Modal, Checkbox } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import SafeUtil from "../../../common/util/SafeUtil";
+import ClipboardUtil from "../../../common/util/ClipboardUtil";
 
 interface IProps {
   matter: Matter;
@@ -83,8 +83,9 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
 
   clipboard = () => {
     let textToCopy = this.props.matter.getDownloadUrl();
-    copy(textToCopy);
-    MessageBoxUtil.success("操作成功");
+    ClipboardUtil.copy(textToCopy, () => {
+      MessageBoxUtil.success("操作成功");
+    })
   };
 
   deleteMatter = () => {

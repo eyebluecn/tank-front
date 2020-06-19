@@ -29,6 +29,7 @@ import StringUtil from "../../common/util/StringUtil";
 import MoveBatchModal from "./widget/MoveBatchModal";
 import ShareOperationModal from "./widget/ShareOperationModal";
 import Share from "../../common/model/share/Share";
+import ShareDialogModal from "../share/widget/ShareDialogModal";
 
 interface IProps extends RouteComponentProps {}
 
@@ -203,8 +204,11 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   shareBatch = () => {
-    ShareOperationModal.open(() => {
-
+    const uuids = this.selectedMatters.map((i) => i.uuid).join(",");
+    ShareOperationModal.open((share: Share) => {
+      share.httpCreate(uuids, () => {
+        ShareDialogModal.open(share)
+      });
     });
   };
 

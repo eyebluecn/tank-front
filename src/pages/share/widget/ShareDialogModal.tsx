@@ -1,16 +1,15 @@
 import React from "react";
-import copy from "copy-to-clipboard";
 import TankComponent from "../../../common/component/TankComponent";
 import Share from "../../../common/model/share/Share";
 import {Button, Modal} from "antd";
-import { CheckOutlined, CopyOutlined } from "@ant-design/icons";
+import { CopyOutlined } from "@ant-design/icons";
 import DateUtil from "../../../common/util/DateUtil";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import './ShareDialogModal.less';
+import ClipboardUtil from "../../../common/util/ClipboardUtil";
 
 interface IProps {
   share: Share;
-  showSuccessHint?: boolean;
   onSuccess: () => any;
   onClose: () => any;
 }
@@ -23,8 +22,9 @@ export default class ShareDialogModal extends TankComponent<IProps, IState> {
   }
 
   clipboard = (text: string) => {
-    copy(text);
-    MessageBoxUtil.success("复制成功");
+    ClipboardUtil.copy(text, () => {
+      MessageBoxUtil.success("复制成功");
+    })
   };
 
   copyAll = () => {
@@ -59,7 +59,7 @@ export default class ShareDialogModal extends TankComponent<IProps, IState> {
   };
 
   render() {
-    const { share, showSuccessHint } = this.props;
+    const { share } = this.props;
 
     return (
       <div className="widget-share-dialog-panel">
@@ -67,12 +67,6 @@ export default class ShareDialogModal extends TankComponent<IProps, IState> {
           <div>
             <img className="share-icon" src={share.getIcon()} />
             <span className="name">{share.name}</span>
-            {showSuccessHint ? (
-              <span className="italic">
-                分享成功
-                <CheckOutlined className="text-success" />
-              </span>
-            ) : null}
           </div>
           <div className="mt15">
             <span className="inline-block mr10">分享者：{share.username}</span>

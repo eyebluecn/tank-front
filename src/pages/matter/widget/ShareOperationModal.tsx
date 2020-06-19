@@ -3,10 +3,10 @@ import TankComponent from "../../../common/component/TankComponent";
 import { Modal, Button, Col, Row, Select } from "antd";
 import "./ShareOperationModal.less";
 import Share from "../../../common/model/share/Share";
-import { ShareExpireOptionList } from "../../../common/model/share/ShareExpireOption";
+import { ShareExpireOptionList, ShareExpireOption } from "../../../common/model/share/ShareExpireOption";
 
 interface IProps {
-  onSuccess: () => any;
+  onSuccess: (share: Share) => any;
   onClose: () => any;
 }
 
@@ -19,7 +19,7 @@ export default class ShareOperationModal extends TankComponent<IProps, IState> {
     super(props);
   }
 
-  static open = (confirmCallback: () => any) => {
+  static open = (confirmCallback: (share: Share) => any) => {
     const modal = Modal.confirm({
       className: "share-modal",
       title: "分享",
@@ -30,8 +30,8 @@ export default class ShareOperationModal extends TankComponent<IProps, IState> {
       },
       content: (
         <ShareOperationModal
-          onSuccess={() => {
-            confirmCallback();
+          onSuccess={(share: Share) => {
+            confirmCallback(share);
             modal.destroy();
           }}
           onClose={() => {
@@ -42,21 +42,31 @@ export default class ShareOperationModal extends TankComponent<IProps, IState> {
     });
   };
 
+  selectChange = (value: ShareExpireOption) => {
+    this.share.expireOption = value;
+    this.updateUI();
+  };
+
   render() {
+    const { share } = this;
     return (
       <div className="widget-share-modal">
         <Row>
           <Col span={8}>有效期</Col>
           <Col span={16}>
-            <Select>
+            <Select className="wp100" value={share.expireOption} onChange={this.selectChange}>
               {ShareExpireOptionList.map((option) => (
-                <Select.Option value={option.value} onChange={() => {}}>
+                <Select.Option key={option.value} value={option.value}>
                   {option.name}
                 </Select.Option>
               ))}
             </Select>
           </Col>
         </Row>
+        <div className="mt10 text-right">
+          <Button type="primary" className="mr10" onClick={() => this.props.onSuccess(share)}>分享</Button>
+          <Button onClick={this.props.onClose}>关闭</Button>
+        </div>
       </div>
     );
   }

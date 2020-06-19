@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import VelocityReact from "velocity-react";
-import SafeUtil from "../../common/util/SafeUtil";
 
 interface IProps {}
 

@@ -118,7 +118,7 @@ export default class Share extends BaseEntity {
     let that = this;
 
     const form = {
-      matterUuids: matterUuids.toString(),
+      matterUuids: matterUuids,
       expireInfinity: this.expireOption === ShareExpireOption.INFINITY,
       expireTime: DateUtil.simpleDateTime(this.getExpireTime()),
     };
