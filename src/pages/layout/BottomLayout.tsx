@@ -1,5 +1,5 @@
 import React from 'react';
-import "./BottomPanel.less"
+import "./BottomLayout.less"
 import TankComponent from "../../common/component/TankComponent";
 import Preference from "../../common/model/preference/Preference";
 import Moon from "../../common/model/global/Moon";
@@ -13,7 +13,7 @@ interface IState {
 
 }
 
-export default class BottomPanel extends TankComponent <IProps, IState> {
+export default class BottomLayout extends TankComponent <IProps, IState> {
 
   constructor(props: IProps) {
     super(props)
@@ -35,7 +35,7 @@ export default class BottomPanel extends TankComponent <IProps, IState> {
     let preference: Preference = Moon.getSingleton().preference
 
     return (
-      <div className="layout-bottom-panel">
+      <div className="layout-bottom">
         <span className="item">
 			<span>{preference.copyright}</span>
 		</span>

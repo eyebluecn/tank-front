@@ -49,6 +49,7 @@ export default class Detail extends TankComponent <IProps, IState> {
 
 
   componentDidMount() {
+    let that = this
     let match = this.props.match;
     this.currentUser.uuid = match.params.uuid;
     this.currentUser.httpDetail()

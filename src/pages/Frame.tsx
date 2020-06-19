@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, Redirect, Route, RouteComponentProps, withRouter} from 'react-router-dom';
+import {Redirect, Route, RouteComponentProps, withRouter} from 'react-router-dom';
 
 import './Frame.less';
 import TankComponent from '../common/component/TankComponent';
@@ -21,27 +21,18 @@ import MatterDetail from './matter/Detail';
 
 import ShareList from './share/List';
 import ShareDetail from './share/Detail';
-
-import {Layout, Menu} from 'antd';
-import MenuManager from '../common/menu/MenuManager';
-import MenuItem from '../common/menu/MenuItem';
-import {SelectParam} from 'antd/lib/menu';
-import DefaultLogoPng from '../assets/image/logo.png';
 import Index from './index/Index';
 import User from '../common/model/user/User';
 import Moon from '../common/model/global/Moon';
 import Sun from '../common/model/global/Sun';
-import {UserRole} from '../common/model/user/UserRole';
 import FrameLoading from "./widget/FrameLoading";
 import Preference from "../common/model/preference/Preference";
 import {WebResultCode} from "../common/model/base/WebResultCode";
 import MessageBoxUtil from "../common/util/MessageBoxUtil";
-import ImageUtil from "../common/util/ImageUtil";
-import BottomPanel from "./layout/BottomPanel";
-import {MenuFoldOutlined} from "@ant-design/icons/lib";
-
-const {Header, Content, Footer, Sider} = Layout;
-
+import BottomLayout from "./layout/BottomLayout";
+import SideLayout from "./layout/SideLayout";
+import TopLayout from "./layout/TopLayout";
+import ContentLayout from "./layout/ContentLayout";
 
 interface IProps extends RouteComponentProps<{}> {
 
@@ -113,41 +104,11 @@ class RawFrame extends TankComponent<IProps, IState> {
 
   }
 
-  onSelect(param: SelectParam) {
-    let that = this;
-
-    let menuManager: MenuManager = MenuManager.getSingleton();
-    menuManager.selectMenu(param.key);
-
-    //打到对应的页面中。
-    if (param.key == '/user/logout') {
-      this.props.history.push('/user/login');
-    } else {
-      this.props.history.push(param.key);
-    }
-
-    this.updateUI();
-  }
-
-  goHome() {
-    this.props.history.push('/');
-  }
-
-  //logo可以使用自定义的。
-  logoUrl() {
-    if (this.preference.logoUrl) {
-      return ImageUtil.handleImageUrl(this.preference.logoUrl, false, 200, 200)
-
-    } else {
-      return DefaultLogoPng
-    }
-  }
 
   render() {
 
     let that = this;
-    let menuManager: MenuManager = MenuManager.getSingleton();
-    let menuItems: MenuItem[] = menuManager.getMenuItems();
+
 
     let user: User = that.user
 
@@ -158,62 +119,11 @@ class RawFrame extends TankComponent<IProps, IState> {
 
         <div className="pages-frame-inner">
 
-          <div className={`layout-side ${Sun.getSingleton().showDrawer ? 'show-drawer' : ''}`}>
+          <SideLayout/>
 
-            {this.preference.installed ? (
-              <div>
-                <div className="avatar-area">
-                  <Link className="username-text" to={"/user/detail/" + user.uuid}>
-                    <img alt="avatar" className="avatar-middle" src={user.getAvatarUrl()}/>
-                  </Link>
-                </div>
-                <div className="username-area">
-                  {user.role === UserRole.GUEST ?
-                    '未登录' :
-                    <Link to={"/user/detail/" + user.uuid}>
-                      <span className="username-text">{user.username}</span>
-                    </Link>
-                  }
-                </div>
-              </div>
-            ) : (
-              <div className="install-area">
-                <img alt="avatar" className="install-logo" src={DefaultLogoPng}/>
-              </div>
-            )}
+          <TopLayout/>
 
-            <Menu
-              theme="dark"
-              selectedKeys={menuManager.getSelectedKeys()}
-              onSelect={this.onSelect.bind(this)}
-              mode="inline">
-              {
-                menuItems.map((menuItem: MenuItem, index: number) => {
-                  return (
-                    <Menu.Item key={menuItem.url}>
-                      {menuItem.icon}
-                      <span>{menuItem.name}</span>
-                    </Menu.Item>
-                  );
-                })
-              }
-            </Menu>
-          </div>
-          <div className="layout-top">
-
-            <div className="logo-title-area" onClick={this.goHome.bind(this)}>
-              <img className="header-logo" src={this.logoUrl()} alt="logo"/>
-              <span className="header-title">蓝眼云盘</span>
-            </div>
-
-            <div className="drawer-trigger">
-              <MenuFoldOutlined/>
-            </div>
-
-          </div>
-
-          <div className="layout-content">
-
+          <ContentLayout>
             {
               this.preference.installed ? (
                 <div className="pages-content">
@@ -248,22 +158,10 @@ class RawFrame extends TankComponent<IProps, IState> {
                 </div>
               )
             }
+          </ContentLayout>
 
-          </div>
+          <BottomLayout/>
 
-          <div className="layout-bottom">
-            <BottomPanel/>
-          </div>
-
-          <Layout>
-            <Content>
-
-
-            </Content>
-            <Footer>
-
-            </Footer>
-          </Layout>
         </div>
       )
     } else {
@@ -279,7 +177,6 @@ class RawFrame extends TankComponent<IProps, IState> {
     );
   }
 }
-
 
 const Frame = withRouter<IProps, React.ComponentType<IProps>>(RawFrame);
 export default Frame;

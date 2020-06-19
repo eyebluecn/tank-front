@@ -1,0 +1,59 @@
+@import "../../assets/css/global/variables";
+
+
+//上边布局
+.layout-top {
+
+  height: @top-navigation-height;
+  background-color: white;
+  border-bottom: 1px solid #eeeeee;
+  position: fixed;
+  top: 0;
+  left: @sidebar-width;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+
+  //手机屏幕
+  @media (max-width: @screen-xs-max) {
+    left: 0;
+  }
+
+  .logo-title-area {
+
+    height: @top-navigation-height;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    cursor: pointer;
+
+
+    .header-logo {
+      height: @top-navigation-height - 12;
+    }
+
+    .header-title {
+      font-size: 20px;
+      font-weight: bold;
+      padding-left: 10px;
+    }
+  }
+
+  .drawer-trigger {
+    height: @top-navigation-height;
+    line-height: @top-navigation-height;
+    font-size: 24px;
+    padding-right: 15px;
+  }
+
+  //小屏幕
+  @media (min-width: @screen-sm-min) {
+    .drawer-trigger {
+      //display: none;
+    }
+  }
+
+}

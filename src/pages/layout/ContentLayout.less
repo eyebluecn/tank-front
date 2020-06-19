@@ -1,0 +1,46 @@
+@import "../../assets/css/global/variables";
+
+
+.layout-content {
+
+  position: fixed;
+  left: @sidebar-width;
+  top: @top-navigation-height;
+  right: 0;
+  bottom: @power-footer-height;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 10;
+
+  padding: 10px;
+
+  -webkit-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+
+  background-color: #f3f3f4;
+
+  //大屏幕
+  @media (min-width: @screen-sm-min) {
+    left: @sidebar-width;
+  }
+  //小屏幕
+  @media (max-width: @screen-xs-max) {
+    left: 0;
+    bottom: 0;
+  }
+
+  &.show-drawer {
+    //大屏幕
+    @media (min-width: @screen-sm-min) {
+      left: @sidebar-width;
+    }
+
+    //小屏幕
+    @media (max-width: @screen-xs-max) {
+      left: 0;
+      bottom: 0;
+    }
+  }
+}
