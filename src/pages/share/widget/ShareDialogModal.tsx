@@ -54,6 +54,7 @@ export default class ShareDialogModal extends TankComponent<IProps, IState> {
           }}
         />
       ),
+
     });
   };
 
