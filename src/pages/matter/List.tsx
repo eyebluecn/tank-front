@@ -27,6 +27,8 @@ import Sun from "../../common/model/global/Sun";
 import { UserRole } from "../../common/model/user/UserRole";
 import StringUtil from "../../common/util/StringUtil";
 import MoveBatchModal from "./widget/MoveBatchModal";
+import ShareOperationModal from "./widget/ShareOperationModal";
+import Share from "../../common/model/share/Share";
 
 interface IProps extends RouteComponentProps {}
 
@@ -50,12 +52,7 @@ export default class List extends TankComponent<IProps, IState> {
   user = Moon.getSingleton().user;
   preference = Moon.getSingleton().preference;
   director = new Director();
-
-  // todo
-  // share: Share =  new Share();
-
-  //分享的弹框
-  shareDialogVisible = false;
+  share =  new Share();
 
   newMatterRef = React.createRef<MatterPanel>();
 
@@ -205,8 +202,10 @@ export default class List extends TankComponent<IProps, IState> {
     this.uploadMatters.push(m);
   };
 
-  share = () => {
-    console.log("share");
+  shareBatch = () => {
+    ShareOperationModal.open(() => {
+
+    });
   };
 
   searchFile = (value?: string) => {
@@ -317,7 +316,7 @@ export default class List extends TankComponent<IProps, IState> {
                     移动
                   </Button>
 
-                  <Button type="primary" className="mb10" onClick={this.share}>
+                  <Button type="primary" className="mb10" onClick={this.shareBatch}>
                     分享
                   </Button>
                 </>

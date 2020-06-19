@@ -1,6 +1,7 @@
 import React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { Pagination } from "antd";
+import TankTitle from "../widget/TankTitle";
 import TankComponent from "../../common/component/TankComponent";
 import Pager from "../../common/model/base/Pager";
 import Share from "../../common/model/share/Share";
@@ -38,7 +39,9 @@ export default class List extends TankComponent<IProps, IState> {
     const { pager } = this;
 
     return (
-      <div className="page-share-list">
+      <div className="share-list">
+        <TankTitle name={"我的分享"} />
+
         {pager.data.map((share) => (
           <ShareBar key={share.uuid!} share={share} onDeleteSuccess={this.refresh} />
         ))}
