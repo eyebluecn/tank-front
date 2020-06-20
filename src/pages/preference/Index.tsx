@@ -87,11 +87,12 @@ export default class Index extends TankComponent<IProps, IState> {
           </InfoCell>
 
           <InfoCell name={'版权信息'}>
-            {this.preference.copyright}
+            <span dangerouslySetInnerHTML={{__html: this.preference.copyright}}/>
+
           </InfoCell>
 
           <InfoCell name={'备案信息'}>
-            {this.preference.record}
+            <span dangerouslySetInnerHTML={{__html: this.preference.record}}/>
           </InfoCell>
 
           <InfoCell name={'zip下载数量限制'}>

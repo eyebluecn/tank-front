@@ -37,10 +37,10 @@ export default class BottomLayout extends TankComponent <IProps, IState> {
     return (
       <div className="layout-bottom">
         <span className="item">
-			<span>{preference.copyright}</span>
+          <span dangerouslySetInnerHTML={{__html: preference.copyright}}/>
 		</span>
         <span className="item">
-			<span>{preference.record}</span>
+          <span dangerouslySetInnerHTML={{__html: preference.record}}/>
 		</span>
         <span className="item">
 			<span onClick={this.changeLang.bind(this)}>

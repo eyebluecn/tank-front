@@ -16,8 +16,8 @@ export default class Preference extends BaseEntity {
   faviconUrl: string | null = null
 
   //版权信息
-  copyright: string | null = null
-  record: string | null = null
+  copyright: string = ""
+  record: string = ""
 
   //大小限制
   downloadDirMaxSize: number = -1
