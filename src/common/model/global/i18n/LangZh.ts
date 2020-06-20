@@ -167,7 +167,7 @@ let LangZh = {
     systemCleanup: "重置系统",
     systemCleanupDescription: "重置系统将清空除管理员账号外所有数据",
     systemCleanupPrompt: "重置系统将清空除管理员账号外所有数据，事关重大，请输入登录密码",
-    officeUrl: "Office预览链接",
+    previewConfig: "文件预览配置",
     editPreference: "设置网站偏好",
     enterWebsiteName: "请输入网站名称!",
     enterZipMaxNumLimit: "zip最大数量限制必填!",

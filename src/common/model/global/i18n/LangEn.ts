@@ -165,7 +165,7 @@ let LangEn = {
     systemCleanup: "System Cleanup",
     systemCleanupDescription: "This operation will cleanup everything except administrators' data",
     systemCleanupPrompt: "This operation will cleanup everything except administrators' account data, please input login password.",
-    officeUrl: "Office Preview Url",
+    previewConfig: "File Preview Config",
     editPreference: "Edit Preference",
     enterWebsiteName: "Please enter website name!",
     enterZipMaxNumLimit: "Please enter zip max num!",

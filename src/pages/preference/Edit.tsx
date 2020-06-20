@@ -1,24 +1,27 @@
 import React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import {RouteComponentProps} from "react-router-dom";
 import "./Edit.less";
 import TankComponent from "../../common/component/TankComponent";
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
 import TankTitle from "../widget/TankTitle";
-import { Button, Form, Input, InputNumber, Switch } from "antd";
-import { SaveOutlined } from "@ant-design/icons";
+import {Button, Form, Input, InputNumber, Switch} from "antd";
+import {SaveOutlined} from "@ant-design/icons";
 import TankContentCard from "../widget/TankContentCard";
 import Preference from "../../common/model/preference/Preference";
 import FileUtil from "../../common/util/FileUtil";
-import { FormInstance } from "antd/lib/form";
+import {FormInstance} from "antd/lib/form";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import Sun from "../../common/model/global/Sun";
 import Lang from "../../common/model/global/Lang";
 import MatterImage from "../matter/widget/MatterImage";
+import PreviewConfigPanel from "./widget/PreviewConfigPanel";
 
-interface IProps extends RouteComponentProps {}
+interface IProps extends RouteComponentProps {
+}
 
-interface IState {}
+interface IState {
+}
 
 export default class Edit extends TankComponent<IProps, IState> {
   formRef = React.createRef<FormInstance>();
@@ -77,15 +80,15 @@ export default class Edit extends TankComponent<IProps, IState> {
     let preference = that.preference;
 
     const layout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 },
+      labelCol: {span: 6},
+      wrapperCol: {span: 18},
     };
 
     let initialValues: any = preference.getForm();
 
     return (
       <div className="page-preference-edit">
-        <TankTitle name={Lang.t("preference.editPreference")}></TankTitle>
+        <TankTitle name={Lang.t("preference.editPreference")}/>
 
         <TankContentCard loading={preference.detailLoading}>
           <Form
@@ -107,11 +110,11 @@ export default class Edit extends TankComponent<IProps, IState> {
                 },
               ]}
             >
-              <Input />
+              <Input/>
             </Form.Item>
 
             <Form.Item label="logo" name="logoUrl">
-              <MatterImage uploadHint={Lang.t("preference.logoSquare")} />
+              <MatterImage uploadHint={Lang.t("preference.logoSquare")}/>
             </Form.Item>
 
             <Form.Item label="favicon" name="faviconUrl">
@@ -123,15 +126,11 @@ export default class Edit extends TankComponent<IProps, IState> {
             </Form.Item>
 
             <Form.Item label={Lang.t("preference.copyright")} name="copyright">
-              <Input />
+              <Input/>
             </Form.Item>
 
             <Form.Item label={Lang.t("preference.extraInfo")} name="record">
-              <Input />
-            </Form.Item>
-
-            <Form.Item label={Lang.t("preference.officeUrl")} name="officeUrl">
-              <Input />
+              <Input/>
             </Form.Item>
 
             <Form.Item
@@ -144,7 +143,7 @@ export default class Edit extends TankComponent<IProps, IState> {
                 },
               ]}
             >
-              <InputNumber min={-1} max={1000} className="w150" />
+              <InputNumber min={-1} max={1000} className="w150"/>
             </Form.Item>
 
             <Form.Item
@@ -161,15 +160,15 @@ export default class Edit extends TankComponent<IProps, IState> {
                 ]}
                 noStyle
               >
-                <InputNumber min={-1} className="w150" />
+                <InputNumber min={-1} className="w150"/>
               </Form.Item>
               <span className="pl10">
                 {" "}
                 {Lang.t("preference.current")}:
                 {this.formRef && this.formRef.current
                   ? FileUtil.humanFileSize(
-                      this.formRef.current.getFieldValue("downloadDirMaxSize")
-                    )
+                    this.formRef.current.getFieldValue("downloadDirMaxSize")
+                  )
                   : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
               </span>
             </Form.Item>
@@ -188,17 +187,17 @@ export default class Edit extends TankComponent<IProps, IState> {
                 ]}
                 noStyle
               >
-                <InputNumber min={-1} className="w150" />
+                <InputNumber min={-1} className="w150"/>
               </Form.Item>
               <span className="pl10">
                 {" "}
                 {Lang.t("preference.current")}:
                 {this.formRef && this.formRef.current
                   ? FileUtil.humanFileSize(
-                      this.formRef.current.getFieldValue(
-                        "defaultTotalSizeLimit"
-                      )
+                    this.formRef.current.getFieldValue(
+                      "defaultTotalSizeLimit"
                     )
+                  )
                   : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
               </span>
             </Form.Item>
@@ -209,11 +208,17 @@ export default class Edit extends TankComponent<IProps, IState> {
               required={true}
               valuePropName="checked"
             >
-              <Switch />
+              <Switch/>
+            </Form.Item>
+
+            <Form.Item label={Lang.t("preference.previewConfig")}>
+
+              <PreviewConfigPanel previewConfig={preference.previewConfig}/>
+
             </Form.Item>
 
             <div className="text-right">
-              <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
+              <Button type="primary" htmlType="submit" icon={<SaveOutlined/>}>
                 {Lang.t("save")}
               </Button>
             </div>

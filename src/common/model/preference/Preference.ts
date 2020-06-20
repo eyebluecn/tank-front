@@ -1,5 +1,7 @@
 import SafeUtil from '../../util/SafeUtil';
 import BaseEntity from '../base/BaseEntity';
+import PreviewConfig from "./model/PreviewConfig";
+import JsonUtil from "../../util/JsonUtil";
 
 
 export default class Preference extends BaseEntity {
@@ -27,8 +29,8 @@ export default class Preference extends BaseEntity {
   defaultTotalSizeLimit: number = -1
   //是否允许自主注册
   allowRegister: boolean = false
-  //Office预览链接
-  officeUrl: string | null = null
+  //预览配置
+  previewConfig: PreviewConfig = new PreviewConfig()
   //后台版本
   version: string | null = null
 
@@ -47,6 +49,8 @@ export default class Preference extends BaseEntity {
   assign(obj: any) {
     super.assign(obj);
 
+    this.assignEntity("previewConfig", PreviewConfig)
+
   }
 
   getForm(): any {
@@ -60,7 +64,7 @@ export default class Preference extends BaseEntity {
       downloadDirMaxSize: this.downloadDirMaxSize,
       defaultTotalSizeLimit: this.defaultTotalSizeLimit,
       allowRegister: this.allowRegister,
-      officeUrl: this.officeUrl
+      previewConfig: JsonUtil.toJson(this.previewConfig.getForm())
     };
   }
 
