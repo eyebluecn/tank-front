@@ -438,6 +438,7 @@ export default class Matter extends BaseEntity {
 
     //验证是否满足过滤器
     if (!this.validateFileType()) {
+      MessageBoxUtil.error('文件类型不满足，请重试');
       return;
     }
 

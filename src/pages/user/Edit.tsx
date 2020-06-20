@@ -15,6 +15,7 @@ import ColorSelectionOption from "../../common/model/base/option/ColorSelectionO
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import Sun from "../../common/model/global/Sun";
 import Lang from "../../common/model/global/Lang";
+import MatterImage from "../matter/widget/MatterImage";
 
 
 interface RouteParam {
@@ -141,7 +142,7 @@ export default class Edit extends TankComponent<IProps, IState> {
                 name="avatarUrl"
                 initialValue={currentUser.avatarUrl}
               >
-                <Input/>
+                <MatterImage />
               </Form.Item>
             )}
 

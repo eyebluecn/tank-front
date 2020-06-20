@@ -42,14 +42,14 @@ export default class List extends TankComponent<IProps, IState> {
   searchText: string | null = null;
   //获取分页的一个帮助器
   pager = new Pager<Matter>(this, Matter, 100);
-  //移动的目标文件夹
-  targetMatterUuid: string | null = null;
   user = Moon.getSingleton().user;
   preference = Moon.getSingleton().preference;
+  // 导演
   director = new Director();
-  share = new Share();
   //当前面包屑模型数组。
   breadcrumbModels: BreadcrumbModel[] = []
+  // 分享
+  share =  new Share();
 
   newMatterRef = React.createRef<MatterPanel>();
 
