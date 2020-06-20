@@ -12,17 +12,17 @@ let UserRoles: UserRole[] = Object.keys(UserRole).map(k => k as UserRole);
 
 let UserRoleMap: { [key in keyof typeof UserRole]: ColorSelectionOption } = {
   GUEST: {
-    'name': '游客',
+    'name': "user.roleGuest",
     'value': 'GUEST',
     'color': Color.WARNING,
   },
   USER: {
-    'name': '普通用户',
+    'name': "user.roleUser",
     'value': 'USER',
     'color': Color.PRIMARY,
   },
   ADMINISTRATOR: {
-    'name': '管理员',
+    'name': "user.roleAdministrator",
     'value': 'ADMINISTRATOR',
     'color': Color.DANGER,
   },
