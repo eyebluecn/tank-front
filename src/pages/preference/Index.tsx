@@ -6,13 +6,15 @@ import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
 import TankTitle from "../widget/TankTitle";
 import {Button} from "antd";
-import {EditOutlined} from '@ant-design/icons';
+import {EditOutlined, ThunderboltOutlined} from '@ant-design/icons';
 import InfoCell from "../widget/InfoCell";
 import Preference from "../../common/model/preference/Preference";
 import TankContentCard from '../widget/TankContentCard';
 import FileUtil from "../../common/util/FileUtil";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Lang from "../../common/model/global/Lang";
+import SingleTextModal from "../widget/SingleTextModal";
+import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 
 
 interface IProps extends RouteComponentProps {
@@ -51,6 +53,22 @@ export default class Index extends TankComponent<IProps, IState> {
     })
   }
 
+  cleanup() {
+
+
+    let that = this
+    let preference = this.preference
+
+    SingleTextModal.open(Lang.t("preference.systemCleanupPrompt"), "", function (text: string) {
+
+      preference.httpSystemCleanup(text, function () {
+        MessageBoxUtil.success(Lang.t("operationSuccess"))
+      })
+    })
+
+
+  }
+
   render() {
 
     let that = this
@@ -61,6 +79,11 @@ export default class Index extends TankComponent<IProps, IState> {
           <Link to={'/preference/edit'}>
             <Button type={"primary"} icon={<EditOutlined/>}>{Lang.t("edit")}</Button>
           </Link>
+
+          <Button className={"ml10"} type={"primary"} danger={true}
+                  onClick={this.cleanup.bind(this)}
+                  icon={<ThunderboltOutlined/>}>{Lang.t("preference.systemCleanup")}</Button>
+
         </TankTitle>
 
         <TankContentCard>
