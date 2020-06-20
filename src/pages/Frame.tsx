@@ -148,15 +148,16 @@ class RawFrame extends TankComponent<IProps, IState> {
                   }/>
                   <Route path="/matter/list" component={MatterList}/>
 
-                  <Route path="/share/list" component={ShareList}/>
-                  <Route path="/share/detail" component={ShareDetail}/>
-                </div>
-              ) : (
-                <div className="pages-content">
-                  <Route path="/install/index" component={InstallIndex}/>
-                </div>
-              )
-            }
+                    <Route path="/share/list" component={ShareList}/>
+                    <Route path="/share/detail/:uuid" component={ShareDetail}/>
+                  </div>
+                ) : (
+                  <div className="pages-content">
+                    <Route path="/install/index" component={InstallIndex}/>
+                  </div>
+                )
+              }
+
           </ContentLayout>
 
           <BottomLayout/>

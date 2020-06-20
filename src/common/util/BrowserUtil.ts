@@ -17,15 +17,15 @@ export default class BrowserUtil {
    *
    * 获取url地址栏的参数
    * // query string: ?foo=lorem&bar=&baz
-   * var foo = getParameterByName('foo'); // "lorem"
-   * var bar = getParameterByName('bar'); // "" (present with empty value)
-   * var baz = getParameterByName('baz'); // "" (present with no value)
-   * var qux = getParameterByName('qux'); // null (absent)
+   * var foo = getQueryByName('foo'); // "lorem"
+   * var bar = getQueryByName('bar'); // "" (present with empty value)
+   * var baz = getQueryByName('baz'); // "" (present with no value)
+   * var qux = getQueryByName('qux'); // null (absent)
    * @param name
    * @param url
    * @returns {*}
    */
-  static getParameterByName(name: string, url?: string): string | null {
+  static getQueryByName(name: string, url?: string): string | null {
 
     if (!url) {
       url = window.location.href

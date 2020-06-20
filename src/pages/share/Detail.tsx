@@ -1,13 +1,229 @@
-import React, {Component} from 'react';
-import './Detail.less';
+import React from "react";
+import TankComponent from "../../common/component/TankComponent";
+import TankTitle from "../widget/TankTitle";
+import { Row, Col, Input, Button, Space, Modal, Empty } from "antd";
+import { RouteComponentProps } from "react-router";
+import "./Detail.less";
+import Share from "../../common/model/share/Share";
+import Pager from "../../common/model/base/Pager";
+import Matter from "../../common/model/matter/Matter";
+import BrowserUtil from "../../common/util/BrowserUtil";
+import SortDirection from "../../common/model/base/SortDirection";
+import FrameLoading from "../widget/FrameLoading";
+import Moon from "../../common/model/global/Moon";
+import Sun from "../../common/model/global/Sun";
+import MessageBoxUtil from "../../common/util/MessageBoxUtil";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+import ShareDialogModal from "./widget/ShareDialogModal";
+import DateUtil from "../../common/util/DateUtil";
+import MatterPanel from "../matter/widget/MatterPanel";
 
-export default class Detail extends Component {
+interface RouteParam {
+  uuid: string;
+}
 
-	render() {
-		return (
-			<div>
+interface IProps extends RouteComponentProps<RouteParam> {}
 
-			</div>
-		)
-	}
+interface IState {}
+
+export default class Detail extends TankComponent<IProps, IState> {
+  // 默认分享详情中分页大小
+  static sharePagerSize = 50;
+
+  // 是否需要提取码
+  needShareCode = true;
+
+  share = new Share(this);
+  pager = new Pager<Matter>(this, Matter, Detail.sharePagerSize);
+  user = Moon.getSingleton().user;
+
+  constructor(props: IProps) {
+    super(props);
+  }
+
+  componentDidMount(): void {
+    this.share.uuid = this.props.match.params.uuid;
+    //如果query中有rootUuid那么就更新.
+    this.share.rootUuid =
+      BrowserUtil.getQueryByName("shareRootUuid") || this.share.rootUuid;
+
+    this.pager.enableHistory();
+    this.refresh();
+  }
+
+  componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any) {
+    if (this.props.location.search !== nextProps.location.search) {
+      this.pager.enableHistory();
+      this.refresh();
+    }
+  }
+
+  refresh = () => {
+    const puuid = BrowserUtil.getQueryByName("puuid") || Matter.MATTER_ROOT;
+    this.share.httpBrowse(puuid, this.share.rootUuid, () => {
+      if (puuid === Matter.MATTER_ROOT) {
+        this.pager.clear();
+        this.pager.totalItems = this.share.matters.length;
+        this.pager.data = this.share.matters;
+      }
+
+      this.needShareCode = false;
+      this.updateUI();
+    });
+
+    this.refreshMatterPager();
+  };
+
+  refreshMatterPager = () => {
+    //只有当鉴权通过，并且不是分享根目录时需要才去进行page请求，根目录下matters已经通过browse接口拿到了
+    const puuid = BrowserUtil.getQueryByName("puuid");
+    if (!this.needShareCode && puuid && puuid !== Matter.MATTER_ROOT) {
+      const {
+        uuid: shareUuid,
+        code: shareCode,
+        rootUuid: shareRootUuid,
+      } = this.share;
+      this.pager.setFilterValues({
+        puuid,
+        shareUuid,
+        shareCode,
+        shareRootUuid,
+        orderCreateTime: SortDirection.DESC, // 默认以时间降序
+        orderDir: SortDirection.DESC, // 默认文件夹排在前面
+      });
+      this.pager.httpList();
+    }
+  };
+
+  getFiles = (value: string) => {
+    this.share.code = value;
+    this.refresh();
+  };
+
+  downloadZip = () => {
+    const puuid = BrowserUtil.getQueryByName("puuid") || Matter.MATTER_ROOT;
+    this.share.downloadZip(puuid);
+  };
+
+  cancelShare = () => {
+    Modal.confirm({
+      title: "此操作将永久取消该分享, 是否继续?",
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
+      onOk: () => {
+        this.share.httpDel(() => {
+          MessageBoxUtil.success("操作成功");
+          Sun.navigateTo("/share/list");
+        });
+      },
+    });
+  };
+
+  goToDirectory = (id?: string) => {
+    const paramId = this.props.match.params.uuid;
+    if (id) {
+      //share.rootUuid 一旦设置好了，只要根文件夹不换，那么就一直不会变。
+      const puuid = BrowserUtil.getQueryByName('puuid');
+      if (!puuid || puuid === Matter.MATTER_ROOT) {
+        this.share.rootUuid = id;
+        this.pager.clear()
+      }
+
+      this.pager.setFilterValue("puuid", id);
+      this.pager.page = 0;
+      const query = this.pager.getParams();
+      Sun.navigateQueryTo({ path: `/share/detail/${paramId}`, query });
+    } else {
+      // 回到分享根目录，先将rootUuid交给根目录
+      this.share.rootUuid = Matter.MATTER_ROOT;
+      this.pager.clear();
+      Sun.navigateQueryTo({ path: `/share/detail/${paramId}` });
+    }
+  };
+
+  render() {
+    const { share, needShareCode, user, pager } = this;
+    if (share.detailLoading && needShareCode) return <FrameLoading />;
+    return (
+      <div className="share-detail">
+        <TankTitle name={"分享详情"} />
+        {needShareCode ? (
+          <div>
+            <Row>
+              <Col span={12} offset={6} className="mt100">
+                <Input.Search
+                  placeholder="请输入提取码"
+                  enterButton="提取文件"
+                  size="large"
+                  onSearch={this.getFiles}
+                />
+              </Col>
+            </Row>
+          </div>
+        ) : (
+          <div>
+            <div className="share-block">
+              <div className="upper">
+                <div className="left-box">
+                  <img className="share-icon" src={share.getIcon()} />
+                  <span className="name">
+                    {share.name}
+                    {share.hasExpired() ? (
+                      <span className="text-danger">已过期</span>
+                    ) : null}
+                  </span>
+                </div>
+                <div className="right-box">
+                  <Space>
+                    <Button type="primary" onClick={this.downloadZip}>
+                      下载
+                    </Button>
+                    {user.uuid && user.uuid === share.userUuid ? (
+                      <>
+                        <Button danger onClick={this.cancelShare}>
+                          取消分享
+                        </Button>
+                        <Button
+                          type="primary"
+                          onClick={() => ShareDialogModal.open(share)}
+                        >
+                          获取链接
+                        </Button>
+                      </>
+                    ) : null}
+                  </Space>
+                </div>
+              </div>
+              <div className="share-info">
+                <Space>
+                  <span>分享者: {share.username}</span>
+                  <span>
+                    创建时间: {DateUtil.simpleDateHourMinute(share.createTime)}
+                  </span>
+                  <span>
+                    {share.expireInfinity
+                      ? "永久有效"
+                      : `失效时间：${DateUtil.simpleDateHourMinute(
+                          share.expireTime
+                        )}`}
+                  </span>
+                </Space>
+              </div>
+            </div>
+            {/*todo 面包屑*/}
+            {
+              pager.data.length ? pager.data.map((matter) => (
+                  <MatterPanel
+                    key={matter.uuid!}
+                    matter={matter}
+                    shareMode
+                    onGoToDirectory={this.goToDirectory}
+                  />
+                )) : <Empty />
+            }
+
+          </div>
+        )}
+      </div>
+    );
+  }
 }

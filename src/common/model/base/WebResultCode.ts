@@ -4,6 +4,8 @@ import SelectionOption from "../base/option/SelectionOption";
 enum WebResultCode {
   OK = "OK",
   BAD_REQUEST = "BAD_REQUEST",
+  NEED_SHARE_CODE = "NEED_SHARE_CODE",
+  SHARE_CODE_ERROR = "SHARE_CODE_ERROR",
   LOGIN = "LOGIN",
   NOT_INSTALLED = "NOT_INSTALLED",
   SERVER = "SERVER",
@@ -20,6 +22,14 @@ let WebResultCodeMap: { [key in keyof typeof WebResultCode]: SelectionOption } =
   BAD_REQUEST: {
     "name": "请求错误",
     "value": "BAD_REQUEST",
+  },
+  NEED_SHARE_CODE: {
+    name: "提取码必填",
+    value: "NEED_SHARE_CODE"
+  },
+  SHARE_CODE_ERROR: {
+    name: "提取码错误",
+    value: "SHARE_CODE_ERROR"
   },
   LOGIN: {
     "name": "未登录",

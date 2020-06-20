@@ -1,0 +1,49 @@
+.share-detail {
+
+  .share-block {
+    background-color: white;
+    padding: 30px 10px 20px 10px;
+
+    .upper {
+
+      //宽屏flex布局
+      display: block;
+      @media (min-width: 992px) {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .left-box {
+        margin-bottom: 15px;
+        display: block;
+        @media (min-width: 992px) {
+          display: flex;
+          justify-content: space-between;
+          align-content: center;
+        }
+
+        .share-icon {
+          width: 30px;
+          height: 30px;
+        }
+
+        .name {
+          font-size: 18px;
+          margin-left: 10px;
+          line-height: 30px;
+        }
+      }
+    }
+
+    .share-info {
+      margin-top: 5px;
+    }
+  }
+
+  .breadcrumb {
+    padding: 10px;
+    border-top: 1px solid #eee;
+
+  }
+
+}

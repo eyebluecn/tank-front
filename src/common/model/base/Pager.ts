@@ -108,8 +108,8 @@ export default class Pager<T> extends HttpBase {
   enableHistory() {
     this.history = true;
 
-    let queryPageNum: string | null = BrowserUtil.getParameterByName('page');
-    let queryPageSize: string | null = BrowserUtil.getParameterByName('pageSize');
+    let queryPageNum: string | null = BrowserUtil.getQueryByName('page');
+    let queryPageSize: string | null = BrowserUtil.getQueryByName('pageSize');
 
     if (queryPageNum !== null && queryPageNum !== '') {
       this.page = parseInt(queryPageNum);
@@ -132,7 +132,7 @@ export default class Pager<T> extends HttpBase {
 
       let filter: Filter = this.filters[i];
 
-      let queryValue = BrowserUtil.getParameterByName(filter.key);
+      let queryValue = BrowserUtil.getQueryByName(filter.key);
 
       if (queryValue !== null && queryValue !== '') {
 
@@ -178,6 +178,13 @@ export default class Pager<T> extends HttpBase {
         filter.putValue(value);
       }
 
+    }
+  };
+
+  setFilterValues(obj: any) {
+    const keys = Object.keys(obj);
+    if(keys.length) {
+      keys.forEach(key => this.setFilterValue(key, obj[key]))
     }
   };
 
@@ -408,6 +415,14 @@ export default class Pager<T> extends HttpBase {
 
     //直接去刷新
     that.httpList();
+  }
+
+  //清空data中的数据。
+  clear() {
+    this.data = [];
+    this.page = 0;
+    this.totalItems = 0;
+    this.totalPages = 0;
   }
 
 }

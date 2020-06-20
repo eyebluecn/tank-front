@@ -6,6 +6,8 @@ import { ShareType } from "./ShareType";
 import { ShareExpireOption, ShareExpireOptionMap } from "./ShareExpireOption";
 import DateUtil from "../../util/DateUtil";
 import SafeUtil from "../../util/SafeUtil";
+import {WebResultCode} from "../base/WebResultCode";
+import MessageBoxUtil from "../../util/MessageBoxUtil";
 
 export default class Share extends BaseEntity {
   name: string | null = null;
@@ -22,7 +24,7 @@ export default class Share extends BaseEntity {
   //当前share对应的matters
   matters: Matter[] = [];
 
-  //当前分享正在查看的根目录。前端辅助字段。
+  //当前分享正在查看的根目录matter的uuid。前端辅助字段。
   rootUuid: string = Matter.MATTER_ROOT;
 
   //本地临时字段
@@ -170,12 +172,21 @@ export default class Share extends BaseEntity {
       form,
       function (response: any) {
         that.assign(response.data.data);
-
         that.detailLoading = false;
         SafeUtil.safeCallback(successCallback)(response);
       },
       function (error: any) {
         that.detailLoading = false;
+        switch (error.data.code) {
+          case WebResultCode.NEED_SHARE_CODE:
+            MessageBoxUtil.error('请输入提取码');
+            break;
+          case WebResultCode.SHARE_CODE_ERROR:
+            MessageBoxUtil.error('提取码错误');
+            break;
+          default:
+            MessageBoxUtil.error(error.response);
+        }
         SafeUtil.safeCallback(errorCallback)(error);
       }
     );

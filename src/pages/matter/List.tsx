@@ -274,7 +274,7 @@ export default class List extends TankComponent<IProps, IState> {
     const { pager, director, selectedMatters, uploadMatters } = this;
     return (
       <div className="matter-list">
-        <TankTitle name={"所有文件"}></TankTitle>
+        <TankTitle name={"所有文件"} />
 
         <Row className="mb10">
           <Col md={16} sm={24}>

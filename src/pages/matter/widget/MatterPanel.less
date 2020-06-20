@@ -7,10 +7,7 @@
   display: inline-block;
   vertical-align: middle;
   line-height: @base-height;
-  margin-right: 10px;
-  &-hot {
-    padding-left: 10px;
-  }
+  margin-left: 10px;
 }
 
 .widget-matter-panel {
@@ -18,6 +15,17 @@
   border-top: 1px solid #eee;
   background-color: white;
 
+  .cell {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: @base-height;
+    margin-left: 10px;
+    &-hot {
+      margin-left: 0;
+      margin-right: -10px;
+      padding: 0 10px;
+    }
+  }
   .btn-action{
     font-size: 15px;
   }
