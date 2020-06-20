@@ -4,13 +4,12 @@ import "./List.less";
 import TankComponent from "../../common/component/TankComponent";
 import Pager from "../../common/model/base/Pager";
 import Matter from "../../common/model/matter/Matter";
-import TankTitle from "../widget/TankTitle";
 import Moon from "../../common/model/global/Moon";
 import Director from "./widget/Director";
 import SortDirection from "../../common/model/base/SortDirection";
 import MatterPanel from "./widget/MatterPanel";
 import UploadMatterPanel from "./widget/UploadMatterPanel";
-import {Button, Col, Input, Modal, Pagination, Row, Space, Upload,} from "antd";
+import {Breadcrumb, Button, Col, Input, Modal, Pagination, Row, Space, Upload,} from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import {ExclamationCircleFilled} from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
@@ -21,6 +20,8 @@ import MoveBatchModal from "./widget/MoveBatchModal";
 import ShareOperationModal from "./widget/ShareOperationModal";
 import Share from "../../common/model/share/Share";
 import ShareDialogModal from "../share/widget/ShareDialogModal";
+import BreadcrumbModel from "../../common/model/base/option/BreadcrumbModel";
+import BreadcrumbPanel from "../widget/BreadcrumbPanel";
 
 interface IProps extends RouteComponentProps {
 }
@@ -47,6 +48,8 @@ export default class List extends TankComponent<IProps, IState> {
   preference = Moon.getSingleton().preference;
   director = new Director();
   share = new Share();
+  //当前面包屑模型数组。
+  breadcrumbModels: BreadcrumbModel[] = []
 
   newMatterRef = React.createRef<MatterPanel>();
 
@@ -79,11 +82,15 @@ export default class List extends TankComponent<IProps, IState> {
     this.selectedMatters = [];
 
     // 初始化matter
-    this.matter.uuid = this.pager.getFilterValue("puuid") || "root";
-    if (this.matter.uuid !== "root") this.matter.httpDetail();
+    this.matter.uuid = this.pager.getFilterValue("puuid") || Matter.MATTER_ROOT;
 
     this.prepareRefresh();
+
+    //刷新面包屑
+    this.refreshBreadcrumbs()
+
     this.pager.httpList();
+
   };
 
   prepareRefresh = () => {
@@ -263,13 +270,80 @@ export default class List extends TankComponent<IProps, IState> {
     this.refresh();
   };
 
+  //刷新面包屑
+  refreshBreadcrumbs = () => {
+
+    //清空暂存区
+    this.selectedMatters.splice(0, this.selectedMatters.length)
+
+    let uuid = this.pager.getFilterValue('puuid')
+
+    //根目录简单处理即可。
+    if (!uuid || uuid === Matter.MATTER_ROOT) {
+
+      this.matter.uuid = Matter.MATTER_ROOT
+      this.breadcrumbModels.splice(0, this.breadcrumbModels.length)
+      this.breadcrumbModels.push({
+        name: "所有文件",
+        path: "/matter/list",
+        query: {},
+        displayDirect: true,
+      })
+
+    } else {
+
+      this.matter.uuid = uuid
+      this.matter.httpDetail(() => {
+
+        let arr = []
+        let cur = this.matter.parent
+        while (cur) {
+          arr.push(cur)
+          cur = cur.parent
+        }
+
+        this.breadcrumbModels.splice(0, this.breadcrumbModels.length)
+
+        this.breadcrumbModels.push({
+          name: "所有文件",
+          path: "/matter/list",
+          query: {},
+          displayDirect: false,
+        })
+
+        for (let i = arr.length - 1; i >= 0; i--) {
+          let m = arr[i]
+          let query = this.pager.getParams()
+          query['puuid'] = m.uuid!
+
+          console.log("当前层的query:", m.name, query)
+          this.breadcrumbModels.push({
+            name: m.name,
+            path: '/matter/list',
+            query: query,
+            displayDirect: false,
+          })
+        }
+
+        //第一个文件
+        this.breadcrumbModels.push({
+          name: this.matter.name,
+          displayDirect: true,
+          path: '',
+          query: {},
+        })
+      })
+    }
+  }
+
   render() {
     const {pager, director, selectedMatters, uploadMatters} = this;
     return (
       <div className="matter-list">
-        <TankTitle name={"所有文件"}/>
 
-        <Row className="mb10">
+        <BreadcrumbPanel breadcrumbModels={this.breadcrumbModels}/>
+
+        <Row className="mb10 mt15">
           <Col md={16} sm={24}>
             <Space className="buttons">
               {selectedMatters.length !== pager.data.length ? (

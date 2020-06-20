@@ -27,7 +27,7 @@ export default class Matter extends BaseEntity {
   privacy: boolean = true;
   path: string | null = null;
   times: number = 0;
-  parent: string | null = null;
+  parent: Matter | null = null;
 
   /*
   这部分是辅助UI的字段信息
@@ -66,7 +66,7 @@ export default class Matter extends BaseEntity {
 
   assign(obj: any) {
     super.assign(obj);
-    super.assignList("parent", Matter);
+    this.assignEntity("parent", Matter);
   }
 
   getForm(): any {
