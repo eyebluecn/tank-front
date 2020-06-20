@@ -234,6 +234,8 @@ let LangEn = {
     disable: "Disable",
     active: "Active",
     activeUser: "Active this user",
+    deleteUser: "Delete this user",
+    deleteHint: "This action will delete {}'s all records, including files,shares,user infos etc. Continue？",
     welcomeLogin: "Welcome Login",
     logining: "Login...",
     login: "Login",

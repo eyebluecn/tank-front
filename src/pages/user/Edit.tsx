@@ -251,7 +251,7 @@ export default class Edit extends TankComponent<IProps, IState> {
 
             <div className="text-right">
               <Button type="primary" htmlType="submit" icon={<SaveOutlined/>}>
-                {this.createMode ? Lang.t("user.create") : Lang.t("user.save")}
+                {this.createMode ? Lang.t("create") : Lang.t("save")}
               </Button>
             </div>
 

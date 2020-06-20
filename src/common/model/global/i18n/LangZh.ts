@@ -234,6 +234,8 @@ let LangZh = {
     disabled: "已禁用",
     disableUser: "禁用该用户",
     activeUser: "激活该用户",
+    deleteUser: "删除该用户",
+    deleteHint: "此操作将删除用户【{}】的所有记录，包括文件，分享，用户信息等内容，确定继续？",
     disable: "禁用",
     active: "激活",
     welcomeLogin: "欢迎登录",

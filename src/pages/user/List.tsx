@@ -12,16 +12,16 @@ import TableEmpty from '../widget/TableEmpty';
 import User from "../../common/model/user/User";
 import TankComponent from "../../common/component/TankComponent";
 import TankTitle from "../widget/TankTitle";
-import {Button, Tag, Tooltip} from "antd";
+import {Button, Modal, Tag, Tooltip} from "antd";
 import {CheckCircleOutlined, PlusOutlined, StopOutlined, UserSwitchOutlined} from '@ant-design/icons';
 import {UserRoleMap} from "../../common/model/user/UserRole";
 import {UserStatus, UserStatusMap} from "../../common/model/user/UserStatus";
-import {EditOutlined} from "@ant-design/icons/lib";
+import {DeleteOutlined, EditOutlined, ExclamationCircleFilled} from "@ant-design/icons/lib";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import Color from "../../common/model/base/option/Color";
 import TransfigurationModal from "./widget/TransfigurationModal";
-import Moon from "../../common/model/global/Moon";
 import Lang from "../../common/model/global/Lang";
+import Moon from "../../common/model/global/Moon";
 
 
 interface IProps extends RouteComponentProps {
@@ -82,6 +82,22 @@ export default class List extends TankComponent<IProps, IState> {
   }
 
 
+  delete(user: User) {
+    let that = this
+    Modal.confirm({
+      title: Lang.t("user.deleteHint", user.username),
+      icon: <ExclamationCircleFilled twoToneColor={Color.WARNING}/>,
+      onOk: () => {
+        user.httpDel(function () {
+          MessageBoxUtil.success(Lang.t("operationSuccess"))
+          that.refresh()
+        })
+      },
+    });
+
+  }
+
+
   transfiguration(user: User) {
 
     let that = this
@@ -100,6 +116,8 @@ export default class List extends TankComponent<IProps, IState> {
     //pager对象
     let pager = this.pager;
 
+    let user: User = Moon.getSingleton().user
+
     const columns: ColumnProps<User>[] = [{
       title: Lang.t("user.avatar"),
       dataIndex: 'avatarUrl',
@@ -111,9 +129,18 @@ export default class List extends TankComponent<IProps, IState> {
     }, {
       title: Lang.t("user.username"),
       dataIndex: 'username',
-      render: (text: any, record: User, index: number): React.ReactNode => (
-        <Link to={StringUtil.prePath(match.path) + '/detail/' + record.uuid}>{record.username}</Link>
-      ),
+      render: (text: any, record: User, index: number): React.ReactNode => {
+        return <div>
+          <div>
+            <Link to={StringUtil.prePath(match.path) + '/detail/' + record.uuid}>{record.username}</Link>
+          </div>
+          {
+            user.uuid === record.uuid && (
+              <div className="text-danger">(It's you)</div>
+            )
+          }
+        </div>
+      },
     }, {
       title: Lang.t("user.role"),
       dataIndex: 'role',
@@ -176,7 +203,7 @@ export default class List extends TankComponent<IProps, IState> {
           </Link>
 
           {
-            record.status === UserStatus.OK && (
+            record.status === UserStatus.OK && record.uuid !== user.uuid && (
               <Tooltip title={Lang.t("user.disableUser")}>
                 <StopOutlined className="btn-action" style={{color: Color.DANGER}}
                               onClick={this.toggleStatus.bind(this, record)}/>
@@ -185,7 +212,7 @@ export default class List extends TankComponent<IProps, IState> {
           }
 
           {
-            record.status === UserStatus.DISABLED && (
+            record.status === UserStatus.DISABLED && record.uuid !== user.uuid && (
               <Tooltip title={Lang.t("user.activeUser")}>
                 <CheckCircleOutlined className="btn-action" style={{color: Color.SUCCESS}}
                                      onClick={this.toggleStatus.bind(this, record)}/>
@@ -193,10 +220,25 @@ export default class List extends TankComponent<IProps, IState> {
             )
           }
 
-          <Tooltip title={Lang.t("user.transfiguration")}>
+          {
+            record.status === UserStatus.DISABLED && record.uuid !== user.uuid && (
+              <Tooltip title={Lang.t("user.deleteUser")}>
+                <DeleteOutlined className="btn-action" style={{color: Color.DANGER}}
+                                onClick={this.delete.bind(this, record)}/>
+              </Tooltip>
+            )
+          }
+
+          {
+            record.uuid !== user.uuid && (
+              <Tooltip title={Lang.t("user.transfiguration")}>
                 <UserSwitchOutlined className="btn-action" style={{color: Color.PRIMARY}}
                                     onClick={this.transfiguration.bind(this, record)}/>
               </Tooltip>
+            )
+          }
+
+
 
 
         </span>
