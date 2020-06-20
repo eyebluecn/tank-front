@@ -1,8 +1,8 @@
 import React from "react";
 import TankComponent from "../../common/component/TankComponent";
 import TankTitle from "../widget/TankTitle";
-import { Row, Col, Input, Button, Space, Modal, Empty } from "antd";
-import { RouteComponentProps } from "react-router";
+import {Button, Col, Empty, Input, Modal, Row, Space} from "antd";
+import {RouteComponentProps} from "react-router";
 import "./Detail.less";
 import Share from "../../common/model/share/Share";
 import Pager from "../../common/model/base/Pager";
@@ -13,22 +13,29 @@ import FrameLoading from "../widget/FrameLoading";
 import Moon from "../../common/model/global/Moon";
 import Sun from "../../common/model/global/Sun";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import {ExclamationCircleFilled} from "@ant-design/icons";
 import ShareDialogModal from "./widget/ShareDialogModal";
 import DateUtil from "../../common/util/DateUtil";
 import MatterPanel from "../matter/widget/MatterPanel";
+import BreadcrumbModel from "../../common/model/base/option/BreadcrumbModel";
+import BreadcrumbPanel from "../widget/BreadcrumbPanel";
 
 interface RouteParam {
   uuid: string;
 }
 
-interface IProps extends RouteComponentProps<RouteParam> {}
+interface IProps extends RouteComponentProps<RouteParam> {
+}
 
-interface IState {}
+interface IState {
+}
 
 export default class Detail extends TankComponent<IProps, IState> {
   // 默认分享详情中分页大小
   static sharePagerSize = 50;
+
+  //当前面包屑模型数组。
+  breadcrumbModels: BreadcrumbModel[] = []
 
   // 是否需要提取码
   needShareCode = true;
@@ -67,8 +74,13 @@ export default class Detail extends TankComponent<IProps, IState> {
         this.pager.data = this.share.matters;
       }
 
+
+      //刷新面包屑
+      this.refreshBreadcrumbs()
+
       this.needShareCode = false;
       this.updateUI();
+
     });
 
     this.refreshMatterPager();
@@ -108,7 +120,7 @@ export default class Detail extends TankComponent<IProps, IState> {
   cancelShare = () => {
     Modal.confirm({
       title: "此操作将永久取消该分享, 是否继续?",
-      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00"/>,
       onOk: () => {
         this.share.httpDel(() => {
           MessageBoxUtil.success("操作成功");
@@ -131,21 +143,50 @@ export default class Detail extends TankComponent<IProps, IState> {
       this.pager.setFilterValue("puuid", id);
       this.pager.page = 0;
       const query = this.pager.getParams();
-      Sun.navigateQueryTo({ path: `/share/detail/${paramId}`, query });
+      Sun.navigateQueryTo({path: `/share/detail/${paramId}`, query});
     } else {
       // 回到分享根目录，先将rootUuid交给根目录
       this.share.rootUuid = Matter.MATTER_ROOT;
       this.pager.clear();
-      Sun.navigateQueryTo({ path: `/share/detail/${paramId}` });
+      Sun.navigateQueryTo({path: `/share/detail/${paramId}`});
     }
   };
 
+  refreshBreadcrumbs = () => {
+    let that = this
+
+    //清空
+    that.breadcrumbModels = []
+
+    that.breadcrumbModels.push({
+      name: "所有文件",
+      path: "/share/detail/" + this.share.uuid,
+      query: {},
+      displayDirect: false,
+    })
+
+    let pMatter = this.share.dirMatter
+    while (pMatter && pMatter.uuid) {
+      //插入到最前面
+      let query = this.pager.getParams()
+      query["puuid"] = pMatter.uuid
+      that.breadcrumbModels.splice(1, 0, {
+        name: pMatter.name,
+        path: "/share/detail/" + this.share.uuid,
+        query: query,
+        displayDirect: false,
+      })
+      pMatter = pMatter.parent!
+    }
+    
+  }
+
   render() {
-    const { share, needShareCode, user, pager } = this;
-    if (share.detailLoading && needShareCode) return <FrameLoading />;
+    const {share, needShareCode, user, pager} = this;
+    if (share.detailLoading && needShareCode) return <FrameLoading/>;
     return (
       <div className="share-detail">
-        <TankTitle name={"分享详情"} />
+        <TankTitle name={"分享详情"}/>
         {needShareCode ? (
           <div>
             <Row>
@@ -164,7 +205,7 @@ export default class Detail extends TankComponent<IProps, IState> {
             <div className="share-block">
               <div className="upper">
                 <div className="left-box">
-                  <img className="share-icon" src={share.getIcon()} />
+                  <img className="share-icon" src={share.getIcon()}/>
                   <span className="name">
                     {share.name}
                     {share.hasExpired() ? (
@@ -203,22 +244,26 @@ export default class Detail extends TankComponent<IProps, IState> {
                     {share.expireInfinity
                       ? "永久有效"
                       : `失效时间：${DateUtil.simpleDateHourMinute(
-                          share.expireTime
-                        )}`}
+                        share.expireTime
+                      )}`}
                   </span>
                 </Space>
               </div>
             </div>
-            {/*todo 面包屑*/}
+
+            <div className="breadcrumb-area">
+              <BreadcrumbPanel breadcrumbModels={this.breadcrumbModels}/>
+            </div>
+
             {
               pager.data.length ? pager.data.map((matter) => (
-                  <MatterPanel
-                    key={matter.uuid!}
-                    matter={matter}
-                    shareMode
-                    onGoToDirectory={this.goToDirectory}
-                  />
-                )) : <Empty />
+                <MatterPanel
+                  key={matter.uuid!}
+                  matter={matter}
+                  shareMode={true}
+                  onGoToDirectory={this.goToDirectory}
+                />
+              )) : <Empty/>
             }
 
           </div>

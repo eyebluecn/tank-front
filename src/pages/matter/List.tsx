@@ -120,7 +120,7 @@ export default class List extends TankComponent<IProps, IState> {
       }
     } else {
       //统计所有的勾选
-      this.selectedMatters.splice(0, this.selectedMatters.length);
+      this.selectedMatters = []
       this.pager.data.forEach((matter) => {
         if (matter.check) {
           this.selectedMatters.push(matter);
@@ -274,7 +274,7 @@ export default class List extends TankComponent<IProps, IState> {
   refreshBreadcrumbs = () => {
 
     //清空暂存区
-    this.selectedMatters.splice(0, this.selectedMatters.length)
+    this.selectedMatters = []
 
     let uuid = this.pager.getFilterValue('puuid')
 
@@ -282,7 +282,7 @@ export default class List extends TankComponent<IProps, IState> {
     if (!uuid || uuid === Matter.MATTER_ROOT) {
 
       this.matter.uuid = Matter.MATTER_ROOT
-      this.breadcrumbModels.splice(0, this.breadcrumbModels.length)
+      this.breadcrumbModels = []
       this.breadcrumbModels.push({
         name: "所有文件",
         path: "/matter/list",
@@ -302,7 +302,7 @@ export default class List extends TankComponent<IProps, IState> {
           cur = cur.parent
         }
 
-        this.breadcrumbModels.splice(0, this.breadcrumbModels.length)
+        this.breadcrumbModels = []
 
         this.breadcrumbModels.push({
           name: "所有文件",
