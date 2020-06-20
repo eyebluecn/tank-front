@@ -6,6 +6,7 @@ import TankComponent from "../../../common/component/TankComponent";
 import {FormInstance} from "antd/lib/form";
 import {ArrowRightOutlined, DisconnectOutlined, LinkOutlined, SoundOutlined} from "@ant-design/icons/lib";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
+import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
   install: Install
@@ -48,7 +49,7 @@ export default class MysqlPanel extends TankComponent<IProps, IState> {
     install.httpVerify(function () {
 
       install.verified = true
-      MessageBoxUtil.success("MySQL连接测试通过！")
+      MessageBoxUtil.success(Lang.t("install.mysqlConnectionPass"))
       that.updateUI()
 
     }, function (msg: any) {
@@ -73,7 +74,7 @@ export default class MysqlPanel extends TankComponent<IProps, IState> {
       this.props.onNextStep()
 
     } else {
-      MessageBoxUtil.error("请首先验证数据库连接")
+      MessageBoxUtil.error(Lang.t("install.validateMysqlFirst"))
 
     }
 
@@ -108,55 +109,55 @@ export default class MysqlPanel extends TankComponent<IProps, IState> {
             label="MySQL host"
             name="mysqlHost"
             initialValue={install.mysqlHost}
-            rules={[{required: true, message: '请输入MySQL host!'}]}
+            rules={[{required: true, message: Lang.t("inputRequired")}]}
           >
             <Input/>
           </Form.Item>
 
           <Form.Item
-            label="MySQL 端口"
+            label={Lang.t("install.port")}
             name="mysqlPort"
             initialValue={install.mysqlPort}
-            rules={[{required: true, message: '请输入MySQL 端口!'}]}
+            rules={[{required: true, message: Lang.t("inputRequired")}]}
           >
             <Input/>
           </Form.Item>
 
 
           <Form.Item
-            label="MySQL 库名"
+            label={Lang.t("install.schema")}
             name="mysqlSchema"
             initialValue={install.mysqlSchema}
-            rules={[{required: true, message: '请输入MySQL 库名!'}]}
+            rules={[{required: true, message: Lang.t("inputRequired")}]}
           >
             <Input/>
           </Form.Item>
 
 
           <Form.Item
-            label="MySQL 用户名"
+            label={Lang.t("install.username")}
             name="mysqlUsername"
             initialValue={install.mysqlUsername}
-            rules={[{required: true, message: '请输入MySQL 用户名!'}]}
+            rules={[{required: true, message: Lang.t("inputRequired")}]}
           >
             <Input/>
           </Form.Item>
 
 
           <Form.Item
-            label="MySQL 密码"
+            label={Lang.t("install.password")}
             name="mysqlPassword"
             initialValue={install.mysqlPassword}
-            rules={[{required: true, message: '请输入MySQL 密码!'}]}
+            rules={[{required: true, message: Lang.t("inputRequired")}]}
           >
             <Input.Password/>
           </Form.Item>
 
           <Form.Item
-            label="MySQL 编码"
+            label={Lang.t("install.charset")}
             name="mysqlCharset"
             initialValue={install.mysqlCharset}
-            rules={[{required: true, message: '请输入MySQL 编码!'}]}
+            rules={[{required: true, message: Lang.t("inputRequired")}]}
           >
             <Select>
               <Select.Option value="utf8">utf8</Select.Option>
@@ -168,11 +169,11 @@ export default class MysqlPanel extends TankComponent<IProps, IState> {
           <div>
             <Alert
               message={<div>
-                <div><SoundOutlined/> 提示：</div>
+                <div><SoundOutlined/> {Lang.t("install.notice")}</div>
                 <div>
                   <ol>
-                    <li>如果数据库和蓝眼云盘安装在同一台服务器，Host可以直接填写 127.0.0.1。</li>
-                    <li>数据库账户的权限要求要能够创建表，否则第二步"创建表"操作会出错。</li>
+                    <li> {Lang.t("install.mysqlNotice1")}</li>
+                    <li>{Lang.t("install.mysqlNotice2")}</li>
                   </ol>
                 </div>
               </div>}
@@ -183,11 +184,11 @@ export default class MysqlPanel extends TankComponent<IProps, IState> {
           <div className="text-right mt15">
             <Button type={install.verified ? "primary" : "default"} htmlType="submit"
                     icon={install.verified ? <LinkOutlined/> : <DisconnectOutlined/>}>
-              {install.verified ? 'MySQL测试通过' : '测试MySQL连接性'}
+              {install.verified ? Lang.t("install.mysqlConnectionPass") : Lang.t("install.testMysqlConnection")}
             </Button>
             <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowRightOutlined/>}
                     onClick={this.goToNext.bind(this)}>
-              下一步
+              {Lang.t("install.nextStep")}
             </Button>
           </div>
 

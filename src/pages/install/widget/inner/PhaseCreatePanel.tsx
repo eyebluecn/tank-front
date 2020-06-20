@@ -5,6 +5,7 @@ import Install from "../../../../common/model/install/Install";
 import MessageBoxUtil from "../../../../common/util/MessageBoxUtil";
 import {Button, Form, Input} from "antd";
 import {ArrowLeftOutlined, SendOutlined} from "@ant-design/icons/lib";
+import Lang from "../../../../common/model/global/Lang";
 
 interface IProps {
 
@@ -45,7 +46,7 @@ export default class PhaseCreatePanel extends TankComponent<IProps, IState> {
     install.adminRepassword = values["adminRepassword"]
 
     install.httpCreateAdmin(function () {
-      MessageBoxUtil.success("管理员创建成功!")
+      MessageBoxUtil.success(Lang.t("install.createAdminSuccess"))
       that.props.onSuccess()
     })
   };
@@ -69,7 +70,7 @@ export default class PhaseCreatePanel extends TankComponent<IProps, IState> {
       <div className="widget-phase-verify-panel">
 
         <div className="text-center">
-          <h2>创建新管理员账户</h2>
+          <h2>{Lang.t("install.createAdministrator")}</h2>
         </div>
 
         <Form
@@ -82,17 +83,17 @@ export default class PhaseCreatePanel extends TankComponent<IProps, IState> {
           }}
         >
           <Form.Item
-            label="管理员用户名"
+            label={Lang.t("install.administratorUsername")}
             name="adminUsername"
-            rules={[{required: true, message: '请输入管理员用户名!'}]}
+            rules={[{required: true, message: Lang.t("inputRequired")}]}
           >
             <Input/>
           </Form.Item>
 
           <Form.Item
-            label="管理员密码"
+            label={Lang.t("install.administratorPassword")}
             name="adminPassword"
-            rules={[{required: true, message: '请输入管理员密码!'}]}
+            rules={[{required: true, message: Lang.t("inputRequired")}]}
           >
             <Input.Password/>
           </Form.Item>
@@ -100,20 +101,20 @@ export default class PhaseCreatePanel extends TankComponent<IProps, IState> {
 
           <Form.Item
             name="adminRepassword"
-            label="确认密码"
+            label={Lang.t("install.administratorRePassword")}
             dependencies={['adminPassword']}
             hasFeedback
             rules={[
               {
                 required: true,
-                message: '请输入确认密码!',
+                message: Lang.t("inputRequired"),
               },
               ({getFieldValue}) => ({
                 validator(rule, value) {
                   if (!value || getFieldValue('adminPassword') === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject('两次输入密码不匹配!');
+                  return Promise.reject(Lang.t("user.passwordNotSame"));
                 },
               }),
             ]}
@@ -125,14 +126,14 @@ export default class PhaseCreatePanel extends TankComponent<IProps, IState> {
 
             <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowLeftOutlined/>}
                     onClick={this.props.onPreStep.bind(this)}>
-              上一步
+              {Lang.t("install.preStep")}
             </Button>
 
             <Button className={'ml10'} type={"primary"}
                     icon={<SendOutlined/>}
                     htmlType="submit"
             >
-              提交
+              {Lang.t("submit")}
             </Button>
 
           </div>

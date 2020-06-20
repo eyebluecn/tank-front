@@ -11,6 +11,7 @@ import {
   SyncOutlined,
   UserAddOutlined
 } from "@ant-design/icons/lib";
+import Lang from "../../../../common/model/global/Lang";
 
 interface IProps {
   install: Install
@@ -70,7 +71,7 @@ export default class PhaseSelectingPanel extends TankComponent<IProps, IState> {
       <div className="widget-phase-selecting-panel">
 
         <div>
-          检测到系统中已经存在有以下管理员：
+          {Lang.t("install.detectAdministrator")}:
         </div>
         {
           install.adminList.map(function (admin: User, index: number) {
@@ -83,7 +84,7 @@ export default class PhaseSelectingPanel extends TankComponent<IProps, IState> {
         }
 
         <div>
-          你可以使用其中一位管理员的用户名和密码进行验证，或者创建一位新的管理员账户
+          {Lang.t("install.useOrCreateAdministrator")}
         </div>
 
         <div className="text-right mt15">
@@ -92,30 +93,30 @@ export default class PhaseSelectingPanel extends TankComponent<IProps, IState> {
                   onClick={this.refreshAdminList.bind(this)}
                   loading={this.loadingAdminList}
           >
-            刷新
+            {Lang.t("refresh")}
           </Button>
 
           <Button className={'ml10'} type={"default"}
                   icon={<SecurityScanOutlined/>}
                   onClick={this.props.onSelectVerify.bind(this)}
           >
-            验证管理员账户
+            {Lang.t("install.validateAdministrator")}
           </Button>
 
           <Button className={'ml10'} type={"default"}
                   icon={<UserAddOutlined/>}
                   onClick={this.props.onSelectCreate.bind(this)}
           >
-            创建管理员账户
+            {Lang.t("install.createAdministrator")}
           </Button>
 
           <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowLeftOutlined/>}
                   onClick={this.props.onPreStep.bind(this)}>
-            上一步
+            {Lang.t("install.preStep")}
           </Button>
           <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowRightOutlined/>}
                   onClick={this.props.onNextStep.bind(this)}>
-            下一步
+            {Lang.t("install.nextStep")}
           </Button>
 
         </div>

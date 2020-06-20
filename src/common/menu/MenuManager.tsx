@@ -16,6 +16,7 @@ import {
 } from '@ant-design/icons';
 import {LoginOutlined} from "@ant-design/icons/lib";
 import Preference from "../model/preference/Preference";
+import Lang from "../model/global/Lang";
 
 
 export default class MenuManager {
@@ -70,22 +71,22 @@ export default class MenuManager {
 
     if (!preference.installed) {
       menuItems = [
-        new MenuItem('安装网站', '/install/index', <SettingOutlined/>),
+        new MenuItem(Lang.t("layout.install"), '/install/index', <SettingOutlined/>),
       ];
     } else if (user.role === UserRole.GUEST) {
       menuItems = [
-        new MenuItem('登录', '/user/login', <LoginOutlined/>),
+        new MenuItem(Lang.t("user.login"), '/user/login', <LoginOutlined/>),
       ];
     } else {
-      menuItems.push(new MenuItem('所有文件', '/matter/list', <AppstoreOutlined/>))
-      menuItems.push(new MenuItem('我的分享', '/share/list', <ShareAltOutlined/>))
+      menuItems.push(new MenuItem(Lang.t("layout.allFiles"), '/matter/list', <AppstoreOutlined/>))
+      menuItems.push(new MenuItem(Lang.t("layout.myShare"), '/share/list', <ShareAltOutlined/>))
 
       if (user.role === UserRole.ADMINISTRATOR) {
-        menuItems.push(new MenuItem('网站偏好', '/preference/index', <SettingOutlined/>))
-        menuItems.push(new MenuItem('监控统计', '/dashboard/index', <DashboardOutlined/>))
-        menuItems.push(new MenuItem('用户列表', '/user/list', <TeamOutlined/>))
+        menuItems.push(new MenuItem(Lang.t("layout.setting"), '/preference/index', <SettingOutlined/>))
+        menuItems.push(new MenuItem(Lang.t("layout.dashboard"), '/dashboard/index', <DashboardOutlined/>))
+        menuItems.push(new MenuItem(Lang.t("layout.users"), '/user/list', <TeamOutlined/>))
       }
-      menuItems.push(new MenuItem('退出登录', '/user/logout', <PoweroffOutlined/>))
+      menuItems.push(new MenuItem(Lang.t("layout.logout"), '/user/logout', <PoweroffOutlined/>))
 
 
     }

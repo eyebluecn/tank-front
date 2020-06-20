@@ -1,6 +1,6 @@
 import React from 'react';
 import './CreateTablePanel.less';
-import {Button, Spin, Tag} from 'antd';
+import {Alert, Button, Spin, Tag} from 'antd';
 import Install from "../../../common/model/install/Install";
 import TankComponent from "../../../common/component/TankComponent";
 import Color from "../../../common/model/base/option/Color";
@@ -9,9 +9,11 @@ import {
   ArrowRightOutlined,
   CheckOutlined,
   FormatPainterOutlined,
+  SoundOutlined,
   SyncOutlined
 } from "@ant-design/icons/lib";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
+import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
 
@@ -67,7 +69,7 @@ export default class CreateTablePanel extends TankComponent<IProps, IState> {
     that.updateUI()
 
     install.httpCreateTable(function () {
-      MessageBoxUtil.success("建表成功!")
+      MessageBoxUtil.success(Lang.t("install.createTableSuccess"))
     }, null, function () {
 
       that.createTableLoading = false
@@ -91,7 +93,7 @@ export default class CreateTablePanel extends TankComponent<IProps, IState> {
       this.props.onNextStep()
 
     } else {
-      MessageBoxUtil.error("请首先完成建表")
+      MessageBoxUtil.error(Lang.t("install.crateTableFirst"))
     }
 
   }
@@ -118,25 +120,25 @@ export default class CreateTablePanel extends TankComponent<IProps, IState> {
 
                     {
                       (tableInfo.tableExist && tableInfo.missingFields.length === 0) && (
-                        <Tag className="mh5" color={Color.SUCCESS}>已安装</Tag>
+                        <Tag className="mh5" color={Color.SUCCESS}>{Lang.t("install.installed")}</Tag>
                       )
                     }
 
                     {
                       (tableInfo.tableExist && tableInfo.missingFields.length > 0) && (
-                        <Tag className="mh5" color={Color.DANGER}>已安装,字段缺失</Tag>
+                        <Tag className="mh5" color={Color.DANGER}>{Lang.t("install.installedButMissing")}</Tag>
                       )
                     }
 
                     {
                       !tableInfo.tableExist && (
-                        <Tag className="mh5" color={Color.WARNING}>待安装</Tag>
+                        <Tag className="mh5" color={Color.WARNING}>{Lang.t("install.toBeInstalled")}</Tag>
                       )
                     }
                   </div>
 
                   <div className="mt10">
-                    所有字段:
+                    {Lang.t("install.allFields")}:
                     {
                       tableInfo.allFields.map(function (field: any, j: number) {
 
@@ -153,7 +155,7 @@ export default class CreateTablePanel extends TankComponent<IProps, IState> {
                   {
                     (tableInfo.tableExist && tableInfo.missingFields.length > 0) && (
                       <div className="mt10">
-                        缺失字段:
+                        {Lang.t("install.missingFields")}:
                         {
                           tableInfo.missingFields.map(function (field: any, j: number) {
 
@@ -174,12 +176,31 @@ export default class CreateTablePanel extends TankComponent<IProps, IState> {
             })
           }
 
+
+          <div>
+            <Alert
+              message={<div>
+                <div><SoundOutlined/> {Lang.t("install.tableNotice")}</div>
+                <div>
+                  <ol>
+                    <li> {Lang.t("install.tableNotice1")}</li>
+                    <li>{Lang.t("install.tableNotice2")}</li>
+                    <li>{Lang.t("install.tableNotice3")}</li>
+                    <li>{Lang.t("install.tableNotice4")}</li>
+                  </ol>
+                </div>
+              </div>}
+              type="info"
+            />
+          </div>
+
+
           <div className="text-right mt15">
             <Button className={'ml10'} type={"default"}
                     icon={<SyncOutlined/>}
                     onClick={this.fetchTableInfoList.bind(this)}
             >
-              刷新
+              {Lang.t("refresh")}
             </Button>
 
             <Button className={'ml10'} type={tableCreated ? "primary" : "default"}
@@ -188,16 +209,16 @@ export default class CreateTablePanel extends TankComponent<IProps, IState> {
                     disabled={tableCreated}
                     loading={this.createTableLoading}
             >
-              {tableCreated ? '已完成建表' : '一键建表'}
+              {tableCreated ? Lang.t("install.createFinish") : Lang.t("install.oneKeyCreate")}
             </Button>
 
             <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowLeftOutlined/>}
                     onClick={this.goToPrevious.bind(this)}>
-              上一步
+              {Lang.t("install.preStep")}
             </Button>
             <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowRightOutlined/>}
                     onClick={this.goToNext.bind(this)}>
-              下一步
+              {Lang.t("install.nextStep")}
             </Button>
           </div>
 

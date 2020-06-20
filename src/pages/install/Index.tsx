@@ -12,6 +12,7 @@ import MysqlPanel from "./widget/MysqlPanel";
 import CreateTablePanel from "./widget/CreateTablePanel";
 import SetAdminPanel from "./widget/SetAdminPanel";
 import FinishPanel from "./widget/FinishPanel";
+import Lang from "../../common/model/global/Lang";
 
 const {TabPane} = Tabs;
 
@@ -56,7 +57,7 @@ export default class Index extends TankComponent<IProps, IState> {
     return (
       <div className="page-install-index">
 
-        <TankTitle name={'安装网站'}>
+        <TankTitle name={Lang.t("layout.install")}>
 
         </TankTitle>
 
@@ -66,13 +67,13 @@ export default class Index extends TankComponent<IProps, IState> {
             this.activeName = activeKey
             this.updateUI()
           }}>
-            <TabPane tab="配置MySQL" key="first">
+            <TabPane tab={Lang.t("install.configMysql")} key="first">
               <MysqlPanel install={install} onNextStep={() => {
                 this.activeName = "second"
                 this.updateUI()
               }}/>
             </TabPane>
-            <TabPane tab="创建表" disabled={!install.verified} key="second">
+            <TabPane tab={Lang.t("install.createTable")} disabled={!install.verified} key="second">
               <CreateTablePanel install={install} onPreStep={() => {
                 this.activeName = "first"
                 this.updateUI()
@@ -81,7 +82,7 @@ export default class Index extends TankComponent<IProps, IState> {
                 this.updateUI()
               }}/>
             </TabPane>
-            <TabPane tab="设置管理员" disabled={!install.tableCreated()} key="third">
+            <TabPane tab={Lang.t("install.setAdministrator")} disabled={!install.tableCreated()} key="third">
               <SetAdminPanel install={install} onPreStep={() => {
                 this.activeName = "second"
                 this.updateUI()
@@ -90,7 +91,7 @@ export default class Index extends TankComponent<IProps, IState> {
                 this.updateUI()
               }}/>
             </TabPane>
-            <TabPane tab="完成" disabled={!install.adminConfigured} key="forth">
+            <TabPane tab={Lang.t("install.finish")} disabled={!install.adminConfigured} key="forth">
               <FinishPanel install={install}/>
             </TabPane>
           </Tabs>

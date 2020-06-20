@@ -6,6 +6,7 @@ import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import PhaseSelectingPanel from "./inner/PhaseSelectingPanel";
 import PhaseVerifyPanel from "./inner/PhaseVerifyPanel";
 import PhaseCreatePanel from "./inner/PhaseCreatePanel";
+import Lang from "../../../common/model/global/Lang";
 
 enum Phase {
   //选择界面
@@ -61,7 +62,7 @@ export default class SetAdminPanel extends TankComponent<IProps, IState> {
       this.props.onNextStep()
 
     } else {
-      MessageBoxUtil.error("请首先完成管理员设置")
+      MessageBoxUtil.error(Lang.t("install.configAdminFirst"))
     }
 
   }

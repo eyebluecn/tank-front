@@ -4,6 +4,7 @@ import Install from "../../../common/model/install/Install";
 import TankComponent from "../../../common/component/TankComponent";
 import {Button, Result} from "antd";
 import {HomeOutlined} from "@ant-design/icons/lib";
+import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
 
@@ -63,12 +64,12 @@ export default class FinishPanel extends TankComponent<IProps, IState> {
       <div className="widget-finish-panel">
         <Result
           status="success"
-          title="安装信息配置完毕!"
-          subTitle="点击下方按钮来完成安装过程并进入首页。"
+          title={Lang.t("install.congratulationInstall")}
+          subTitle={Lang.t("install.pressToHome")}
           extra={[
             <Button icon={<HomeOutlined/>} type="primary" key="home" loading={that.loading}
                     onClick={this.finish.bind(this)}>
-              完成，并进入首页
+              {Lang.t("install.enterHome")}
             </Button>
           ]}
         />

@@ -5,6 +5,7 @@ import Install from "../../../../common/model/install/Install";
 import {Button, Form, Input} from "antd";
 import {ArrowLeftOutlined, SendOutlined} from "@ant-design/icons/lib";
 import MessageBoxUtil from "../../../../common/util/MessageBoxUtil";
+import Lang from "../../../../common/model/global/Lang";
 
 interface IProps {
 
@@ -46,7 +47,7 @@ export default class PhaseVerifyPanel extends TankComponent<IProps, IState> {
     install.adminPassword = values["adminPassword"]
 
     install.httpValidateAdmin(function () {
-      MessageBoxUtil.success("管理员验证成功!")
+      MessageBoxUtil.success(Lang.t("install.validateAdminSuccess"))
 
       that.props.onSuccess()
     })
@@ -72,7 +73,7 @@ export default class PhaseVerifyPanel extends TankComponent<IProps, IState> {
       <div className="widget-phase-verify-panel">
 
         <div className="text-center">
-          <h2>验证管理员账户</h2>
+          <h2>{Lang.t("install.validateAdministrator")}</h2>
         </div>
 
         <Form
@@ -85,17 +86,17 @@ export default class PhaseVerifyPanel extends TankComponent<IProps, IState> {
           }}
         >
           <Form.Item
-            label="管理员用户名"
+            label={Lang.t("install.administratorUsername")}
             name="adminUsername"
-            rules={[{required: true, message: '请输入管理员用户名!'}]}
+            rules={[{required: true, message: Lang.t("inputRequired")}]}
           >
             <Input/>
           </Form.Item>
 
           <Form.Item
-            label="管理员密码"
+            label={Lang.t("install.administratorPassword")}
             name="adminPassword"
-            rules={[{required: true, message: '请输入管理员密码!'}]}
+            rules={[{required: true, message: Lang.t("inputRequired")}]}
           >
             <Input.Password/>
           </Form.Item>
@@ -104,14 +105,14 @@ export default class PhaseVerifyPanel extends TankComponent<IProps, IState> {
 
             <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowLeftOutlined/>}
                     onClick={this.props.onPreStep.bind(this)}>
-              上一步
+              {Lang.t("install.preStep")}
             </Button>
 
             <Button className={'ml10'} type={"primary"}
                     icon={<SendOutlined/>}
                     htmlType="submit"
             >
-              提交
+              {Lang.t("submit")}
             </Button>
 
           </div>
