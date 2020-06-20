@@ -3,7 +3,7 @@ import {
   InfoCircleOutlined,
   DeleteOutlined,
   SmallDashOutlined,
-  ExclamationCircleFilled
+  ExclamationCircleFilled,
 } from "@ant-design/icons";
 import TankComponent from "../../../common/component/TankComponent";
 import SafeUtil from "../../../common/util/SafeUtil";
@@ -12,7 +12,7 @@ import Expanding from "../../widget/Expanding";
 import Share from "../../../common/model/share/Share";
 import Sun from "../../../common/model/global/Sun";
 import "./ShareBar.less";
-import {Modal} from "antd";
+import { Modal, Tooltip } from "antd";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import ShareDialogModal from "./ShareDialogModal";
 import Lang from "../../../common/model/global/Lang";
@@ -33,7 +33,7 @@ export default class ShareBar extends TankComponent<IProps, IState> {
   }
 
   showShare = () => {
-    ShareDialogModal.open(this.props.share)
+    ShareDialogModal.open(this.props.share);
   };
 
   delShare = () => {
@@ -78,27 +78,38 @@ export default class ShareBar extends TankComponent<IProps, IState> {
             {/*在大屏下的操作栏*/}
             <div className="pull-right visible-pc">
               <div className="right-part">
-                <span
-                  className="share-operation"
-                >
-                  <InfoCircleOutlined className="btn-action mr5 blue" onClick={(e) =>
-                    SafeUtil.stopPropagationWrap(e)(this.showShare())
-                  }/>
-
-                  <DeleteOutlined className="btn-action red" onClick={(e) =>
-                    SafeUtil.stopPropagationWrap(e)(this.delShare())
-                  }/>
+                <span className="share-operation">
+                  <Tooltip title={Lang.t("share.shareDetail")}>
+                    <InfoCircleOutlined
+                      className="btn-action mr5 blue"
+                      onClick={(e) =>
+                        SafeUtil.stopPropagationWrap(e)(this.showShare())
+                      }
+                    />
+                  </Tooltip>
+                  <Tooltip title={Lang.t("delete")}>
+                    <DeleteOutlined
+                      className="btn-action red"
+                      onClick={(e) =>
+                        SafeUtil.stopPropagationWrap(e)(this.delShare())
+                      }
+                    />
+                  </Tooltip>
                 </span>
 
-                <span className="share-date">
-                  {DateUtil.simpleDateHourMinute(share.updateTime)}
-                </span>
+                <Tooltip title={Lang.t("share.shareTime")}>
+                  <span className="share-date">
+                    {DateUtil.simpleDateHourMinute(share.updateTime)}
+                  </span>
+                </Tooltip>
 
-                <span className="share-date w110 text-center">
-                  {share.expireInfinity
-                    ? Lang.t("share.noExpire")
-                    : DateUtil.simpleDateHourMinute(share.expireTime)}
-                </span>
+                <Tooltip title={Lang.t("share.expireTime")}>
+                  <span className="share-date w110 text-center">
+                    {share.expireInfinity
+                      ? Lang.t("share.noExpire")
+                      : DateUtil.simpleDateHourMinute(share.expireTime)}
+                  </span>
+                </Tooltip>
               </div>
             </div>
 
@@ -119,7 +130,9 @@ export default class ShareBar extends TankComponent<IProps, IState> {
                 <span className="share-name">
                   {share.name}
                   {share.hasExpired() ? (
-                    <span className="text-danger">{Lang.t("share.expired")}</span>
+                    <span className="text-danger">
+                      {Lang.t("share.expired")}
+                    </span>
                   ) : null}
                 </span>
               </div>
@@ -132,7 +145,8 @@ export default class ShareBar extends TankComponent<IProps, IState> {
             <div className="more-panel">
               <div className="cell-btn text">
                 <span>
-                  {Lang.t("share.shareTime")}: {DateUtil.simpleDateHourMinute(share.createTime)}
+                  {Lang.t("share.shareTime")}:{" "}
+                  {DateUtil.simpleDateHourMinute(share.createTime)}
                 </span>
                 <span className="ml10">
                   {share.expireInfinity

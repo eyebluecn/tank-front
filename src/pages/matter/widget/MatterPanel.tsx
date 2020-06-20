@@ -21,7 +21,7 @@ import {
   EditOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
-import { Modal, Checkbox } from "antd";
+import { Modal, Checkbox, Tooltip } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import SafeUtil from "../../../common/util/SafeUtil";
 import ClipboardUtil from "../../../common/util/ClipboardUtil";
@@ -215,72 +215,102 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     if (shareMode)
       return (
         <div className="right-part">
-          <DownloadOutlined
-            className="btn-action blue"
-            onClick={(e) => SafeUtil.stopPropagationWrap(e)(matter.download())}
-          />
-          <span className="matter-size">
-            {StringUtil.humanFileSize(matter.size)}
-          </span>
-          <span className="matter-date mr10">
-            {DateUtil.simpleDateHourMinute(matter.updateTime)}
-          </span>
+          <Tooltip title={Lang.t("download")}>
+            <DownloadOutlined
+              className="btn-action blue"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(matter.download())
+              }
+            />
+          </Tooltip>
+
+          <Tooltip title={Lang.t("matter.size")}>
+            <span className="matter-size">
+              {StringUtil.humanFileSize(matter.size)}
+            </span>
+          </Tooltip>
+
+          <Tooltip title={Lang.t("matter.updateTime")}>
+            <span className="matter-date mr10">
+              {DateUtil.simpleDateHourMinute(matter.updateTime)}
+            </span>
+          </Tooltip>
         </div>
       );
     return (
       <div className="right-part">
         <span className="matter-operation">
           {!matter.dir && matter.privacy && (
-            <UnlockFilled
-              className="btn-action blue"
-              onClick={(e) =>
-                SafeUtil.stopPropagationWrap(e)(this.changePrivacy(false))
-              }
-            />
+            <Tooltip title={Lang.t("matter.setPublic")}>
+              <UnlockFilled
+                className="btn-action blue"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.changePrivacy(false))
+                }
+              />
+            </Tooltip>
           )}
           {!matter.dir && !matter.privacy && (
-            <LockFilled
+            <Tooltip title={Lang.t("matter.setPrivate")}>
+              <LockFilled
+                className="btn-action blue"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.changePrivacy(true))
+                }
+              />
+            </Tooltip>
+          )}
+          <Tooltip title={Lang.t("matter.fileDetail")}>
+            <InfoCircleTwoTone
               className="btn-action blue"
               onClick={(e) =>
-                SafeUtil.stopPropagationWrap(e)(this.changePrivacy(true))
+                SafeUtil.stopPropagationWrap(e)(
+                  Sun.navigateTo("/matter/detail/" + matter.uuid)
+                )
               }
             />
-          )}
-          <InfoCircleTwoTone
-            className="btn-action blue"
-            onClick={(e) =>
-              SafeUtil.stopPropagationWrap(e)(
-                Sun.navigateTo("/matter/detail/" + matter.uuid)
-              )
-            }
-          />
-          <EditOutlined
-            className="btn-action blue"
-            onClick={(e) =>
-              SafeUtil.stopPropagationWrap(e)(this.prepareRename())
-            }
-          />
-          <LinkOutlined
-            className="btn-action blue"
-            onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.clipboard())}
-          />
-          <DownloadOutlined
-            className="btn-action blue"
-            onClick={(e) => SafeUtil.stopPropagationWrap(e)(matter.download())}
-          />
-          <DeleteOutlined
-            className="btn-action red"
-            onClick={(e) =>
-              SafeUtil.stopPropagationWrap(e)(this.deleteMatter())
-            }
-          />
+          </Tooltip>
+          <Tooltip title={Lang.t("matter.rename")}>
+            <EditOutlined
+              className="btn-action blue"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(this.prepareRename())
+              }
+            />
+          </Tooltip>
+          <Tooltip title={Lang.t("matter.copyPath")}>
+            <LinkOutlined
+              className="btn-action blue"
+              onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.clipboard())}
+            />
+          </Tooltip>
+          <Tooltip title={Lang.t("matter.download")}>
+            <DownloadOutlined
+              className="btn-action blue"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(matter.download())
+              }
+            />
+          </Tooltip>
+          <Tooltip title={Lang.t("matter.delete")}>
+            <DeleteOutlined
+              className="btn-action red"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(this.deleteMatter())
+              }
+            />
+          </Tooltip>
         </span>
-        <span className="matter-size">
-          {StringUtil.humanFileSize(matter.size)}
-        </span>
-        <span className="matter-date mr10">
-          {DateUtil.simpleDateHourMinute(matter.updateTime)}
-        </span>
+        <Tooltip title={Lang.t("matter.size")}>
+          <span className="matter-size">
+            {StringUtil.humanFileSize(matter.size)}
+          </span>
+        </Tooltip>
+        <Tooltip title={Lang.t("matter.updateTime")}>
+          <span className="matter-date mr10">
+            {DateUtil.simpleDateHourMinute(matter.updateTime)}
+          </span>
+        </Tooltip>
       </div>
     );
   };
@@ -441,7 +471,9 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                   <span className="matter-name">
                     {matter.name}
                     {!matter.dir && !matter.privacy && (
-                      <UnlockFilled className="icon" />
+                      <Tooltip title={Lang.t("matter.publicFileEveryoneCanVisit")}>
+                        <UnlockFilled className="icon" />
+                      </Tooltip>
                     )}
                   </span>
                 )}
