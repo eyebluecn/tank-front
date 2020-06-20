@@ -51,7 +51,11 @@ export default class PreviewConfigPanel extends TankComponent <IProps, IState> {
       <div className="widget-preview-config-panel">
 
         {previewConfig.previewEngines.map((previewEngine: PreviewEngine, index: number) => {
-          return <PreviewEngineCell key={index} previewEngine={previewEngine}/>
+          return <PreviewEngineCell key={index} previewEngine={previewEngine} index={index} onDelete={() => {
+            console.log("删除index=", index)
+            previewConfig.previewEngines.splice(index, 1)
+            this.updateUI()
+          }}/>
         })}
 
         <Button type="dashed" block={true} icon={<PlusOutlined/>} onClick={this.addEngine.bind(this)}>
