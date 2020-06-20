@@ -58,9 +58,9 @@ export default class Detail extends TankComponent <IProps, IState> {
   resetPassword() {
     let that = this
 
-    SingleTextModal.open("请输入新密码", "", function (text: string) {
+    SingleTextModal.open(Moon.t("user.enterNewPassword"), "", function (text: string) {
       that.currentUser.httpResetPassword(text, function (response: any) {
-        MessageBoxUtil.success("操作成功!")
+        MessageBoxUtil.success(Moon.t("operationSuccess"))
       })
     })
 
@@ -80,7 +80,7 @@ export default class Detail extends TankComponent <IProps, IState> {
     let user: User = this.user
     let currentUser: User = this.currentUser
     currentUser.httpToggleStatus(function () {
-      MessageBoxUtil.success("操作成功！")
+      MessageBoxUtil.success(Moon.t("operationSuccess"))
       that.updateUI()
     })
   }
@@ -92,7 +92,7 @@ export default class Detail extends TankComponent <IProps, IState> {
     let user: User = this.user
     let currentUser: User = this.currentUser
     ChangePasswordModal.open(currentUser, function () {
-      MessageBoxUtil.success("修改密码成功!")
+      MessageBoxUtil.success(Moon.t("operationSuccess"))
 
 
     })
@@ -110,14 +110,14 @@ export default class Detail extends TankComponent <IProps, IState> {
 
       <div className="page-user-detail">
 
-        <TankTitle name={'个人资料'}>
+        <TankTitle name={Moon.t("user.profile")}>
 
           {
             user.role === UserRole.ADMINISTRATOR && (
               <Button className='ml10' type="primary"
                       icon={<UnlockOutlined/>}
                       onClick={this.resetPassword.bind(this)}>
-                重置密码
+                {Moon.t("user.resetPassword")}
               </Button>
             )
           }
@@ -127,7 +127,7 @@ export default class Detail extends TankComponent <IProps, IState> {
               <Button className='ml10' type="primary"
                       icon={<UserSwitchOutlined/>}
                       onClick={this.transfiguration.bind(this)}>
-                变身
+                {Moon.t("user.transfiguration")}
               </Button>
             )
           }
@@ -135,7 +135,7 @@ export default class Detail extends TankComponent <IProps, IState> {
           {
             currentUser.uuid === user.uuid && (
               <Button className='ml10' type="primary" onClick={this.changePassword.bind(this)} icon={<UnlockOutlined/>}>
-                修改密码
+                {Moon.t("user.changePassword")}
               </Button>
             )
           }
@@ -152,7 +152,7 @@ export default class Detail extends TankComponent <IProps, IState> {
                       danger={currentUser.status === UserStatus.OK}
                       icon={<StopOutlined/>}
                       onClick={this.toggleStatus.bind(this)}>
-                {currentUser.status === UserStatus.OK ? '禁用' : '激活'}
+                {currentUser.status === UserStatus.OK ? Moon.t("user.disable") : Moon.t("user.active")}
               </Button>
             )
           }
@@ -171,47 +171,47 @@ export default class Detail extends TankComponent <IProps, IState> {
           </div>
 
 
-          <InfoCell name="角色">
+          <InfoCell name={Moon.t("user.role")}>
             <Tag color={UserRoleMap[currentUser.role].color}>{UserRoleMap[currentUser.role].name}</Tag>
           </InfoCell>
 
 
-          <InfoCell name="单文件限制">
+          <InfoCell name={Moon.t("user.singleFileSizeLimit")}>
             {FileUtil.humanFileSize(currentUser.sizeLimit)}
           </InfoCell>
 
 
-          <InfoCell name="总空间限制">
+          <InfoCell name={Moon.t("user.totalFileSizeLimit")}>
             {FileUtil.humanFileSize(currentUser.totalSizeLimit)}
           </InfoCell>
 
 
-          <InfoCell name="已使用空间">
+          <InfoCell name={Moon.t("user.totalFileSize")}>
             {FileUtil.humanFileSize(currentUser.totalSize)}
           </InfoCell>
 
 
-          <InfoCell name="状态">
+          <InfoCell name={Moon.t("user.status")}>
             <Tag color={UserStatusMap[currentUser.status].color}>{UserStatusMap[currentUser.status].name}</Tag>
           </InfoCell>
 
 
-          <InfoCell name="上次登录IP">
+          <InfoCell name={Moon.t("user.lastLoginIp")}>
             {currentUser.lastIp}
           </InfoCell>
 
 
-          <InfoCell name="上次登录时间">
+          <InfoCell name={Moon.t("user.lastLoginTime")}>
             {DateUtil.simpleDateTime(currentUser.lastTime)}
           </InfoCell>
 
-          <InfoCell name="WebDAV 地址">
+          <InfoCell name={Moon.t("user.webdavLink")}>
             {BrowserUtil.fullHost() + "/api/dav"}
           </InfoCell>
 
           {
             currentUser.role === UserRole.ADMINISTRATOR && (
-              <InfoCell name="文档链接">
+              <InfoCell name={Moon.t("user.docLink")}>
                 <a className="f14" href="https://tank-doc.eyeblue.cn" target="_blank">
                   https://tank-doc.eyeblue.cn
                 </a>

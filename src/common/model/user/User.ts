@@ -101,6 +101,26 @@ export default class User extends BaseEntity {
 
   }
 
+  //注册
+  httpRegister(username: string, password: string, successCallback?: any, errorCallback?: any, finalCallback?: any) {
+
+    let that = this;
+
+    let form = {
+      username,
+      password,
+    };
+
+    this.httpGet(User.URL_REGISTER, form, function (response: any) {
+
+      that.assign(response.data.data);
+
+      SafeUtil.safeCallback(successCallback)(response);
+
+    }, errorCallback, finalCallback);
+
+  }
+
   //获取当前登录者的信息
   httpInfo(successCallback?: any, errorCallback?: any, finalCallback?: any) {
 

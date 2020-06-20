@@ -73,7 +73,7 @@ export default class Edit extends TankComponent<IProps, IState> {
     currentUser.assign(values)
 
     currentUser.httpSave(function () {
-      MessageBoxUtil.success(that.createMode ? '创建成功！' : '保存成功！')
+      MessageBoxUtil.success(Moon.t("operationSuccess"))
 
       //如果是自己的资料修改成功，更新一下本地。
       if (user.uuid === currentUser.uuid) {
@@ -118,7 +118,7 @@ export default class Edit extends TankComponent<IProps, IState> {
 
       <div className="page-user-edit">
 
-        <TankTitle name={this.createMode ? '创建用户' : '编辑用户'}>
+        <TankTitle name={this.createMode ? Moon.t("user.createUser") : Moon.t("user.editUser")}>
 
         </TankTitle>
 
@@ -136,7 +136,7 @@ export default class Edit extends TankComponent<IProps, IState> {
           >
             {editSelf && (
               <Form.Item
-                label="头像"
+                label={Moon.t("user.avatar")}
                 name="avatarUrl"
                 initialValue={currentUser.avatarUrl}
               >
@@ -145,10 +145,10 @@ export default class Edit extends TankComponent<IProps, IState> {
             )}
 
             <Form.Item
-              label="用户名"
+              label={Moon.t("user.username")}
               name="username"
               initialValue={currentUser.username}
-              rules={[{required: true, message: '用户名必填!'}]}
+              rules={[{required: true, message: Moon.t("user.enterUsername")}]}
             >
               <Input disabled={!this.createMode}/>
             </Form.Item>
@@ -156,9 +156,9 @@ export default class Edit extends TankComponent<IProps, IState> {
             {
               this.createMode && (
                 <Form.Item
-                  label="密码"
+                  label={Moon.t("user.password")}
                   name="password"
-                  rules={[{required: true, message: '密码必填!'}]}
+                  rules={[{required: true, message: Moon.t("user.enterPassword")}]}
                 >
                   <Input.Password/>
                 </Form.Item>
@@ -169,20 +169,20 @@ export default class Edit extends TankComponent<IProps, IState> {
               this.createMode && (
                 <Form.Item
                   name="confirmPassword"
-                  label="确认密码"
+                  label={Moon.t("user.confirmPassword")}
                   dependencies={['password']}
                   hasFeedback
                   rules={[
                     {
                       required: true,
-                      message: '请确认密码!',
+                      message: Moon.t("user.enterPassword"),
                     },
                     ({getFieldValue}) => ({
                       validator(rule, value) {
                         if (!value || getFieldValue('password') === value) {
                           return Promise.resolve();
                         }
-                        return Promise.reject('两次输入密码不匹配!');
+                        return Promise.reject(Moon.t("user.passwordNotSame"));
                       },
                     }),
                   ]}
@@ -192,7 +192,7 @@ export default class Edit extends TankComponent<IProps, IState> {
               )
             }
             <Form.Item
-              label="角色"
+              label={Moon.t("user.role")}
               name="role"
               initialValue={currentUser.role}
             >
@@ -208,19 +208,19 @@ export default class Edit extends TankComponent<IProps, IState> {
             </Form.Item>
 
             <Form.Item
-              label="单文件限制"
+              label={Moon.t("user.singleFileSizeLimit")}
               required={true}
             >
               <Form.Item
                 name="sizeLimit"
-                rules={[{required: true, message: '单文件限制必填!'}]}
+                rules={[{required: true, message: Moon.t("inputRequired")}]}
                 initialValue={currentUser.sizeLimit}
                 noStyle
               >
                 <InputNumber min={-1} className='w150'/>
               </Form.Item>
               <span
-                className="pl10"> 当前值：
+                className="pl10"> {Moon.t("user.current")}:
                 {(this.formRef && this.formRef.current) ?
                   FileUtil.humanFileSize(this.formRef.current.getFieldValue("sizeLimit"))
                   : FileUtil.humanFileSize(currentUser.sizeLimit)}
@@ -228,19 +228,19 @@ export default class Edit extends TankComponent<IProps, IState> {
             </Form.Item>
 
             <Form.Item
-              label="空间大小限制"
+              label={Moon.t("user.totalFileSizeLimit")}
               required={true}
             >
               <Form.Item
                 name="totalSizeLimit"
-                rules={[{required: true, message: '空间大小限制必填!'}]}
+                rules={[{required: true, message: Moon.t("inputRequired")}]}
                 initialValue={currentUser.totalSizeLimit}
                 noStyle
               >
                 <InputNumber min={-1} className='w150'/>
               </Form.Item>
               <span
-                className="pl10"> 当前值：
+                className="pl10"> {Moon.t("user.current")}:
                 {(this.formRef && this.formRef.current) ?
                   FileUtil.humanFileSize(this.formRef.current.getFieldValue("totalSizeLimit"))
                   : FileUtil.humanFileSize(currentUser.totalSizeLimit)}
@@ -249,7 +249,7 @@ export default class Edit extends TankComponent<IProps, IState> {
 
             <div className="text-right">
               <Button type="primary" htmlType="submit" icon={<SaveOutlined/>}>
-                {this.createMode ? '创建' : '保存'}
+                {this.createMode ? Moon.t("user.create") : Moon.t("user.save")}
               </Button>
             </div>
 

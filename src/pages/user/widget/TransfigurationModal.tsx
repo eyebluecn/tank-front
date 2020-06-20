@@ -7,6 +7,7 @@ import TankComponent from "../../../common/component/TankComponent";
 import BrowserUtil from "../../../common/util/BrowserUtil";
 import ClipboardUtil from "../../../common/util/ClipboardUtil";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
+import Moon from "../../../common/model/global/Moon";
 
 interface IProps {
   user: User
@@ -65,11 +66,11 @@ export default class TransfigurationModal extends TankComponent<IProps, IState> 
 
         <div className="text-center">
           <h2>
-            变身提示
+            {Moon.t("user.transfigurationPromptText")}
           </h2>
         </div>
         <div>
-          您将使用该用户的身份登录。请复制以下链接到其他浏览器访问，在当前浏览器访问会导致当前用户登录信息失效。
+          {Moon.t("user.transfigurationPrompt")}
         </div>
         <div>
           {textToCopy}
@@ -79,19 +80,19 @@ export default class TransfigurationModal extends TankComponent<IProps, IState> 
 
           <Button className="ml20" type="default" onClick={() => {
             this.props.onClose()
-          }}>关闭</Button>
+          }}>{Moon.t("close")}</Button>
 
           <Button className="ml20"
                   type="primary"
                   onClick={() => {
 
                     ClipboardUtil.copy(textToCopy, function () {
-                      MessageBoxUtil.success("复制成功!")
+                      MessageBoxUtil.success(Moon.t("copySuccess"))
                       that.props.onClose()
                     }, function () {
-                      MessageBoxUtil.error("复制失败！")
+                      MessageBoxUtil.error(Moon.t("copyError"))
                     })
-                  }}>复制</Button>
+                  }}>{Moon.t("copy")}</Button>
         </div>
 
 

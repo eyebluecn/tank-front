@@ -1,6 +1,3 @@
-
-
-
 let LangEn = {
   eyeblueTank: "EyeblueTank",
   dashboard: {
@@ -214,12 +211,15 @@ let LangEn = {
     noLimit: "No Limit",
     totalFileSize: "Used Space",
     status: "Status",
+    lastLogin: "Last Login",
     lastLoginIp: "Last Login Ip",
     lastLoginTime: "Last Login Time",
     resetPassword: "Reset Password",
     transfiguration: "Transfiguration",
     changePassword: "Edit Password",
-    enterPassword: "Enter Password",
+    enterPassword: "Please Enter Password",
+    enterUsername: "Please Enter Username",
+    enterNewPassword: "Please Enter New Password",
     profile: "Profile",
     avatar: "Avatar",
     username: "Username",
@@ -227,10 +227,13 @@ let LangEn = {
     confirmPassword: "Confirm Password",
     disabled: "Disabled",
     disableUser: "Disable this user",
+    disable: "Disable",
+    active: "Active",
     activeUser: "Active this user",
     welcomeLogin: "Welcome Login",
     logining: "Login...",
     login: "Login",
+    loginSuccess: "Login Success",
     toToRegister: "Go To Register",
     welcomeRegister: "Welcome Register",
     registering: "Login...",
@@ -243,14 +246,19 @@ let LangEn = {
     statusDisabled: "Disabled",
     webdavLink: "WebDAV Link",
     docLink: "Document Link",
+    createUser: "Create User",
+    editUser: "Edit User",
+    editSomebodyPassword: "Edit {}'s Password",
+    transfigurationPromptText: "Transfiguration Prompt",
+    transfigurationPrompt: "You will login as this user.Please visit this link in other browser, if in current browser, you will logout.",
+
   },
   model: {
     usernameRule: "only lowercase letter and number and _ is permitted.",
     passwordRule: "Password must have more than 6 chars",
     linkCodeText: "Link:{} Code:{}",
     copyLinkCodeSuccess: "Copy Link and Code successfully",
-    transfigurationPromptText: "Transfiguration Prompt",
-    transfigurationPrompt: "You will login as this user.Please visit this link in other browser, if in current browser, you will logout.{}",
+
   },
   plugin: {
     cannotPreview: "Cannot Preview",
@@ -272,6 +280,8 @@ let LangEn = {
   prompt: "Prompt",
   confirm: "Confirm",
   copy: "Copy",
+  copySuccess: "Copy Success！",
+  copyError: "Copy Error！",
   showMore: "Show More",
   username: "Username",
   password: "Password",
@@ -280,6 +290,7 @@ let LangEn = {
   create: "Create",
   finish: "Finish",
   operationSuccess: "Operation success",
+  operation: "Operation",
   notFound: "404 Not Found",
   login: "Login",
   logout: "Logout",
@@ -287,6 +298,7 @@ let LangEn = {
   no: "No",
   all: "All",
   refresh: "refresh",
+  inputRequired: "Input required",
 }
 
 export default LangEn

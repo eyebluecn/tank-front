@@ -3,6 +3,7 @@ import Button from 'antd/lib/button';
 import {Form, Input, Modal} from "antd"
 import TankComponent from "../../../common/component/TankComponent";
 import User from "../../../common/model/user/User";
+import Moon from "../../../common/model/global/Moon";
 
 interface IProps {
   user: User
@@ -85,7 +86,7 @@ export default class ChangePasswordModal extends TankComponent<IProps, IState> {
 
         <div className="text-center">
           <h2>
-            修改{that.props.user.username}的密码
+            {Moon.t("user.editSomebodyPassword", that.props.user.username)}
           </h2>
         </div>
 
@@ -96,37 +97,37 @@ export default class ChangePasswordModal extends TankComponent<IProps, IState> {
           onFinishFailed={this.onFinishFailed.bind(this)}
         >
           <Form.Item
-            label="原密码"
+            label={Moon.t("user.oldPassword")}
             name="oldPassword"
-            rules={[{required: true, message: '请输入原密码'}]}
+            rules={[{required: true, message: Moon.t("user.enterPassword")}]}
           >
             <Input.Password/>
           </Form.Item>
 
           <Form.Item
-            label="新密码"
+            label={Moon.t("user.newPassword")}
             name="password"
-            rules={[{required: true, message: '请输入新密码'}]}
+            rules={[{required: true, message: Moon.t("user.enterNewPassword")}]}
           >
             <Input.Password/>
           </Form.Item>
 
           <Form.Item
             name="repeatPassword"
-            label="确认密码"
+            label={Moon.t("user.confirmPassword")}
             dependencies={['password']}
             hasFeedback
             rules={[
               {
                 required: true,
-                message: '请确认密码!',
+                message: Moon.t("user.enterNewPassword"),
               },
               ({getFieldValue}) => ({
                 validator(rule, value) {
                   if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject('两次输入密码不匹配!');
+                  return Promise.reject(Moon.t("user.passwordNotSame"));
                 },
               }),
             ]}
@@ -139,10 +140,10 @@ export default class ChangePasswordModal extends TankComponent<IProps, IState> {
 
             <Button className="ml20" type="default" onClick={() => {
               this.props.onClose()
-            }}>关闭</Button>
+            }}>{Moon.t("close")}</Button>
 
             <Button className="ml20"
-                    type="primary" htmlType="submit">提交</Button>
+                    type="primary" htmlType="submit">{Moon.t("submit")}</Button>
 
           </Form.Item>
 

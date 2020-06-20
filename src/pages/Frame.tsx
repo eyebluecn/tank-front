@@ -4,6 +4,7 @@ import {Redirect, Route, RouteComponentProps, withRouter} from 'react-router-dom
 import './Frame.less';
 import TankComponent from '../common/component/TankComponent';
 import UserLogin from './user/Login';
+import UserRegister from './user/Register';
 
 import UserList from './user/List';
 import UserDetail from './user/Detail';
@@ -131,6 +132,7 @@ class RawFrame extends TankComponent<IProps, IState> {
                     <Redirect to="/matter/list"/>
                   }/>
                   <Route path="/user/login" component={UserLogin}/>
+                  <Route path="/user/register" component={UserRegister}/>
                   <Route path="/user/detail/:uuid" component={UserDetail}/>
                   <Route path="/user/list" component={UserList}/>
                   <Route path="/user/create" component={UserEdit}/>

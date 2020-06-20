@@ -75,7 +75,7 @@ export default class List extends TankComponent<IProps, IState> {
   toggleStatus(user: User) {
     let that = this
     user.httpToggleStatus(function () {
-      MessageBoxUtil.success("操作成功！")
+      MessageBoxUtil.success(Moon.t("operationSuccess"))
       that.updateUI()
     })
   }
@@ -100,7 +100,7 @@ export default class List extends TankComponent<IProps, IState> {
     let pager = this.pager;
 
     const columns: ColumnProps<User>[] = [{
-      title: '头像',
+      title: Moon.t("user.avatar"),
       dataIndex: 'avatarUrl',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <Link to={StringUtil.prePath(match.path) + '/detail/' + record.uuid}>
@@ -108,49 +108,52 @@ export default class List extends TankComponent<IProps, IState> {
         </Link>
       ),
     }, {
-      title: '用户名',
+      title: Moon.t("user.username"),
       dataIndex: 'username',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <Link to={StringUtil.prePath(match.path) + '/detail/' + record.uuid}>{record.username}</Link>
       ),
     }, {
-      title: '角色',
+      title: Moon.t("user.role"),
       dataIndex: 'role',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <Tag color={UserRoleMap[record.role].color}>{UserRoleMap[record.role].name}</Tag>
       ),
     }, {
-      title: '单文件限制',
+      title: Moon.t("user.singleFileSizeLimit"),
       dataIndex: 'sizeLimit',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <span>{FileUtil.humanFileSize(record.sizeLimit)}</span>
       ),
     }, {
-      title: '已使用空间',
+      title: Moon.t("user.totalFileSize"),
       dataIndex: 'totalSize',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <span>{FileUtil.humanFileSize(record.totalSize)}</span>
       ),
     }, {
-      title: '空间限制',
+      title: Moon.t("user.totalFileSizeLimit"),
       dataIndex: 'totalSizeLimit',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <span>{FileUtil.humanFileSize(record.totalSizeLimit)}</span>
       ),
     }, {
-      title: '状态',
+      title: Moon.t("user.status"),
       dataIndex: 'status',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <Tag color={UserStatusMap[record.status].color}>{UserStatusMap[record.status].name}</Tag>
       ),
     }, {
-      title: '上次ip',
-      dataIndex: 'lastIp',
-    }, {
-      title: '上次登录',
+      title: Moon.t("user.lastLogin"),
       dataIndex: 'lastTime',
+      render: (text: any, record: User, index: number): React.ReactNode => (
+        <div>
+          <div>{record.lastIp}</div>
+          <div>{DateUtil.simpleDateTime(record.lastTime)}</div>
+        </div>
+      ),
     }, {
-      title: '创建时间',
+      title: Moon.t("createTime"),
       dataIndex: 'createTime',
       sorter: true,
       sortOrder: pager.getDefaultSortOrder('createTime'),
@@ -159,7 +162,7 @@ export default class List extends TankComponent<IProps, IState> {
         DateUtil.simpleDateTime(text)
       ),
     }, {
-      title: '操作',
+      title: Moon.t("operation"),
       dataIndex: 'action',
       render: (text: any, record: User) => (
         <span>
@@ -173,7 +176,7 @@ export default class List extends TankComponent<IProps, IState> {
 
           {
             record.status === UserStatus.OK && (
-              <Tooltip title="禁用">
+              <Tooltip title={Moon.t("user.disableUser")}>
                 <StopOutlined className="btn-action" style={{color: Color.DANGER}}
                               onClick={this.toggleStatus.bind(this, record)}/>
               </Tooltip>
@@ -182,14 +185,14 @@ export default class List extends TankComponent<IProps, IState> {
 
           {
             record.status === UserStatus.DISABLED && (
-              <Tooltip title="激活">
+              <Tooltip title={Moon.t("user.activeUser")}>
                 <CheckCircleOutlined className="btn-action" style={{color: Color.SUCCESS}}
                                      onClick={this.toggleStatus.bind(this, record)}/>
               </Tooltip>
             )
           }
 
-          <Tooltip title="变身">
+          <Tooltip title={Moon.t("user.transfiguration")}>
                 <UserSwitchOutlined className="btn-action" style={{color: Color.PRIMARY}}
                                     onClick={this.transfiguration.bind(this, record)}/>
               </Tooltip>
@@ -202,9 +205,9 @@ export default class List extends TankComponent<IProps, IState> {
     return (
       <div className="page-user-list">
 
-        <TankTitle name={'用户管理'}>
+        <TankTitle name={Moon.t("layout.users")}>
           <Link to={'/user/create'}>
-            <Button type={"primary"} icon={<PlusOutlined/>}>创建用户</Button>
+            <Button type={"primary"} icon={<PlusOutlined/>}>{Moon.t("user.createUser")}</Button>
           </Link>
         </TankTitle>
 

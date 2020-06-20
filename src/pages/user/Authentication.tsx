@@ -51,7 +51,7 @@ export default class Authentication extends TankComponent<IProps, IState> {
 
     return (
       <div className="page-user-authentication">
-        正在转跳中...
+        {Moon.t("user.redirecting")}
       </div>
     );
   }
