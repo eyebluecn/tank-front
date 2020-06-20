@@ -8,6 +8,7 @@ import Share from "../../common/model/share/Share";
 import ShareBar from "./widget/ShareBar";
 
 import "./List.less";
+import Lang from "../../common/model/global/Lang";
 
 interface IProps extends RouteComponentProps {}
 
@@ -40,7 +41,7 @@ export default class List extends TankComponent<IProps, IState> {
 
     return (
       <div className="share-list">
-        <TankTitle name={"我的分享"} />
+        <TankTitle name={Lang.t("layout.myShare")} />
 
         {pager.data.map((share) => (
           <ShareBar key={share.uuid!} share={share} onDeleteSuccess={this.refresh} />

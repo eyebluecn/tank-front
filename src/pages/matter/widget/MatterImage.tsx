@@ -8,6 +8,7 @@ import UploadMatterPanel from "./UploadMatterPanel";
 import "./MatterImage.less";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import SafeUtil from "../../../common/util/SafeUtil";
+import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
   value?: string;
@@ -39,7 +40,9 @@ export default class MatterImage extends TankComponent<IProps, IState> {
     const { filter = "image", uploadHint = "" } = this.props;
     if (file) {
       if (this.user.sizeLimit >= 0 && file.size > this.user.sizeLimit) {
-        MessageBoxUtil.error("文件大小超过了限制");
+        MessageBoxUtil.error(
+          Lang.t("matter.sizeExceedLimit", file.size, this.user.sizeLimit)
+        );
         return;
       }
       this.matter.assign({
@@ -95,7 +98,7 @@ export default class MatterImage extends TankComponent<IProps, IState> {
           {manual ? (
             <Input
               className="content"
-              placeholder="请填写图片链接"
+              placeholder={Lang.t("matter.fillInPicLink")}
               value={value}
               onChange={this.changeLink}
             />
@@ -105,11 +108,11 @@ export default class MatterImage extends TankComponent<IProps, IState> {
               customRequest={this.triggerUpload}
               showUploadList={false}
             >
-              <Button className="wp100 border-short">选择图片</Button>
+              <Button className="wp100 border-short">{Lang.t("matter.chooseImage")}</Button>
             </Upload>
           )}
           <Button className="handle" type="primary" onClick={this.toggleHandle}>
-            {manual ? "上传模式" : "填写模式"}
+            {manual ? Lang.t("matter.uploadMode") : Lang.t("matter.fillMode")}
           </Button>
         </div>
         {uploadHint ? <div className="italic">{uploadHint}</div> : null}

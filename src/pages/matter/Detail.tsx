@@ -11,6 +11,7 @@ import DateUtil from "../../common/util/DateUtil";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import ImageCacheList from "./widget/imageCache/ImageCacheList";
 import ClipboardUtil from "../../common/util/ClipboardUtil";
+import Lang from "../../common/model/global/Lang";
 
 interface RouteParam {
   uuid: string;
@@ -47,60 +48,60 @@ export default class Detail extends TankComponent<IProps, IState> {
       privacy ? this.downloadToken.uuid! : undefined
     );
     ClipboardUtil.copy(textToCopy, () => {
-      MessageBoxUtil.success("操作成功");
+      MessageBoxUtil.success(Lang.t("operationSuccess"));
     })
   };
 
   render() {
     const { matter } = this;
     return (
-      <Spin tip="加载中" spinning={matter.detailLoading}>
+      <Spin tip={Lang.t("loading")} spinning={matter.detailLoading}>
         <div className="matter-detail">
-          <TankTitle name={"文件详情"}></TankTitle>
+          <TankTitle name={Lang.t("matter.fileDetail")} />
 
           <div className="info">
             <p>
-              <span>文件基本信息：</span>
+              <span>{Lang.t("matter.fileInfo")}：</span>
               <span>{matter.name}</span>
             </p>
             <p>
               {/*todo move to breadhead, linkable path*/}
-              <span>路径：</span>
+              <span>{Lang.t("matter.path")}：</span>
               <span>{matter.path}</span>
             </p>
             <p>
-              <span>创建日期：</span>
+              <span>{Lang.t("matter.createTime")}：</span>
               <span>{DateUtil.simpleDateTime(matter.createTime)}</span>
             </p>
             <p>
-              <span>修改日期：</span>
+              <span>{Lang.t("matter.updateTime")}：</span>
               <span>{DateUtil.simpleDateTime(matter.updateTime)}</span>
             </p>
             {!matter.dir ? (
               <>
                 <p>
-                  <span>大小：</span>
+                  <span>{Lang.t("matter.size")}：</span>
                   <span>{StringUtil.humanFileSize(matter.size)}</span>
                 </p>
                 <p>
-                  <span>文件公开性：</span>
+                  <span>{Lang.t("matter.publicOrPrivate")}：</span>
                   <span>
                     {matter.privacy
-                      ? "私有文件，只有自己或者授权的用户可以下载"
-                      : "公有文件，任何人可以通过链接下载"}
+                      ? Lang.t("matter.privateInfo")
+                      : Lang.t("matter.publicInfo")}
                   </span>
                 </p>
                 <p>
-                  <span>下载次数：</span>
+                  <span>{Lang.t("matter.downloadTimes")}：</span>
                   <span>{matter.times}</span>
                 </p>
                 <div>
-                  <span>操作：</span>
+                  <span>{Lang.t("matter.operations")}：</span>
                   <Space>
-                    <a onClick={() => matter.download()}>下载</a>
-                    <a onClick={() => matter.preview()}>预览</a>
+                    <a onClick={() => matter.download()}>{Lang.t("matter.download")}</a>
+                    <a onClick={() => matter.preview()}>{Lang.t("matter.preview")}</a>
                     <a onClick={this.copyLink}>
-                      {matter.privacy ? "一次性链接" : "复制链接"}
+                      {matter.privacy ? Lang.t("matter.oneTimeLink") : Lang.t("matter.copyPath")}
                     </a>
                   </Space>
                 </div>

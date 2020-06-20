@@ -20,6 +20,7 @@ import MatterPanel from "../matter/widget/MatterPanel";
 import BreadcrumbModel from "../../common/model/base/option/BreadcrumbModel";
 import BreadcrumbPanel from "../widget/BreadcrumbPanel";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
+import Lang from "../../common/model/global/Lang";
 
 interface RouteParam {
   uuid: string;
@@ -116,11 +117,11 @@ export default class Detail extends TankComponent<IProps, IState> {
 
   cancelShare = () => {
     Modal.confirm({
-      title: "此操作将永久取消该分享, 是否继续?",
+      title: Lang.t("share.cancelPrompt"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         this.share.httpDel(() => {
-          MessageBoxUtil.success("操作成功");
+          MessageBoxUtil.success(Lang.t("operationSuccess"));
           Sun.navigateTo("/share/list");
         });
       },
@@ -171,7 +172,7 @@ export default class Detail extends TankComponent<IProps, IState> {
     that.breadcrumbModels = [];
 
     that.breadcrumbModels.push({
-      name: "所有文件",
+      name: Lang.t("layout.allFiles"),
       path: "/share/detail/" + this.share.uuid,
       query: {},
       displayDirect: false,
@@ -197,14 +198,14 @@ export default class Detail extends TankComponent<IProps, IState> {
     if (share.detailLoading && needShareCode) return <FrameLoading />;
     return (
       <div className="share-detail">
-        <TankTitle name={"分享详情"} />
+        <TankTitle name={Lang.t("share.shareDetail")} />
         {needShareCode ? (
           <div>
             <Row>
               <Col span={12} offset={6} className="mt100">
                 <Input.Search
-                  placeholder="请输入提取码"
-                  enterButton="提取文件"
+                  placeholder={Lang.t("share.enterCode")}
+                  enterButton={Lang.t("share.getFiles")}
                   size="large"
                   onSearch={this.getFiles}
                 />
@@ -220,25 +221,27 @@ export default class Detail extends TankComponent<IProps, IState> {
                   <span className="name">
                     {share.name}
                     {share.hasExpired() ? (
-                      <span className="text-danger">已过期</span>
+                      <span className="text-danger">
+                        {Lang.t("share.expired")}
+                      </span>
                     ) : null}
                   </span>
                 </div>
                 <div className="right-box">
                   <Space>
                     <Button type="primary" onClick={this.downloadZip}>
-                      下载
+                      {Lang.t("download")}
                     </Button>
                     {user.uuid && user.uuid === share.userUuid ? (
                       <>
                         <Button danger onClick={this.cancelShare}>
-                          取消分享
+                          {Lang.t("share.cancelShare")}
                         </Button>
                         <Button
                           type="primary"
                           onClick={() => ShareDialogModal.open(share)}
                         >
-                          获取链接
+                          {Lang.t("share.getLink")}
                         </Button>
                       </>
                     ) : null}
@@ -247,16 +250,19 @@ export default class Detail extends TankComponent<IProps, IState> {
               </div>
               <div className="share-info">
                 <Space>
-                  <span>分享者: {share.username}</span>
                   <span>
-                    创建时间: {DateUtil.simpleDateHourMinute(share.createTime)}
+                    {Lang.t("share.sharer")}: {share.username}
+                  </span>
+                  <span>
+                    {Lang.t("createTime")}:{" "}
+                    {DateUtil.simpleDateHourMinute(share.createTime)}
                   </span>
                   <span>
                     {share.expireInfinity
-                      ? "永久有效"
-                      : `失效时间：${DateUtil.simpleDateHourMinute(
-                          share.expireTime
-                        )}`}
+                      ? Lang.t("share.noExpire")
+                      : `${Lang.t(
+                          "share.expireTime"
+                        )}：${DateUtil.simpleDateHourMinute(share.expireTime)}`}
                   </span>
                 </Space>
               </div>

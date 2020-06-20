@@ -127,7 +127,8 @@ let LangEn = {
     allFiles: "All Files",
     newDirectory: "New directory",
     notChoose: "Not choose any file",
-    exceed1000: "Exceed file limit 1000"
+    exceed1000: "Exceed file limit 1000",
+    noImageCache: "No image cache"
   },
   router: {
     allFiles: "All Files",
@@ -274,6 +275,7 @@ let LangEn = {
     total: "Total",
     clickRefresh: "Click To Refresh",
   },
+  loading: "Loading",
   selectAll: "All",
   edit: "Edit",
   createTime: "Create Time",

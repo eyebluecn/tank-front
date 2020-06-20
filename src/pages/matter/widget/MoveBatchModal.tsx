@@ -4,6 +4,7 @@ import { Modal, Tree, Button } from "antd";
 import Pager from "../../../common/model/base/Pager";
 import Matter from "../../../common/model/matter/Matter";
 import "./MoveBatchModal.less";
+import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
   onSuccess: (uuid: string) => any;
@@ -17,7 +18,7 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
   targetUuid = "root";
   treeData = [
     {
-      title: "根目录",
+      title: Lang.t("matter.root"),
       key: "root",
     },
   ];
@@ -35,7 +36,7 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
   static open(onSuccess: (uuid: string) => void) {
     let modal = Modal.confirm({
       className: "move-modal",
-      title: "移动到",
+      title: Lang.t("matter.move"),
       width: "90vw",
       okCancel: false,
       okButtonProps: {
@@ -109,13 +110,13 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
         />
         <div className="mt10 text-right">
           <Button className="mr10" onClick={() => this.props.onClose()}>
-            关闭
+            {Lang.t("close")}
           </Button>
           <Button
             type="primary"
             onClick={() => this.props.onSuccess(this.targetUuid)}
           >
-            确定
+            {Lang.t("confirm")}
           </Button>
         </div>
       </div>

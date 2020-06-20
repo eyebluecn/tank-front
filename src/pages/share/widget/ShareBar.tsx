@@ -15,6 +15,7 @@ import "./ShareBar.less";
 import {Modal} from "antd";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import ShareDialogModal from "./ShareDialogModal";
+import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
   share: Share;
@@ -37,11 +38,11 @@ export default class ShareBar extends TankComponent<IProps, IState> {
 
   delShare = () => {
     Modal.confirm({
-      title: "此操作不可撤回, 是否继续?",
+      title: Lang.t("actionCanNotRevertConfirm"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         this.props.share.httpDel(() => {
-          MessageBoxUtil.success("操作成功");
+          MessageBoxUtil.success(Lang.t("operationSuccess"));
           this.props.onDeleteSuccess();
         });
       },
@@ -95,7 +96,7 @@ export default class ShareBar extends TankComponent<IProps, IState> {
 
                 <span className="share-date w110 text-center">
                   {share.expireInfinity
-                    ? "永久有效"
+                    ? Lang.t("share.noExpire")
                     : DateUtil.simpleDateHourMinute(share.expireTime)}
                 </span>
               </div>
@@ -118,7 +119,7 @@ export default class ShareBar extends TankComponent<IProps, IState> {
                 <span className="share-name">
                   {share.name}
                   {share.hasExpired() ? (
-                    <span className="text-danger">已过期</span>
+                    <span className="text-danger">{Lang.t("share.expired")}</span>
                   ) : null}
                 </span>
               </div>
@@ -131,12 +132,12 @@ export default class ShareBar extends TankComponent<IProps, IState> {
             <div className="more-panel">
               <div className="cell-btn text">
                 <span>
-                  分享时间: {DateUtil.simpleDateHourMinute(share.createTime)}
+                  {Lang.t("share.shareTime")}: {DateUtil.simpleDateHourMinute(share.createTime)}
                 </span>
                 <span className="ml10">
                   {share.expireInfinity
-                    ? "永久有效"
-                    : `失效时间：${DateUtil.simpleDateHourMinute(
+                    ? Lang.t("share.noExpire")
+                    : `${Lang.t("expireTime")}：${DateUtil.simpleDateHourMinute(
                         share.expireTime
                       )}`}
                 </span>
@@ -149,7 +150,7 @@ export default class ShareBar extends TankComponent<IProps, IState> {
                 }
               >
                 <InfoCircleOutlined className="btn-action mr5" />
-                分享详情
+                {Lang.t("share.shareDetail")}
               </div>
 
               <div
@@ -159,7 +160,7 @@ export default class ShareBar extends TankComponent<IProps, IState> {
                 }
               >
                 <DeleteOutlined className="btn-action" />
-                删除
+                {Lang.t("delete")}
               </div>
             </div>
           ) : null}

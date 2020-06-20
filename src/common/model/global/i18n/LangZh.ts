@@ -128,7 +128,8 @@ let LangZh = {
     allFiles: "全部文件",
     newDirectory: "新建文件夹",
     notChoose: "没有选择文件",
-    exceed1000: "最多只能同时选取1000个文件"
+    exceed1000: "最多只能同时选取1000个文件",
+    noImageCache: "暂无图片缓存数据"
   },
   router: {
     allFiles: "全部文件",
@@ -276,6 +277,7 @@ let LangZh = {
     total: "共",
     clickRefresh: "点击刷新",
   },
+  loading: "加载中",
   selectAll: "全选",
   edit: "修改",
   createTime: "创建时间",

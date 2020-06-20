@@ -25,6 +25,7 @@ import { Modal, Checkbox } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import SafeUtil from "../../../common/util/SafeUtil";
 import ClipboardUtil from "../../../common/util/ClipboardUtil";
+import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
   matter: Matter;
@@ -85,17 +86,17 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   clipboard = () => {
     let textToCopy = this.props.matter.getDownloadUrl();
     ClipboardUtil.copy(textToCopy, () => {
-      MessageBoxUtil.success("操作成功");
+      MessageBoxUtil.success(Lang.t("operationSuccess"));
     });
   };
 
   deleteMatter = () => {
     Modal.confirm({
-      title: "此操作不可撤回, 是否继续?",
+      title: Lang.t("actionCanNotRevertConfirm"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         this.props.matter.httpDelete(() => {
-          MessageBoxUtil.success("操作成功");
+          MessageBoxUtil.success(Lang.t("operationSuccess"));
           this.props.onDeleteSuccess!();
         });
       },
@@ -119,7 +120,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
       this.renameMatterName,
       () => {
         this.renamingLoading = false;
-        MessageBoxUtil.success("操作成功");
+        MessageBoxUtil.success(Lang.t("operationSuccess"));
         //告诉导演，自己编辑完毕
         director!.renameMode = false;
         matter.editMode = false;
@@ -300,7 +301,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
             onClick={(e) => SafeUtil.stopPropagationWrap(e)(matter.download())}
           >
             <DownloadOutlined className="btn-action mr5" />
-            下载
+            {Lang.t("matter.download")}
           </div>
         </div>
       );
@@ -321,7 +322,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
             }
           >
             <UnlockFilled className="btn-action mr5" />
-            设置为公有文件
+            {Lang.t("matter.setPublic")}
           </div>
         )}
 
@@ -333,7 +334,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
             }
           >
             <LockFilled className="btn-action mr5" />
-            设置为私有文件
+            {Lang.t("matter.setPrivate")}
           </div>
         )}
 
@@ -346,35 +347,35 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
           }
         >
           <InfoCircleOutlined className="btn-action mr5" />
-          文件详情
+          {Lang.t("matter.fileDetail")}
         </div>
         <div
           className="cell-btn navy"
           onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.prepareRename())}
         >
           <EditOutlined className="btn-action mr5" />
-          重命名
+          {Lang.t("matter.rename")}
         </div>
         <div
           className="cell-btn navy"
           onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.clipboard())}
         >
           <LinkOutlined className="btn-action mr5" />
-          复制下载链接
+          {Lang.t("matter.copyLink")}
         </div>
         <div
           className="cell-btn navy"
           onClick={(e) => SafeUtil.stopPropagationWrap(e)(matter.download())}
         >
           <DownloadOutlined className="btn-action mr5" />
-          下载
+          {Lang.t("matter.download")}
         </div>
         <div
           className="cell-btn red"
           onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.deleteMatter())}
         >
           <DeleteOutlined className="btn-action mr5" />
-          删除
+          {Lang.t("matter.delete")}
         </div>
       </div>
     );
@@ -431,7 +432,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                       className={matter.uuid!}
                       value={this.renameMatterName}
                       onChange={this.changeMatterName.bind(this)}
-                      placeholder="请输入名称"
+                      placeholder={Lang.t("matter.enterName")}
                       onBlur={this.blurTrigger.bind(this)}
                       onKeyUp={this.enterTrigger.bind(this)}
                     />

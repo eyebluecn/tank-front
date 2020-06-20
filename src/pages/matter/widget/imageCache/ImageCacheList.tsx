@@ -9,6 +9,7 @@ import MessageBoxUtil from "../../../../common/util/MessageBoxUtil";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { Empty } from "antd";
 import TankTitle from "../../../widget/TankTitle";
+import Lang from "../../../../common/model/global/Lang";
 
 interface IProps {
   initFilter: any;
@@ -31,13 +32,13 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
 
   deleteBatch = () => {
     Modal.confirm({
-      title: "此操作不可撤回, 是否继续?",
+      title: Lang.t("actionCanNotRevertConfirm"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         const uuids = this.selectedImageCaches.map((i) => i.uuid).toString();
         const imageCache = new ImageCache();
         imageCache.httpDeleteBatch(uuids, () => {
-          MessageBoxUtil.success("操作成功");
+          MessageBoxUtil.success(Lang.t("operationSuccess"));
           this.refresh();
         });
       },
@@ -108,28 +109,28 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
 
   render() {
     const { selectedImageCaches, pager } = this;
-    if (!pager.data.length) return <Empty description="暂无图片缓存数据"/>;
+    if (!pager.data.length) return <Empty description={Lang.t("matter.noImageCache")} />;
     return (
       <div>
         <TankTitle
-          name={"图片缓存"}
+          name={Lang.t("matter.imageCache")}
           children={
             <div>
               <Space>
                 {selectedImageCaches.length ? (
                   <Button type="primary" onClick={this.deleteBatch}>
-                    删除
+                    {Lang.t("delete")}
                   </Button>
                 ) : null}
                 {selectedImageCaches.length !== pager.data.length ? (
                   <Button type="primary" onClick={() => this.checkBatch(true)}>
-                    全选
+                    {Lang.t("selectAll")}
                   </Button>
                 ) : null}
                 {pager.data.length &&
                 selectedImageCaches.length === pager.data.length ? (
                   <Button type="primary" onClick={() => this.checkBatch(false)}>
-                    取消
+                    {Lang.t("cancel")}
                   </Button>
                 ) : null}
               </Space>

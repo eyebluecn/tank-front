@@ -16,6 +16,7 @@ import DateUtil from "../../../../common/util/DateUtil";
 import Expanding from "../../../widget/Expanding";
 import "./ImageCachePanel.less";
 import StringUtil from "../../../../common/util/StringUtil";
+import Lang from "../../../../common/model/global/Lang";
 
 interface IProps {
   imageCache: ImageCache;
@@ -32,8 +33,6 @@ export default class ImageCachePanel extends TankComponent<IProps, IState> {
   // 小屏幕下操作栏
   showMore = false;
 
-  clickRow = () => {};
-
   checkToggle = (e: CheckboxChangeEvent) => {
     const { imageCache, onCheckImageCache } = this.props;
     imageCache.check = e.target.checked;
@@ -42,11 +41,11 @@ export default class ImageCachePanel extends TankComponent<IProps, IState> {
 
   deleteImageCache = () => {
     Modal.confirm({
-      title: "此操作不可撤回, 是否继续?",
+      title: Lang.t("actionCanNotRevertConfirm"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         this.props.imageCache.httpDel(() => {
-          MessageBoxUtil.success("操作成功");
+          MessageBoxUtil.success(Lang.t("operationSuccess"));
           this.props.onDeleteSuccess!();
         });
       },
@@ -99,7 +98,7 @@ export default class ImageCachePanel extends TankComponent<IProps, IState> {
               {imageCache.uuid ? (
                 <div className="right-part">
                   <DeleteOutlined
-                    title="删除"
+                    title={Lang.t("delete")}
                     className="image-cache-operation btn-action red"
                     onClick={(e) =>
                       SafeUtil.stopPropagationWrap(e)(this.deleteImageCache())
@@ -151,7 +150,7 @@ export default class ImageCachePanel extends TankComponent<IProps, IState> {
                   }
                 >
                   <DeleteOutlined className="btn-action mr5" />
-                  删除
+                  {Lang.t("delete")}
                 </div>
               </div>
             ) : null}

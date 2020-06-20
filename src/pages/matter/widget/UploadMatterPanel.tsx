@@ -4,6 +4,7 @@ import Matter from "../../../common/model/matter/Matter";
 import StringUtil from "../../../common/util/StringUtil";
 import { Progress } from "antd";
 import "./UploadMatterPanel.less";
+import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
   matter: Matter;
@@ -41,11 +42,11 @@ export default class UploadMatterPanel extends TankComponent<IProps, IState> {
               status="active"
             />
             <div>
-              {`已上传: ${StringUtil.humanFileSize(
+              {`${Lang.t("matter.uploaded")}: ${StringUtil.humanFileSize(
                 matter.file!.size * matter.progress
               )}/${StringUtil.humanFileSize(
                 matter.file!.size
-              )} 速度:${StringUtil.humanFileSize(matter.speed)}s`}
+              )} ${Lang.t("matter.speed")}:${StringUtil.humanFileSize(matter.speed)}s`}
             </div>
           </div>
         ) : null}

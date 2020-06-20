@@ -18,6 +18,7 @@ import {
   Row,
   Space,
   Upload,
+  Tooltip,
 } from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import {
@@ -34,6 +35,7 @@ import Share from "../../common/model/share/Share";
 import ShareDialogModal from "../share/widget/ShareDialogModal";
 import BreadcrumbModel from "../../common/model/base/option/BreadcrumbModel";
 import BreadcrumbPanel from "../widget/BreadcrumbPanel";
+import Lang from "../../common/model/global/Lang";
 
 interface IProps extends RouteComponentProps {}
 
@@ -102,7 +104,7 @@ export default class List extends TankComponent<IProps, IState> {
       el.removeEventListener("dragleave", this.drag.dragleaveListener);
       el.removeEventListener("dragover", this.drag.dragoverListener);
       el.removeEventListener("drop", this.drag.dropListener);
-    }
+    },
   };
 
   componentDidMount() {
@@ -126,8 +128,6 @@ export default class List extends TankComponent<IProps, IState> {
   componentWillUnmount() {
     this.drag.remove();
   }
-
-
 
   refresh = () => {
     // 清空暂存区
@@ -197,12 +197,12 @@ export default class List extends TankComponent<IProps, IState> {
 
   deleteBatch = () => {
     Modal.confirm({
-      title: "此操作不可撤回, 是否继续?",
+      title: Lang.t("actionCanNotRevertConfirm"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         const uuids = this.selectedMatters.map((i) => i.uuid).toString();
         this.matter.httpDeleteBatch(uuids, () => {
-          MessageBoxUtil.success("操作成功");
+          MessageBoxUtil.success(Lang.t("operationSuccess"));
           this.refresh();
         });
       },
@@ -218,7 +218,7 @@ export default class List extends TankComponent<IProps, IState> {
     MoveBatchModal.open((targetUuid) => {
       const uuids = this.selectedMatters.map((i) => i.uuid).join(",");
       this.matter.httpMove(uuids, targetUuid, () => {
-        MessageBoxUtil.success("操作成功");
+        MessageBoxUtil.success(Lang.t("operationSuccess"));
         this.refresh();
       });
     });
@@ -241,9 +241,11 @@ export default class List extends TankComponent<IProps, IState> {
       if (this.user.sizeLimit >= 0) {
         if (file.size > this.user.sizeLimit) {
           MessageBoxUtil.error(
-            `文件大小超过了限制 ${StringUtil.humanFileSize(
-              file.size
-            )}>${StringUtil.humanFileSize(this.user.sizeLimit)}`
+            Lang.t(
+              "matter.sizeExceedLimit",
+              StringUtil.humanFileSize(file.size),
+              StringUtil.humanFileSize(this.user.sizeLimit)
+            )
           );
         }
       }
@@ -336,7 +338,7 @@ export default class List extends TankComponent<IProps, IState> {
       this.matter.uuid = Matter.MATTER_ROOT;
       this.breadcrumbModels = [];
       this.breadcrumbModels.push({
-        name: "所有文件",
+        name: Lang.t("matter.allFiles"),
         path: "/matter/list",
         query: {},
         displayDirect: true,
@@ -354,7 +356,7 @@ export default class List extends TankComponent<IProps, IState> {
         this.breadcrumbModels = [];
 
         this.breadcrumbModels.push({
-          name: "所有文件",
+          name: Lang.t("matter.allFiles"),
           path: "/matter/list",
           query: {},
           displayDirect: false,
@@ -365,7 +367,6 @@ export default class List extends TankComponent<IProps, IState> {
           let query = this.pager.getParams();
           query["puuid"] = m.uuid!;
 
-          console.log("当前层的query:", m.name, query);
           this.breadcrumbModels.push({
             name: m.name,
             path: "/matter/list",
@@ -407,7 +408,7 @@ export default class List extends TankComponent<IProps, IState> {
             <Space className="buttons">
               {selectedMatters.length !== pager.data.length ? (
                 <Button type="primary" className="mb10" onClick={this.checkAll}>
-                  全选
+                  {Lang.t("selectAll")}
                 </Button>
               ) : null}
               {pager.data.length &&
@@ -417,7 +418,7 @@ export default class List extends TankComponent<IProps, IState> {
                   className="mb10"
                   onClick={this.checkNone}
                 >
-                  取消
+                  {Lang.t("cancel")}
                 </Button>
               ) : null}
               {selectedMatters.length ? (
@@ -427,7 +428,7 @@ export default class List extends TankComponent<IProps, IState> {
                     className="mb10"
                     onClick={this.deleteBatch}
                   >
-                    删除
+                    {Lang.t("delete")}
                   </Button>
 
                   <Button
@@ -435,7 +436,7 @@ export default class List extends TankComponent<IProps, IState> {
                     className="mb10"
                     onClick={this.downloadZip}
                   >
-                    下载
+                    {Lang.t("download")}
                   </Button>
 
                   <Button
@@ -443,7 +444,7 @@ export default class List extends TankComponent<IProps, IState> {
                     className="mb10"
                     onClick={this.toggleMoveBatch}
                   >
-                    移动
+                    {Lang.t("matter.move")}
                   </Button>
 
                   <Button
@@ -451,7 +452,7 @@ export default class List extends TankComponent<IProps, IState> {
                     className="mb10"
                     onClick={this.shareBatch}
                   >
-                    分享
+                    {Lang.t("matter.share")}
                   </Button>
                 </>
               ) : null}
@@ -463,7 +464,7 @@ export default class List extends TankComponent<IProps, IState> {
                 multiple
               >
                 <Button type="primary" className="mb10">
-                  上传
+                  {Lang.t("matter.upload")}
                 </Button>
               </Upload>
               <Button
@@ -471,17 +472,17 @@ export default class List extends TankComponent<IProps, IState> {
                 className="mb10"
                 onClick={this.createDirectory}
               >
-                新建
+                {Lang.t("matter.create")}
               </Button>
 
               <Button type="primary" className="mb10" onClick={this.refresh}>
-                刷新
+                {Lang.t("refresh")}
               </Button>
             </Space>
           </Col>
           <Col md={8} sm={24}>
             <Input.Search
-              placeholder="搜索文件"
+              placeholder={Lang.t("searchFile")}
               onSearch={(value) => this.searchFile(value)}
               onChange={this.changeSearch}
               enterButton

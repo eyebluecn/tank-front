@@ -7,6 +7,7 @@ import DateUtil from "../../../common/util/DateUtil";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import './ShareDialogModal.less';
 import ClipboardUtil from "../../../common/util/ClipboardUtil";
+import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
   share: Share;
@@ -23,20 +24,20 @@ export default class ShareDialogModal extends TankComponent<IProps, IState> {
 
   clipboard = (text: string) => {
     ClipboardUtil.copy(text, () => {
-      MessageBoxUtil.success("复制成功");
+      MessageBoxUtil.success(Lang.t("copySuccess"));
     })
   };
 
   copyAll = () => {
     const { share } = this.props;
-    const text = `链接：${share.getLink()} 提取码：${share.code}`;
+    const text = `${Lang.t("share.link")}：${share.getLink()} ${Lang.t("share.code")}：${share.code}`;
     this.clipboard(text);
   };
 
   static open = (share: Share) => {
     let modal = Modal.confirm({
       className: "share-modal",
-      title: "分享详情",
+      title: Lang.t("share.shareDetail"),
       width: "90vw",
       okCancel: false,
       okButtonProps: {
@@ -69,24 +70,24 @@ export default class ShareDialogModal extends TankComponent<IProps, IState> {
             <span className="name">{share.name}</span>
           </div>
           <div className="mt15">
-            <span className="inline-block mr10">分享者：{share.username}</span>
+            <span className="inline-block mr10">${Lang.t("share.sharer")}：{share.username}</span>
             <span className="inline-block mr10">
               {share.expireInfinity
-                ? "永久有效"
-                : `失效时间：${DateUtil.simpleDateHourMinute(
+                ? Lang.t("share.noExpire")
+                : `${Lang.t("share.expireTime")}：${DateUtil.simpleDateHourMinute(
                     share.expireTime
                   )}`}
             </span>
           </div>
           <div className="mt15">
-            链接：{share.getLink()}
+            {Lang.t("share.link")}：{share.getLink()}
             <CopyOutlined
               className="text-primary"
               onClick={() => this.clipboard(share.getLink())}
             />
           </div>
           <div className="mt15">
-            提取码：{share.code}
+            {Lang.t("share.code")}：{share.code}
             <CopyOutlined
               className="text-primary"
               onClick={() => this.clipboard(share.code!)}
@@ -94,8 +95,8 @@ export default class ShareDialogModal extends TankComponent<IProps, IState> {
           </div>
         </div>
         <div className="mt10 text-right">
-          <Button className="mr10" onClick={() => this.props.onClose()}>关闭</Button>
-          <Button type="primary" onClick={this.copyAll}>复制链接+提取码</Button>
+          <Button className="mr10" onClick={() => this.props.onClose()}>{Lang.t("close")}</Button>
+          <Button type="primary" onClick={this.copyAll}>{Lang.t("matter.copyLinkAndCode")}</Button>
         </div>
       </div>
     );
