@@ -121,6 +121,15 @@ export default class Base {
         bean = new Clazz()
       }
 
+
+      if (typeof obj === "string") {
+        try {
+          obj = JSON.parse(obj)
+        } catch (e) {
+          console.error("JSON parse obj error", e)
+        }
+      }
+
       if (obj !== null) {
         bean.assign(obj)
         thisObj[field] = bean

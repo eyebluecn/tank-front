@@ -3,8 +3,7 @@ import "./PreviewEngineCell.less"
 import TankComponent from "../../../common/component/TankComponent";
 import PreviewEngine from "../../../common/model/preference/model/PreviewEngine";
 import {DeleteOutlined} from '@ant-design/icons';
-import {Input, Form} from "antd";
-import InfoCell from "../../widget/InfoCell";
+import {Form, Input} from "antd";
 
 interface IProps {
 
@@ -47,22 +46,31 @@ export default class PreviewEngineCell extends TankComponent <IProps, IState> {
         </div>
         <div className="engine-content">
 
-          <Form.Item label="Warning" hasFeedback validateStatus="warning">
-            <Input.Password placeholder="with input password" />
+          <Form.Item
+            label={"URL"}
+            validateStatus={previewEngine.url ? undefined : 'error'}
+            help={previewEngine.url ? undefined : "url不能为空，{matterUrl}表示文件路径，预览时会自动替换成对应的文件url"}
+          >
+            <Input value={previewEngine.url}
+                   placeholder="请输入url，{matterUrl}表示注入的文件url路径"
+                   onChange={(e) => {
+                     previewEngine.url = e.target.value
+                     this.updateUI()
+                   }}/>
           </Form.Item>
 
-          <InfoCell name={"URL"} firstSpan={4}>
-            <Input value={previewEngine.url} onChange={(e) => {
-              previewEngine.url = e.target.value
-              this.updateUI()
-            }}/>
-          </InfoCell>
-          <InfoCell name={"后缀"} firstSpan={4}>
-            <Input value={previewEngine.extensions} onChange={(e) => {
-              previewEngine.extensions = e.target.value
-              this.updateUI()
-            }}/>
-          </InfoCell>
+          <Form.Item
+            label={"后缀"}
+            validateStatus={previewEngine.extensions ? undefined : 'error'}
+            help={previewEngine.extensions ? undefined : "后缀不能为空，使用逗号分隔，不用带. 例如：doc,ppt,xls"}
+          >
+            <Input value={previewEngine.extensions}
+                   placeholder="请输入后缀，使用逗号分隔，不用带. 例如：doc,ppt,xls"
+                   onChange={(e) => {
+                     previewEngine.extensions = e.target.value
+                     this.updateUI()
+                   }}/>
+          </Form.Item>
 
         </div>
 

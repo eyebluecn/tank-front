@@ -46,6 +46,8 @@ export default class PreviewConfigPanel extends TankComponent <IProps, IState> {
 
     let previewConfig: PreviewConfig = this.props.previewConfig
 
+    console.log("previewConfig", previewConfig)
+
     return (
 
       <div className="widget-preview-config-panel">
