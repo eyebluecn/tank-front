@@ -21,6 +21,7 @@ import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import Color from "../../common/model/base/option/Color";
 import TransfigurationModal from "./widget/TransfigurationModal";
 import Moon from "../../common/model/global/Moon";
+import Lang from "../../common/model/global/Lang";
 
 
 interface IProps extends RouteComponentProps {
@@ -75,7 +76,7 @@ export default class List extends TankComponent<IProps, IState> {
   toggleStatus(user: User) {
     let that = this
     user.httpToggleStatus(function () {
-      MessageBoxUtil.success(Moon.t("operationSuccess"))
+      MessageBoxUtil.success(Lang.t("operationSuccess"))
       that.updateUI()
     })
   }
@@ -100,7 +101,7 @@ export default class List extends TankComponent<IProps, IState> {
     let pager = this.pager;
 
     const columns: ColumnProps<User>[] = [{
-      title: Moon.t("user.avatar"),
+      title: Lang.t("user.avatar"),
       dataIndex: 'avatarUrl',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <Link to={StringUtil.prePath(match.path) + '/detail/' + record.uuid}>
@@ -108,43 +109,43 @@ export default class List extends TankComponent<IProps, IState> {
         </Link>
       ),
     }, {
-      title: Moon.t("user.username"),
+      title: Lang.t("user.username"),
       dataIndex: 'username',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <Link to={StringUtil.prePath(match.path) + '/detail/' + record.uuid}>{record.username}</Link>
       ),
     }, {
-      title: Moon.t("user.role"),
+      title: Lang.t("user.role"),
       dataIndex: 'role',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <Tag color={UserRoleMap[record.role].color}>{UserRoleMap[record.role].name}</Tag>
       ),
     }, {
-      title: Moon.t("user.singleFileSizeLimit"),
+      title: Lang.t("user.singleFileSizeLimit"),
       dataIndex: 'sizeLimit',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <span>{FileUtil.humanFileSize(record.sizeLimit)}</span>
       ),
     }, {
-      title: Moon.t("user.totalFileSize"),
+      title: Lang.t("user.totalFileSize"),
       dataIndex: 'totalSize',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <span>{FileUtil.humanFileSize(record.totalSize)}</span>
       ),
     }, {
-      title: Moon.t("user.totalFileSizeLimit"),
+      title: Lang.t("user.totalFileSizeLimit"),
       dataIndex: 'totalSizeLimit',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <span>{FileUtil.humanFileSize(record.totalSizeLimit)}</span>
       ),
     }, {
-      title: Moon.t("user.status"),
+      title: Lang.t("user.status"),
       dataIndex: 'status',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <Tag color={UserStatusMap[record.status].color}>{UserStatusMap[record.status].name}</Tag>
       ),
     }, {
-      title: Moon.t("user.lastLogin"),
+      title: Lang.t("user.lastLogin"),
       dataIndex: 'lastTime',
       render: (text: any, record: User, index: number): React.ReactNode => (
         <div>
@@ -153,7 +154,7 @@ export default class List extends TankComponent<IProps, IState> {
         </div>
       ),
     }, {
-      title: Moon.t("createTime"),
+      title: Lang.t("createTime"),
       dataIndex: 'createTime',
       sorter: true,
       sortOrder: pager.getDefaultSortOrder('createTime'),
@@ -162,21 +163,21 @@ export default class List extends TankComponent<IProps, IState> {
         DateUtil.simpleDateTime(text)
       ),
     }, {
-      title: Moon.t("operation"),
+      title: Lang.t("operation"),
       dataIndex: 'action',
       render: (text: any, record: User) => (
         <span>
 
-          <Link title={Moon.t("edit")}
+          <Link title={Lang.t("edit")}
                 to={StringUtil.prePath(match.path) + '/edit/' + record.uuid}>
-            <Tooltip title={Moon.t("edit")}>
+            <Tooltip title={Lang.t("edit")}>
               <EditOutlined className="btn-action"/>
             </Tooltip>
           </Link>
 
           {
             record.status === UserStatus.OK && (
-              <Tooltip title={Moon.t("user.disableUser")}>
+              <Tooltip title={Lang.t("user.disableUser")}>
                 <StopOutlined className="btn-action" style={{color: Color.DANGER}}
                               onClick={this.toggleStatus.bind(this, record)}/>
               </Tooltip>
@@ -185,14 +186,14 @@ export default class List extends TankComponent<IProps, IState> {
 
           {
             record.status === UserStatus.DISABLED && (
-              <Tooltip title={Moon.t("user.activeUser")}>
+              <Tooltip title={Lang.t("user.activeUser")}>
                 <CheckCircleOutlined className="btn-action" style={{color: Color.SUCCESS}}
                                      onClick={this.toggleStatus.bind(this, record)}/>
               </Tooltip>
             )
           }
 
-          <Tooltip title={Moon.t("user.transfiguration")}>
+          <Tooltip title={Lang.t("user.transfiguration")}>
                 <UserSwitchOutlined className="btn-action" style={{color: Color.PRIMARY}}
                                     onClick={this.transfiguration.bind(this, record)}/>
               </Tooltip>
@@ -205,9 +206,9 @@ export default class List extends TankComponent<IProps, IState> {
     return (
       <div className="page-user-list">
 
-        <TankTitle name={Moon.t("layout.users")}>
+        <TankTitle name={Lang.t("layout.users")}>
           <Link to={'/user/create'}>
-            <Button type={"primary"} icon={<PlusOutlined/>}>{Moon.t("user.createUser")}</Button>
+            <Button type={"primary"} icon={<PlusOutlined/>}>{Lang.t("user.createUser")}</Button>
           </Link>
         </TankTitle>
 

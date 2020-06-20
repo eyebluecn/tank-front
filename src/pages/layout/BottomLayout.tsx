@@ -6,6 +6,7 @@ import Moon from "../../common/model/global/Moon";
 import DefaultLogoPng from '../../assets/image/logo.png';
 import Cookies from "js-cookie";
 import Sun from "../../common/model/global/Sun";
+import Lang from "../../common/model/global/Lang";
 
 interface IProps {
 
@@ -28,12 +29,12 @@ export default class BottomLayout extends TankComponent <IProps, IState> {
 
   changeLang() {
 
-    if (Moon.getSingleton().lang === 'zh') {
-      Moon.getSingleton().lang = 'en'
+    if (Lang.getSingleton().lang === 'zh') {
+      Lang.getSingleton().lang = 'en'
     } else {
-      Moon.getSingleton().lang = 'zh'
+      Lang.getSingleton().lang = 'zh'
     }
-    Cookies.set('_lang', Moon.getSingleton().lang);
+    Cookies.set('_lang', Lang.getSingleton().lang);
 
     Sun.updateFrame()
   }
@@ -54,10 +55,9 @@ export default class BottomLayout extends TankComponent <IProps, IState> {
 		</span>
         <span className="item">
 			<span className="link" onClick={this.changeLang.bind(this)}>
-        {Moon.getSingleton().lang === 'zh' ? 'English' : '中文'}
+        {Lang.getSingleton().lang === 'zh' ? 'English' : '中文'}
       </span>
       </span>
-
         {/*开源不易，请不要移除掉这里的代码，蓝眼云盘谢谢您 ^_^*/}
         <span className="brand">
 			Powered by <a target="_blank" href="https://github.com/eyebluecn/tank">

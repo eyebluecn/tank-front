@@ -14,6 +14,7 @@ import {UserRole, UserRoleList} from "../../common/model/user/UserRole";
 import ColorSelectionOption from "../../common/model/base/option/ColorSelectionOption";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import Sun from "../../common/model/global/Sun";
+import Lang from "../../common/model/global/Lang";
 
 
 interface RouteParam {
@@ -73,7 +74,7 @@ export default class Edit extends TankComponent<IProps, IState> {
     currentUser.assign(values)
 
     currentUser.httpSave(function () {
-      MessageBoxUtil.success(Moon.t("operationSuccess"))
+      MessageBoxUtil.success(Lang.t("operationSuccess"))
 
       //如果是自己的资料修改成功，更新一下本地。
       if (user.uuid === currentUser.uuid) {
@@ -118,7 +119,7 @@ export default class Edit extends TankComponent<IProps, IState> {
 
       <div className="page-user-edit">
 
-        <TankTitle name={this.createMode ? Moon.t("user.createUser") : Moon.t("user.editUser")}>
+        <TankTitle name={this.createMode ? Lang.t("user.createUser") : Lang.t("user.editUser")}>
 
         </TankTitle>
 
@@ -136,7 +137,7 @@ export default class Edit extends TankComponent<IProps, IState> {
           >
             {editSelf && (
               <Form.Item
-                label={Moon.t("user.avatar")}
+                label={Lang.t("user.avatar")}
                 name="avatarUrl"
                 initialValue={currentUser.avatarUrl}
               >
@@ -145,10 +146,10 @@ export default class Edit extends TankComponent<IProps, IState> {
             )}
 
             <Form.Item
-              label={Moon.t("user.username")}
+              label={Lang.t("user.username")}
               name="username"
               initialValue={currentUser.username}
-              rules={[{required: true, message: Moon.t("user.enterUsername")}]}
+              rules={[{required: true, message: Lang.t("user.enterUsername")}]}
             >
               <Input disabled={!this.createMode}/>
             </Form.Item>
@@ -156,9 +157,9 @@ export default class Edit extends TankComponent<IProps, IState> {
             {
               this.createMode && (
                 <Form.Item
-                  label={Moon.t("user.password")}
+                  label={Lang.t("user.password")}
                   name="password"
-                  rules={[{required: true, message: Moon.t("user.enterPassword")}]}
+                  rules={[{required: true, message: Lang.t("user.enterPassword")}]}
                 >
                   <Input.Password/>
                 </Form.Item>
@@ -169,20 +170,20 @@ export default class Edit extends TankComponent<IProps, IState> {
               this.createMode && (
                 <Form.Item
                   name="confirmPassword"
-                  label={Moon.t("user.confirmPassword")}
+                  label={Lang.t("user.confirmPassword")}
                   dependencies={['password']}
                   hasFeedback
                   rules={[
                     {
                       required: true,
-                      message: Moon.t("user.enterPassword"),
+                      message: Lang.t("user.enterPassword"),
                     },
                     ({getFieldValue}) => ({
                       validator(rule, value) {
                         if (!value || getFieldValue('password') === value) {
                           return Promise.resolve();
                         }
-                        return Promise.reject(Moon.t("user.passwordNotSame"));
+                        return Promise.reject(Lang.t("user.passwordNotSame"));
                       },
                     }),
                   ]}
@@ -192,7 +193,7 @@ export default class Edit extends TankComponent<IProps, IState> {
               )
             }
             <Form.Item
-              label={Moon.t("user.role")}
+              label={Lang.t("user.role")}
               name="role"
               initialValue={currentUser.role}
             >
@@ -208,19 +209,19 @@ export default class Edit extends TankComponent<IProps, IState> {
             </Form.Item>
 
             <Form.Item
-              label={Moon.t("user.singleFileSizeLimit")}
+              label={Lang.t("user.singleFileSizeLimit")}
               required={true}
             >
               <Form.Item
                 name="sizeLimit"
-                rules={[{required: true, message: Moon.t("inputRequired")}]}
+                rules={[{required: true, message: Lang.t("inputRequired")}]}
                 initialValue={currentUser.sizeLimit}
                 noStyle
               >
                 <InputNumber min={-1} className='w150'/>
               </Form.Item>
               <span
-                className="pl10"> {Moon.t("user.current")}:
+                className="pl10"> {Lang.t("user.current")}:
                 {(this.formRef && this.formRef.current) ?
                   FileUtil.humanFileSize(this.formRef.current.getFieldValue("sizeLimit"))
                   : FileUtil.humanFileSize(currentUser.sizeLimit)}
@@ -228,19 +229,19 @@ export default class Edit extends TankComponent<IProps, IState> {
             </Form.Item>
 
             <Form.Item
-              label={Moon.t("user.totalFileSizeLimit")}
+              label={Lang.t("user.totalFileSizeLimit")}
               required={true}
             >
               <Form.Item
                 name="totalSizeLimit"
-                rules={[{required: true, message: Moon.t("inputRequired")}]}
+                rules={[{required: true, message: Lang.t("inputRequired")}]}
                 initialValue={currentUser.totalSizeLimit}
                 noStyle
               >
                 <InputNumber min={-1} className='w150'/>
               </Form.Item>
               <span
-                className="pl10"> {Moon.t("user.current")}:
+                className="pl10"> {Lang.t("user.current")}:
                 {(this.formRef && this.formRef.current) ?
                   FileUtil.humanFileSize(this.formRef.current.getFieldValue("totalSizeLimit"))
                   : FileUtil.humanFileSize(currentUser.totalSizeLimit)}
@@ -249,7 +250,7 @@ export default class Edit extends TankComponent<IProps, IState> {
 
             <div className="text-right">
               <Button type="primary" htmlType="submit" icon={<SaveOutlined/>}>
-                {this.createMode ? Moon.t("user.create") : Moon.t("user.save")}
+                {this.createMode ? Lang.t("user.create") : Lang.t("user.save")}
               </Button>
             </div>
 

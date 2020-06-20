@@ -15,6 +15,7 @@ import SortDirection from "../../common/model/base/SortDirection";
 import FileUtil from "../../common/util/FileUtil";
 import Matter from '../../common/model/matter/Matter';
 import Moon from "../../common/model/global/Moon";
+import Lang from "../../common/model/global/Lang";
 
 Echarts.registerTheme('tank_theme', theme);
 
@@ -80,11 +81,11 @@ export default class Index extends TankComponent<IProps, IState> {
       data: ['PV', 'UV']
     },
     xAxis: {
-      name: Moon.t("dashboard.date"),
+      name: Lang.t("dashboard.date"),
       data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
     },
     yAxis: {
-      name: Moon.t("dashboard.num")
+      name: Lang.t("dashboard.num")
     },
     series: [{
       name: 'PV',
@@ -260,24 +261,24 @@ export default class Index extends TankComponent<IProps, IState> {
     return (
       <div className="page-dashboard-index">
 
-        <TankTitle name={Moon.t("layout.dashboard")}>
+        <TankTitle name={Lang.t("layout.dashboard")}>
         </TankTitle>
 
         <Row gutter={18}>
           <Col xs={24} sm={24} md={12} lg={6}>
             <div className="text-block">
               <div className="upper">
-                <div className="indicator">{Moon.t("dashboard.totalInvokeNum")}</div>
+                <div className="indicator">{Lang.t("dashboard.totalInvokeNum")}</div>
                 <div className="amount">{dashboard.totalInvokeNum}</div>
                 <div>
-                  <RatePanel name={Moon.t("dashboard.weekRate")} standardValue={this.standardWeekInvokeNum}
+                  <RatePanel name={Lang.t("dashboard.weekRate")} standardValue={this.standardWeekInvokeNum}
                              compareValue={this.compareWeekInvokeNum}/>
-                  <RatePanel name={Moon.t("dashboard.dayRate")} standardValue={this.standardDayInvokeNum}
+                  <RatePanel name={Lang.t("dashboard.dayRate")} standardValue={this.standardDayInvokeNum}
                              compareValue={this.compareDayInvokeNum}/>
                 </div>
               </div>
               <div className="lower">
-                {Moon.t("dashboard.yesterdayInvoke")}:{dashboard.invokeNum}
+                {Lang.t("dashboard.yesterdayInvoke")}:{dashboard.invokeNum}
               </div>
             </div>
           </Col>
@@ -285,17 +286,17 @@ export default class Index extends TankComponent<IProps, IState> {
           <Col xs={24} sm={24} md={12} lg={6}>
             <div className="text-block">
               <div className="upper">
-                <div className="indicator">{Moon.t("dashboard.totalUV")}</div>
+                <div className="indicator">{Lang.t("dashboard.totalUV")}</div>
                 <div className="amount">{dashboard.totalUv}</div>
                 <div>
-                  <RatePanel name={Moon.t("dashboard.weekRate")} standardValue={this.standardWeekUv}
+                  <RatePanel name={Lang.t("dashboard.weekRate")} standardValue={this.standardWeekUv}
                              compareValue={this.compareWeekUv}/>
-                  <RatePanel name={Moon.t("dashboard.dayRate")} standardValue={this.standardDayUv}
+                  <RatePanel name={Lang.t("dashboard.dayRate")} standardValue={this.standardDayUv}
                              compareValue={this.compareDayUv}/>
                 </div>
               </div>
               <div className="lower">
-                {Moon.t("dashboard.yesterdayUV")}:{dashboard.uv}
+                {Lang.t("dashboard.yesterdayUV")}:{dashboard.uv}
               </div>
             </div>
           </Col>
@@ -304,17 +305,17 @@ export default class Index extends TankComponent<IProps, IState> {
           <Col xs={24} sm={24} md={12} lg={6}>
             <div className="text-block">
               <div className="upper">
-                <div className="indicator">{Moon.t("dashboard.totalMatterNum")}</div>
+                <div className="indicator">{Lang.t("dashboard.totalMatterNum")}</div>
                 <div className="amount">{dashboard.totalMatterNum}</div>
                 <div>
-                  <RatePanel name={Moon.t("dashboard.weekRate")} standardValue={this.standardWeekMatterNum}
+                  <RatePanel name={Lang.t("dashboard.weekRate")} standardValue={this.standardWeekMatterNum}
                              compareValue={this.compareWeekMatterNum}/>
-                  <RatePanel name={Moon.t("dashboard.dayRate")} standardValue={this.standardDayMatterNum}
+                  <RatePanel name={Lang.t("dashboard.dayRate")} standardValue={this.standardDayMatterNum}
                              compareValue={this.compareDayMatterNum}/>
                 </div>
               </div>
               <div className="lower">
-                {Moon.t("dashboard.yesterdayMatterNum")}:{dashboard.matterNum}
+                {Lang.t("dashboard.yesterdayMatterNum")}:{dashboard.matterNum}
               </div>
             </div>
           </Col>
@@ -322,17 +323,17 @@ export default class Index extends TankComponent<IProps, IState> {
           <Col xs={24} sm={24} md={12} lg={6}>
             <div className="text-block">
               <div className="upper">
-                <div className="indicator">{Moon.t("dashboard.totalFileSize")}</div>
+                <div className="indicator">{Lang.t("dashboard.totalFileSize")}</div>
                 <div className="amount">{FileUtil.humanFileSize(dashboard.totalFileSize)}</div>
                 <div>
-                  <RatePanel name={Moon.t("dashboard.weekRate")} standardValue={this.standardWeekSize}
+                  <RatePanel name={Lang.t("dashboard.weekRate")} standardValue={this.standardWeekSize}
                              compareValue={this.compareWeekSize}/>
-                  <RatePanel name={Moon.t("dashboard.dayRate")} standardValue={this.standardDaySize}
+                  <RatePanel name={Lang.t("dashboard.dayRate")} standardValue={this.standardDaySize}
                              compareValue={this.compareDaySize}/>
                 </div>
               </div>
               <div className="lower">
-                {Moon.t("dashboard.yesterdayMatterSize")}:{FileUtil.humanFileSize(dashboard.fileSize)}
+                {Lang.t("dashboard.yesterdayMatterSize")}:{FileUtil.humanFileSize(dashboard.fileSize)}
               </div>
             </div>
           </Col>
@@ -343,7 +344,7 @@ export default class Index extends TankComponent<IProps, IState> {
 
             <div className="figure-block">
               <div className="title">
-                {Moon.t("dashboard.recentDayInvokeUV", 15)}
+                {Lang.t("dashboard.recentDayInvokeUV", 15)}
               </div>
               <figure>
                 <ReactEcharts
@@ -366,7 +367,7 @@ export default class Index extends TankComponent<IProps, IState> {
 
             <div className="figure-block">
               <div className="title">
-                {Moon.t("dashboard.downloadMatterTop10")}
+                {Lang.t("dashboard.downloadMatterTop10")}
               </div>
               <div className="list-rank">
                 <ul>
@@ -393,7 +394,7 @@ export default class Index extends TankComponent<IProps, IState> {
 
             <div className="figure-block">
               <div className="title">
-                {Moon.t("dashboard.activeIpTop10")}
+                {Lang.t("dashboard.activeIpTop10")}
               </div>
               <div className="list-rank">
                 <ul>
@@ -418,7 +419,7 @@ export default class Index extends TankComponent<IProps, IState> {
 
         <div>
           <Alert
-            message={Moon.t("dashboard.warnHint")}
+            message={Lang.t("dashboard.warnHint")}
             type="warning"
           />
         </div>

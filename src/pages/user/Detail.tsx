@@ -20,6 +20,7 @@ import ChangePasswordModal from "./widget/ChangePasswordModal";
 import {EditOutlined, UnlockOutlined, UserSwitchOutlined} from '@ant-design/icons';
 import TransfigurationModal from "./widget/TransfigurationModal";
 import {StopOutlined} from "@ant-design/icons/lib";
+import Lang from "../../common/model/global/Lang";
 
 interface RouteParam {
   uuid: string
@@ -58,9 +59,9 @@ export default class Detail extends TankComponent <IProps, IState> {
   resetPassword() {
     let that = this
 
-    SingleTextModal.open(Moon.t("user.enterNewPassword"), "", function (text: string) {
+    SingleTextModal.open(Lang.t("user.enterNewPassword"), "", function (text: string) {
       that.currentUser.httpResetPassword(text, function (response: any) {
-        MessageBoxUtil.success(Moon.t("operationSuccess"))
+        MessageBoxUtil.success(Lang.t("operationSuccess"))
       })
     })
 
@@ -80,7 +81,7 @@ export default class Detail extends TankComponent <IProps, IState> {
     let user: User = this.user
     let currentUser: User = this.currentUser
     currentUser.httpToggleStatus(function () {
-      MessageBoxUtil.success(Moon.t("operationSuccess"))
+      MessageBoxUtil.success(Lang.t("operationSuccess"))
       that.updateUI()
     })
   }
@@ -92,7 +93,7 @@ export default class Detail extends TankComponent <IProps, IState> {
     let user: User = this.user
     let currentUser: User = this.currentUser
     ChangePasswordModal.open(currentUser, function () {
-      MessageBoxUtil.success(Moon.t("operationSuccess"))
+      MessageBoxUtil.success(Lang.t("operationSuccess"))
 
 
     })
@@ -110,14 +111,14 @@ export default class Detail extends TankComponent <IProps, IState> {
 
       <div className="page-user-detail">
 
-        <TankTitle name={Moon.t("user.profile")}>
+        <TankTitle name={Lang.t("user.profile")}>
 
           {
             user.role === UserRole.ADMINISTRATOR && (
               <Button className='ml10' type="primary"
                       icon={<UnlockOutlined/>}
                       onClick={this.resetPassword.bind(this)}>
-                {Moon.t("user.resetPassword")}
+                {Lang.t("user.resetPassword")}
               </Button>
             )
           }
@@ -127,7 +128,7 @@ export default class Detail extends TankComponent <IProps, IState> {
               <Button className='ml10' type="primary"
                       icon={<UserSwitchOutlined/>}
                       onClick={this.transfiguration.bind(this)}>
-                {Moon.t("user.transfiguration")}
+                {Lang.t("user.transfiguration")}
               </Button>
             )
           }
@@ -135,14 +136,14 @@ export default class Detail extends TankComponent <IProps, IState> {
           {
             currentUser.uuid === user.uuid && (
               <Button className='ml10' type="primary" onClick={this.changePassword.bind(this)} icon={<UnlockOutlined/>}>
-                {Moon.t("user.changePassword")}
+                {Lang.t("user.changePassword")}
               </Button>
             )
           }
 
           <Link to={'/user/edit/' + currentUser.uuid}>
             <Button className='ml10' type="primary" icon={<EditOutlined/>}>
-              {Moon.t("edit")}
+              {Lang.t("edit")}
             </Button>
           </Link>
 
@@ -152,7 +153,7 @@ export default class Detail extends TankComponent <IProps, IState> {
                       danger={currentUser.status === UserStatus.OK}
                       icon={<StopOutlined/>}
                       onClick={this.toggleStatus.bind(this)}>
-                {currentUser.status === UserStatus.OK ? Moon.t("user.disable") : Moon.t("user.active")}
+                {currentUser.status === UserStatus.OK ? Lang.t("user.disable") : Lang.t("user.active")}
               </Button>
             )
           }
@@ -171,47 +172,47 @@ export default class Detail extends TankComponent <IProps, IState> {
           </div>
 
 
-          <InfoCell name={Moon.t("user.role")}>
+          <InfoCell name={Lang.t("user.role")}>
             <Tag color={UserRoleMap[currentUser.role].color}>{UserRoleMap[currentUser.role].name}</Tag>
           </InfoCell>
 
 
-          <InfoCell name={Moon.t("user.singleFileSizeLimit")}>
+          <InfoCell name={Lang.t("user.singleFileSizeLimit")}>
             {FileUtil.humanFileSize(currentUser.sizeLimit)}
           </InfoCell>
 
 
-          <InfoCell name={Moon.t("user.totalFileSizeLimit")}>
+          <InfoCell name={Lang.t("user.totalFileSizeLimit")}>
             {FileUtil.humanFileSize(currentUser.totalSizeLimit)}
           </InfoCell>
 
 
-          <InfoCell name={Moon.t("user.totalFileSize")}>
+          <InfoCell name={Lang.t("user.totalFileSize")}>
             {FileUtil.humanFileSize(currentUser.totalSize)}
           </InfoCell>
 
 
-          <InfoCell name={Moon.t("user.status")}>
+          <InfoCell name={Lang.t("user.status")}>
             <Tag color={UserStatusMap[currentUser.status].color}>{UserStatusMap[currentUser.status].name}</Tag>
           </InfoCell>
 
 
-          <InfoCell name={Moon.t("user.lastLoginIp")}>
+          <InfoCell name={Lang.t("user.lastLoginIp")}>
             {currentUser.lastIp}
           </InfoCell>
 
 
-          <InfoCell name={Moon.t("user.lastLoginTime")}>
+          <InfoCell name={Lang.t("user.lastLoginTime")}>
             {DateUtil.simpleDateTime(currentUser.lastTime)}
           </InfoCell>
 
-          <InfoCell name={Moon.t("user.webdavLink")}>
+          <InfoCell name={Lang.t("user.webdavLink")}>
             {BrowserUtil.fullHost() + "/api/dav"}
           </InfoCell>
 
           {
             currentUser.role === UserRole.ADMINISTRATOR && (
-              <InfoCell name={Moon.t("user.docLink")}>
+              <InfoCell name={Lang.t("user.docLink")}>
                 <a className="f14" href="https://tank-doc.eyeblue.cn" target="_blank">
                   https://tank-doc.eyeblue.cn
                 </a>

@@ -13,6 +13,7 @@ import FileUtil from "../../common/util/FileUtil";
 import {FormInstance} from "antd/lib/form";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import Sun from "../../common/model/global/Sun";
+import Lang from "../../common/model/global/Lang";
 
 interface IProps extends RouteComponentProps {
 
@@ -64,7 +65,7 @@ export default class Edit extends TankComponent<IProps, IState> {
     that.preference.assign(values)
 
     that.preference.httpSave(function () {
-      MessageBoxUtil.success(Moon.t("operationSuccess"))
+      MessageBoxUtil.success(Lang.t("operationSuccess"))
 
       Sun.updateFrame()
 
@@ -94,7 +95,7 @@ export default class Edit extends TankComponent<IProps, IState> {
     return (
       <div className="page-preference-edit">
 
-        <TankTitle name={Moon.t("preference.editPreference")}>
+        <TankTitle name={Lang.t("preference.editPreference")}>
         </TankTitle>
 
         <TankContentCard loading={preference.detailLoading}>
@@ -112,9 +113,9 @@ export default class Edit extends TankComponent<IProps, IState> {
           >
 
             <Form.Item
-              label={Moon.t("preference.websiteName")}
+              label={Lang.t("preference.websiteName")}
               name="name"
-              rules={[{required: true, message: Moon.t("preference.enterWebsiteName")}]}
+              rules={[{required: true, message: Lang.t("preference.enterWebsiteName")}]}
             >
               <Input/>
             </Form.Item>
@@ -134,64 +135,64 @@ export default class Edit extends TankComponent<IProps, IState> {
             </Form.Item>
 
             <Form.Item
-              label={Moon.t("preference.copyright")}
+              label={Lang.t("preference.copyright")}
               name="copyright"
             >
               <Input/>
             </Form.Item>
 
             <Form.Item
-              label={Moon.t("preference.extraInfo")}
+              label={Lang.t("preference.extraInfo")}
               name="record"
             >
               <Input/>
             </Form.Item>
 
             <Form.Item
-              label={Moon.t("preference.officeUrl")}
+              label={Lang.t("preference.officeUrl")}
               name="officeUrl"
             >
               <Input/>
             </Form.Item>
 
             <Form.Item
-              label={Moon.t("preference.zipMaxNumLimit")}
+              label={Lang.t("preference.zipMaxNumLimit")}
               name="downloadDirMaxNum"
-              rules={[{required: true, message: Moon.t("preference.enterZipMaxNumLimit")}]}
+              rules={[{required: true, message: Lang.t("preference.enterZipMaxNumLimit")}]}
             >
               <InputNumber min={-1} max={1000} className='w150'/>
             </Form.Item>
 
-            <Form.Item label={Moon.t("preference.zipMaxSizeLimit")}
+            <Form.Item label={Lang.t("preference.zipMaxSizeLimit")}
                        required={true}
             >
               <Form.Item
                 name="downloadDirMaxSize"
-                rules={[{required: true, message: Moon.t("preference.enterZipMaxSizeLimit")}]}
+                rules={[{required: true, message: Lang.t("preference.enterZipMaxSizeLimit")}]}
                 noStyle
               >
                 <InputNumber min={-1} className='w150'/>
               </Form.Item>
               <span
-                className="pl10"> {Moon.t("preference.current")}:
+                className="pl10"> {Lang.t("preference.current")}:
                 {(this.formRef && this.formRef.current) ?
                   FileUtil.humanFileSize(this.formRef.current.getFieldValue("downloadDirMaxSize"))
                   : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
               </span>
             </Form.Item>
 
-            <Form.Item label={Moon.t("preference.userDefaultSizeLimit")}
+            <Form.Item label={Lang.t("preference.userDefaultSizeLimit")}
                        required={true}
             >
               <Form.Item
                 name="defaultTotalSizeLimit"
-                rules={[{required: true, message: Moon.t("preference.enterUserDefaultSizeLimit")}]}
+                rules={[{required: true, message: Lang.t("preference.enterUserDefaultSizeLimit")}]}
                 noStyle
               >
                 <InputNumber min={-1} className='w150'/>
               </Form.Item>
               <span
-                className="pl10"> {Moon.t("preference.current")}:
+                className="pl10"> {Lang.t("preference.current")}:
                 {(this.formRef && this.formRef.current) ?
                   FileUtil.humanFileSize(this.formRef.current.getFieldValue("defaultTotalSizeLimit"))
                   : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
@@ -199,7 +200,7 @@ export default class Edit extends TankComponent<IProps, IState> {
             </Form.Item>
 
             <Form.Item
-              label={Moon.t("preference.allowRegister")}
+              label={Lang.t("preference.allowRegister")}
               name="allowRegister"
               required={true}
               valuePropName="checked"
@@ -209,7 +210,7 @@ export default class Edit extends TankComponent<IProps, IState> {
 
             <div className="text-right">
               <Button type="primary" htmlType="submit" icon={<SaveOutlined/>}>
-                {Moon.t("save")}
+                {Lang.t("save")}
               </Button>
             </div>
 

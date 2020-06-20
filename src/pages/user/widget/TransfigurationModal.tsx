@@ -8,6 +8,7 @@ import BrowserUtil from "../../../common/util/BrowserUtil";
 import ClipboardUtil from "../../../common/util/ClipboardUtil";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import Moon from "../../../common/model/global/Moon";
+import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
   user: User
@@ -57,6 +58,7 @@ export default class TransfigurationModal extends TankComponent<IProps, IState> 
 
   render() {
 
+
     let that = this
 
     let textToCopy = BrowserUtil.fullHost() + "/user/authentication/" + that.authentication
@@ -66,11 +68,11 @@ export default class TransfigurationModal extends TankComponent<IProps, IState> 
 
         <div className="text-center">
           <h2>
-            {Moon.t("user.transfigurationPromptText")}
+            {Lang.t("user.transfigurationPromptText")}
           </h2>
         </div>
         <div>
-          {Moon.t("user.transfigurationPrompt")}
+          {Lang.t("user.transfigurationPrompt")}
         </div>
         <div>
           {textToCopy}
@@ -80,19 +82,19 @@ export default class TransfigurationModal extends TankComponent<IProps, IState> 
 
           <Button className="ml20" type="default" onClick={() => {
             this.props.onClose()
-          }}>{Moon.t("close")}</Button>
+          }}>{Lang.t("close")}</Button>
 
           <Button className="ml20"
                   type="primary"
                   onClick={() => {
 
                     ClipboardUtil.copy(textToCopy, function () {
-                      MessageBoxUtil.success(Moon.t("copySuccess"))
+                      MessageBoxUtil.success(Lang.t("copySuccess"))
                       that.props.onClose()
                     }, function () {
-                      MessageBoxUtil.error(Moon.t("copyError"))
+                      MessageBoxUtil.error(Lang.t("copyError"))
                     })
-                  }}>{Moon.t("copy")}</Button>
+                  }}>{Lang.t("copy")}</Button>
         </div>
 
 

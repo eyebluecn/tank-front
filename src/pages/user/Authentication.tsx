@@ -4,6 +4,7 @@ import "./Edit.less"
 import TankComponent from "../../common/component/TankComponent";
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
+import Lang from "../../common/model/global/Lang";
 
 
 interface RouteParam {
@@ -51,7 +52,7 @@ export default class Authentication extends TankComponent<IProps, IState> {
 
     return (
       <div className="page-user-authentication">
-        {Moon.t("user.redirecting")}
+        {Lang.t("user.redirecting")}
       </div>
     );
   }

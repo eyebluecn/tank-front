@@ -4,6 +4,7 @@ import {Form, Input, Modal} from "antd"
 import TankComponent from "../../../common/component/TankComponent";
 import User from "../../../common/model/user/User";
 import Moon from "../../../common/model/global/Moon";
+import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
   user: User
@@ -86,7 +87,7 @@ export default class ChangePasswordModal extends TankComponent<IProps, IState> {
 
         <div className="text-center">
           <h2>
-            {Moon.t("user.editSomebodyPassword", that.props.user.username)}
+            {Lang.t("user.editSomebodyPassword", that.props.user.username)}
           </h2>
         </div>
 
@@ -97,37 +98,37 @@ export default class ChangePasswordModal extends TankComponent<IProps, IState> {
           onFinishFailed={this.onFinishFailed.bind(this)}
         >
           <Form.Item
-            label={Moon.t("user.oldPassword")}
+            label={Lang.t("user.oldPassword")}
             name="oldPassword"
-            rules={[{required: true, message: Moon.t("user.enterPassword")}]}
+            rules={[{required: true, message: Lang.t("user.enterPassword")}]}
           >
             <Input.Password/>
           </Form.Item>
 
           <Form.Item
-            label={Moon.t("user.newPassword")}
+            label={Lang.t("user.newPassword")}
             name="password"
-            rules={[{required: true, message: Moon.t("user.enterNewPassword")}]}
+            rules={[{required: true, message: Lang.t("user.enterNewPassword")}]}
           >
             <Input.Password/>
           </Form.Item>
 
           <Form.Item
             name="repeatPassword"
-            label={Moon.t("user.confirmPassword")}
+            label={Lang.t("user.confirmPassword")}
             dependencies={['password']}
             hasFeedback
             rules={[
               {
                 required: true,
-                message: Moon.t("user.enterNewPassword"),
+                message: Lang.t("user.enterNewPassword"),
               },
               ({getFieldValue}) => ({
                 validator(rule, value) {
                   if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(Moon.t("user.passwordNotSame"));
+                  return Promise.reject(Lang.t("user.passwordNotSame"));
                 },
               }),
             ]}
@@ -140,10 +141,10 @@ export default class ChangePasswordModal extends TankComponent<IProps, IState> {
 
             <Button className="ml20" type="default" onClick={() => {
               this.props.onClose()
-            }}>{Moon.t("close")}</Button>
+            }}>{Lang.t("close")}</Button>
 
             <Button className="ml20"
-                    type="primary" htmlType="submit">{Moon.t("submit")}</Button>
+                    type="primary" htmlType="submit">{Lang.t("submit")}</Button>
 
           </Form.Item>
 

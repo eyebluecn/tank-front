@@ -12,6 +12,7 @@ import Preference from "../../common/model/preference/Preference";
 import TankContentCard from '../widget/TankContentCard';
 import FileUtil from "../../common/util/FileUtil";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
+import Lang from "../../common/model/global/Lang";
 
 
 interface IProps extends RouteComponentProps {
@@ -56,18 +57,18 @@ export default class Index extends TankComponent<IProps, IState> {
 
     return (
       <div className="page-preference-index">
-        <TankTitle name={Moon.t("layout.setting")}>
+        <TankTitle name={Lang.t("layout.setting")}>
           <Link to={'/preference/edit'}>
-            <Button type={"primary"} icon={<EditOutlined/>}>{Moon.t("edit")}</Button>
+            <Button type={"primary"} icon={<EditOutlined/>}>{Lang.t("edit")}</Button>
           </Link>
         </TankTitle>
 
         <TankContentCard>
-          <InfoCell name={Moon.t("preference.websiteName")}>
+          <InfoCell name={Lang.t("preference.websiteName")}>
             {this.preference.name}
           </InfoCell>
 
-          <InfoCell name={Moon.t("preference.logo")}>
+          <InfoCell name={Lang.t("preference.logo")}>
             {this.preference.logoUrl && (
               <img src={this.preference.logoUrl} alt="logo"
                    className="img-logo" onClick={() => {
@@ -85,32 +86,32 @@ export default class Index extends TankComponent<IProps, IState> {
             )}
           </InfoCell>
 
-          <InfoCell name={Moon.t("preference.copyright")}>
+          <InfoCell name={Lang.t("preference.copyright")}>
             <span dangerouslySetInnerHTML={{__html: this.preference.copyright}}/>
 
           </InfoCell>
 
-          <InfoCell name={Moon.t("preference.extraInfo")}>
+          <InfoCell name={Lang.t("preference.extraInfo")}>
             <span dangerouslySetInnerHTML={{__html: this.preference.record}}/>
           </InfoCell>
 
-          <InfoCell name={Moon.t("preference.zipMaxNumLimit")}>
-            {this.preference.downloadDirMaxNum === -1 ? Moon.t("preference.noLimit") : this.preference.downloadDirMaxNum}
+          <InfoCell name={Lang.t("preference.zipMaxNumLimit")}>
+            {this.preference.downloadDirMaxNum === -1 ? Lang.t("preference.noLimit") : this.preference.downloadDirMaxNum}
           </InfoCell>
 
-          <InfoCell name={Moon.t("preference.zipMaxSizeLimit")}>
+          <InfoCell name={Lang.t("preference.zipMaxSizeLimit")}>
             {FileUtil.humanFileSize(this.preference.downloadDirMaxSize)}
           </InfoCell>
 
-          <InfoCell name={Moon.t("preference.userDefaultSizeLimit")}>
+          <InfoCell name={Lang.t("preference.userDefaultSizeLimit")}>
             {FileUtil.humanFileSize(this.preference.defaultTotalSizeLimit)}
           </InfoCell>
 
-          <InfoCell name={Moon.t("preference.allowRegister")}>
-            {this.preference.allowRegister ? Moon.t("yes") : Moon.t("no")}
+          <InfoCell name={Lang.t("preference.allowRegister")}>
+            {this.preference.allowRegister ? Lang.t("yes") : Lang.t("no")}
           </InfoCell>
 
-          <InfoCell name={Moon.t("preference.docLink")}>
+          <InfoCell name={Lang.t("preference.docLink")}>
             <a href={'https://tank-doc.eyeblue.cn/zh'} target="_blank">
               https://tank-doc.eyeblue.cn/zh
             </a>

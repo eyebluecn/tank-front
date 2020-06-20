@@ -7,6 +7,7 @@ import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
+import Lang from "../../common/model/global/Lang";
 
 
 interface IProps extends RouteComponentProps {
@@ -39,7 +40,7 @@ export default class Register extends TankComponent<IProps, IState> {
     let user = that.user
 
     user.httpRegister(values["username"], values["password"], function () {
-      MessageBoxUtil.success(Moon.t("user.loginSuccess"))
+      MessageBoxUtil.success(Lang.t("user.loginSuccess"))
 
       that.props.history.push('/')
 
@@ -63,7 +64,7 @@ export default class Register extends TankComponent<IProps, IState> {
           <Col span={8} offset={8}>
 
             <div className="welcome">
-              {Moon.t("user.welcomeRegister")}
+              {Lang.t("user.welcomeRegister")}
             </div>
 
             <Form
@@ -74,16 +75,16 @@ export default class Register extends TankComponent<IProps, IState> {
             >
               <Form.Item
                 name="username"
-                rules={[{required: true, message: Moon.t("user.enterUsername")}]}
+                rules={[{required: true, message: Lang.t("user.enterUsername")}]}
               >
-                <Input size="large" placeholder={Moon.t("user.enterUsername")} prefix={<UserOutlined/>}/>
+                <Input size="large" placeholder={Lang.t("user.enterUsername")} prefix={<UserOutlined/>}/>
               </Form.Item>
 
               <Form.Item
                 name="password"
-                rules={[{required: true, message: Moon.t("user.enterPassword")}]}
+                rules={[{required: true, message: Lang.t("user.enterPassword")}]}
               >
-                <Input.Password size="large" placeholder={Moon.t("user.enterPassword")} prefix={<LockOutlined/>}/>
+                <Input.Password size="large" placeholder={Lang.t("user.enterPassword")} prefix={<LockOutlined/>}/>
               </Form.Item>
 
               <Form.Item
@@ -93,32 +94,32 @@ export default class Register extends TankComponent<IProps, IState> {
                 rules={[
                   {
                     required: true,
-                    message: Moon.t("user.enterPassword"),
+                    message: Lang.t("user.enterPassword"),
                   },
                   ({getFieldValue}) => ({
                     validator(rule, value) {
                       if (!value || getFieldValue('password') === value) {
                         return Promise.resolve();
                       }
-                      return Promise.reject(Moon.t("user.passwordNotSame"));
+                      return Promise.reject(Lang.t("user.passwordNotSame"));
                     },
                   }),
                 ]}
               >
 
-                <Input.Password size="large" placeholder={Moon.t("user.confirmPassword")} prefix={<LockOutlined/>}/>
+                <Input.Password size="large" placeholder={Lang.t("user.confirmPassword")} prefix={<LockOutlined/>}/>
               </Form.Item>
 
               <Form.Item>
                 <Button type="primary" icon={<UserOutlined/>} block={true} htmlType="submit">
-                  {Moon.t("user.register")}
+                  {Lang.t("user.register")}
                 </Button>
               </Form.Item>
 
 
               <div className="text-right">
                 <Link to={"/user/login"}>
-                  <span className="link">{Moon.t("user.goToLogin")}</span>
+                  <span className="link">{Lang.t("user.goToLogin")}</span>
                 </Link>
               </div>
 

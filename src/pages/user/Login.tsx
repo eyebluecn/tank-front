@@ -9,6 +9,7 @@ import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import Sun from "../../common/model/global/Sun";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import Preference from "../../common/model/preference/Preference";
+import Lang from "../../common/model/global/Lang";
 
 
 interface IProps extends RouteComponentProps {
@@ -55,7 +56,7 @@ export default class Login extends TankComponent<IProps, IState> {
     let user = that.user
 
     user.httpLogin(values["username"], values["password"], function () {
-      MessageBoxUtil.success(Moon.t("user.loginSuccess"))
+      MessageBoxUtil.success(Lang.t("user.loginSuccess"))
 
       that.props.history.push('/')
 
@@ -81,7 +82,7 @@ export default class Login extends TankComponent<IProps, IState> {
           <Col span={8} offset={8}>
 
             <div className="welcome">
-              {Moon.t("user.welcomeLogin")}
+              {Lang.t("user.welcomeLogin")}
             </div>
 
             <Form
@@ -92,21 +93,21 @@ export default class Login extends TankComponent<IProps, IState> {
             >
               <Form.Item
                 name="username"
-                rules={[{required: true, message: Moon.t("user.enterUsername")}]}
+                rules={[{required: true, message: Lang.t("user.enterUsername")}]}
               >
-                <Input size="large" placeholder={Moon.t("user.enterUsername")} prefix={<UserOutlined/>}/>
+                <Input size="large" placeholder={Lang.t("user.enterUsername")} prefix={<UserOutlined/>}/>
               </Form.Item>
 
               <Form.Item
                 name="password"
-                rules={[{required: true, message: Moon.t("user.enterPassword")}]}
+                rules={[{required: true, message: Lang.t("user.enterPassword")}]}
               >
-                <Input.Password size="large" placeholder={Moon.t("user.enterPassword")} prefix={<LockOutlined/>}/>
+                <Input.Password size="large" placeholder={Lang.t("user.enterPassword")} prefix={<LockOutlined/>}/>
               </Form.Item>
 
               <Form.Item>
                 <Button type="primary" icon={<UserOutlined/>} block={true} htmlType="submit">
-                  {Moon.t("user.login")}
+                  {Lang.t("user.login")}
                 </Button>
               </Form.Item>
 
@@ -114,7 +115,7 @@ export default class Login extends TankComponent<IProps, IState> {
                 preference.allowRegister && (
                   <div className="text-right">
                     <Link to={"/user/register"}>
-                      <span className="link">{Moon.t("user.toToRegister")}</span>
+                      <span className="link">{Lang.t("user.toToRegister")}</span>
                     </Link>
                   </div>
                 )

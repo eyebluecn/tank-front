@@ -1,6 +1,7 @@
 import MimeUtil from "./MimeUtil";
 import StringUtil from "./StringUtil";
 import Moon from "../model/global/Moon";
+import Lang from "../model/global/Lang";
 
 export default class FileUtil {
   static isImage(name: string | null): boolean {
@@ -116,7 +117,7 @@ export default class FileUtil {
   //human readable file size
   static humanFileSize(bytes: number, si: boolean = false): string {
     if (bytes == -1) {
-      return Moon.t("preference.noLimit")
+      return Lang.t("preference.noLimit")
     }
 
     let thresh = si ? 1000 : 1024
