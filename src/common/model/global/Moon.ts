@@ -5,6 +5,8 @@
  */
 import User from "../user/User";
 import Preference from "../preference/Preference";
+import BrowserUtil from "../../util/BrowserUtil";
+import Cookies from "js-cookie";
 
 export default class Moon {
 
@@ -24,6 +26,16 @@ export default class Moon {
   static getSingleton(): Moon {
     if (Moon.singleton == null) {
       Moon.singleton = new Moon();
+
+      //读取默认的语言
+      let lang = BrowserUtil.browserLang()
+      let localLang = Cookies.get("_lang");
+      if (localLang === "zh" || localLang === "en") {
+        lang = localLang
+      }
+      Moon.singleton.lang = lang
+      console.log("当前浏览器默认语言是：", lang)
+
     }
 
     return Moon.singleton

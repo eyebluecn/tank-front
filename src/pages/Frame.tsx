@@ -19,9 +19,9 @@ import InstallIndex from './install/Index';
 import MatterList from './matter/List';
 import MatterDetail from './matter/Detail';
 
+
 import ShareList from './share/List';
 import ShareDetail from './share/Detail';
-import Index from './index/Index';
 import User from '../common/model/user/User';
 import Moon from '../common/model/global/Moon';
 import Sun from '../common/model/global/Sun';
@@ -130,7 +130,6 @@ class RawFrame extends TankComponent<IProps, IState> {
                   <Route exact path="/" render={() =>
                     <Redirect to="/matter/list"/>
                   }/>
-                  <Route path="/index" component={Index}/>
                   <Route path="/user/login" component={UserLogin}/>
                   <Route path="/user/detail/:uuid" component={UserDetail}/>
                   <Route path="/user/list" component={UserList}/>

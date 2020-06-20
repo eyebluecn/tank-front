@@ -4,6 +4,7 @@ import TankComponent from "../../common/component/TankComponent";
 import Preference from "../../common/model/preference/Preference";
 import Moon from "../../common/model/global/Moon";
 import DefaultLogoPng from '../../assets/image/logo.png';
+import Cookies from "js-cookie";
 
 interface IProps {
 
@@ -26,6 +27,14 @@ export default class BottomLayout extends TankComponent <IProps, IState> {
 
   changeLang() {
 
+    if (Moon.getSingleton().lang === 'zh') {
+      Moon.getSingleton().lang = 'en'
+    } else {
+      Moon.getSingleton().lang = 'zh'
+    }
+    Cookies.set('_lang', Moon.getSingleton().lang);
+
+    this.updateUI()
   }
 
   render() {
@@ -43,7 +52,7 @@ export default class BottomLayout extends TankComponent <IProps, IState> {
           <span dangerouslySetInnerHTML={{__html: preference.record}}/>
 		</span>
         <span className="item">
-			<span onClick={this.changeLang.bind(this)}>
+			<span className="link" onClick={this.changeLang.bind(this)}>
         {Moon.getSingleton().lang === 'zh' ? 'English' : '中文'}
       </span>
       </span>

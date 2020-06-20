@@ -3,6 +3,9 @@
  * 这个类不包含Base的子类，比如User, Preference.
  * 和Moon形成姊妹篇
  */
+import BrowserUtil from "../../util/BrowserUtil";
+import Cookies from "js-cookie"
+
 export default class Sun {
 
   //全局的一个store对象
@@ -17,6 +20,8 @@ export default class Sun {
   //全局布局样式，是否展示出左边的菜单.
   showDrawer: boolean = true
 
+
+
   //由于这个类采用单例模式，因此所有属性都是独一份的。
   constructor() {
 
@@ -26,6 +31,7 @@ export default class Sun {
   static getSingleton(): Sun {
     if (Sun.singleton == null) {
       Sun.singleton = new Sun();
+
     }
     return Sun.singleton
   }
