@@ -74,6 +74,12 @@ export default class Edit extends TankComponent<IProps, IState> {
 
     currentUser.httpSave(function () {
       MessageBoxUtil.success(that.createMode ? '创建成功！' : '保存成功！')
+
+      //如果是自己的资料修改成功，更新一下本地。
+      if (user.uuid === currentUser.uuid) {
+        user.assign(currentUser)
+      }
+
       Sun.navigateBack()
     })
 

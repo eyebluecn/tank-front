@@ -56,8 +56,7 @@ export default class Index extends TankComponent<IProps, IState> {
 
     return (
       <div className="page-preference-index">
-
-        <TankTitle name={'网站偏好'}>
+        <TankTitle name={Moon.t("dashboard.recentDayInvokeUV")}>
           <Link to={'/preference/edit'}>
             <Button type={"primary"} icon={<EditOutlined/>}>编辑</Button>
           </Link>
@@ -117,7 +116,7 @@ export default class Index extends TankComponent<IProps, IState> {
             </a>
           </InfoCell>
 
-          
+
         </TankContentCard>
 
       </div>
