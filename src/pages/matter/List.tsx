@@ -1,5 +1,5 @@
-import React, { Children } from "react";
-import { RouteComponentProps } from "react-router-dom";
+import React, {Children} from "react";
+import {RouteComponentProps} from "react-router-dom";
 import "./List.less";
 import TankComponent from "../../common/component/TankComponent";
 import Pager from "../../common/model/base/Pager";
@@ -10,30 +10,23 @@ import Director from "./widget/Director";
 import SortDirection from "../../common/model/base/SortDirection";
 import MatterPanel from "./widget/MatterPanel";
 import UploadMatterPanel from "./widget/UploadMatterPanel";
-import {
-  Col,
-  Modal,
-  Row,
-  Upload,
-  Input,
-  Button,
-  Space,
-  Pagination,
-} from "antd";
+import {Button, Col, Input, Modal, Pagination, Row, Space, Upload,} from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import {ExclamationCircleFilled} from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Sun from "../../common/model/global/Sun";
-import { UserRole } from "../../common/model/user/UserRole";
+import {UserRole} from "../../common/model/user/UserRole";
 import StringUtil from "../../common/util/StringUtil";
 import MoveBatchModal from "./widget/MoveBatchModal";
 import ShareOperationModal from "./widget/ShareOperationModal";
 import Share from "../../common/model/share/Share";
 import ShareDialogModal from "../share/widget/ShareDialogModal";
 
-interface IProps extends RouteComponentProps {}
+interface IProps extends RouteComponentProps {
+}
 
-interface IState {}
+interface IState {
+}
 
 export default class List extends TankComponent<IProps, IState> {
   //当前文件夹信息。
@@ -53,7 +46,7 @@ export default class List extends TankComponent<IProps, IState> {
   user = Moon.getSingleton().user;
   preference = Moon.getSingleton().preference;
   director = new Director();
-  share =  new Share();
+  share = new Share();
 
   newMatterRef = React.createRef<MatterPanel>();
 
@@ -147,7 +140,7 @@ export default class List extends TankComponent<IProps, IState> {
   deleteBatch = () => {
     Modal.confirm({
       title: "此操作不可撤回, 是否继续?",
-      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00"/>,
       onOk: () => {
         const uuids = this.selectedMatters.map((i) => i.uuid).toString();
         this.matter.httpDeleteBatch(uuids, () => {
@@ -174,7 +167,7 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   triggerUpload = (fileObj: any) => {
-    const { file } = fileObj;
+    const {file} = fileObj;
     if (file) this.launchUpload(file);
   };
 
@@ -266,15 +259,15 @@ export default class List extends TankComponent<IProps, IState> {
     this.pager.setFilterValue("puuid", id);
     this.pager.page = 0;
     const query = this.pager.getParams();
-    Sun.navigateQueryTo({ path: "/matter/list", query });
+    Sun.navigateQueryTo({path: "/matter/list", query});
     this.refresh();
   };
 
   render() {
-    const { pager, director, selectedMatters, uploadMatters } = this;
+    const {pager, director, selectedMatters, uploadMatters} = this;
     return (
       <div className="matter-list">
-        <TankTitle name={"所有文件"} />
+        <TankTitle name={"所有文件"}/>
 
         <Row className="mb10">
           <Col md={16} sm={24}>
@@ -360,7 +353,7 @@ export default class List extends TankComponent<IProps, IState> {
         </Row>
 
         {Children.toArray(
-          uploadMatters.map((m) => <UploadMatterPanel matter={m} />)
+          uploadMatters.map((m) => <UploadMatterPanel matter={m}/>)
         )}
 
         {director.createMode ? (
