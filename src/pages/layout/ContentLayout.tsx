@@ -27,7 +27,7 @@ export default class ContentLayout extends TankComponent <IProps, IState> {
 
     return (
 
-      <div className="layout-content">
+      <div id="layout-content" className="layout-content">
         {this.props.children}
       </div>
 

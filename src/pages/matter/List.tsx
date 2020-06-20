@@ -1,5 +1,5 @@
-import React, {Children} from "react";
-import {RouteComponentProps} from "react-router-dom";
+import React, { Children } from "react";
+import { RouteComponentProps } from "react-router-dom";
 import "./List.less";
 import TankComponent from "../../common/component/TankComponent";
 import Pager from "../../common/model/base/Pager";
@@ -9,12 +9,24 @@ import Director from "./widget/Director";
 import SortDirection from "../../common/model/base/SortDirection";
 import MatterPanel from "./widget/MatterPanel";
 import UploadMatterPanel from "./widget/UploadMatterPanel";
-import {Breadcrumb, Button, Col, Input, Modal, Pagination, Row, Space, Upload,} from "antd";
+import {
+  Button,
+  Col,
+  Input,
+  Modal,
+  Pagination,
+  Row,
+  Space,
+  Upload,
+} from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
-import {ExclamationCircleFilled} from "@ant-design/icons";
+import {
+  ExclamationCircleFilled,
+  CloudUploadOutlined,
+} from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Sun from "../../common/model/global/Sun";
-import {UserRole} from "../../common/model/user/UserRole";
+import { UserRole } from "../../common/model/user/UserRole";
 import StringUtil from "../../common/util/StringUtil";
 import MoveBatchModal from "./widget/MoveBatchModal";
 import ShareOperationModal from "./widget/ShareOperationModal";
@@ -23,11 +35,9 @@ import ShareDialogModal from "../share/widget/ShareDialogModal";
 import BreadcrumbModel from "../../common/model/base/option/BreadcrumbModel";
 import BreadcrumbPanel from "../widget/BreadcrumbPanel";
 
-interface IProps extends RouteComponentProps {
-}
+interface IProps extends RouteComponentProps {}
 
-interface IState {
-}
+interface IState {}
 
 export default class List extends TankComponent<IProps, IState> {
   //当前文件夹信息。
@@ -44,20 +54,56 @@ export default class List extends TankComponent<IProps, IState> {
   pager = new Pager<Matter>(this, Matter, 100);
   user = Moon.getSingleton().user;
   preference = Moon.getSingleton().preference;
-  // 导演
+  //导演
   director = new Director();
   //当前面包屑模型数组。
-  breadcrumbModels: BreadcrumbModel[] = []
-  // 分享
-  share =  new Share();
+  breadcrumbModels: BreadcrumbModel[] = [];
+  //分享
+  share = new Share();
 
   newMatterRef = React.createRef<MatterPanel>();
+  //用来判断是否展示遮罩层
+  dragEnterCount = 0;
 
   constructor(props: IProps) {
     super(props);
-
-    this.state = {};
   }
+
+  drag = {
+    dragEnterListener: (e: DragEvent) => {
+      e.preventDefault();
+      this.dragEnterCount++;
+      if (this.dragEnterCount > 0) this.updateUI();
+    },
+    dragleaveListener: (e: DragEvent) => {
+      e.preventDefault();
+      this.dragEnterCount--;
+      if (this.dragEnterCount <= 0) this.updateUI();
+    },
+    dragoverListener: (e: DragEvent) => {
+      e.preventDefault();
+    },
+    dropListener: (e: DragEvent) => {
+      e.preventDefault();
+      this.dragEnterCount = 0;
+      this.launchUpload(e.dataTransfer!.files);
+      this.updateUI();
+    },
+    register: () => {
+      const el = document.getElementById("layout-content")!;
+      el.addEventListener("dragenter", this.drag.dragEnterListener);
+      el.addEventListener("dragleave", this.drag.dragleaveListener);
+      el.addEventListener("dragover", this.drag.dragoverListener);
+      el.addEventListener("drop", this.drag.dropListener);
+    },
+    remove: () => {
+      const el = document.getElementById("layout-content")!;
+      el.removeEventListener("dragenter", this.drag.dragEnterListener);
+      el.removeEventListener("dragleave", this.drag.dragleaveListener);
+      el.removeEventListener("dragover", this.drag.dragoverListener);
+      el.removeEventListener("drop", this.drag.dropListener);
+    }
+  };
 
   componentDidMount() {
     //刷新一下列表
@@ -68,6 +114,7 @@ export default class List extends TankComponent<IProps, IState> {
     }
     this.pager.enableHistory();
     this.refresh();
+    this.drag.register();
   }
 
   componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any) {
@@ -76,6 +123,11 @@ export default class List extends TankComponent<IProps, IState> {
       this.refresh();
     }
   }
+  componentWillUnmount() {
+    this.drag.remove();
+  }
+
+
 
   refresh = () => {
     // 清空暂存区
@@ -87,10 +139,9 @@ export default class List extends TankComponent<IProps, IState> {
     this.prepareRefresh();
 
     //刷新面包屑
-    this.refreshBreadcrumbs()
+    this.refreshBreadcrumbs();
 
     this.pager.httpList();
-
   };
 
   prepareRefresh = () => {
@@ -120,7 +171,7 @@ export default class List extends TankComponent<IProps, IState> {
       }
     } else {
       //统计所有的勾选
-      this.selectedMatters = []
+      this.selectedMatters = [];
       this.pager.data.forEach((matter) => {
         if (matter.check) {
           this.selectedMatters.push(matter);
@@ -147,7 +198,7 @@ export default class List extends TankComponent<IProps, IState> {
   deleteBatch = () => {
     Modal.confirm({
       title: "此操作不可撤回, 是否继续?",
-      icon: <ExclamationCircleFilled twoToneColor="#FFDC00"/>,
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         const uuids = this.selectedMatters.map((i) => i.uuid).toString();
         this.matter.httpDeleteBatch(uuids, () => {
@@ -174,40 +225,43 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   triggerUpload = (fileObj: any) => {
-    const {file} = fileObj;
-    if (file) this.launchUpload(file);
+    const { file } = fileObj;
+    if (file) this.launchUpload([file]);
   };
 
-  launchUpload = (file: any) => {
-    const m = new Matter(this);
-    m.dir = false;
-    m.puuid = this.matter.uuid!;
-    m.userUuid = this.user.uuid!;
+  launchUpload = (files: FileList | [File]) => {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const m = new Matter(this);
+      m.dir = false;
+      m.puuid = this.matter.uuid!;
+      m.userUuid = this.user.uuid!;
 
-    //判断文件大小。
-    if (this.user.sizeLimit >= 0) {
-      if (file.size > this.user.sizeLimit) {
-        MessageBoxUtil.error(
-          `文件大小超过了限制 ${StringUtil.humanFileSize(
-            file.size
-          )}>${StringUtil.humanFileSize(this.user.sizeLimit)}`
-        );
+      //判断文件大小。
+      if (this.user.sizeLimit >= 0) {
+        if (file.size > this.user.sizeLimit) {
+          MessageBoxUtil.error(
+            `文件大小超过了限制 ${StringUtil.humanFileSize(
+              file.size
+            )}>${StringUtil.humanFileSize(this.user.sizeLimit)}`
+          );
+        }
       }
-    }
-    m.file = file;
-    m.httpUpload(
-      () => this.refresh(),
-      () => this.updateUI()
-    );
+      m.file = file;
+      m.httpUpload(
+        () => this.refresh(),
+        () => this.updateUI()
+      );
 
-    this.uploadMatters.push(m);
+      this.uploadMatters.push(m);
+    }
   };
 
   shareBatch = () => {
     const uuids = this.selectedMatters.map((i) => i.uuid).join(",");
     ShareOperationModal.open((share: Share) => {
       share.httpCreate(uuids, () => {
-        ShareDialogModal.open(share)
+        ShareDialogModal.open(share);
       });
     });
   };
@@ -266,82 +320,87 @@ export default class List extends TankComponent<IProps, IState> {
     this.pager.setFilterValue("puuid", id);
     this.pager.page = 0;
     const query = this.pager.getParams();
-    Sun.navigateQueryTo({path: "/matter/list", query});
+    Sun.navigateQueryTo({ path: "/matter/list", query });
     this.refresh();
   };
 
   //刷新面包屑
   refreshBreadcrumbs = () => {
-
     //清空暂存区
-    this.selectedMatters = []
+    this.selectedMatters = [];
 
-    let uuid = this.pager.getFilterValue('puuid')
+    let uuid = this.pager.getFilterValue("puuid");
 
     //根目录简单处理即可。
     if (!uuid || uuid === Matter.MATTER_ROOT) {
-
-      this.matter.uuid = Matter.MATTER_ROOT
-      this.breadcrumbModels = []
+      this.matter.uuid = Matter.MATTER_ROOT;
+      this.breadcrumbModels = [];
       this.breadcrumbModels.push({
         name: "所有文件",
         path: "/matter/list",
         query: {},
         displayDirect: true,
-      })
-
+      });
     } else {
-
-      this.matter.uuid = uuid
+      this.matter.uuid = uuid;
       this.matter.httpDetail(() => {
-
-        let arr = []
-        let cur = this.matter.parent
+        let arr = [];
+        let cur = this.matter.parent;
         while (cur) {
-          arr.push(cur)
-          cur = cur.parent
+          arr.push(cur);
+          cur = cur.parent;
         }
 
-        this.breadcrumbModels = []
+        this.breadcrumbModels = [];
 
         this.breadcrumbModels.push({
           name: "所有文件",
           path: "/matter/list",
           query: {},
           displayDirect: false,
-        })
+        });
 
         for (let i = arr.length - 1; i >= 0; i--) {
-          let m = arr[i]
-          let query = this.pager.getParams()
-          query['puuid'] = m.uuid!
+          let m = arr[i];
+          let query = this.pager.getParams();
+          query["puuid"] = m.uuid!;
 
-          console.log("当前层的query:", m.name, query)
+          console.log("当前层的query:", m.name, query);
           this.breadcrumbModels.push({
             name: m.name,
-            path: '/matter/list',
+            path: "/matter/list",
             query: query,
             displayDirect: false,
-          })
+          });
         }
 
         //第一个文件
         this.breadcrumbModels.push({
           name: this.matter.name,
           displayDirect: true,
-          path: '',
+          path: "",
           query: {},
-        })
-      })
+        });
+      });
     }
-  }
+  };
 
   render() {
-    const {pager, director, selectedMatters, uploadMatters} = this;
+    const {
+      pager,
+      director,
+      selectedMatters,
+      uploadMatters,
+      dragEnterCount,
+    } = this;
     return (
       <div className="matter-list">
-
-        <BreadcrumbPanel breadcrumbModels={this.breadcrumbModels}/>
+        {dragEnterCount > 0 ? (
+          <div className="obscure">
+            <CloudUploadOutlined className="white f50" />
+          </div>
+        ) : null}
+        <BreadcrumbPanel breadcrumbModels={this.breadcrumbModels} />
 
         <Row className="mb10 mt15">
           <Col md={16} sm={24}>
@@ -387,7 +446,11 @@ export default class List extends TankComponent<IProps, IState> {
                     移动
                   </Button>
 
-                  <Button type="primary" className="mb10" onClick={this.shareBatch}>
+                  <Button
+                    type="primary"
+                    className="mb10"
+                    onClick={this.shareBatch}
+                  >
                     分享
                   </Button>
                 </>
@@ -427,7 +490,7 @@ export default class List extends TankComponent<IProps, IState> {
         </Row>
 
         {Children.toArray(
-          uploadMatters.map((m) => <UploadMatterPanel matter={m}/>)
+          uploadMatters.map((m) => <UploadMatterPanel matter={m} />)
         )}
 
         {director.createMode ? (

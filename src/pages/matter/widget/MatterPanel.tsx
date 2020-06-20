@@ -21,7 +21,7 @@ import {
   EditOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
-import { Modal, Checkbox, Space } from "antd";
+import { Modal, Checkbox } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import SafeUtil from "../../../common/util/SafeUtil";
 import ClipboardUtil from "../../../common/util/ClipboardUtil";
@@ -221,7 +221,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
           <span className="matter-size">
             {StringUtil.humanFileSize(matter.size)}
           </span>
-          <span className="matter-date">
+          <span className="matter-date mr10">
             {DateUtil.simpleDateHourMinute(matter.updateTime)}
           </span>
         </div>
@@ -277,7 +277,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
         <span className="matter-size">
           {StringUtil.humanFileSize(matter.size)}
         </span>
-        <span className="matter-date">
+        <span className="matter-date mr10">
           {DateUtil.simpleDateHourMinute(matter.updateTime)}
         </span>
       </div>
