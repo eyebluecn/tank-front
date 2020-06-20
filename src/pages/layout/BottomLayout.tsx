@@ -5,6 +5,7 @@ import Preference from "../../common/model/preference/Preference";
 import Moon from "../../common/model/global/Moon";
 import DefaultLogoPng from '../../assets/image/logo.png';
 import Cookies from "js-cookie";
+import Sun from "../../common/model/global/Sun";
 
 interface IProps {
 
@@ -34,7 +35,7 @@ export default class BottomLayout extends TankComponent <IProps, IState> {
     }
     Cookies.set('_lang', Moon.getSingleton().lang);
 
-    this.updateUI()
+    Sun.updateFrame()
   }
 
   render() {

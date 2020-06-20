@@ -64,7 +64,7 @@ export default class Edit extends TankComponent<IProps, IState> {
     that.preference.assign(values)
 
     that.preference.httpSave(function () {
-      MessageBoxUtil.success("修改成功！")
+      MessageBoxUtil.success(Moon.t("operationSuccess"))
 
       Sun.updateFrame()
 
@@ -94,7 +94,7 @@ export default class Edit extends TankComponent<IProps, IState> {
     return (
       <div className="page-preference-edit">
 
-        <TankTitle name={'网站偏好编辑'}>
+        <TankTitle name={Moon.t("preference.editPreference")}>
         </TankTitle>
 
         <TankContentCard loading={preference.detailLoading}>
@@ -112,9 +112,9 @@ export default class Edit extends TankComponent<IProps, IState> {
           >
 
             <Form.Item
-              label="网站名称"
+              label={Moon.t("preference.websiteName")}
               name="name"
-              rules={[{required: true, message: '请输入网站名称!'}]}
+              rules={[{required: true, message: Moon.t("preference.enterWebsiteName")}]}
             >
               <Input/>
             </Form.Item>
@@ -134,64 +134,64 @@ export default class Edit extends TankComponent<IProps, IState> {
             </Form.Item>
 
             <Form.Item
-              label="版权信息"
+              label={Moon.t("preference.copyright")}
               name="copyright"
             >
               <Input/>
             </Form.Item>
 
             <Form.Item
-              label="备案信息"
+              label={Moon.t("preference.extraInfo")}
               name="record"
             >
               <Input/>
             </Form.Item>
 
             <Form.Item
-              label="office预览地址"
+              label={Moon.t("preference.officeUrl")}
               name="officeUrl"
             >
               <Input/>
             </Form.Item>
 
             <Form.Item
-              label="zip最大数量限制"
+              label={Moon.t("preference.zipMaxNumLimit")}
               name="downloadDirMaxNum"
-              rules={[{required: true, message: 'zip最大数量限制必填!'}]}
+              rules={[{required: true, message: Moon.t("preference.enterZipMaxNumLimit")}]}
             >
               <InputNumber min={-1} max={1000} className='w150'/>
             </Form.Item>
 
-            <Form.Item label="zip大小限制(B)"
+            <Form.Item label={Moon.t("preference.zipMaxSizeLimit")}
                        required={true}
             >
               <Form.Item
                 name="downloadDirMaxSize"
-                rules={[{required: true, message: 'zip大小限制必填!'}]}
+                rules={[{required: true, message: Moon.t("preference.enterZipMaxSizeLimit")}]}
                 noStyle
               >
                 <InputNumber min={-1} className='w150'/>
               </Form.Item>
               <span
-                className="pl10"> 当前值：
+                className="pl10"> {Moon.t("preference.current")}:
                 {(this.formRef && this.formRef.current) ?
                   FileUtil.humanFileSize(this.formRef.current.getFieldValue("downloadDirMaxSize"))
                   : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
               </span>
             </Form.Item>
 
-            <Form.Item label="默认用户空间大小(B)"
+            <Form.Item label={Moon.t("preference.userDefaultSizeLimit")}
                        required={true}
             >
               <Form.Item
                 name="defaultTotalSizeLimit"
-                rules={[{required: true, message: '默认用户空间大小必填!'}]}
+                rules={[{required: true, message: Moon.t("preference.enterUserDefaultSizeLimit")}]}
                 noStyle
               >
                 <InputNumber min={-1} className='w150'/>
               </Form.Item>
               <span
-                className="pl10"> 当前值：
+                className="pl10"> {Moon.t("preference.current")}:
                 {(this.formRef && this.formRef.current) ?
                   FileUtil.humanFileSize(this.formRef.current.getFieldValue("defaultTotalSizeLimit"))
                   : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
@@ -199,7 +199,7 @@ export default class Edit extends TankComponent<IProps, IState> {
             </Form.Item>
 
             <Form.Item
-              label="开放注册"
+              label={Moon.t("preference.allowRegister")}
               name="allowRegister"
               required={true}
               valuePropName="checked"
@@ -209,7 +209,7 @@ export default class Edit extends TankComponent<IProps, IState> {
 
             <div className="text-right">
               <Button type="primary" htmlType="submit" icon={<SaveOutlined/>}>
-                保存
+                {Moon.t("save")}
               </Button>
             </div>
 

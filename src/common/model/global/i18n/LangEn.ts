@@ -19,7 +19,8 @@ let LangEn = {
     activeIpTop10: 'Active IP TOP10',
     loading: 'loading...',
     date: 'Date',
-    num: 'Num'
+    num: 'Num',
+    warnHint: 'Hint: data in this page updates everyday at 5.a.m',
   },
   install: {
     configMysql: "Config MySQL",
@@ -163,6 +164,11 @@ let LangEn = {
     systemCleanupDescription: "This operation will cleanup everything except administrators' data",
     systemCleanupPrompt: "This operation will cleanup everything except administrators' account data, please input login password.",
     officeUrl: "Office Preview Url",
+    editPreference: "Edit Preference",
+    enterWebsiteName: "Please enter website name!",
+    enterZipMaxNumLimit: "Please enter zip max num!",
+    enterZipMaxSizeLimit: "Please enter zip max size!",
+    enterUserDefaultSizeLimit: "Please enter user's default size!",
   },
   share: {
     shareDetail: "Share Detail",

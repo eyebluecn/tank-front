@@ -142,7 +142,7 @@ export default class Detail extends TankComponent <IProps, IState> {
 
           <Link to={'/user/edit/' + currentUser.uuid}>
             <Button className='ml10' type="primary" icon={<EditOutlined/>}>
-              编辑
+              {Moon.t("edit")}
             </Button>
           </Link>
 

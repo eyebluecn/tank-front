@@ -56,18 +56,18 @@ export default class Index extends TankComponent<IProps, IState> {
 
     return (
       <div className="page-preference-index">
-        <TankTitle name={Moon.t("dashboard.recentDayInvokeUV")}>
+        <TankTitle name={Moon.t("layout.setting")}>
           <Link to={'/preference/edit'}>
-            <Button type={"primary"} icon={<EditOutlined/>}>编辑</Button>
+            <Button type={"primary"} icon={<EditOutlined/>}>{Moon.t("edit")}</Button>
           </Link>
         </TankTitle>
 
         <TankContentCard>
-          <InfoCell name={'网站名称'}>
+          <InfoCell name={Moon.t("preference.websiteName")}>
             {this.preference.name}
           </InfoCell>
 
-          <InfoCell name={'logo'}>
+          <InfoCell name={Moon.t("preference.logo")}>
             {this.preference.logoUrl && (
               <img src={this.preference.logoUrl} alt="logo"
                    className="img-logo" onClick={() => {
@@ -85,32 +85,32 @@ export default class Index extends TankComponent<IProps, IState> {
             )}
           </InfoCell>
 
-          <InfoCell name={'版权信息'}>
+          <InfoCell name={Moon.t("preference.copyright")}>
             <span dangerouslySetInnerHTML={{__html: this.preference.copyright}}/>
 
           </InfoCell>
 
-          <InfoCell name={'备案信息'}>
+          <InfoCell name={Moon.t("preference.extraInfo")}>
             <span dangerouslySetInnerHTML={{__html: this.preference.record}}/>
           </InfoCell>
 
-          <InfoCell name={'zip下载数量限制'}>
-            {this.preference.downloadDirMaxNum === -1 ? '无限制' : this.preference.downloadDirMaxNum}
+          <InfoCell name={Moon.t("preference.zipMaxNumLimit")}>
+            {this.preference.downloadDirMaxNum === -1 ? Moon.t("preference.noLimit") : this.preference.downloadDirMaxNum}
           </InfoCell>
 
-          <InfoCell name={'zip下载大小限制'}>
+          <InfoCell name={Moon.t("preference.zipMaxSizeLimit")}>
             {FileUtil.humanFileSize(this.preference.downloadDirMaxSize)}
           </InfoCell>
 
-          <InfoCell name={'用户默认总大小限制'}>
+          <InfoCell name={Moon.t("preference.userDefaultSizeLimit")}>
             {FileUtil.humanFileSize(this.preference.defaultTotalSizeLimit)}
           </InfoCell>
 
-          <InfoCell name={'允许自主注册'}>
-            {this.preference.allowRegister ? '是' : '否'}
+          <InfoCell name={Moon.t("preference.allowRegister")}>
+            {this.preference.allowRegister ? Moon.t("yes") : Moon.t("no")}
           </InfoCell>
 
-          <InfoCell name={'文档链接'}>
+          <InfoCell name={Moon.t("preference.docLink")}>
             <a href={'https://tank-doc.eyeblue.cn/zh'} target="_blank">
               https://tank-doc.eyeblue.cn/zh
             </a>

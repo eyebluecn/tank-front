@@ -16,7 +16,8 @@ let LangZh = {
     activeIpTop10: '活跃IP TOP10',
     loading: '加载中…',
     date: '日期',
-    num: '数量'
+    num: '数量',
+    warnHint: '温馨提示：本页面数据每日凌晨5点清洗一次',
   },
   install: {
     configMysql: "配置MySQL",
@@ -143,6 +144,7 @@ let LangZh = {
   },
   preference: {
     websiteName: "网站名称",
+
     logo: "Logo",
     logoSquare: "logo请使用正方形图片，否则在显示时会裁剪成正方形",
     onlyAllowIco: "只允许上传.ico图标",
@@ -160,6 +162,11 @@ let LangZh = {
     systemCleanupDescription: "重置系统将清空除管理员账号外所有数据",
     systemCleanupPrompt: "重置系统将清空除管理员账号外所有数据，事关重大，请输入登录密码",
     officeUrl: "Office预览链接",
+    editPreference: "设置网站偏好",
+    enterWebsiteName: "请输入网站名称!",
+    enterZipMaxNumLimit: "zip最大数量限制必填!",
+    enterZipMaxSizeLimit: "zip大小限制必填!",
+    enterUserDefaultSizeLimit: "默认用户空间大小必填!",
   },
   share: {
     shareDetail: "分享详情",

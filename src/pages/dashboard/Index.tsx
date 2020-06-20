@@ -14,6 +14,7 @@ import DateUtil from '../../common/util/DateUtil';
 import SortDirection from "../../common/model/base/SortDirection";
 import FileUtil from "../../common/util/FileUtil";
 import Matter from '../../common/model/matter/Matter';
+import Moon from "../../common/model/global/Moon";
 
 Echarts.registerTheme('tank_theme', theme);
 
@@ -79,11 +80,11 @@ export default class Index extends TankComponent<IProps, IState> {
       data: ['PV', 'UV']
     },
     xAxis: {
-      name: "日期",
+      name: Moon.t("dashboard.date"),
       data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
     },
     yAxis: {
-      name: "数量"
+      name: Moon.t("dashboard.num")
     },
     series: [{
       name: 'PV',
@@ -259,24 +260,24 @@ export default class Index extends TankComponent<IProps, IState> {
     return (
       <div className="page-dashboard-index">
 
-        <TankTitle name={'监控统计'}>
+        <TankTitle name={Moon.t("layout.dashboard")}>
         </TankTitle>
 
         <Row gutter={18}>
           <Col xs={24} sm={24} md={12} lg={6}>
             <div className="text-block">
               <div className="upper">
-                <div className="indicator">总PV</div>
+                <div className="indicator">{Moon.t("dashboard.totalInvokeNum")}</div>
                 <div className="amount">{dashboard.totalInvokeNum}</div>
                 <div>
-                  <RatePanel name="周环比" standardValue={this.standardWeekInvokeNum}
+                  <RatePanel name={Moon.t("dashboard.weekRate")} standardValue={this.standardWeekInvokeNum}
                              compareValue={this.compareWeekInvokeNum}/>
-                  <RatePanel name="日环比" standardValue={this.standardDayInvokeNum}
+                  <RatePanel name={Moon.t("dashboard.dayRate")} standardValue={this.standardDayInvokeNum}
                              compareValue={this.compareDayInvokeNum}/>
                 </div>
               </div>
               <div className="lower">
-                昨日PV:{dashboard.invokeNum}
+                {Moon.t("dashboard.yesterdayInvoke")}:{dashboard.invokeNum}
               </div>
             </div>
           </Col>
@@ -284,17 +285,17 @@ export default class Index extends TankComponent<IProps, IState> {
           <Col xs={24} sm={24} md={12} lg={6}>
             <div className="text-block">
               <div className="upper">
-                <div className="indicator">总UV</div>
+                <div className="indicator">{Moon.t("dashboard.totalUV")}</div>
                 <div className="amount">{dashboard.totalUv}</div>
                 <div>
-                  <RatePanel name="周环比" standardValue={this.standardWeekUv}
+                  <RatePanel name={Moon.t("dashboard.weekRate")} standardValue={this.standardWeekUv}
                              compareValue={this.compareWeekUv}/>
-                  <RatePanel name="日环比" standardValue={this.standardDayUv}
+                  <RatePanel name={Moon.t("dashboard.dayRate")} standardValue={this.standardDayUv}
                              compareValue={this.compareDayUv}/>
                 </div>
               </div>
               <div className="lower">
-                昨日UV:{dashboard.uv}
+                {Moon.t("dashboard.yesterdayUV")}:{dashboard.uv}
               </div>
             </div>
           </Col>
@@ -303,17 +304,17 @@ export default class Index extends TankComponent<IProps, IState> {
           <Col xs={24} sm={24} md={12} lg={6}>
             <div className="text-block">
               <div className="upper">
-                <div className="indicator">总文件数</div>
+                <div className="indicator">{Moon.t("dashboard.totalMatterNum")}</div>
                 <div className="amount">{dashboard.totalMatterNum}</div>
                 <div>
-                  <RatePanel name="周环比" standardValue={this.standardWeekMatterNum}
+                  <RatePanel name={Moon.t("dashboard.weekRate")} standardValue={this.standardWeekMatterNum}
                              compareValue={this.compareWeekMatterNum}/>
-                  <RatePanel name="日环比" standardValue={this.standardDayMatterNum}
+                  <RatePanel name={Moon.t("dashboard.dayRate")} standardValue={this.standardDayMatterNum}
                              compareValue={this.compareDayMatterNum}/>
                 </div>
               </div>
               <div className="lower">
-                昨日文件数:{dashboard.matterNum}
+                {Moon.t("dashboard.yesterdayMatterNum")}:{dashboard.matterNum}
               </div>
             </div>
           </Col>
@@ -321,17 +322,17 @@ export default class Index extends TankComponent<IProps, IState> {
           <Col xs={24} sm={24} md={12} lg={6}>
             <div className="text-block">
               <div className="upper">
-                <div className="indicator">文件总大小</div>
+                <div className="indicator">{Moon.t("dashboard.totalFileSize")}</div>
                 <div className="amount">{FileUtil.humanFileSize(dashboard.totalFileSize)}</div>
                 <div>
-                  <RatePanel name="周环比" standardValue={this.standardWeekSize}
+                  <RatePanel name={Moon.t("dashboard.weekRate")} standardValue={this.standardWeekSize}
                              compareValue={this.compareWeekSize}/>
-                  <RatePanel name="日环比" standardValue={this.standardDaySize}
+                  <RatePanel name={Moon.t("dashboard.dayRate")} standardValue={this.standardDaySize}
                              compareValue={this.compareDaySize}/>
                 </div>
               </div>
               <div className="lower">
-                昨日文件大小:{FileUtil.humanFileSize(dashboard.fileSize)}
+                {Moon.t("dashboard.yesterdayMatterSize")}:{FileUtil.humanFileSize(dashboard.fileSize)}
               </div>
             </div>
           </Col>
@@ -342,7 +343,7 @@ export default class Index extends TankComponent<IProps, IState> {
 
             <div className="figure-block">
               <div className="title">
-                最近15日PV/UV
+                {Moon.t("dashboard.recentDayInvokeUV", 15)}
               </div>
               <figure>
                 <ReactEcharts
@@ -365,7 +366,7 @@ export default class Index extends TankComponent<IProps, IState> {
 
             <div className="figure-block">
               <div className="title">
-                文件下载量TOP10
+                {Moon.t("dashboard.downloadMatterTop10")}
               </div>
               <div className="list-rank">
                 <ul>
@@ -392,7 +393,7 @@ export default class Index extends TankComponent<IProps, IState> {
 
             <div className="figure-block">
               <div className="title">
-                活跃IP TOP10
+                {Moon.t("dashboard.activeIpTop10")}
               </div>
               <div className="list-rank">
                 <ul>
@@ -413,12 +414,11 @@ export default class Index extends TankComponent<IProps, IState> {
 
           </Col>
 
-
         </Row>
 
         <div>
           <Alert
-            message="温馨提示：本页面数据每日凌晨5点清洗一次"
+            message={Moon.t("dashboard.warnHint")}
             type="warning"
           />
         </div>

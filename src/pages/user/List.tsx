@@ -20,6 +20,7 @@ import {EditOutlined} from "@ant-design/icons/lib";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import Color from "../../common/model/base/option/Color";
 import TransfigurationModal from "./widget/TransfigurationModal";
+import Moon from "../../common/model/global/Moon";
 
 
 interface IProps extends RouteComponentProps {
@@ -163,9 +164,9 @@ export default class List extends TankComponent<IProps, IState> {
       render: (text: any, record: User) => (
         <span>
 
-          <Link title="编辑"
+          <Link title={Moon.t("edit")}
                 to={StringUtil.prePath(match.path) + '/edit/' + record.uuid}>
-            <Tooltip title="编辑">
+            <Tooltip title={Moon.t("edit")}>
               <EditOutlined className="btn-action"/>
             </Tooltip>
           </Link>

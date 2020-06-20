@@ -60,9 +60,6 @@ export default class SideLayout extends TankComponent <IProps, IState> {
     let preference: Preference = Moon.getSingleton().preference
     let user: User = Moon.getSingleton().user
 
-    console.log("当前头像1", user.avatarUrl)
-    console.log("当前头像", user.getAvatarUrl())
-
     return (
       <div className={`layout-side ${Sun.getSingleton().showDrawer ? 'show-drawer' : ''}`}>
 
