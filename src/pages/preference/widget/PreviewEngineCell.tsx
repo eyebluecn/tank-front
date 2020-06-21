@@ -3,8 +3,9 @@ import "./PreviewEngineCell.less";
 import TankComponent from "../../../common/component/TankComponent";
 import PreviewEngine from "../../../common/model/preference/model/PreviewEngine";
 import { DeleteOutlined } from "@ant-design/icons";
-import { Checkbox, Form, Input, Switch, Badge, Tooltip } from "antd";
+import { Form, Input, Switch, Tooltip } from "antd";
 import Lang from "../../../common/model/global/Lang";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 interface IProps {
   previewEngine: PreviewEngine;
@@ -17,7 +18,6 @@ interface IState {}
 export default class PreviewEngineCell extends TankComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    this.state = {};
   }
 
   render() {
@@ -40,7 +40,10 @@ export default class PreviewEngineCell extends TankComponent<IProps, IState> {
           <Form.Item
             label={
               <Tooltip title={Lang.t("preference.engineRegHelper")}>
-                <Badge dot>{Lang.t("preference.engineReg")}</Badge>
+                <div>
+                  {Lang.t("preference.engineReg")}
+                  <QuestionCircleOutlined className="btn-action text-warning" />
+                </div>
               </Tooltip>
             }
             rules={[
@@ -60,7 +63,10 @@ export default class PreviewEngineCell extends TankComponent<IProps, IState> {
           <Form.Item
             label={
               <Tooltip title={Lang.t("preference.engineSuffixPlaceHolder")}>
-                <Badge dot>{Lang.t("preference.engineSuffix")}</Badge>
+                <div>
+                  {Lang.t("preference.engineSuffix")}
+                  <QuestionCircleOutlined className="btn-action text-warning" />
+                </div>
               </Tooltip>
             }
             rules={[
@@ -82,8 +88,15 @@ export default class PreviewEngineCell extends TankComponent<IProps, IState> {
 
           <Form.Item
             label={
-              <Tooltip title={`${Lang.t("preference.previewCurrent")} or ${Lang.t("preference.previewOpen")}`}>
-                <Badge dot>{Lang.t("preference.previewCurrent")}</Badge>
+              <Tooltip
+                title={`${Lang.t("preference.previewCurrent")} or ${Lang.t(
+                  "preference.previewOpen"
+                )}`}
+              >
+                <div>
+                  {Lang.t("preference.previewCurrent")}
+                  <QuestionCircleOutlined className="btn-action text-warning" />
+                </div>
               </Tooltip>
             }
           >

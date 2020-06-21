@@ -147,37 +147,33 @@ export default class Index extends TankComponent<IProps, IState> {
               https://tank-doc.eyeblue.cn/zh
             </a>
           </InfoCell>
+          <InfoCell name={Lang.t("preference.previewConfig")}>
+            {this.preference.previewConfig.previewEngines.map((engines, index) => (
+              <div key={index} className="relative mb10 box">
+                <TankContentCard>
+                  <Tooltip title={Lang.t("preference.enginePreview")}>
+                    {engines.previewInSite ? (
+                      <Tag className="preview-tip" color="warning">
+                        {Lang.t("preference.previewCurrent")}
+                      </Tag>
+                    ) : (
+                      <Tag className="preview-tip" color="success">
+                        {Lang.t("preference.previewOpen")}
+                      </Tag>
+                    )}
+                  </Tooltip>
+                  <InfoCell name={Lang.t("preference.engineReg")}>
+                    {engines.url}
+                  </InfoCell>
+                  <InfoCell name={Lang.t("preference.engineSuffix")}>
+                    {engines.extensions}
+                  </InfoCell>
+                </TankContentCard>
+              </div>
+            ))}
+          </InfoCell>
         </TankContentCard>
 
-        <div className="mt20" />
-        <TankTitle name={Lang.t("preference.previewConfig")} />
-
-        {this.preference.previewConfig.previewEngines.map((engines, index) => (
-          <div key={index} className="relative mb10">
-            <TankContentCard>
-              <Divider orientation="left">
-                {Lang.t("preference.engine", index + 1)}
-              </Divider>
-              <Tooltip title={Lang.t("preference.enginePreview")}>
-                {engines.previewInSite ? (
-                  <Tag className="preview-tip" color="warning">
-                    {Lang.t("preference.previewCurrent")}
-                  </Tag>
-                ) : (
-                  <Tag className="preview-tip" color="success">
-                    {Lang.t("preference.previewOpen")}
-                  </Tag>
-                )}
-              </Tooltip>
-              <InfoCell name={Lang.t("preference.engineReg")}>
-                {engines.url}
-              </InfoCell>
-              <InfoCell name={Lang.t("preference.engineSuffix")}>
-                {engines.extensions}
-              </InfoCell>
-            </TankContentCard>
-          </div>
-        ))}
       </div>
     );
   }
