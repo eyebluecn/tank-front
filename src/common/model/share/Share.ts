@@ -175,19 +175,10 @@ export default class Share extends BaseEntity {
         that.detailLoading = false;
         SafeUtil.safeCallback(successCallback)(response);
       },
-      function (error: any) {
+      function (errorMsg: any) {
         that.detailLoading = false;
-        switch (error.data.code) {
-          case WebResultCode.NEED_SHARE_CODE:
-            MessageBoxUtil.error('请输入提取码');
-            break;
-          case WebResultCode.SHARE_CODE_ERROR:
-            MessageBoxUtil.error('提取码错误');
-            break;
-          default:
-            MessageBoxUtil.error(error.response);
-        }
-        SafeUtil.safeCallback(errorCallback)(error);
+        MessageBoxUtil.error(errorMsg);
+        SafeUtil.safeCallback(errorCallback)(errorMsg);
       }
     );
   }

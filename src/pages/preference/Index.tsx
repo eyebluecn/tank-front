@@ -5,7 +5,7 @@ import TankComponent from "../../common/component/TankComponent";
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
 import TankTitle from "../widget/TankTitle";
-import { Button, Divider, Tooltip, Tag } from "antd";
+import { Button, Tooltip, Tag } from "antd";
 import { EditOutlined, ThunderboltOutlined } from "@ant-design/icons";
 import InfoCell from "../widget/InfoCell";
 import Preference from "../../common/model/preference/Preference";
