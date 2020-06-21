@@ -13,7 +13,7 @@ import FrameLoading from "../widget/FrameLoading";
 import Moon from "../../common/model/global/Moon";
 import Sun from "../../common/model/global/Sun";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import { ExclamationCircleFilled, DownloadOutlined, StopOutlined, LinkOutlined } from "@ant-design/icons";
 import ShareDialogModal from "./widget/ShareDialogModal";
 import DateUtil from "../../common/util/DateUtil";
 import MatterPanel from "../matter/widget/MatterPanel";
@@ -230,17 +230,20 @@ export default class Detail extends TankComponent<IProps, IState> {
                 <div className="right-box">
                   <Space>
                     <Button type="primary" onClick={this.downloadZip}>
+                      <DownloadOutlined />
                       {Lang.t("download")}
                     </Button>
                     {user.uuid && user.uuid === share.userUuid ? (
                       <>
                         <Button danger onClick={this.cancelShare}>
+                          <StopOutlined />
                           {Lang.t("share.cancelShare")}
                         </Button>
                         <Button
                           type="primary"
                           onClick={() => ShareDialogModal.open(share)}
                         >
+                          <LinkOutlined />
                           {Lang.t("share.getLink")}
                         </Button>
                       </>
@@ -283,7 +286,7 @@ export default class Detail extends TankComponent<IProps, IState> {
                 />
               ))
             ) : (
-              <Empty />
+              <Empty description={Lang.t("share.noContent")} />
             )}
           </div>
         )}

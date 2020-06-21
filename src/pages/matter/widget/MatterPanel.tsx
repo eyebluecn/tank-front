@@ -14,12 +14,12 @@ import {
   UnlockFilled,
   DownloadOutlined,
   ExclamationCircleFilled,
-  SmallDashOutlined,
   LinkOutlined,
   DeleteOutlined,
   InfoCircleTwoTone,
   EditOutlined,
   InfoCircleOutlined,
+  EllipsisOutlined
 } from "@ant-design/icons";
 import { Modal, Checkbox, Tooltip } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
@@ -449,7 +449,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                   SafeUtil.stopPropagationWrap(e)(this.toggleHandles())
                 }
               >
-                <SmallDashOutlined className="btn-action navy f18" />
+                <EllipsisOutlined className="btn-action navy f18" />
               </span>
             </div>
 

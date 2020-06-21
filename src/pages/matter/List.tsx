@@ -12,18 +12,26 @@ import UploadMatterPanel from "./widget/UploadMatterPanel";
 import {
   Button,
   Col,
+  Empty,
   Input,
   Modal,
   Pagination,
   Row,
   Space,
   Upload,
-  Tooltip,
 } from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import {
   ExclamationCircleFilled,
   CloudUploadOutlined,
+  PlusSquareOutlined,
+  MinusSquareOutlined,
+  FolderOutlined,
+  SyncOutlined,
+  DeleteOutlined,
+  DownloadOutlined,
+  DragOutlined,
+  ShareAltOutlined,
 } from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Sun from "../../common/model/global/Sun";
@@ -408,6 +416,7 @@ export default class List extends TankComponent<IProps, IState> {
             <Space className="buttons">
               {selectedMatters.length !== pager.data.length ? (
                 <Button type="primary" className="mb10" onClick={this.checkAll}>
+                  <PlusSquareOutlined />
                   {Lang.t("selectAll")}
                 </Button>
               ) : null}
@@ -418,6 +427,7 @@ export default class List extends TankComponent<IProps, IState> {
                   className="mb10"
                   onClick={this.checkNone}
                 >
+                  <MinusSquareOutlined />
                   {Lang.t("cancel")}
                 </Button>
               ) : null}
@@ -428,6 +438,7 @@ export default class List extends TankComponent<IProps, IState> {
                     className="mb10"
                     onClick={this.deleteBatch}
                   >
+                    <DeleteOutlined />
                     {Lang.t("delete")}
                   </Button>
 
@@ -436,6 +447,7 @@ export default class List extends TankComponent<IProps, IState> {
                     className="mb10"
                     onClick={this.downloadZip}
                   >
+                    <DownloadOutlined />
                     {Lang.t("download")}
                   </Button>
 
@@ -444,6 +456,7 @@ export default class List extends TankComponent<IProps, IState> {
                     className="mb10"
                     onClick={this.toggleMoveBatch}
                   >
+                    <DragOutlined />
                     {Lang.t("matter.move")}
                   </Button>
 
@@ -452,6 +465,7 @@ export default class List extends TankComponent<IProps, IState> {
                     className="mb10"
                     onClick={this.shareBatch}
                   >
+                    <ShareAltOutlined />
                     {Lang.t("matter.share")}
                   </Button>
                 </>
@@ -464,6 +478,7 @@ export default class List extends TankComponent<IProps, IState> {
                 multiple
               >
                 <Button type="primary" className="mb10">
+                  <CloudUploadOutlined />
                   {Lang.t("matter.upload")}
                 </Button>
               </Upload>
@@ -472,17 +487,19 @@ export default class List extends TankComponent<IProps, IState> {
                 className="mb10"
                 onClick={this.createDirectory}
               >
+                <FolderOutlined />
                 {Lang.t("matter.create")}
               </Button>
 
               <Button type="primary" className="mb10" onClick={this.refresh}>
+                <SyncOutlined />
                 {Lang.t("refresh")}
               </Button>
             </Space>
           </Col>
           <Col md={8} sm={24}>
             <Input.Search
-              placeholder={Lang.t("searchFile")}
+              placeholder={Lang.t("matter.searchFile")}
               onSearch={(value) => this.searchFile(value)}
               onChange={this.changeSearch}
               enterButton
@@ -503,17 +520,21 @@ export default class List extends TankComponent<IProps, IState> {
           />
         ) : null}
         <div>
-          {pager.data.map((matter) => (
-            <MatterPanel
-              key={matter.uuid!}
-              director={director}
-              matter={matter}
-              onGoToDirectory={this.goToDirectory}
-              onDeleteSuccess={this.refresh}
-              onCheckMatter={this.checkMatter}
-              onPreviewImage={this.previewImage}
-            />
-          ))}
+          {pager.loading || pager.data.length ? (
+            pager.data.map((matter) => (
+              <MatterPanel
+                key={matter.uuid!}
+                director={director}
+                matter={matter}
+                onGoToDirectory={this.goToDirectory}
+                onDeleteSuccess={this.refresh}
+                onCheckMatter={this.checkMatter}
+                onPreviewImage={this.previewImage}
+              />
+            ))
+          ) : (
+            <Empty description={Lang.t("matter.noContentYet")} />
+          )}
         </div>
         <Pagination
           className="mt10 pull-right"
