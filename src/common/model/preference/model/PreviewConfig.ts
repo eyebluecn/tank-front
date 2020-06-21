@@ -4,6 +4,8 @@
  */
 import Base from "../../base/Base";
 import PreviewEngine from "./PreviewEngine";
+import MimeUtil from "../../../util/MimeUtil";
+import MessageBoxUtil from "../../../util/MessageBoxUtil";
 
 /**
  * 预览配置

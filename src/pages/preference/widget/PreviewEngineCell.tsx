@@ -3,7 +3,7 @@ import "./PreviewEngineCell.less"
 import TankComponent from "../../../common/component/TankComponent";
 import PreviewEngine from "../../../common/model/preference/model/PreviewEngine";
 import {DeleteOutlined} from '@ant-design/icons';
-import {Form, Input} from "antd";
+import {Checkbox, Form, Input, Switch} from "antd";
 
 interface IProps {
 
@@ -70,6 +70,16 @@ export default class PreviewEngineCell extends TankComponent <IProps, IState> {
                      previewEngine.extensions = e.target.value
                      this.updateUI()
                    }}/>
+          </Form.Item>
+
+          <Form.Item
+            label={"本站预览"}
+          >
+            <Switch checked={previewEngine.previewInSite}
+                    onChange={(val) => {
+                      previewEngine.previewInSite = val
+                      this.updateUI()
+                    }}/>
           </Form.Item>
 
         </div>

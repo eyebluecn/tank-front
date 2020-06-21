@@ -621,7 +621,7 @@ export default class MimeUtil {
     ".zip": "application/zip",
   };
 
-  //根据一个文件名，获取其后缀名(一律使用小写)，如果没有后缀名，那么返回""
+  //根据一个文件名，获取其后缀名(一律使用小写，带.)，如果没有后缀名，那么返回""
   static getExtension(filename: string | null) {
     if (filename == null) {
       return "";
@@ -631,6 +631,19 @@ export default class MimeUtil {
       return "";
     } else {
       return filename.substring(dotIndex).toLowerCase();
+    }
+  }
+
+  //根据一个文件名，获取其后缀名(一律使用小写，不带.)，如果没有后缀名，那么返回""
+  static getExtensionWithoutDot(filename: string | null) {
+    if (filename == null) {
+      return "";
+    }
+    let dotIndex = filename.lastIndexOf(".");
+    if (dotIndex === -1) {
+      return "";
+    } else {
+      return filename.substring(dotIndex + 1).toLowerCase();
     }
   }
 
