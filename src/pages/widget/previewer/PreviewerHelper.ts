@@ -78,16 +78,16 @@ export default class PreviewerHelper {
     } else {
 
       let targetUrl = previewEngine.url
-      let matterUrl = matter.getPreviewUrl()
 
       const engine: PreviewEngine = previewEngine
       let needToken: boolean = matter.privacy && (targetUrl.indexOf("{publicUrl}") !== -1 || targetUrl.indexOf("{encodePublicUrl}") !== -1)
 
-      PreviewerHelper.prepareMatterUrl(matter, needToken, function () {
-        targetUrl = targetUrl.replace("{originUrl}", matterUrl);
-        targetUrl = targetUrl.replace("{publicUrl}", matterUrl);
-        targetUrl = targetUrl.replace("{encodeOriginUrl}", encodeURIComponent(matterUrl));
-        targetUrl = targetUrl.replace("{encodePublicUrl}", encodeURIComponent(matterUrl));
+      PreviewerHelper.prepareMatterUrl(matter, needToken, function (url) {
+
+        targetUrl = targetUrl.replace("{originUrl}", url);
+        targetUrl = targetUrl.replace("{publicUrl}", url);
+        targetUrl = targetUrl.replace("{encodeOriginUrl}", encodeURIComponent(url));
+        targetUrl = targetUrl.replace("{encodePublicUrl}", encodeURIComponent(url));
 
         if (engine.previewInSite) {
           BrowserPreviewer.show(fileName, targetUrl, matter.size)

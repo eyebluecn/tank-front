@@ -58,7 +58,7 @@ export default class PreviewEngine extends Base {
     let globalEngine: PreviewEngine = new PreviewEngine()
     globalEngine.url = "{originUrl}"
     globalEngine.extensions = "*"
-    globalEngine.previewInSite = false
+    globalEngine.previewInSite = true
     defaultEngines.push(globalEngine)
 
     return defaultEngines
