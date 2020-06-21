@@ -174,6 +174,12 @@ let LangZh = {
     enterZipMaxNumLimit: "zip最大数量限制必填!",
     enterZipMaxSizeLimit: "zip大小限制必填!",
     enterUserDefaultSizeLimit: "默认用户空间大小必填!",
+    engine: "{}号引擎",
+    engineReg: "引擎格式",
+    engineSuffix: "匹配后缀",
+    enginePreview: "预览方式",
+    previewCurrent: "本站预览",
+    previewOpen: "新标签打开"
   },
   share: {
     shareDetail: "分享详情",

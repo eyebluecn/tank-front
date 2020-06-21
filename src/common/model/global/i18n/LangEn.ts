@@ -172,6 +172,12 @@ let LangEn = {
     enterZipMaxNumLimit: "Please enter zip max num!",
     enterZipMaxSizeLimit: "Please enter zip max size!",
     enterUserDefaultSizeLimit: "Please enter user's default size!",
+    engine: "The number {} engine",
+    engineReg: "Engine format",
+    engineSuffix: "Engine suffix",
+    enginePreview: "Engine preview",
+    previewCurrent: "preview in current page",
+    previewOpen: "preview in new page"
   },
   share: {
     shareDetail: "Share Detail",
