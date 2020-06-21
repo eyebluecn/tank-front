@@ -89,6 +89,7 @@ let LangEn = {
     size: "Size",
     preview: "Preview",
     move: "Move",
+    moveTo: "MoveTo",
     upload: "Upload",
     create: "Create",
     createTime: "Create Time",

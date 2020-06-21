@@ -90,6 +90,7 @@ let LangZh = {
     size: "大小",
     preview: "预览",
     move: "移动",
+    moveTo: "移动到",
     upload: "上传",
     create: "新建",
     createTime: "创建日期",

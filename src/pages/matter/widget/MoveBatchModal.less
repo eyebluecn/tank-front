@@ -1,6 +1,30 @@
 .tree-wrapper {
   max-height: 80vh;
   overflow: auto;
+  .ant-tree-list {
+    font-size: 16px;
+    color: #606266;
+    .ant-tree-treenode {
+      display: flex;
+      align-items: center;
+      height: 40px;
+    }
+    .ant-tree-title {
+      margin-left: 4px;
+    }
+    .ant-tree-treenode-selected {
+      &:before {
+        background: rgba(0, 0, 0, 0.1) !important;
+      }
+      .ant-tree-node-content-wrapper,
+      .ant-tree-switcher {
+        color: #606266 !important;
+      }
+    }
+  }
+}
+.ant-modal-confirm-content {
+  margin-top: 15px !important;
 }
 
 .move-modal {

@@ -5,6 +5,7 @@ import Pager from "../../../common/model/base/Pager";
 import Matter from "../../../common/model/matter/Matter";
 import "./MoveBatchModal.less";
 import Lang from "../../../common/model/global/Lang";
+import { FolderFilled, FolderOpenFilled } from "@ant-design/icons";
 
 interface IProps {
   onSuccess: (uuid: string) => any;
@@ -25,7 +26,6 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    this.state = {};
   }
 
   componentDidMount() {
@@ -36,7 +36,7 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
   static open(onSuccess: (uuid: string) => void) {
     let modal = Modal.confirm({
       className: "move-modal",
-      title: Lang.t("matter.move"),
+      title: Lang.t("matter.moveTo"),
       width: "90vw",
       okCancel: false,
       okButtonProps: {
@@ -107,6 +107,7 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
           selectedKeys={[this.targetUuid]}
           loadData={this.onLoadData}
           onSelect={this.onSelect}
+          icon={e => e.expanded ? <FolderOpenFilled className="text-primary f20" /> : <FolderFilled className="text-primary f20" />}
         />
         <div className="mt10 text-right">
           <Button className="mr10" onClick={() => this.props.onClose()}>
