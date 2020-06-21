@@ -174,12 +174,16 @@ let LangZh = {
     enterZipMaxNumLimit: "zip最大数量限制必填!",
     enterZipMaxSizeLimit: "zip大小限制必填!",
     enterUserDefaultSizeLimit: "默认用户空间大小必填!",
-    engine: "{}号引擎",
+    engine: "{}号预览引擎",
+    newEngine: "添加一个预览引擎",
     engineReg: "引擎格式",
     engineSuffix: "匹配后缀",
     enginePreview: "预览方式",
+    engineRegHelper: "此处填写模板语法，{url}表示文件路径，预览时会自动替换成对应的文件url",
+    engineRegPlaceHolder: "例如：https://xxx.xxx.xxx?url={url}",
+    engineSuffixPlaceHolder: '输入后缀，使用逗号分隔，不用带. 例如：doc,ppt,xls',
     previewCurrent: "本站预览",
-    previewOpen: "新标签打开"
+    previewOpen: "新标签打开",
   },
   share: {
     shareDetail: "分享详情",

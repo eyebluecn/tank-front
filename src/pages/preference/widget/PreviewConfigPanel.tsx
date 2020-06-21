@@ -1,72 +1,69 @@
-import React from 'react';
-import "./PreviewConfigPanel.less"
+import React from "react";
+import "./PreviewConfigPanel.less";
 import TankComponent from "../../../common/component/TankComponent";
 import PreviewConfig from "../../../common/model/preference/model/PreviewConfig";
 import PreviewEngine from "../../../common/model/preference/model/PreviewEngine";
 import PreviewEngineCell from "./PreviewEngineCell";
-import {Button} from "antd";
-import {PlusOutlined} from '@ant-design/icons';
+import { Button } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
-
-  previewConfig: PreviewConfig
-
+  previewConfig: PreviewConfig;
 }
 
-interface IState {
+interface IState {}
 
-}
-
-export default class PreviewConfigPanel extends TankComponent <IProps, IState> {
-
+export default class PreviewConfigPanel extends TankComponent<IProps, IState> {
   constructor(props: IProps) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
-  componentDidMount() {
+  addEngine = () => {
+    let previewConfig: PreviewConfig = this.props.previewConfig;
 
-  }
+    let engine: PreviewEngine = new PreviewEngine();
 
-  addEngine() {
+    previewConfig.previewEngines.push(engine);
 
-    let previewConfig: PreviewConfig = this.props.previewConfig
+    this.updateUI();
+  };
 
-    let engine: PreviewEngine = new PreviewEngine()
-
-    previewConfig.previewEngines.push(engine)
-
-    this.updateUI()
-
-  }
+  delEngineCell = (index: number) => {
+    this.props.previewConfig.previewEngines.splice(index, 1);
+    this.updateUI();
+  };
 
   render() {
-
-    let that = this
-
-    let previewConfig: PreviewConfig = this.props.previewConfig
-
-    console.log("previewConfig", previewConfig)
+    const { previewConfig } = this.props;
 
     return (
-
       <div className="widget-preview-config-panel">
+        {previewConfig.previewEngines.map(
+          (previewEngine: PreviewEngine, index: number) => {
+            return (
+              <PreviewEngineCell
+                key={index}
+                previewEngine={previewEngine}
+                index={index}
+                onDelete={() => {
+                  this.delEngineCell(index);
+                }}
+              />
+            );
+          }
+        )}
 
-        {previewConfig.previewEngines.map((previewEngine: PreviewEngine, index: number) => {
-          return <PreviewEngineCell key={index} previewEngine={previewEngine} index={index} onDelete={() => {
-            console.log("删除index=", index)
-            previewConfig.previewEngines.splice(index, 1)
-            this.updateUI()
-          }}/>
-        })}
-
-        <Button type="dashed" block={true} icon={<PlusOutlined/>} onClick={this.addEngine.bind(this)}>
-          添加一个预览引擎
+        <Button
+          type="dashed"
+          block={true}
+          icon={<PlusOutlined />}
+          onClick={this.addEngine.bind(this)}
+        >
+          {Lang.t("preference.newEngine")}
         </Button>
-
       </div>
-
-    )
+    );
   }
 }
-

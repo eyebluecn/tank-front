@@ -173,9 +173,13 @@ let LangEn = {
     enterZipMaxSizeLimit: "Please enter zip max size!",
     enterUserDefaultSizeLimit: "Please enter user's default size!",
     engine: "The number {} engine",
+    newEngine: "Add a preview engine",
     engineReg: "Engine format",
     engineSuffix: "Engine suffix",
     enginePreview: "Engine preview",
+    engineRegHelper: "template syntax, {url} represents the file path, the preview will automatically replace with the corresponding file url",
+    engineRegPlaceHolder: "eg：https://xxx.xxx.xxx?url={url}",
+    engineSuffixPlaceHolder: "suffix can not be null, split by comma, look like: doc,ppt,xls",
     previewCurrent: "preview in current page",
     previewOpen: "preview in new page"
   },

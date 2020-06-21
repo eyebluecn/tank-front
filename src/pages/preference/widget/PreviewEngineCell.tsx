@@ -1,92 +1,102 @@
-import React from 'react';
-import "./PreviewEngineCell.less"
+import React from "react";
+import "./PreviewEngineCell.less";
 import TankComponent from "../../../common/component/TankComponent";
 import PreviewEngine from "../../../common/model/preference/model/PreviewEngine";
-import {DeleteOutlined} from '@ant-design/icons';
-import {Checkbox, Form, Input, Switch} from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
+import { Checkbox, Form, Input, Switch, Badge, Tooltip } from "antd";
+import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
-
-  previewEngine: PreviewEngine
-  index: number
-  onDelete: () => void
-
+  previewEngine: PreviewEngine;
+  index: number;
+  onDelete: () => void;
 }
 
-interface IState {
+interface IState {}
 
-}
-
-export default class PreviewEngineCell extends TankComponent <IProps, IState> {
-
+export default class PreviewEngineCell extends TankComponent<IProps, IState> {
   constructor(props: IProps) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
-
-  componentDidMount() {
-
-  }
-
 
   render() {
-
-    let that = this
-    let previewEngine: PreviewEngine = this.props.previewEngine
+    const { previewEngine } = this.props;
 
     return (
       <div className="widget-preview-engine-cell">
         <div className="engine-title">
-          <span>{this.props.index + 1}号预览引擎</span>
+          <span>{Lang.t("preference.engine", this.props.index + 1)}</span>
           <span>
-            <DeleteOutlined className="btn-action text-danger" onClick={() => {
-              this.props.onDelete()
-            }}/>
+            <DeleteOutlined
+              className="btn-action text-danger"
+              onClick={() => {
+                this.props.onDelete();
+              }}
+            />
           </span>
         </div>
         <div className="engine-content">
-
           <Form.Item
-            label={"URL"}
-            validateStatus={previewEngine.url ? undefined : 'error'}
-            help={previewEngine.url ? undefined : "url不能为空，{matterUrl}表示文件路径，预览时会自动替换成对应的文件url"}
+            label={
+              <Tooltip title={Lang.t("preference.engineRegHelper")}>
+                <Badge dot>{Lang.t("preference.engineReg")}</Badge>
+              </Tooltip>
+            }
+            rules={[
+              { required: true, message: Lang.t("preference.engineRegHelper") },
+            ]}
           >
-            <Input value={previewEngine.url}
-                   placeholder="请输入url，{matterUrl}表示注入的文件url路径"
-                   onChange={(e) => {
-                     previewEngine.url = e.target.value
-                     this.updateUI()
-                   }}/>
+            <Input
+              value={previewEngine.url}
+              placeholder={Lang.t("preference.engineRegPlaceHolder")}
+              onChange={(e) => {
+                previewEngine.url = e.target.value;
+                this.updateUI();
+              }}
+            />
           </Form.Item>
 
           <Form.Item
-            label={"后缀"}
-            validateStatus={previewEngine.extensions ? undefined : 'error'}
-            help={previewEngine.extensions ? undefined : "后缀不能为空，使用逗号分隔，不用带. 例如：doc,ppt,xls"}
+            label={
+              <Tooltip title={Lang.t("preference.engineSuffixPlaceHolder")}>
+                <Badge dot>{Lang.t("preference.engineSuffix")}</Badge>
+              </Tooltip>
+            }
+            rules={[
+              {
+                required: true,
+                message: Lang.t("preference.engineSuffixPlaceHolder"),
+              },
+            ]}
           >
-            <Input value={previewEngine.extensions}
-                   placeholder="请输入后缀，使用逗号分隔，不用带. 例如：doc,ppt,xls"
-                   onChange={(e) => {
-                     previewEngine.extensions = e.target.value
-                     this.updateUI()
-                   }}/>
+            <Input
+              value={previewEngine.extensions}
+              placeholder={Lang.t("preference.engineSuffixPlaceHolder")}
+              onChange={(e) => {
+                previewEngine.extensions = e.target.value;
+                this.updateUI();
+              }}
+            />
           </Form.Item>
 
           <Form.Item
-            label={"本站预览"}
+            label={
+              <Tooltip title={`${Lang.t("preference.previewCurrent")} or ${Lang.t("preference.previewOpen")}`}>
+                <Badge dot>{Lang.t("preference.previewCurrent")}</Badge>
+              </Tooltip>
+            }
           >
-            <Switch checked={previewEngine.previewInSite}
-                    onChange={(val) => {
-                      previewEngine.previewInSite = val
-                      this.updateUI()
-                    }}/>
+            <Switch
+              checked={previewEngine.previewInSite}
+              onChange={(val) => {
+                previewEngine.previewInSite = val;
+                this.updateUI();
+              }}
+            />
           </Form.Item>
-
         </div>
-
       </div>
-
-    )
+    );
   }
 }
-
