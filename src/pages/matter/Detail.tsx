@@ -12,6 +12,7 @@ import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import ImageCacheList from "./widget/imageCache/ImageCacheList";
 import ClipboardUtil from "../../common/util/ClipboardUtil";
 import Lang from "../../common/model/global/Lang";
+import InfoCell from "../widget/InfoCell";
 
 interface RouteParam {
   uuid: string;
@@ -60,43 +61,32 @@ export default class Detail extends TankComponent<IProps, IState> {
           <TankTitle name={Lang.t("matter.fileDetail")} />
 
           <div className="info">
-            <p>
-              <span>{Lang.t("matter.fileInfo")}：</span>
-              <span>{matter.name}</span>
-            </p>
-            <p>
-              {/*todo move to breadhead, linkable path*/}
-              <span>{Lang.t("matter.path")}：</span>
-              <span>{matter.path}</span>
-            </p>
-            <p>
-              <span>{Lang.t("matter.createTime")}：</span>
-              <span>{DateUtil.simpleDateTime(matter.createTime)}</span>
-            </p>
-            <p>
-              <span>{Lang.t("matter.updateTime")}：</span>
-              <span>{DateUtil.simpleDateTime(matter.updateTime)}</span>
-            </p>
+            <InfoCell name={Lang.t("matter.fileInfo")}>
+              {matter.name}
+            </InfoCell>
+            <InfoCell name={Lang.t("matter.path")}>
+              {matter.path}
+            </InfoCell>
+            <InfoCell name={Lang.t("matter.createTime")}>
+              {DateUtil.simpleDateTime(matter.createTime)}
+            </InfoCell>
+            <InfoCell name={Lang.t("matter.updateTime")}>
+              {DateUtil.simpleDateTime(matter.updateTime)}
+            </InfoCell>
             {!matter.dir ? (
               <>
-                <p>
-                  <span>{Lang.t("matter.size")}：</span>
-                  <span>{StringUtil.humanFileSize(matter.size)}</span>
-                </p>
-                <p>
-                  <span>{Lang.t("matter.publicOrPrivate")}：</span>
-                  <span>
-                    {matter.privacy
-                      ? Lang.t("matter.privateInfo")
-                      : Lang.t("matter.publicInfo")}
-                  </span>
-                </p>
-                <p>
-                  <span>{Lang.t("matter.downloadTimes")}：</span>
-                  <span>{matter.times}</span>
-                </p>
-                <div>
-                  <span>{Lang.t("matter.operations")}：</span>
+                <InfoCell name={Lang.t("matter.size")}>
+                  {StringUtil.humanFileSize(matter.size)}
+                </InfoCell>
+                <InfoCell name={Lang.t("matter.publicOrPrivate")}>
+                  {matter.privacy
+                    ? Lang.t("matter.privateInfo")
+                    : Lang.t("matter.publicInfo")}
+                </InfoCell>
+                <InfoCell name={Lang.t("matter.downloadTimes")}>
+                  {matter.times}
+                </InfoCell>
+                <InfoCell name={Lang.t("matter.operations")}>
                   <Space>
                     <a onClick={() => matter.download()}>{Lang.t("matter.download")}</a>
                     <a onClick={() => matter.preview()}>{Lang.t("matter.preview")}</a>
@@ -104,7 +94,7 @@ export default class Detail extends TankComponent<IProps, IState> {
                       {matter.privacy ? Lang.t("matter.oneTimeLink") : Lang.t("matter.copyPath")}
                     </a>
                   </Space>
-                </div>
+                </InfoCell>
               </>
             ) : null}
           </div>

@@ -6,7 +6,7 @@ import TankComponent from "../../../../common/component/TankComponent";
 import ImageCachePanel from "./ImageCachePanel";
 import ImagePreviewer from "../../../widget/previewer/ImagePreviewer";
 import MessageBoxUtil from "../../../../common/util/MessageBoxUtil";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import { ExclamationCircleFilled, DeleteOutlined, PlusSquareOutlined, MinusSquareOutlined } from "@ant-design/icons";
 import { Empty } from "antd";
 import TankTitle from "../../../widget/TankTitle";
 import Lang from "../../../../common/model/global/Lang";
@@ -119,17 +119,20 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
               <Space>
                 {selectedImageCaches.length ? (
                   <Button type="primary" onClick={this.deleteBatch}>
+                    <DeleteOutlined />
                     {Lang.t("delete")}
                   </Button>
                 ) : null}
                 {selectedImageCaches.length !== pager.data.length ? (
                   <Button type="primary" onClick={() => this.checkBatch(true)}>
+                    <PlusSquareOutlined />
                     {Lang.t("selectAll")}
                   </Button>
                 ) : null}
                 {pager.data.length &&
                 selectedImageCaches.length === pager.data.length ? (
                   <Button type="primary" onClick={() => this.checkBatch(false)}>
+                    <MinusSquareOutlined />
                     {Lang.t("cancel")}
                   </Button>
                 ) : null}
