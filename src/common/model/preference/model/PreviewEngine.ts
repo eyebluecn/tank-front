@@ -11,11 +11,7 @@ export default class PreviewEngine extends Base {
   /**
    * 此预览引擎的url
    * {originUrl} 文件原始的url地址。eg: https://tank.eyeblue.cn/api/alien/download/2a0ceee1-744c-4c82-4215-69c382597a50/abstract-free-photo-2210x1473.jpg
-   * {publicUrl} 对于公有文件publicUrl=originUrl，对于私有文件publicUrl是originUrl带上downloadToken。 eg: https://tank.eyeblue.cn/api/alien/download/2a0ceee1-744c-4c82-4215-69c382597a50/abstract-free-photo-2210x1473.jpg?downloadTokenUuid=6bdba52f-af6b-49ae-5a5d-fd80bfb01d3b
-   * {encodeOriginUrl} 被encodeURIComponent处理后的originUrl。
-   * {encodePublicUrl} 被encodeURIComponent处理后的publicUrl。
-   *
-   * {url} 等价于encodePublicUrl，只提供给用户就行了。
+   * {url} 对于公有文件publicUrl=originUrl，对于私有文件publicUrl是originUrl带上downloadToken。 eg: https://tank.eyeblue.cn/api/alien/download/2a0ceee1-744c-4c82-4215-69c382597a50/abstract-free-photo-2210x1473.jpg?downloadTokenUuid=6bdba52f-af6b-49ae-5a5d-fd80bfb01d3b
    */
   url: string = ""
 
@@ -51,7 +47,7 @@ export default class PreviewEngine extends Base {
 
     //添加office默认预览引擎，使用微软开放接口
     let officeEngine: PreviewEngine = new PreviewEngine()
-    officeEngine.url = "https://view.officeapps.live.com/op/embed.aspx?src={encodeUrl}"
+    officeEngine.url = "https://view.officeapps.live.com/op/embed.aspx?src={url}"
     officeEngine.extensions = "doc,ppt,xls,docx,pptx,xlsx"
     officeEngine.previewInSite = true
     defaultEngines.push(officeEngine)

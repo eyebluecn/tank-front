@@ -84,10 +84,8 @@ export default class PreviewerHelper {
 
       PreviewerHelper.prepareMatterUrl(matter, needToken, function (url) {
 
-        targetUrl = targetUrl.replace("{originUrl}", url);
-        targetUrl = targetUrl.replace("{publicUrl}", url);
-        targetUrl = targetUrl.replace("{encodeOriginUrl}", encodeURIComponent(url));
-        targetUrl = targetUrl.replace("{encodePublicUrl}", encodeURIComponent(url));
+        targetUrl = targetUrl.replace("{originUrl}", matter.getPreviewUrl());
+        targetUrl = targetUrl.replace("{url}", encodeURIComponent(url));
 
         if (engine.previewInSite) {
           BrowserPreviewer.show(fileName, targetUrl, matter.size)
