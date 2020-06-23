@@ -107,15 +107,9 @@ class RawFrame extends TankComponent<IProps, IState> {
 
 
   render() {
-
-    let that = this;
-
-
-    let user: User = that.user
-
     let content: React.ReactNode;
 
-    if (that.initialized) {
+    if (this.initialized) {
       content = (
 
         <div className="pages-frame-inner">
