@@ -336,60 +336,46 @@ export default class List extends TankComponent<IProps, IState> {
 
   //刷新面包屑
   refreshBreadcrumbs = () => {
-    //清空暂存区
-    this.selectedMatters = [];
-
-    let uuid = this.pager.getFilterValue("puuid");
+    const uuid = this.pager.getFilterValue("puuid") || Matter.MATTER_ROOT;
 
     //根目录简单处理即可。
-    if (!uuid || uuid === Matter.MATTER_ROOT) {
+    if (uuid === Matter.MATTER_ROOT) {
       this.matter.uuid = Matter.MATTER_ROOT;
-      this.breadcrumbModels = [];
-      this.breadcrumbModels.push({
+      this.breadcrumbModels = [{
         name: Lang.t("matter.allFiles"),
         path: "/matter/list",
         query: {},
         displayDirect: true,
-      });
+      }];
     } else {
       this.matter.uuid = uuid;
       this.matter.httpDetail(() => {
-        let arr = [];
-        let cur = this.matter.parent;
-        while (cur) {
+        const arr = [];
+        let cur: Matter | null = this.matter;
+        do {
           arr.push(cur);
           cur = cur.parent;
-        }
+        } while (cur);
 
-        this.breadcrumbModels = [];
-
-        this.breadcrumbModels.push({
-          name: Lang.t("matter.allFiles"),
-          path: "/matter/list",
-          query: {},
-          displayDirect: false,
-        });
-
-        for (let i = arr.length - 1; i >= 0; i--) {
-          let m = arr[i];
-          let query = this.pager.getParams();
-          query["puuid"] = m.uuid!;
-
-          this.breadcrumbModels.push({
-            name: m.name,
+        this.breadcrumbModels = arr.reduceRight((t: any, item:Matter, i: number) => {
+          const query = this.pager.getParams();
+          query["puuid"] = item.uuid!;
+          t.push({
+            name: item.name,
             path: "/matter/list",
             query: query,
-            displayDirect: false,
+            displayDirect: !i,  // 当前目录不需要导航
           });
-        }
-
-        //第一个文件
-        this.breadcrumbModels.push({
-          name: this.matter.name,
-          displayDirect: true,
-          path: "",
-          query: {},
-        });
+          return t;
+        }, [
+          {
+            name: Lang.t("matter.allFiles"),
+            path: "/matter/list",
+            query: {},
+            displayDirect: false,
+          }
+        ]);
+        this.updateUI();
       });
     }
   };

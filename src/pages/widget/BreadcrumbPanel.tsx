@@ -23,8 +23,6 @@ export default class BreadcrumbPanel extends TankComponent<IProps, IState> {
 
   render() {
 
-    let that = this
-
     return (
       <Breadcrumb>
 
