@@ -53,7 +53,7 @@ export default class AboutModal extends TankComponent<IProps, IState>{
         <p className="brand">
           Powered by  <a target="_blank" href="https://github.com/eyebluecn/tank">
           <img alt="logo" className="w30" src={DefaultLogoPng} />
-          蓝眼云盘
+          {Lang.t("eyeblueTank")}
         </a>
         </p>
       </div>
