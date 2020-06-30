@@ -79,6 +79,7 @@ export default class List extends TankComponent<IProps, IState> {
     super(props);
   }
 
+  //拖拽上传
   drag = {
     dragEnterListener: (e: DragEvent) => {
       e.preventDefault();
@@ -100,18 +101,30 @@ export default class List extends TankComponent<IProps, IState> {
       this.updateUI();
     },
     register: () => {
+      const {
+        dragEnterListener,
+        dragleaveListener,
+        dragoverListener,
+        dropListener,
+      } = this.drag;
       const el = document.getElementById("layout-content")!;
-      el.addEventListener("dragenter", this.drag.dragEnterListener);
-      el.addEventListener("dragleave", this.drag.dragleaveListener);
-      el.addEventListener("dragover", this.drag.dragoverListener);
-      el.addEventListener("drop", this.drag.dropListener);
+      el.addEventListener("dragenter", dragEnterListener);
+      el.addEventListener("dragleave", dragleaveListener);
+      el.addEventListener("dragover", dragoverListener);
+      el.addEventListener("drop", dropListener);
     },
     remove: () => {
+      const {
+        dragEnterListener,
+        dragleaveListener,
+        dragoverListener,
+        dropListener,
+      } = this.drag;
       const el = document.getElementById("layout-content")!;
-      el.removeEventListener("dragenter", this.drag.dragEnterListener);
-      el.removeEventListener("dragleave", this.drag.dragleaveListener);
-      el.removeEventListener("dragover", this.drag.dragoverListener);
-      el.removeEventListener("drop", this.drag.dropListener);
+      el.removeEventListener("dragenter", dragEnterListener);
+      el.removeEventListener("dragleave", dragleaveListener);
+      el.removeEventListener("dragover", dragoverListener);
+      el.removeEventListener("drop", dropListener);
     },
   };
 
@@ -341,12 +354,14 @@ export default class List extends TankComponent<IProps, IState> {
     //根目录简单处理即可。
     if (uuid === Matter.MATTER_ROOT) {
       this.matter.uuid = Matter.MATTER_ROOT;
-      this.breadcrumbModels = [{
-        name: Lang.t("matter.allFiles"),
-        path: "/matter/list",
-        query: {},
-        displayDirect: true,
-      }];
+      this.breadcrumbModels = [
+        {
+          name: Lang.t("matter.allFiles"),
+          path: "/matter/list",
+          query: {},
+          displayDirect: true,
+        },
+      ];
     } else {
       this.matter.uuid = uuid;
       this.matter.httpDetail(() => {
@@ -357,24 +372,27 @@ export default class List extends TankComponent<IProps, IState> {
           cur = cur.parent;
         } while (cur);
 
-        this.breadcrumbModels = arr.reduceRight((t: any, item:Matter, i: number) => {
-          const query = this.pager.getParams();
-          query["puuid"] = item.uuid!;
-          t.push({
-            name: item.name,
-            path: "/matter/list",
-            query: query,
-            displayDirect: !i,  // 当前目录不需要导航
-          });
-          return t;
-        }, [
-          {
-            name: Lang.t("matter.allFiles"),
-            path: "/matter/list",
-            query: {},
-            displayDirect: false,
-          }
-        ]);
+        this.breadcrumbModels = arr.reduceRight(
+          (t: any, item: Matter, i: number) => {
+            const query = this.pager.getParams();
+            query["puuid"] = item.uuid!;
+            t.push({
+              name: item.name,
+              path: "/matter/list",
+              query: query,
+              displayDirect: !i, // 当前目录不需要导航
+            });
+            return t;
+          },
+          [
+            {
+              name: Lang.t("matter.allFiles"),
+              path: "/matter/list",
+              query: {},
+              displayDirect: false,
+            },
+          ]
+        );
         this.updateUI();
       });
     }
@@ -398,7 +416,7 @@ export default class List extends TankComponent<IProps, IState> {
         <BreadcrumbPanel breadcrumbModels={this.breadcrumbModels} />
 
         <Row className="mb10 mt15">
-          <Col md={16} sm={24}>
+          <Col xs={24} sm={24} md={14} lg={16}>
             <Space className="buttons">
               {selectedMatters.length !== pager.data.length ? (
                 <Button type="primary" className="mb10" onClick={this.checkAll}>
@@ -483,7 +501,7 @@ export default class List extends TankComponent<IProps, IState> {
               </Button>
             </Space>
           </Col>
-          <Col md={8} sm={24}>
+          <Col xs={24} sm={24} md={10} lg={8}>
             <Input.Search
               placeholder={Lang.t("matter.searchFile")}
               onSearch={(value) => this.searchFile(value)}

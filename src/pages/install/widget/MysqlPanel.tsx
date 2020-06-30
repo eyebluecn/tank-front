@@ -55,7 +55,7 @@ export default class MysqlPanel extends TankComponent<IProps, IState> {
     }, function (msg: any) {
 
       install.verified = false
-      MessageBoxUtil.success(msg)
+      MessageBoxUtil.error(msg)
       that.updateUI()
 
     })
