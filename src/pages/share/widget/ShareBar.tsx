@@ -81,7 +81,7 @@ export default class ShareBar extends TankComponent<IProps, IState> {
                 <span className="share-operation">
                   <Tooltip title={Lang.t("share.shareDetail")}>
                     <InfoCircleOutlined
-                      className="btn-action mr5 blue"
+                      className="btn-action mr5 text-theme"
                       onClick={(e) =>
                         SafeUtil.stopPropagationWrap(e)(this.showShare())
                       }
@@ -89,7 +89,7 @@ export default class ShareBar extends TankComponent<IProps, IState> {
                   </Tooltip>
                   <Tooltip title={Lang.t("delete")}>
                     <DeleteOutlined
-                      className="btn-action red"
+                      className="btn-action text-danger"
                       onClick={(e) =>
                         SafeUtil.stopPropagationWrap(e)(this.delShare())
                       }

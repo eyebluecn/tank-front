@@ -10,16 +10,15 @@ import AnimateUtil from "../../../common/util/AnimateUtil";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import Expanding from "../../widget/Expanding";
 import {
-  LockFilled,
-  UnlockFilled,
+  LockOutlined,
+  UnlockOutlined,
   DownloadOutlined,
   ExclamationCircleFilled,
   LinkOutlined,
   DeleteOutlined,
-  InfoCircleTwoTone,
   EditOutlined,
   InfoCircleOutlined,
-  EllipsisOutlined
+  EllipsisOutlined,
 } from "@ant-design/icons";
 import { Modal, Checkbox, Tooltip } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
@@ -217,7 +216,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
         <div className="right-part">
           <Tooltip title={Lang.t("download")}>
             <DownloadOutlined
-              className="btn-action blue"
+              className="btn-action text-theme"
               onClick={(e) =>
                 SafeUtil.stopPropagationWrap(e)(matter.download())
               }
@@ -239,11 +238,11 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
       );
     return (
       <div className="right-part">
-        <span className="matter-operation">
+        <span className="matter-operation text-theme">
           {!matter.dir && matter.privacy && (
             <Tooltip title={Lang.t("matter.setPublic")}>
-              <UnlockFilled
-                className="btn-action blue"
+              <UnlockOutlined
+                className="btn-action"
                 onClick={(e) =>
                   SafeUtil.stopPropagationWrap(e)(this.changePrivacy(false))
                 }
@@ -252,8 +251,8 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
           )}
           {!matter.dir && !matter.privacy && (
             <Tooltip title={Lang.t("matter.setPrivate")}>
-              <LockFilled
-                className="btn-action blue"
+              <LockOutlined
+                className="btn-action"
                 onClick={(e) =>
                   SafeUtil.stopPropagationWrap(e)(this.changePrivacy(true))
                 }
@@ -261,8 +260,8 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
             </Tooltip>
           )}
           <Tooltip title={Lang.t("matter.fileDetail")}>
-            <InfoCircleTwoTone
-              className="btn-action blue"
+            <InfoCircleOutlined
+              className="btn-action"
               onClick={(e) =>
                 SafeUtil.stopPropagationWrap(e)(
                   Sun.navigateTo("/matter/detail/" + matter.uuid)
@@ -272,7 +271,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
           </Tooltip>
           <Tooltip title={Lang.t("matter.rename")}>
             <EditOutlined
-              className="btn-action blue"
+              className="btn-action"
               onClick={(e) =>
                 SafeUtil.stopPropagationWrap(e)(this.prepareRename())
               }
@@ -280,13 +279,13 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
           </Tooltip>
           <Tooltip title={Lang.t("matter.copyPath")}>
             <LinkOutlined
-              className="btn-action blue"
+              className="btn-action"
               onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.clipboard())}
             />
           </Tooltip>
           <Tooltip title={Lang.t("matter.download")}>
             <DownloadOutlined
-              className="btn-action blue"
+              className="btn-action"
               onClick={(e) =>
                 SafeUtil.stopPropagationWrap(e)(matter.download())
               }
@@ -294,7 +293,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
           </Tooltip>
           <Tooltip title={Lang.t("matter.delete")}>
             <DeleteOutlined
-              className="btn-action red"
+              className="btn-action text-danger"
               onClick={(e) =>
                 SafeUtil.stopPropagationWrap(e)(this.deleteMatter())
               }
@@ -351,7 +350,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
               SafeUtil.stopPropagationWrap(e)(this.changePrivacy(false))
             }
           >
-            <UnlockFilled className="btn-action mr5" />
+            <UnlockOutlined className="btn-action mr5" />
             {Lang.t("matter.setPublic")}
           </div>
         )}
@@ -363,7 +362,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
               SafeUtil.stopPropagationWrap(e)(this.changePrivacy(true))
             }
           >
-            <LockFilled className="btn-action mr5" />
+            <LockOutlined className="btn-action mr5" />
             {Lang.t("matter.setPrivate")}
           </div>
         )}
@@ -401,7 +400,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
           {Lang.t("matter.download")}
         </div>
         <div
-          className="cell-btn red"
+          className="cell-btn text-danger"
           onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.deleteMatter())}
         >
           <DeleteOutlined className="btn-action mr5" />
@@ -472,7 +471,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                     {matter.name}
                     {!matter.dir && !matter.privacy && (
                       <Tooltip title={Lang.t("matter.publicFileEveryoneCanVisit")}>
-                        <UnlockFilled className="icon" />
+                        <UnlockOutlined className="icon" />
                       </Tooltip>
                     )}
                   </span>
