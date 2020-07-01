@@ -232,7 +232,7 @@ export default class List extends TankComponent<IProps, IState> {
 
   downloadZip = () => {
     const uuids = this.selectedMatters.map((i) => i.uuid).toString();
-    this.matter.downloadZip(uuids);
+    Matter.downloadZip(uuids);
   };
 
   toggleMoveBatch = () => {

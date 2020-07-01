@@ -1,4 +1,4 @@
-import {message} from "antd";
+import { message } from "antd";
 import BaseEntity from "../base/BaseEntity";
 import Filter from "../base/filter/Filter";
 import HttpUtil from "../../util/HttpUtil";
@@ -59,6 +59,13 @@ export default class Matter extends BaseEntity {
   static URL_MATTER_ZIP = "/api/matter/zip";
 
   static MATTER_ROOT = "root";
+
+  //下载zip包
+  static downloadZip(uuidsString: string) {
+    window.open(
+      EnvUtil.currentHost() + Matter.URL_MATTER_ZIP + "?uuids=" + uuidsString
+    );
+  }
 
   constructor(reactComponent?: React.Component) {
     super(reactComponent);
@@ -161,13 +168,6 @@ export default class Matter extends BaseEntity {
     window.open(downloadUrl);
   }
 
-  //下载zip包
-  downloadZip(uuidsString: string) {
-    window.open(
-      EnvUtil.currentHost() + Matter.URL_MATTER_ZIP + "?uuids=" + uuidsString
-    );
-  }
-
   //预览文件 在分享的预览中才主动传入previewUrl.
   preview(previewUrl?: string | null) {
     let that = this;
@@ -181,46 +181,10 @@ export default class Matter extends BaseEntity {
     }
 
     if (that.isImage()) {
-
-      ImagePreviewer.showSinglePhoto(previewUrl)
-
+      ImagePreviewer.showSinglePhoto(previewUrl);
     } else {
-      PreviewerHelper.preview(this)
+      PreviewerHelper.preview(this);
     }
-
-    // if (that.isImage()) {
-    //
-    //   ImagePreviewer.showSinglePhoto(previewUrl)
-    //
-    // } else if (that.isPdf() || that.isText() || that.isAudio() || that.isVideo()) {
-    //
-    //   BrowserPreviewer.show(that.name, previewUrl, that.size)
-    //
-    // } else if (that.isDoc() || that.isPpt() || that.isXls()) {
-    //
-    //
-    //   MessageBoxUtil.warning("Office的预览还没做好")
-    // //如果是分享中的预览，直接就可以公有访问。
-    // if (shareMode) {
-    //   Vue.$previewer.previewOffice(that.name, previewUrl, that.size)
-    // } else {
-    //
-    //   //如果是共有文件 office文件的预览请求一次性链接。
-    //   if (this.privacy) {
-    //
-    //     let downloadToken = new DownloadToken()
-    //     downloadToken.httpFetchDownloadToken(that.uuid, function () {
-    //       Vue.$previewer.previewOffice(that.name, that.getPreviewUrl(downloadToken.uuid), that.size)
-    //     })
-    //   } else {
-    //     Vue.$previewer.previewOffice(that.name, previewUrl, that.size)
-    //   }
-    // }
-
-
-    // } else {
-    //   window.open(this.getPreviewUrl())
-    // }
   }
 
   httpCreateDirectory(
@@ -229,7 +193,7 @@ export default class Matter extends BaseEntity {
     finallyCallback?: any
   ) {
     let that = this;
-    let form = {userUuid: that.userUuid, name: that.name, puuid: that.puuid};
+    let form = { userUuid: that.userUuid, name: that.name, puuid: that.puuid };
 
     return this.httpPost(
       Matter.URL_MATTER_CREATE_DIRECTORY,
@@ -246,7 +210,7 @@ export default class Matter extends BaseEntity {
   httpDelete(successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_DELETE,
-      {uuid: this.uuid},
+      { uuid: this.uuid },
       function (response: any) {
         typeof successCallback === "function" && successCallback(response);
       },
@@ -257,7 +221,7 @@ export default class Matter extends BaseEntity {
   httpDeleteBatch(uuids: string, successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_DELETE_BATCH,
-      {uuids: uuids},
+      { uuids: uuids },
       function (response: any) {
         typeof successCallback === "function" && successCallback(response);
       },
@@ -274,7 +238,7 @@ export default class Matter extends BaseEntity {
     let that = this;
     this.httpPost(
       Matter.URL_MATTER_RENAME,
-      {uuid: this.uuid, name: name},
+      { uuid: this.uuid, name: name },
       function (response: any) {
         that.assign(response.data.data);
         typeof successCallback === "function" && successCallback(response);
@@ -292,7 +256,7 @@ export default class Matter extends BaseEntity {
     let that = this;
     this.httpPost(
       Matter.URL_CHANGE_PRIVACY,
-      {uuid: this.uuid, privacy: privacy},
+      { uuid: this.uuid, privacy: privacy },
       function (response: any) {
         that.privacy = privacy;
         if (typeof successCallback === "function") {
@@ -312,7 +276,7 @@ export default class Matter extends BaseEntity {
     successCallback?: any,
     errorCallback?: any
   ) {
-    let form: any = {srcUuids: srcUuids};
+    let form: any = { srcUuids: srcUuids };
     if (destUuid) {
       form.destUuid = destUuid;
     } else {
@@ -445,7 +409,7 @@ export default class Matter extends BaseEntity {
 
     //验证是否满足过滤器
     if (!this.validateFileType()) {
-      MessageBoxUtil.error('文件类型不满足，请重试');
+      MessageBoxUtil.error("文件类型不满足，请重试");
       return;
     }
 
@@ -517,25 +481,15 @@ export default class Matter extends BaseEntity {
   }
 
   getPreviewUrl(downloadTokenUuid?: string): string {
-    return (
-      EnvUtil.currentHost() +
-      "/api/alien/preview/" +
-      this.uuid +
-      "/" +
-      this.name +
-      (downloadTokenUuid ? "?downloadTokenUuid=" + downloadTokenUuid : "")
-    );
+    return `${EnvUtil.currentHost()}/api/alien/preview/${this.uuid}/${
+      this.name
+    }${downloadTokenUuid ? "?downloadTokenUuid=" + downloadTokenUuid : ""}`;
   }
 
   getDownloadUrl(downloadTokenUuid?: string): string {
-    return (
-      EnvUtil.currentHost() +
-      "/api/alien/download/" +
-      this.uuid +
-      "/" +
-      this.name +
-      (downloadTokenUuid ? "?downloadTokenUuid=" + downloadTokenUuid : "")
-    );
+    return `${EnvUtil.currentHost()}/api/alien/download/${this.uuid}/${
+      this.name
+    }${downloadTokenUuid ? "?downloadTokenUuid=" + downloadTokenUuid : ""}`;
   }
 
   getShareDownloadUrl(
@@ -543,19 +497,9 @@ export default class Matter extends BaseEntity {
     shareCode: string,
     shareRootUuid: string
   ): string {
-    return (
-      EnvUtil.currentHost() +
-      "/api/alien/download/" +
-      this.uuid +
-      "/" +
-      this.name +
-      "?shareUuid=" +
-      shareUuid +
-      "&shareCode=" +
-      shareCode +
-      "&shareRootUuid=" +
-      shareRootUuid
-    );
+    return `${EnvUtil.currentHost()}/api/alien/download/${this.uuid}/${
+      this.name
+    }?shareUuid=${shareUuid}&shareCode=${shareCode}&shareRootUuid=${shareRootUuid}`;
   }
 
   getSharePreviewUrl(
@@ -563,18 +507,8 @@ export default class Matter extends BaseEntity {
     shareCode: string,
     shareRootUuid: String
   ): string {
-    return (
-      EnvUtil.currentHost() +
-      "/api/alien/preview/" +
-      this.uuid +
-      "/" +
-      this.name +
-      "?shareUuid=" +
-      shareUuid +
-      "&shareCode=" +
-      shareCode +
-      "&shareRootUuid=" +
-      shareRootUuid
-    );
+    return `${EnvUtil.currentHost()}/api/alien/preview/${this.uuid}/${
+      this.name
+    }?shareUuid=${shareUuid}&shareCode=${shareCode}&shareRootUuid=${shareRootUuid}`;
   }
 }

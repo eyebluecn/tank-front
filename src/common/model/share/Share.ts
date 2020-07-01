@@ -6,7 +6,6 @@ import { ShareType } from "./ShareType";
 import { ShareExpireOption, ShareExpireOptionMap } from "./ShareExpireOption";
 import DateUtil from "../../util/DateUtil";
 import SafeUtil from "../../util/SafeUtil";
-import {WebResultCode} from "../base/WebResultCode";
 import MessageBoxUtil from "../../util/MessageBoxUtil";
 
 export default class Share extends BaseEntity {
@@ -98,16 +97,9 @@ export default class Share extends BaseEntity {
   //下载zip包
   downloadZip(puuid?: string) {
     window.open(
-      EnvUtil.currentHost() +
-        Share.URL_ZIP +
-        "?shareUuid=" +
-        this.uuid +
-        "&code=" +
-        this.code +
-        "&puuid=" +
-        puuid +
-        "&rootUuid=" +
-        this.rootUuid
+      `${EnvUtil.currentHost()}${Share.URL_ZIP}?shareUuid=${this.uuid}&code=${
+        this.code
+      }&puuid=${puuid}&rootUuid=${this.rootUuid}`
     );
   }
 
