@@ -151,21 +151,22 @@ export default class List extends TankComponent<IProps, IState> {
   }
 
   refresh = () => {
+    // 初始化当前matter uuid
+    if(this.matter.uuid !== this.pager.getFilterValue("puuid")) {
+      this.matter.uuid = this.pager.getFilterValue("puuid") || Matter.MATTER_ROOT;
+    }
+
     // 清空暂存区
     this.selectedMatters = [];
 
-    // 初始化matter
-    this.matter.uuid = this.pager.getFilterValue("puuid") || Matter.MATTER_ROOT;
+    // 刷新文件列表
+    this.refreshPager();
 
-    this.prepareRefresh();
-
-    //刷新面包屑
+    // 刷新面包屑
     this.refreshBreadcrumbs();
-
-    this.pager.httpList();
   };
 
-  prepareRefresh = () => {
+  refreshPager = () => {
     this.pager.setFilterValue("puuid", this.matter.uuid);
 
     //如果没有任何的排序，默认使用时间倒序和文件夹在顶部
@@ -178,6 +179,8 @@ export default class List extends TankComponent<IProps, IState> {
     if (!this.pager.getFilterValue("userUuid")) {
       this.pager.setFilterValue("userUuid", this.user.uuid);
     }
+
+    this.pager.httpList();
   };
 
   checkMatter = (matter?: Matter) => {
@@ -203,14 +206,14 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   checkAll = () => {
-    this.pager.data.forEach(function (i, index) {
+    this.pager.data.forEach((i) => {
       i.check = true;
     });
     this.checkMatter();
   };
 
   checkNone = () => {
-    this.pager.data.forEach(function (i, index) {
+    this.pager.data.forEach((i) => {
       i.check = false;
     });
     this.checkMatter();
