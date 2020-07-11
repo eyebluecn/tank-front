@@ -21,6 +21,7 @@ export default class User extends BaseEntity {
   static URL_USER_RESET_PASSWORD = '/api/user/reset/password'
   static URL_USER_TOGGLE_STATUS = '/api/user/toggle/status'
   static URL_USER_TRANSFIGURATION = '/api/user/transfiguration'
+  static URL_USER_SCAN = '/api/user/scan'
 
   role: UserRole = UserRole.GUEST
   username: string | null = null
@@ -217,6 +218,17 @@ export default class User extends BaseEntity {
       successCallback(response.data.msg)
 
     }, errorCallback)
+  }
+
+
+  httpScan(successCallback: (text: string) => void, errorCallback?: any, finalCallback?: any) {
+    let that = this
+    let form = {'uuid': this.uuid}
+    this.httpPost(User.URL_USER_SCAN, form, function (response: any) {
+
+      successCallback(response.data.msg)
+
+    }, errorCallback, finalCallback)
   }
 
 }
