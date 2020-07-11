@@ -19,7 +19,7 @@ import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import ChangePasswordModal from "./widget/ChangePasswordModal";
 import {EditOutlined, UnlockOutlined, UserSwitchOutlined} from '@ant-design/icons';
 import TransfigurationModal from "./widget/TransfigurationModal";
-import {StopOutlined} from "@ant-design/icons/lib";
+import {FileSyncOutlined, StopOutlined} from "@ant-design/icons/lib";
 import Lang from "../../common/model/global/Lang";
 
 interface RouteParam {
@@ -42,6 +42,9 @@ export default class Detail extends TankComponent <IProps, IState> {
 
   //当前页面正在编辑的用户
   currentUser: User = new User(this)
+
+  //sync loading.
+  syncLoading: boolean = false
 
   constructor(props: IProps) {
     super(props)
@@ -84,6 +87,22 @@ export default class Detail extends TankComponent <IProps, IState> {
       that.updateUI()
     })
   }
+
+
+  syncPhysics() {
+    let that = this
+    let user: User = this.user
+    let currentUser: User = this.currentUser
+    this.syncLoading = true
+    currentUser.httpScan(function () {
+      MessageBoxUtil.success(Lang.t("operationSuccess"))
+      that.updateUI()
+    }, null, function () {
+      that.syncLoading = false
+      that.updateUI()
+    })
+  }
+
 
   changePassword() {
 
@@ -148,6 +167,17 @@ export default class Detail extends TankComponent <IProps, IState> {
                 {currentUser.status === UserStatus.OK ? Lang.t("user.disable") : Lang.t("user.active")}
               </Button>
             )
+          }
+
+          {
+            (user.role === UserRole.ADMINISTRATOR && (
+              <Button className='ml10' type="primary"
+                      icon={<FileSyncOutlined/>}
+                      loading={this.syncLoading}
+                      onClick={this.syncPhysics.bind(this)}>
+                {Lang.t("user.sync")}
+              </Button>
+            ))
           }
 
         </TankTitle>

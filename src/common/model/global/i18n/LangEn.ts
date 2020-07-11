@@ -245,6 +245,7 @@ let LangEn = {
     disableUser: "Disable this user",
     disable: "Disable",
     active: "Active",
+    sync: "Sync",
     activeUser: "Active this user",
     deleteUser: "Delete this user",
     deleteHint: "This action will delete {}'s all records, including files,shares,user infos etc. Continue？",

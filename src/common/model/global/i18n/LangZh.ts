@@ -249,6 +249,7 @@ let LangZh = {
     deleteUser: "删除该用户",
     deleteHint: "此操作将删除用户【{}】的所有记录，包括文件，分享，用户信息等内容，确定继续？",
     disable: "禁用",
+    sync: "同步",
     active: "激活",
     welcomeLogin: "欢迎登录",
     logining: "正在登录...",
