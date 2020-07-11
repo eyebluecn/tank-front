@@ -7,6 +7,7 @@ import UserLogin from './user/Login';
 import UserRegister from './user/Register';
 
 import UserList from './user/List';
+import MobileUserList from './user/MobileList';
 import UserDetail from './user/Detail';
 import UserEdit from './user/Edit';
 import UserAuthentication from './user/Authentication';
@@ -129,6 +130,7 @@ class RawFrame extends TankComponent<IProps, IState> {
                   <Route path="/user/register" component={UserRegister}/>
                   <Route path="/user/detail/:uuid" component={UserDetail}/>
                   <Route path="/user/list" component={UserList}/>
+                  <Route path="/mobile/user/list" component={MobileUserList}/>
                   <Route path="/user/create" component={UserEdit}/>
                   <Route path="/user/edit/:uuid" component={UserEdit}/>
                   <Route path="/user/authentication/:authentication" component={UserAuthentication}/>

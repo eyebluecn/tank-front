@@ -6,6 +6,7 @@ import MenuItem from './MenuItem';
 import Moon from '../model/global/Moon';
 import User from '../model/user/User';
 import {UserRole} from '../model/user/UserRole';
+import Sun from '../../common/model/global/Sun';
 import {
   AppstoreOutlined,
   DashboardOutlined,
@@ -84,7 +85,7 @@ export default class MenuManager {
       if (user.role === UserRole.ADMINISTRATOR) {
         menuItems.push(new MenuItem(Lang.t("layout.setting"), '/preference/index', <SettingOutlined/>))
         menuItems.push(new MenuItem(Lang.t("layout.dashboard"), '/dashboard/index', <DashboardOutlined/>))
-        menuItems.push(new MenuItem(Lang.t("layout.users"), '/user/list', <TeamOutlined/>))
+        menuItems.push(new MenuItem(Lang.t("layout.users"), `${Sun.getSingleton().isMobile ? '/mobile': ''}/user/list`, <TeamOutlined/>))
       }
       menuItems.push(new MenuItem(Lang.t("layout.logout"), '/user/logout', <PoweroffOutlined/>))
 

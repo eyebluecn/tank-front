@@ -69,7 +69,6 @@ export default class Detail extends TankComponent <IProps, IState> {
 
   transfiguration() {
 
-    let that = this
     let user: User = this.user
     let currentUser: User = this.currentUser
     TransfigurationModal.open(currentUser)
@@ -88,21 +87,14 @@ export default class Detail extends TankComponent <IProps, IState> {
 
   changePassword() {
 
-    let that = this
-
     let user: User = this.user
     let currentUser: User = this.currentUser
     ChangePasswordModal.open(currentUser, function () {
       MessageBoxUtil.success(Lang.t("operationSuccess"))
-
-
     })
-
   }
 
   render() {
-
-    let that = this
 
     let user: User = this.user
     let currentUser: User = this.currentUser

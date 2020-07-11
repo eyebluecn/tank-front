@@ -9,16 +9,19 @@ import Cookies from "js-cookie"
 export default class Sun {
 
   //全局的一个store对象
-  static singleton: Sun | null = null
+  static singleton: Sun | null = null;
 
   //持有整个网站最外层的frame，方便我们刷新整个页面。
-  frameComponent: any = null
+  frameComponent: any = null;
 
   //持有全局的react-router对象，方便我们在非jsx环境中控制路由跳转
   reactRouter: any = null;
 
   //全局布局样式，是否展示出左边的菜单.
-  showDrawer: boolean = true
+  showDrawer: boolean = true;
+
+  //全局mobile标识
+  isMobile: boolean = /Mobile|iP(hone|od|ad)|iOS|Android|BlackBerry/i.test(window.navigator.userAgent);
 
 
 
