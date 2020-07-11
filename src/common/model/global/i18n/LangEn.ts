@@ -17,7 +17,7 @@ let LangEn = {
     loading: 'loading...',
     date: 'Date',
     num: 'Num',
-    warnHint: 'Hint: data in this page updates everyday at 5.a.m. ',
+    warnHint: 'Hint: data in this page updates everyday at 0.a.m. ',
     reRun: 'ReRun',
   },
   install: {
