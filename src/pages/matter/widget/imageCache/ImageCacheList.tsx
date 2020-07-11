@@ -1,21 +1,22 @@
 import React from "react";
-import { Button, Modal, Pagination, Space } from "antd";
+import {Button, Empty, Modal, Pagination, Space} from "antd";
 import Pager from "../../../../common/model/base/Pager";
 import ImageCache from "../../../../common/model/image/cache/ImageCache";
 import TankComponent from "../../../../common/component/TankComponent";
 import ImageCachePanel from "./ImageCachePanel";
 import ImagePreviewer from "../../../widget/previewer/ImagePreviewer";
 import MessageBoxUtil from "../../../../common/util/MessageBoxUtil";
-import { ExclamationCircleFilled, DeleteOutlined, PlusSquareOutlined, MinusSquareOutlined } from "@ant-design/icons";
-import { Empty } from "antd";
+import {DeleteOutlined, ExclamationCircleFilled, MinusSquareOutlined, PlusSquareOutlined} from "@ant-design/icons";
 import TankTitle from "../../../widget/TankTitle";
 import Lang from "../../../../common/model/global/Lang";
+import TankContentCard from "../../../widget/TankContentCard";
 
 interface IProps {
   initFilter: any;
 }
 
-interface IState {}
+interface IState {
+}
 
 export default class ImageCacheList extends TankComponent<IProps, IState> {
   selectedImageCaches: ImageCache[] = [];
@@ -24,6 +25,7 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {};
+    this.pager.enableHistory()
   }
 
   componentDidMount() {
@@ -33,7 +35,7 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
   deleteBatch = () => {
     Modal.confirm({
       title: Lang.t("actionCanNotRevertConfirm"),
-      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00"/>,
       onOk: () => {
         const uuids = this.selectedImageCaches.map((i) => i.uuid).toString();
         const imageCache = new ImageCache();
@@ -53,7 +55,7 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
   };
 
   refresh = () => {
-    const { initFilter } = this.props;
+    const {initFilter} = this.props;
     if (initFilter) {
       for (let key in initFilter) {
         if (initFilter.hasOwnProperty(key)) {
@@ -108,8 +110,8 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
   };
 
   render() {
-    const { selectedImageCaches, pager } = this;
-    if (!pager.data.length) return <Empty description={Lang.t("matter.noImageCache")} />;
+    const {selectedImageCaches, pager} = this;
+    if (!pager.data.length) return <Empty description={Lang.t("matter.noImageCache")}/>;
     return (
       <div>
         <TankTitle
@@ -119,20 +121,20 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
               <Space>
                 {selectedImageCaches.length ? (
                   <Button type="primary" onClick={this.deleteBatch}>
-                    <DeleteOutlined />
+                    <DeleteOutlined/>
                     {Lang.t("delete")}
                   </Button>
                 ) : null}
                 {selectedImageCaches.length !== pager.data.length ? (
                   <Button type="primary" onClick={() => this.checkBatch(true)}>
-                    <PlusSquareOutlined />
+                    <PlusSquareOutlined/>
                     {Lang.t("selectAll")}
                   </Button>
                 ) : null}
                 {pager.data.length &&
                 selectedImageCaches.length === pager.data.length ? (
                   <Button type="primary" onClick={() => this.checkBatch(false)}>
-                    <MinusSquareOutlined />
+                    <MinusSquareOutlined/>
                     {Lang.t("cancel")}
                   </Button>
                 ) : null}
@@ -141,15 +143,18 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
           }
         />
 
-        {pager.data.map((imageCache) => (
-          <ImageCachePanel
-            key={imageCache.uuid!}
-            imageCache={imageCache}
-            onDeleteSuccess={this.refresh}
-            onCheckImageCache={this.checkImageCache}
-            onPreviewImageCache={this.previewImageCache}
-          />
-        ))}
+        <TankContentCard>
+          {pager.data.map((imageCache) => (
+            <ImageCachePanel
+              key={imageCache.uuid!}
+              imageCache={imageCache}
+              onDeleteSuccess={this.refresh}
+              onCheckImageCache={this.checkImageCache}
+              onPreviewImageCache={this.previewImageCache}
+            />
+          ))}
+
+        </TankContentCard>
 
         <Pagination
           className="mt10 pull-right"
@@ -159,6 +164,7 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
           pageSize={pager.pageSize}
           hideOnSinglePage
         />
+
       </div>
     );
   }
