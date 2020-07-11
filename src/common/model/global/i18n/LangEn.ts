@@ -187,7 +187,17 @@ let LangEn = {
     engineRegPlaceHolder: "eg：https://xxx.xxx.xxx?url={url}",
     engineSuffixPlaceHolder: "suffix can not be null, split by comma, look like: doc,ppt,xls",
     previewCurrent: "preview in current page",
-    previewOpen: "preview in new page"
+    previewOpen: "preview in new page",
+    editScan: "Edit Scan disk",
+    enableScan: "Enable Scan disk",
+    disabledScan: "Disabled Scan disk",
+    scanCron: "Regularly Scan disk",
+    cron: "Cron expression",
+    cronValidate: "Cron expression can not be null",
+    scanScope: "Scan scope",
+    scanUsers: "Scan users",
+    chooseUsers: "Fuzzy search users",
+    chooseUsersValidate: "choose one more user"
   },
   share: {
     shareDetail: "Share Detail",

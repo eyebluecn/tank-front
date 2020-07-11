@@ -15,6 +15,7 @@ import UserAuthentication from './user/Authentication';
 import PreferenceIndex from './preference/Index';
 import PreferenceEdit from './preference/Edit';
 import PreferenceEngineEdit from './preference/PreviewEngineEdit';
+import PreferenceScanEdit from './preference/ScanEdit';
 
 import DashboardIndex from './dashboard/Index';
 import InstallIndex from './install/Index';
@@ -141,6 +142,7 @@ class RawFrame extends TankComponent<IProps, IState> {
                   <Route path="/preference/index" component={PreferenceIndex}/>
                   <Route path="/preference/edit" component={PreferenceEdit}/>
                   <Route path="/preference/engine/edit" component={PreferenceEngineEdit}/>
+                  <Route path="/preference/scan/edit" component={PreferenceScanEdit}/>
 
                   <Route path="/matter/detail/:uuid" component={MatterDetail}/>
                   <Route exact path="/matter" render={() =>

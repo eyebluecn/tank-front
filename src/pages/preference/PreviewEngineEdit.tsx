@@ -62,7 +62,6 @@ export default class PreviewEngineEdit extends TankComponent<IProps, IState> {
             {...layout}
             name="preview-engine"
             ref={this.formRef}
-            initialValues={preference.getForm()}
             onFinish={this.finish}
             onValuesChange={this.updateUI}
           >

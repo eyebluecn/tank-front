@@ -2,6 +2,7 @@ import SafeUtil from '../../util/SafeUtil';
 import BaseEntity from '../base/BaseEntity';
 import PreviewConfig from "./model/PreviewConfig";
 import JsonUtil from "../../util/JsonUtil";
+import ScanConfig from "./model/ScanConfig";
 
 
 export default class Preference extends BaseEntity {
@@ -10,6 +11,8 @@ export default class Preference extends BaseEntity {
   static URL_API_PREFERENCE_FETCH = '/api/preference/fetch'
   static URL_API_SYSTEM_CLEANUP = '/api/preference/system/cleanup'
   static URL_API_PREFERENCE_EDIT_PREVIEW_CONFIG = '/api/preference/edit/preview/config'
+  static URL_API_PREFERENCE_EDIT_SCAN = '/api/preference/edit/scan/config'
+
 
   //网站名称
   name: string = ""
@@ -32,6 +35,8 @@ export default class Preference extends BaseEntity {
   allowRegister: boolean = false
   //预览配置
   previewConfig: PreviewConfig = new PreviewConfig()
+  //扫描磁盘配置
+  scanConfig: ScanConfig = new ScanConfig()
   //后台版本
   version: string | null = null
 
@@ -51,7 +56,7 @@ export default class Preference extends BaseEntity {
     super.assign(obj);
 
     this.assignEntity("previewConfig", PreviewConfig)
-
+    this.assignEntity("scanConfig", ScanConfig)
   }
 
   getForm(): any {
@@ -65,7 +70,8 @@ export default class Preference extends BaseEntity {
       downloadDirMaxSize: this.downloadDirMaxSize,
       defaultTotalSizeLimit: this.defaultTotalSizeLimit,
       allowRegister: this.allowRegister,
-      previewConfig: JsonUtil.toJson(this.previewConfig.getForm())
+      previewConfig: JsonUtil.toJson(this.previewConfig.getForm()),
+      scanConfig: JsonUtil.toJson(this.scanConfig.getForm())
     };
   }
 
@@ -120,6 +126,17 @@ export default class Preference extends BaseEntity {
 
   }
 
+  httpSaveScan(successCallback?: any, errorCallback?: any, finalCallback?: any) {
+    const that = this
+    this.httpPost(Preference.URL_API_PREFERENCE_EDIT_SCAN, this.getForm(), function(response: any) {
+
+      that.assign(response.data.data);
+
+      SafeUtil.safeCallback(successCallback)(response);
+
+    }, errorCallback, finalCallback);
+
+  }
 
 }
 

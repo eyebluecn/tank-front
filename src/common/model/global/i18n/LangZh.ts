@@ -189,6 +189,16 @@ let LangZh = {
     engineSuffixPlaceHolder: '输入后缀，使用逗号分隔，不用带. 例如：doc,ppt,xls',
     previewCurrent: "本站预览",
     previewOpen: "新标签打开",
+    editScan: "设置磁盘扫描",
+    enableScan: "开启磁盘扫描",
+    disabledScan: "暂未开启磁盘扫描",
+    scanCron: "定时扫描",
+    cron: "cron表达式",
+    cronValidate: "cron表达式不能为空",
+    scanScope: "扫描范围",
+    scanUsers: "扫描用户",
+    chooseUsers: "模糊搜索用户",
+    chooseUsersValidate: "请选择至少一个用户"
   },
   share: {
     shareDetail: "分享详情",
