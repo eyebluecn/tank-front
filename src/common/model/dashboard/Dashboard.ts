@@ -10,6 +10,7 @@ import {UserStatusList} from "../user/UserStatus";
 export default class Dashboard extends BaseEntity {
 
   static URL_ACTIVE_IP_TOP10 = "/api/dashboard/active/ip/top10"
+  static URL_ETL = "/api/dashboard/etl"
 
   invokeNum: number = 0;
   totalInvokeNum: number = 0;
@@ -42,10 +43,19 @@ export default class Dashboard extends BaseEntity {
     ]
   }
 
-
   httpActiveIpTop10(successCallback?: any, errorCallback?: any, finalCallback?: any) {
     let that = this
     this.httpPost(Dashboard.URL_ACTIVE_IP_TOP10, {}, function (response: any) {
+
+      SafeUtil.safeCallback(successCallback)(response.data.data);
+
+    }, errorCallback, finalCallback)
+  }
+
+
+  httpEtl(successCallback?: any, errorCallback?: any, finalCallback?: any) {
+    let that = this
+    this.httpPost(Dashboard.URL_ETL, {}, function (response: any) {
 
       SafeUtil.safeCallback(successCallback)(response.data.data);
 

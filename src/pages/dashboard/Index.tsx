@@ -15,6 +15,7 @@ import SortDirection from "../../common/model/base/SortDirection";
 import FileUtil from "../../common/util/FileUtil";
 import Matter from '../../common/model/matter/Matter';
 import Lang from "../../common/model/global/Lang";
+import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 
 Echarts.registerTheme('tank_theme', theme);
 
@@ -106,13 +107,17 @@ export default class Index extends TankComponent<IProps, IState> {
 
   componentDidMount() {
 
+    this.refresh()
+
+  }
+
+  refresh() {
+
     this.updateDateStrings()
     this.refreshDashboardPager()
     this.refreshMatterPager()
     this.refreshActiveIpTop10()
-
   }
-
 
   updateDateStrings() {
     let that = this;
@@ -136,7 +141,7 @@ export default class Index extends TankComponent<IProps, IState> {
       let list = that.pager.data
 
       if (list.length > 0) {
-        that.dashboard.assign(list[list.length - 1])
+        that.dashboard.assign(list[0])
       }
 
       //数据转换成map，方便检索
@@ -244,6 +249,16 @@ export default class Index extends TankComponent<IProps, IState> {
     that.dashboard.httpActiveIpTop10(function (data: any) {
       that.activeIpTop10 = data
       that.updateUI()
+    })
+  }
+
+  reRun() {
+    let that = this
+    that.dashboard.httpEtl(function (data: any) {
+
+      MessageBoxUtil.success(Lang.t("operationSuccess"))
+
+      that.refresh()
     })
   }
 
@@ -418,7 +433,10 @@ export default class Index extends TankComponent<IProps, IState> {
 
         <div>
           <Alert
-            message={Lang.t("dashboard.warnHint")}
+            message={<span>
+              {Lang.t("dashboard.warnHint")}
+              <span className="link" onClick={this.reRun.bind(this)}>{Lang.t("dashboard.reRun")}</span>
+            </span>}
             type="warning"
           />
         </div>

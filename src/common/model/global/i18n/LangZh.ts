@@ -17,7 +17,8 @@ let LangZh = {
     loading: '加载中…',
     date: '日期',
     num: '数量',
-    warnHint: '温馨提示：本页面数据每日凌晨5点清洗一次',
+    warnHint: '温馨提示：本页面数据每日凌晨5点清洗一次。',
+    reRun: '立即重跑',
   },
   install: {
     configMysql: "配置MySQL",
