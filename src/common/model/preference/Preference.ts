@@ -9,6 +9,7 @@ export default class Preference extends BaseEntity {
   //获取当前登录者的信息
   static URL_API_PREFERENCE_FETCH = '/api/preference/fetch'
   static URL_API_SYSTEM_CLEANUP = '/api/preference/system/cleanup'
+  static URL_API_PREFERENCE_EDIT_PREVIEW_CONFIG = '/api/preference/edit/preview/config'
 
   //网站名称
   name: string = ""
@@ -105,6 +106,18 @@ export default class Preference extends BaseEntity {
       SafeUtil.safeCallback(successCallback)(response);
 
     }, errorCallback, finalCallback)
+  }
+
+  httpSavePreviewEngine(successCallback?: any, errorCallback?: any, finalCallback?: any) {
+    const that = this
+    this.httpPost(Preference.URL_API_PREFERENCE_EDIT_PREVIEW_CONFIG, this.getForm(), function(response: any) {
+
+      that.assign(response.data.data);
+
+      SafeUtil.safeCallback(successCallback)(response);
+
+    }, errorCallback, finalCallback);
+
   }
 
 

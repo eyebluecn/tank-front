@@ -150,6 +150,9 @@ let LangEn = {
     setting: "Setting"
   },
   preference: {
+    basic: "Base Info",
+    preview: "Preview Conf",
+    scan: "Scan Disk",
     websiteName: "Website Name",
     logo: "Logo",
     logoSquare: "Logo will be cropped to square size",
@@ -169,11 +172,13 @@ let LangEn = {
     systemCleanupPrompt: "This operation will cleanup everything except administrators' account data, please input login password.",
     previewConfig: "File Preview Config",
     editPreference: "Edit Preference",
+    editPreviewEngine: "Edit Preview engine",
     enterWebsiteName: "Please enter website name!",
     enterZipMaxNumLimit: "Please enter zip max num!",
     enterZipMaxSizeLimit: "Please enter zip max size!",
     enterUserDefaultSizeLimit: "Please enter user's default size!",
     engine: "The number {} engine",
+    noEngine: "No preview engine",
     newEngine: "Add a preview engine",
     engineReg: "Engine format",
     engineSuffix: "Engine suffix",

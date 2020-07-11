@@ -88,7 +88,7 @@ export default class Edit extends TankComponent<IProps, IState> {
 
     return (
       <div className="page-preference-edit">
-        <TankTitle name={Lang.t("preference.editPreference")}/>
+        <TankTitle name={Lang.t("preference.editPreference")} />
 
         <TankContentCard loading={preference.detailLoading}>
           <Form
@@ -110,11 +110,11 @@ export default class Edit extends TankComponent<IProps, IState> {
                 },
               ]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item label="logo" name="logoUrl">
-              <MatterImage uploadHint={Lang.t("preference.logoSquare")}/>
+              <MatterImage uploadHint={Lang.t("preference.logoSquare")} />
             </Form.Item>
 
             <Form.Item label="favicon" name="faviconUrl">
@@ -126,11 +126,11 @@ export default class Edit extends TankComponent<IProps, IState> {
             </Form.Item>
 
             <Form.Item label={Lang.t("preference.copyright")} name="copyright">
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item label={Lang.t("preference.extraInfo")} name="record">
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item
@@ -143,7 +143,7 @@ export default class Edit extends TankComponent<IProps, IState> {
                 },
               ]}
             >
-              <InputNumber min={-1} max={1000} className="w150"/>
+              <InputNumber min={-1} max={1000} className="w150" />
             </Form.Item>
 
             <Form.Item
@@ -160,15 +160,15 @@ export default class Edit extends TankComponent<IProps, IState> {
                 ]}
                 noStyle
               >
-                <InputNumber min={-1} className="w150"/>
+                <InputNumber min={-1} className="w150" />
               </Form.Item>
               <span className="pl10">
                 {" "}
                 {Lang.t("preference.current")}:
                 {this.formRef && this.formRef.current
                   ? FileUtil.humanFileSize(
-                    this.formRef.current.getFieldValue("downloadDirMaxSize")
-                  )
+                      this.formRef.current.getFieldValue("downloadDirMaxSize")
+                    )
                   : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
               </span>
             </Form.Item>
@@ -187,17 +187,17 @@ export default class Edit extends TankComponent<IProps, IState> {
                 ]}
                 noStyle
               >
-                <InputNumber min={-1} className="w150"/>
+                <InputNumber min={-1} className="w150" />
               </Form.Item>
               <span className="pl10">
                 {" "}
                 {Lang.t("preference.current")}:
                 {this.formRef && this.formRef.current
                   ? FileUtil.humanFileSize(
-                    this.formRef.current.getFieldValue(
-                      "defaultTotalSizeLimit"
+                      this.formRef.current.getFieldValue(
+                        "defaultTotalSizeLimit"
+                      )
                     )
-                  )
                   : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
               </span>
             </Form.Item>
@@ -208,17 +208,15 @@ export default class Edit extends TankComponent<IProps, IState> {
               required={true}
               valuePropName="checked"
             >
-              <Switch/>
+              <Switch />
             </Form.Item>
 
             <Form.Item label={Lang.t("preference.previewConfig")}>
-
-              <PreviewConfigPanel previewConfig={preference.previewConfig}/>
-
+              <PreviewConfigPanel previewConfig={preference.previewConfig} />
             </Form.Item>
 
             <div className="text-right">
-              <Button type="primary" htmlType="submit" icon={<SaveOutlined/>}>
+              <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
                 {Lang.t("save")}
               </Button>
             </div>

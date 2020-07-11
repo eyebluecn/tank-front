@@ -5,7 +5,7 @@ import TankComponent from "../../common/component/TankComponent";
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
 import TankTitle from "../widget/TankTitle";
-import { Button, Tooltip, Tag } from "antd";
+import { Button, Tooltip, Tag, Divider, Empty } from "antd";
 import { EditOutlined, ThunderboltOutlined } from "@ant-design/icons";
 import InfoCell from "../widget/InfoCell";
 import Preference from "../../common/model/preference/Preference";
@@ -60,16 +60,11 @@ export default class Index extends TankComponent<IProps, IState> {
   }
 
   render() {
+    const { previewEngines } = this.preference.previewConfig;
 
     return (
       <div className="page-preference-index">
         <TankTitle name={Lang.t("layout.setting")}>
-          <Link to={"/preference/edit"}>
-            <Button type={"primary"} icon={<EditOutlined />}>
-              {Lang.t("edit")}
-            </Button>
-          </Link>
-
           <Button
             className={"ml10"}
             type={"primary"}
@@ -82,96 +77,137 @@ export default class Index extends TankComponent<IProps, IState> {
         </TankTitle>
 
         <TankContentCard>
-          <InfoCell name={Lang.t("preference.websiteName")}>
-            {this.preference.name}
-          </InfoCell>
 
-          <InfoCell name={Lang.t("preference.logo")}>
-            {this.preference.logoUrl && (
-              <img
-                src={this.preference.logoUrl}
-                alt="logo"
-                className="img-logo"
-                onClick={() => {
-                  ImagePreviewer.showSinglePhoto(this.preference.logoUrl!);
-                }}
-              />
-            )}
-          </InfoCell>
+          <div className="basic-info">
+            <header>
+              <p className="title">{Lang.t("preference.basic")}</p>
+              <Link to={"/preference/edit"}>
+                <Button type={"primary"} icon={<EditOutlined />}>
+                  {Lang.t("edit")}
+                </Button>
+              </Link>
+            </header>
+            <InfoCell name={Lang.t("preference.websiteName")}>
+              {this.preference.name}
+            </InfoCell>
 
-          <InfoCell name={"favicon"}>
-            {this.preference.faviconUrl && (
-              <img
-                src={this.preference.faviconUrl}
-                alt="logo"
-                className="img-favicon"
-                onClick={() => {
-                  ImagePreviewer.showSinglePhoto(this.preference.faviconUrl!);
-                }}
-              />
-            )}
-          </InfoCell>
+            <InfoCell name={Lang.t("preference.logo")}>
+              {this.preference.logoUrl && (
+                <img
+                  src={this.preference.logoUrl}
+                  alt="logo"
+                  className="img-logo"
+                  onClick={() => {
+                    ImagePreviewer.showSinglePhoto(this.preference.logoUrl!);
+                  }}
+                />
+              )}
+            </InfoCell>
 
-          <InfoCell name={Lang.t("preference.copyright")}>
+            <InfoCell name={"favicon"}>
+              {this.preference.faviconUrl && (
+                <img
+                  src={this.preference.faviconUrl}
+                  alt="logo"
+                  className="img-favicon"
+                  onClick={() => {
+                    ImagePreviewer.showSinglePhoto(this.preference.faviconUrl!);
+                  }}
+                />
+              )}
+            </InfoCell>
+
+            <InfoCell name={Lang.t("preference.copyright")}>
             <span
               dangerouslySetInnerHTML={{ __html: this.preference.copyright }}
             />
-          </InfoCell>
+            </InfoCell>
 
-          <InfoCell name={Lang.t("preference.extraInfo")}>
+            <InfoCell name={Lang.t("preference.extraInfo")}>
             <span
               dangerouslySetInnerHTML={{ __html: this.preference.record }}
             />
-          </InfoCell>
+            </InfoCell>
 
-          <InfoCell name={Lang.t("preference.zipMaxNumLimit")}>
-            {this.preference.downloadDirMaxNum === -1
-              ? Lang.t("preference.noLimit")
-              : this.preference.downloadDirMaxNum}
-          </InfoCell>
+            <InfoCell name={Lang.t("preference.zipMaxNumLimit")}>
+              {this.preference.downloadDirMaxNum === -1
+                ? Lang.t("preference.noLimit")
+                : this.preference.downloadDirMaxNum}
+            </InfoCell>
 
-          <InfoCell name={Lang.t("preference.zipMaxSizeLimit")}>
-            {FileUtil.humanFileSize(this.preference.downloadDirMaxSize)}
-          </InfoCell>
+            <InfoCell name={Lang.t("preference.zipMaxSizeLimit")}>
+              {FileUtil.humanFileSize(this.preference.downloadDirMaxSize)}
+            </InfoCell>
 
-          <InfoCell name={Lang.t("preference.userDefaultSizeLimit")}>
-            {FileUtil.humanFileSize(this.preference.defaultTotalSizeLimit)}
-          </InfoCell>
+            <InfoCell name={Lang.t("preference.userDefaultSizeLimit")}>
+              {FileUtil.humanFileSize(this.preference.defaultTotalSizeLimit)}
+            </InfoCell>
 
-          <InfoCell name={Lang.t("preference.allowRegister")}>
-            {this.preference.allowRegister ? Lang.t("yes") : Lang.t("no")}
-          </InfoCell>
+            <InfoCell name={Lang.t("preference.allowRegister")}>
+              {this.preference.allowRegister ? Lang.t("yes") : Lang.t("no")}
+            </InfoCell>
 
-          <InfoCell name={Lang.t("preference.docLink")}>
-            <a href={"https://tank-doc.eyeblue.cn/zh"} target="_blank">
-              https://tank-doc.eyeblue.cn/zh
-            </a>
-          </InfoCell>
-          <InfoCell name={Lang.t("preference.previewConfig")}>
-            {this.preference.previewConfig.previewEngines.map((engines, index) => (
-              <div key={index} className="relative mb10 box">
-                <TankContentCard>
-                  <Tooltip title={Lang.t("preference.enginePreview")}>
-                    {engines.previewInSite ? (
-                      <Tag className="preview-tip" color="warning">
-                        {Lang.t("preference.previewCurrent")}
-                      </Tag>
-                    ) : (
-                      <Tag className="preview-tip" color="success">
-                        {Lang.t("preference.previewOpen")}
-                      </Tag>
-                    )}
-                  </Tooltip>
-                  <InfoCell name={Lang.t("preference.engineReg")}>
-                    {engines.url}
-                  </InfoCell>
-                  <InfoCell name={Lang.t("preference.engineSuffix")}>
-                    {engines.extensions}
-                  </InfoCell>
-                </TankContentCard>
-              </div>
-            ))}
-          </InfoCell>
+            <InfoCell name={Lang.t("preference.docLink")}>
+              <a href={"https://tank-doc.eyeblue.cn/zh"} target="_blank">
+                https://tank-doc.eyeblue.cn/zh
+              </a>
+            </InfoCell>
+          </div>
+
+          <Divider />
+
+          <div className="preview-info">
+            <header>
+              <p className="title">
+                {Lang.t("preference.preview")}
+              </p>
+              <Link to={"/preference/engine/edit"}>
+                <Button type={"primary"} icon={<EditOutlined />}>
+                  {Lang.t("edit")}
+                </Button>
+              </Link>
+
+            </header>
+            <div className="content">
+              {
+                previewEngines.length ? previewEngines.map((engines, index) => (
+                  <div key={index} className="relative mb10 engine-box">
+                      <Tooltip title={Lang.t("preference.enginePreview")}>
+                        {engines.previewInSite ? (
+                          <Tag className="preview-tip" color="warning">
+                            {Lang.t("preference.previewCurrent")}
+                          </Tag>
+                        ) : (
+                          <Tag className="preview-tip" color="success">
+                            {Lang.t("preference.previewOpen")}
+                          </Tag>
+                        )}
+                      </Tooltip>
+                      <InfoCell name={Lang.t("preference.engineReg")}>
+                        {engines.url}
+                      </InfoCell>
+                      <InfoCell name={Lang.t("preference.engineSuffix")}>
+                        {engines.extensions}
+                      </InfoCell>
+                  </div>
+                )) : <Empty description={Lang.t("preference.noEngine")} />
+              }
+            </div>
+          </div>
+
+          <Divider />
+
+          <div className="scan-info">
+            <header>
+              <p className="title">
+                {Lang.t("preference.scan")}
+              </p>
+              <Button type={"primary"} icon={<EditOutlined />}>
+                {Lang.t("edit")}
+              </Button>
+            </header>
+          </div>
+
         </TankContentCard>
 
       </div>

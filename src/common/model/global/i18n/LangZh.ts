@@ -151,8 +151,10 @@ let LangZh = {
     setting: "网站设置"
   },
   preference: {
+    basic: "基本信息",
+    preview: "预览引擎",
+    scan: "扫描磁盘",
     websiteName: "网站名称",
-
     logo: "Logo",
     logoSquare: "logo请使用正方形图片，否则在显示时会裁剪成正方形",
     onlyAllowIco: "只允许上传.ico图标",
@@ -171,11 +173,13 @@ let LangZh = {
     systemCleanupPrompt: "重置系统将清空除管理员账号外所有数据，事关重大，请输入登录密码",
     previewConfig: "文件预览配置",
     editPreference: "设置网站偏好",
+    editPreviewEngine: "设置预览引擎",
     enterWebsiteName: "请输入网站名称!",
     enterZipMaxNumLimit: "zip最大数量限制必填!",
     enterZipMaxSizeLimit: "zip大小限制必填!",
     enterUserDefaultSizeLimit: "默认用户空间大小必填!",
     engine: "{}号预览引擎",
+    noEngine: "暂无在线预览引擎配置",
     newEngine: "添加一个预览引擎",
     engineReg: "引擎格式",
     engineSuffix: "匹配后缀",
