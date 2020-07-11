@@ -38,8 +38,9 @@ export default class Index extends TankComponent<IProps, IState> {
   //获取分页的一个帮助器
   pager: Pager<Dashboard> = new Pager<Dashboard>(this, Dashboard, 15);
 
-  //昨天的统计情况
+  //今天的统计情况
   dashboard: Dashboard = new Dashboard(this)
+  yesterdayDashboard: Dashboard = new Dashboard(this)
 
   matterPager: Pager<Matter> = new Pager<Matter>(this, Matter, 10);
 
@@ -81,11 +82,11 @@ export default class Index extends TankComponent<IProps, IState> {
       data: ['PV', 'UV']
     },
     xAxis: {
-      name: Lang.t("dashboard.date"),
+      name: Lang.t("assign.date"),
       data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
     },
     yAxis: {
-      name: Lang.t("dashboard.num")
+      name: Lang.t("assign.num")
     },
     series: [{
       name: 'PV',
@@ -121,9 +122,9 @@ export default class Index extends TankComponent<IProps, IState> {
 
   updateDateStrings() {
     let that = this;
-    //更新横坐标 从昨天开始倒推
+    //更新横坐标 从今天开始倒推
     let arr = []
-    for (let d = that.days; d >= 1; d--) {
+    for (let d = that.days - 1; d >= 0; d--) {
       let thenDate = new Date((new Date()).getTime() - d * 24 * 60 * 60 * 1000)
       arr.push(DateUtil.simpleDate(thenDate))
     }
@@ -142,6 +143,10 @@ export default class Index extends TankComponent<IProps, IState> {
 
       if (list.length > 0) {
         that.dashboard.assign(list[0])
+      }
+
+      if (list.length > 1) {
+        that.yesterdayDashboard.assign(list[1])
       }
 
       //数据转换成map，方便检索
@@ -271,6 +276,7 @@ export default class Index extends TankComponent<IProps, IState> {
     let that = this
 
     let dashboard: Dashboard = this.dashboard
+    let yesterdayDashboard: Dashboard = this.yesterdayDashboard
 
     return (
       <div className="page-dashboard-index">
@@ -292,7 +298,7 @@ export default class Index extends TankComponent<IProps, IState> {
                 </div>
               </div>
               <div className="lower">
-                {Lang.t("dashboard.yesterdayInvoke")}:{dashboard.invokeNum}
+                {Lang.t("dashboard.yesterdayInvoke")}:{yesterdayDashboard.invokeNum}
               </div>
             </div>
           </Col>
@@ -310,7 +316,7 @@ export default class Index extends TankComponent<IProps, IState> {
                 </div>
               </div>
               <div className="lower">
-                {Lang.t("dashboard.yesterdayUV")}:{dashboard.uv}
+                {Lang.t("dashboard.yesterdayUV")}:{yesterdayDashboard.uv}
               </div>
             </div>
           </Col>
@@ -329,7 +335,7 @@ export default class Index extends TankComponent<IProps, IState> {
                 </div>
               </div>
               <div className="lower">
-                {Lang.t("dashboard.yesterdayMatterNum")}:{dashboard.matterNum}
+                {Lang.t("dashboard.yesterdayMatterNum")}:{yesterdayDashboard.matterNum}
               </div>
             </div>
           </Col>
@@ -347,7 +353,7 @@ export default class Index extends TankComponent<IProps, IState> {
                 </div>
               </div>
               <div className="lower">
-                {Lang.t("dashboard.yesterdayMatterSize")}:{FileUtil.humanFileSize(dashboard.fileSize)}
+                {Lang.t("dashboard.yesterdayMatterSize")}:{FileUtil.humanFileSize(yesterdayDashboard.fileSize)}
               </div>
             </div>
           </Col>
