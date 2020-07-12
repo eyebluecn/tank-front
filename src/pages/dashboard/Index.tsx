@@ -205,26 +205,28 @@ export default class Index extends TankComponent<IProps, IState> {
       that.compareDaySize = 0
 
       for (let i = 0; i < that.days; i++) {
-        if (i >= 1 && i <= 7) {
+        if (i >= 0 && i <= 6) {
+          console.log("standard i = " + i + " invokeNumData=" + invokeNumData[i])
           that.standardWeekInvokeNum += invokeNumData[i]
           that.standardWeekUv += uvData[i]
           that.standardWeekMatterNum += matterNumData[i]
           that.standardWeekSize += fileSizeData[i]
 
-        } else if (i >= 8 && i <= 14) {
+        } else if (i >= 7 && i <= 13) {
+          console.log("compare i = " + i + " invokeNumData=" + invokeNumData[i])
           that.compareWeekInvokeNum += invokeNumData[i]
           that.compareWeekUv += uvData[i]
           that.compareWeekMatterNum += matterNumData[i]
           that.compareWeekSize += fileSizeData[i]
         }
-        if (i === 13) {
+        if (i === 12) {
           that.standardDayInvokeNum = invokeNumData[i]
           that.standardDayUv = uvData[i]
           that.standardDayMatterNum = matterNumData[i]
           that.standardDaySize = fileSizeData[i]
 
         }
-        if (i === 14) {
+        if (i === 13) {
           that.compareDayInvokeNum = invokeNumData[i]
           that.compareDayUv = uvData[i]
           that.compareDayMatterNum = matterNumData[i]
