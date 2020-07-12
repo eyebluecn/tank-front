@@ -66,13 +66,13 @@ export default class ScanEdit extends TankComponent<IProps, IState> {
   }
 
   finish = (values: any) => {
-    if (values.scope === ScanScopeType.ALL) {
-      this.preference.scanConfig.assign(values);
-    } else {
+    if (values.scope === ScanScopeType.CUSTOM) {
       this.preference.scanConfig.assign({
         ...values,
         usernames: values.users.map((item: any) => item.value),
       });
+    } else {
+      this.preference.scanConfig.assign(values);
     }
 
     this.preference.httpSaveScan(function () {
