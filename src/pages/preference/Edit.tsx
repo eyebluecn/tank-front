@@ -163,7 +163,6 @@ export default class Edit extends TankComponent<IProps, IState> {
                 <InputNumber min={-1} className="w150" />
               </Form.Item>
               <span className="pl10">
-                {" "}
                 {Lang.t("preference.current")}:
                 {this.formRef && this.formRef.current
                   ? FileUtil.humanFileSize(

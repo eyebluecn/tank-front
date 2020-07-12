@@ -1,4 +1,5 @@
 import SelectionOption from "../../base/option/SelectionOption";
+import Lang from "../../global/Lang";
 
 enum ScanCronType {
   TEN_SECONDS = "TEN_SECONDS",
@@ -14,23 +15,23 @@ const ScanCronTypes: ScanCronType[] = Object.keys(ScanCronType).map(
 
 const ScanCronTypeMap: { [key in keyof typeof ScanCronType]: SelectionOption } = {
   TEN_SECONDS: {
-    name: "每十秒",
+    name: Lang.t("preference.scanPerTenSeconds"),
     value: "@every 10s",
   },
   THIRTY_SECONDS: {
-    name: "每三十秒",
+    name: Lang.t("preference.scanPerThirtySeconds"),
     value: "@every 30s",
   },
   MINUTE: {
-    name: "每分钟",
+    name: Lang.t("preference.scanPerMinute"),
     value: "@every 1m",
   },
   HOUR: {
-    name: "每小时",
+    name: Lang.t("preference.scanPerHour"),
     value: "0 * * * *",
   },
   CUSTOM: {
-    name: "自定义",
+    name: Lang.t("preference.scanCustom"),
     value: "CUSTOM",
   },
 };

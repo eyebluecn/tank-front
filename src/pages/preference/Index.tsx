@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import "./Index.less";
 import TankComponent from "../../common/component/TankComponent";
@@ -19,6 +19,8 @@ import {
   ScanScopeType,
   ScanScopeTypeMap,
 } from "../../common/model/preference/model/ScanScopeType";
+import PreviewEngineCell from "./widget/PreviewEngineCell";
+import PreviewEngine from "../../common/model/preference/model/PreviewEngine";
 
 interface IProps extends RouteComponentProps {}
 
@@ -68,7 +70,8 @@ export default class Index extends TankComponent<IProps, IState> {
       previewConfig: { previewEngines },
       scanConfig,
     } = this.preference;
-    console.log(scanConfig);
+
+    console.log(PreviewEngine.defaultPreviewEngines());
 
     return (
       <div className="page-preference-index">
@@ -173,30 +176,17 @@ export default class Index extends TankComponent<IProps, IState> {
               </Link>
             </header>
             <div className="content">
-              {previewEngines.length ? (
-                previewEngines.map((engines, index) => (
-                  <div key={index} className="relative mb10 engine-box">
-                    <Tooltip title={Lang.t("preference.enginePreview")}>
-                      {engines.previewInSite ? (
-                        <Tag className="preview-tip" color="warning">
-                          {Lang.t("preference.previewCurrent")}
-                        </Tag>
-                      ) : (
-                        <Tag className="preview-tip" color="success">
-                          {Lang.t("preference.previewOpen")}
-                        </Tag>
-                      )}
-                    </Tooltip>
-                    <InfoCell name={Lang.t("preference.engineReg")}>
-                      {engines.url}
-                    </InfoCell>
-                    <InfoCell name={Lang.t("preference.engineSuffix")}>
-                      {engines.extensions}
-                    </InfoCell>
-                  </div>
+              {previewEngines.map((engine, index) => (
+                <PreviewEngineCell
+                  key={index}
+                  engine={engine}
+                  order={index + 1}
+                />
+              ))}
+              {Children.toArray(
+                PreviewEngine.defaultPreviewEngines().map((engine) => (
+                  <PreviewEngineCell engine={engine} />
                 ))
-              ) : (
-                <Empty description={Lang.t("preference.noEngine")} />
               )}
             </div>
           </div>

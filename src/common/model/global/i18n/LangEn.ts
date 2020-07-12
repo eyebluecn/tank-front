@@ -183,6 +183,9 @@ let LangEn = {
     engineReg: "Engine format",
     engineSuffix: "Engine suffix",
     enginePreview: "Engine preview",
+    defaultPreview: "Default preview engine",
+    previewEngine: "Number {} preview engine",
+    defaultPreviewDesc: "Default preview engine, can not be removed",
     engineRegHelper: "template syntax, {url} represents the file path, the preview will automatically replace with the corresponding file url",
     engineRegPlaceHolder: "eg：https://xxx.xxx.xxx?url={url}",
     engineSuffixPlaceHolder: "suffix can not be null, split by comma, look like: doc,ppt,xls",
@@ -196,6 +199,11 @@ let LangEn = {
     cronValidate: "Cron expression can not be null",
     scanScope: "Scan scope",
     scanUsers: "Scan users",
+    scanPerTenSeconds: "Scan every ten seconds",
+    scanPerThirtySeconds: "Scan every thirty seconds",
+    scanPerMinute: "Scan every minute",
+    scanPerHour: "Scan every hour",
+    scanCustom: "Scan custom",
     chooseUsers: "Fuzzy search users",
     chooseUsersValidate: "choose one more user"
   },
@@ -286,7 +294,8 @@ let LangEn = {
     editSomebodyPassword: "Edit {}'s Password",
     transfigurationPromptText: "Transfiguration Prompt",
     transfigurationPrompt: "You will login as this user.Please visit this link in other browser, if in current browser, you will logout.",
-
+    allUsers: "All users",
+    partialUsers: "Partial users"
   },
   model: {
     usernameRule: "only lowercase letter and number and _ is permitted.",

@@ -184,6 +184,9 @@ let LangZh = {
     engineReg: "引擎格式",
     engineSuffix: "匹配后缀",
     enginePreview: "预览方式",
+    defaultPreview: "默认引擎",
+    previewEngine: "{}号引擎",
+    defaultPreviewDesc: "默认预览引擎，不可移除",
     engineRegHelper: "此处填写模板语法，{url}表示文件路径，预览时会自动替换成对应的文件url",
     engineRegPlaceHolder: "例如：https://xxx.xxx.xxx?url={url}",
     engineSuffixPlaceHolder: '输入后缀，使用逗号分隔，不用带. 例如：doc,ppt,xls',
@@ -197,6 +200,11 @@ let LangZh = {
     cronValidate: "cron表达式不能为空",
     scanScope: "扫描范围",
     scanUsers: "扫描用户",
+    scanPerTenSeconds: "每十秒",
+    scanPerThirtySeconds: "每三十秒",
+    scanPerMinute: "每分钟",
+    scanPerHour: "每小时",
+    scanCustom: "自定义",
     chooseUsers: "模糊搜索用户",
     chooseUsersValidate: "请选择至少一个用户"
   },
@@ -287,7 +295,8 @@ let LangZh = {
     editSomebodyPassword: "修改{}的密码",
     transfigurationPromptText: "变身提示",
     transfigurationPrompt: "您将使用该用户的身份登录。请复制以下链接到其他浏览器访问，在当前浏览器访问会导致当前用户登录信息失效。",
-
+    allUsers: "全部用户",
+    partialUsers: "局部用户"
   },
   model: {
     usernameRule: "用户名只能包含字母，数字和\"_\"",

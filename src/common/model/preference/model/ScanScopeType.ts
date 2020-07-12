@@ -1,4 +1,5 @@
 import SelectionOption from "../../base/option/SelectionOption";
+import Lang from "../../global/Lang";
 
 enum ScanScopeType {
   ALL = "ALL",
@@ -11,11 +12,11 @@ const ScanScopeTypes: ScanScopeType[] = Object.keys(ScanScopeType).map(
 
 const ScanScopeTypeMap: { [key in keyof typeof ScanScopeType]: SelectionOption } = {
   ALL: {
-    name: "全部用户",
+    name: Lang.t("user.allUsers"),
     value: "ALL",
   },
   CUSTOM: {
-    name: "局部用户",
+    name: Lang.t("user.partialUsers"),
     value: "CUSTOM",
   },
 };

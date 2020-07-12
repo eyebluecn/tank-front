@@ -3,7 +3,7 @@ import "./PreviewConfigPanel.less";
 import TankComponent from "../../../common/component/TankComponent";
 import PreviewConfig from "../../../common/model/preference/model/PreviewConfig";
 import PreviewEngine from "../../../common/model/preference/model/PreviewEngine";
-import PreviewEngineCell from "./PreviewEngineCell";
+import PreviewEngineEditCell from "./PreviewEngineEditCell";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Lang from "../../../common/model/global/Lang";
@@ -43,7 +43,7 @@ export default class PreviewConfigPanel extends TankComponent<IProps, IState> {
         {previewConfig.previewEngines.map(
           (previewEngine: PreviewEngine, index: number) => {
             return (
-              <PreviewEngineCell
+              <PreviewEngineEditCell
                 key={index}
                 previewEngine={previewEngine}
                 index={index}
