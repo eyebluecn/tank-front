@@ -16,7 +16,7 @@ import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import { ExclamationCircleFilled, DownloadOutlined, StopOutlined, LinkOutlined } from "@ant-design/icons";
 import ShareDialogModal from "./widget/ShareDialogModal";
 import DateUtil from "../../common/util/DateUtil";
-import MatterPanel from "../matter/widget/MatterPanel";
+import ShareMatterPanel from "./widget/ShareMatterPanel";
 import BreadcrumbModel from "../../common/model/base/option/BreadcrumbModel";
 import BreadcrumbPanel from "../widget/BreadcrumbPanel";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
@@ -131,9 +131,10 @@ export default class Detail extends TankComponent<IProps, IState> {
   previewImage = (matter: Matter) => {
     let imageArray: string[] = [];
     let startIndex = -1;
+    const { share } = this;
     this.pager.data.forEach((item) => {
       if (item.isImage()) {
-        imageArray.push(item.getPreviewUrl());
+        imageArray.push(item.getSharePreviewUrl(share.uuid!, share.code!, share.rootUuid));
         if (item.uuid === matter.uuid) {
           startIndex = imageArray.length - 1;
         }
@@ -145,6 +146,7 @@ export default class Detail extends TankComponent<IProps, IState> {
 
   goToDirectory = (id?: string) => {
     const paramId = this.props.match.params.uuid;
+
     if (id) {
       //share.rootUuid 一旦设置好了，只要根文件夹不换，那么就一直不会变。
       const puuid = BrowserUtil.getQueryByName("puuid");
@@ -195,6 +197,9 @@ export default class Detail extends TankComponent<IProps, IState> {
 
   render() {
     const { share, needShareCode, user, pager } = this;
+
+    console.log(share);
+
     if (share.detailLoading && needShareCode) return <FrameLoading />;
     return (
       <div className="share-detail">
@@ -277,10 +282,10 @@ export default class Detail extends TankComponent<IProps, IState> {
 
             {pager.data.length ? (
               pager.data.map((matter) => (
-                <MatterPanel
+                <ShareMatterPanel
                   key={matter.uuid!}
                   matter={matter}
-                  shareMode={true}
+                  share={share}
                   onGoToDirectory={this.goToDirectory}
                   onPreviewImage={this.previewImage}
                 />
