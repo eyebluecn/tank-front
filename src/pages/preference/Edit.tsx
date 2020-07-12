@@ -227,10 +227,6 @@ export default class Edit extends TankComponent<IProps, IState> {
               <Switch />
             </Form.Item>
 
-            <Form.Item label={Lang.t("preference.previewConfig")}>
-              <PreviewConfigPanel previewConfig={preference.previewConfig} />
-            </Form.Item>
-
             <div className="text-right">
               <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
                 {Lang.t("save")}

@@ -1,5 +1,5 @@
 import React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import {RouteComponentProps} from "react-router-dom";
 import "./PreviewEngineEdit.less";
 import TankComponent from "../../common/component/TankComponent";
 import Preference from "../../common/model/preference/Preference";
@@ -7,16 +7,19 @@ import Moon from "../../common/model/global/Moon";
 import Lang from "../../common/model/global/Lang";
 import TankTitle from "../widget/TankTitle";
 import TankContentCard from "../widget/TankContentCard";
-import { Button, Form } from "antd";
-import { FormInstance } from "antd/lib/form";
-import { SaveOutlined } from "@ant-design/icons";
+import {Button, Form, Tooltip} from "antd";
+import {FormInstance} from "antd/lib/form";
+import {SaveOutlined} from "@ant-design/icons";
 import PreviewConfigPanel from "./widget/PreviewConfigPanel";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import Sun from "../../common/model/global/Sun";
+import {QuestionCircleOutlined} from "@ant-design/icons/lib";
 
-interface IProps extends RouteComponentProps {}
+interface IProps extends RouteComponentProps {
+}
 
-interface IState {}
+interface IState {
+}
 
 export default class PreviewEngineEdit extends TankComponent<IProps, IState> {
   formRef = React.createRef<FormInstance>();
@@ -48,15 +51,15 @@ export default class PreviewEngineEdit extends TankComponent<IProps, IState> {
   };
 
   render() {
-    const { preference } = this;
+    const {preference} = this;
     const layout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 },
+      labelCol: {span: 6},
+      wrapperCol: {span: 18},
     };
 
     return (
       <div className="preference-preview-engine-edit">
-        <TankTitle name={Lang.t("preference.editPreviewEngine")} />
+        <TankTitle name={Lang.t("preference.editPreviewEngine")}/>
         <TankContentCard loading={preference.detailLoading}>
           <Form
             {...layout}
@@ -65,11 +68,16 @@ export default class PreviewEngineEdit extends TankComponent<IProps, IState> {
             onFinish={this.finish}
             onValuesChange={this.updateUI}
           >
-            <Form.Item label={Lang.t("preference.previewConfig")}>
-              <PreviewConfigPanel previewConfig={preference.previewConfig} />
+            <Form.Item label={<Tooltip title={Lang.t("preference.engineUsageHint")}>
+              <div>
+                {Lang.t("preference.previewConfig")}
+                <QuestionCircleOutlined className="btn-action text-warning"/>
+              </div>
+            </Tooltip>}>
+              <PreviewConfigPanel previewConfig={preference.previewConfig}/>
             </Form.Item>
             <div className="text-right">
-              <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
+              <Button type="primary" htmlType="submit" icon={<SaveOutlined/>}>
                 {Lang.t("save")}
               </Button>
             </div>

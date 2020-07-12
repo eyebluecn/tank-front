@@ -188,6 +188,7 @@ let LangEn = {
     defaultPreview: "Default preview engine",
     previewEngine: "Number {} preview engine",
     defaultPreviewDesc: "Default preview engine, can not be removed",
+    engineUsageHint: "Previewing a file using the first engine matches the extentions.",
     engineRegHelper: "template syntax, {url} represents the file path, the preview will automatically replace with the corresponding file url",
     engineRegPlaceHolder: "eg：https://xxx.xxx.xxx?url={url}",
     engineSuffixPlaceHolder: "suffix can not be null, split by comma, look like: doc,ppt,xls",
