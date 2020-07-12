@@ -385,7 +385,7 @@ export default class Index extends TankComponent<IProps, IState> {
         </Row>
 
         <Row gutter={18}>
-          <Col sm={24} md={12}>
+          <Col xs={24} sm={24} md={12} lg={12}>
 
             <div className="figure-block">
               <div className="title">
@@ -412,7 +412,7 @@ export default class Index extends TankComponent<IProps, IState> {
           </Col>
 
 
-          <Col sm={24} md={12}>
+          <Col  xs={24} sm={24} md={12} lg={12}>
 
             <div className="figure-block">
               <div className="title">

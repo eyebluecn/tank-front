@@ -56,14 +56,14 @@ export default class TopLayout extends TankComponent <IProps, IState> {
 
     let that = this
 
-
+    let preference: Preference = Moon.getSingleton().preference
     return (
 
       <div className="layout-top">
 
         <div className="logo-title-area" onClick={this.goHome.bind(this)}>
           <img className="header-logo" src={this.logoUrl()} alt="logo"/>
-          <span className="header-title">蓝眼云盘</span>
+          <span className="header-title">{preference.name}</span>
         </div>
 
         <div className="drawer-trigger">
