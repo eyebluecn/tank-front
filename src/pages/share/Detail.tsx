@@ -1,8 +1,8 @@
 import React from "react";
 import TankComponent from "../../common/component/TankComponent";
 import TankTitle from "../widget/TankTitle";
-import { Button, Col, Empty, Input, Modal, Row, Space } from "antd";
-import { RouteComponentProps } from "react-router";
+import {Button, Col, Empty, Input, Modal, Row, Space} from "antd";
+import {RouteComponentProps} from "react-router";
 import "./Detail.less";
 import Share from "../../common/model/share/Share";
 import Pager from "../../common/model/base/Pager";
@@ -13,7 +13,7 @@ import FrameLoading from "../widget/FrameLoading";
 import Moon from "../../common/model/global/Moon";
 import Sun from "../../common/model/global/Sun";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
-import { ExclamationCircleFilled, DownloadOutlined, StopOutlined, LinkOutlined } from "@ant-design/icons";
+import {DownloadOutlined, ExclamationCircleFilled, LinkOutlined, StopOutlined} from "@ant-design/icons";
 import ShareDialogModal from "./widget/ShareDialogModal";
 import DateUtil from "../../common/util/DateUtil";
 import ShareMatterPanel from "./widget/ShareMatterPanel";
@@ -26,9 +26,11 @@ interface RouteParam {
   uuid: string;
 }
 
-interface IProps extends RouteComponentProps<RouteParam> {}
+interface IProps extends RouteComponentProps<RouteParam> {
+}
 
-interface IState {}
+interface IState {
+}
 
 export default class Detail extends TankComponent<IProps, IState> {
   // 默认分享详情中分页大小
@@ -46,13 +48,13 @@ export default class Detail extends TankComponent<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
+    this.pager.enableHistory();
   }
 
   componentDidMount(): void {
     this.share.uuid = this.props.match.params.uuid;
     //如果query中有rootUuid那么就更新.
-    this.share.rootUuid =
-      BrowserUtil.getQueryByName("shareRootUuid") || this.share.rootUuid;
+    this.share.rootUuid = BrowserUtil.getQueryByName("shareRootUuid") || this.share.rootUuid;
 
     this.pager.enableHistory();
     this.refresh();
@@ -60,13 +62,16 @@ export default class Detail extends TankComponent<IProps, IState> {
 
   componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any) {
     if (this.props.location.search !== nextProps.location.search) {
-      this.pager.enableHistory();
       this.refresh();
     }
   }
 
   refresh = () => {
     const puuid = BrowserUtil.getQueryByName("puuid") || Matter.MATTER_ROOT;
+    if (puuid === Matter.MATTER_ROOT) {
+      this.share.rootUuid = Matter.MATTER_ROOT
+    }
+
     this.share.httpBrowse(puuid, this.share.rootUuid, () => {
       if (puuid === Matter.MATTER_ROOT) {
         this.pager.clear();
@@ -118,7 +123,7 @@ export default class Detail extends TankComponent<IProps, IState> {
   cancelShare = () => {
     Modal.confirm({
       title: Lang.t("share.cancelPrompt"),
-      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00"/>,
       onOk: () => {
         this.share.httpDel(() => {
           MessageBoxUtil.success(Lang.t("operationSuccess"));
@@ -131,7 +136,7 @@ export default class Detail extends TankComponent<IProps, IState> {
   previewImage = (matter: Matter) => {
     let imageArray: string[] = [];
     let startIndex = -1;
-    const { share } = this;
+    const {share} = this;
     this.pager.data.forEach((item) => {
       if (item.isImage()) {
         imageArray.push(item.getSharePreviewUrl(share.uuid!, share.code!, share.rootUuid));
@@ -144,26 +149,26 @@ export default class Detail extends TankComponent<IProps, IState> {
     ImagePreviewer.showMultiPhoto(imageArray, startIndex);
   };
 
-  goToDirectory = (id?: string) => {
+  goToDirectory = (matterUuid?: string) => {
     const paramId = this.props.match.params.uuid;
 
-    if (id) {
+    if (matterUuid) {
       //share.rootUuid 一旦设置好了，只要根文件夹不换，那么就一直不会变。
       const puuid = BrowserUtil.getQueryByName("puuid");
       if (!puuid || puuid === Matter.MATTER_ROOT) {
-        this.share.rootUuid = id;
+        this.share.rootUuid = matterUuid;
         this.pager.clear();
       }
 
-      this.pager.setFilterValue("puuid", id);
+      this.pager.setFilterValue("puuid", matterUuid);
       this.pager.page = 0;
       const query = this.pager.getParams();
-      Sun.navigateQueryTo({ path: `/share/detail/${paramId}`, query });
+      Sun.navigateQueryTo({path: `/share/detail/${paramId}`, query});
     } else {
       // 回到分享根目录，先将rootUuid交给根目录
       this.share.rootUuid = Matter.MATTER_ROOT;
       this.pager.clear();
-      Sun.navigateQueryTo({ path: `/share/detail/${paramId}` });
+      Sun.navigateQueryTo({path: `/share/detail/${paramId}`});
     }
   };
 
@@ -196,14 +201,12 @@ export default class Detail extends TankComponent<IProps, IState> {
   };
 
   render() {
-    const { share, needShareCode, user, pager } = this;
+    const {share, needShareCode, user, pager} = this;
 
-    console.log(share);
-
-    if (share.detailLoading && needShareCode) return <FrameLoading />;
+    if (share.detailLoading && needShareCode) return <FrameLoading/>;
     return (
       <div className="share-detail">
-        <TankTitle name={Lang.t("share.shareDetail")} />
+        <TankTitle name={Lang.t("share.shareDetail")}/>
         {needShareCode ? (
           <div>
             <Row>
@@ -222,7 +225,7 @@ export default class Detail extends TankComponent<IProps, IState> {
             <div className="share-block">
               <div className="upper">
                 <div className="left-box">
-                  <img className="share-icon" src={share.getIcon()} />
+                  <img className="share-icon" src={share.getIcon()}/>
                   <span className="name">
                     {share.name}
                     {share.hasExpired() ? (
@@ -235,20 +238,20 @@ export default class Detail extends TankComponent<IProps, IState> {
                 <div className="right-box">
                   <Space>
                     <Button type="primary" onClick={this.downloadZip}>
-                      <DownloadOutlined />
+                      <DownloadOutlined/>
                       {Lang.t("download")}
                     </Button>
                     {user.uuid && user.uuid === share.userUuid ? (
                       <>
                         <Button danger onClick={this.cancelShare}>
-                          <StopOutlined />
+                          <StopOutlined/>
                           {Lang.t("share.cancelShare")}
                         </Button>
                         <Button
                           type="primary"
                           onClick={() => ShareDialogModal.open(share)}
                         >
-                          <LinkOutlined />
+                          <LinkOutlined/>
                           {Lang.t("share.getLink")}
                         </Button>
                       </>
@@ -269,15 +272,15 @@ export default class Detail extends TankComponent<IProps, IState> {
                     {share.expireInfinity
                       ? Lang.t("share.noExpire")
                       : `${Lang.t(
-                          "share.expireTime"
-                        )}：${DateUtil.simpleDateHourMinute(share.expireTime)}`}
+                        "share.expireTime"
+                      )}：${DateUtil.simpleDateHourMinute(share.expireTime)}`}
                   </span>
                 </Space>
               </div>
             </div>
 
             <div className="breadcrumb-area">
-              <BreadcrumbPanel breadcrumbModels={this.breadcrumbModels} />
+              <BreadcrumbPanel breadcrumbModels={this.breadcrumbModels}/>
             </div>
 
             {pager.data.length ? (
@@ -291,7 +294,7 @@ export default class Detail extends TankComponent<IProps, IState> {
                 />
               ))
             ) : (
-              <Empty description={Lang.t("share.noContent")} />
+              <Empty description={Lang.t("share.noContent")}/>
             )}
           </div>
         )}
