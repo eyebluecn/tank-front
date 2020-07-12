@@ -31,6 +31,8 @@ export default class Preference extends BaseEntity {
   downloadDirMaxNum: number = -1
   //用户默认总大小限制
   defaultTotalSizeLimit: number = -1
+  //回收站保存文件天数
+  deletedKeepDays: number = 7
   //是否允许自主注册
   allowRegister: boolean = false
   //预览配置
@@ -69,6 +71,7 @@ export default class Preference extends BaseEntity {
       downloadDirMaxNum: this.downloadDirMaxNum,
       downloadDirMaxSize: this.downloadDirMaxSize,
       defaultTotalSizeLimit: this.defaultTotalSizeLimit,
+      deletedKeepDays: this.deletedKeepDays,
       allowRegister: this.allowRegister,
       previewConfig: JsonUtil.toJson(this.previewConfig.getForm()),
       scanConfig: JsonUtil.toJson(this.scanConfig.getForm())

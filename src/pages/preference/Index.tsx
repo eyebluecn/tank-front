@@ -71,8 +71,6 @@ export default class Index extends TankComponent<IProps, IState> {
       scanConfig,
     } = this.preference;
 
-    console.log(PreviewEngine.defaultPreviewEngines());
-
     return (
       <div className="page-preference-index">
         <TankTitle name={Lang.t("layout.setting")}>
@@ -151,6 +149,10 @@ export default class Index extends TankComponent<IProps, IState> {
 
             <InfoCell name={Lang.t("preference.userDefaultSizeLimit")}>
               {FileUtil.humanFileSize(this.preference.defaultTotalSizeLimit)}
+            </InfoCell>
+
+            <InfoCell name={Lang.t("preference.matterBinDefaultSaveDay")}>
+              {this.preference.deletedKeepDays} 天
             </InfoCell>
 
             <InfoCell name={Lang.t("preference.allowRegister")}>

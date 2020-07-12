@@ -189,7 +189,6 @@ export default class Edit extends TankComponent<IProps, IState> {
                 <InputNumber min={-1} className="w150" />
               </Form.Item>
               <span className="pl10">
-                {" "}
                 {Lang.t("preference.current")}:
                 {this.formRef && this.formRef.current
                   ? FileUtil.humanFileSize(
@@ -199,6 +198,24 @@ export default class Edit extends TankComponent<IProps, IState> {
                     )
                   : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
               </span>
+            </Form.Item>
+
+            <Form.Item
+              label={Lang.t("preference.matterBinDefaultSaveDay")}
+              required={true}
+            >
+              <Form.Item
+                name="deletedKeepDays"
+                rules={[
+                  {
+                    required: true,
+                    message: Lang.t("preference.enterMatterBinDefaultSaveDay"),
+                  },
+                ]}
+                noStyle
+              >
+                <InputNumber min={1} className="w150" />
+              </Form.Item>
             </Form.Item>
 
             <Form.Item

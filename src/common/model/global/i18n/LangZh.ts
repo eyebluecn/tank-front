@@ -165,6 +165,8 @@ let LangZh = {
     current: "当前值",
     noLimit: "无限制",
     userDefaultSizeLimit: "用户默认总大小限制(B) ",
+    matterBinDefaultSaveDay: "回收站默认保留天数",
+    enterMatterBinDefaultSaveDay: "默认回收站默认保留天数必填!",
     docLink: "文档链接",
     tankDocLink: "https://tank-doc.eyeblue.cn/zh",
     allowRegister: "允许自主注册",

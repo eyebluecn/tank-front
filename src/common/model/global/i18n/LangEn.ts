@@ -164,6 +164,8 @@ let LangEn = {
     current: "Current",
     noLimit: "No limit",
     userDefaultSizeLimit: "User default size limit(B) ",
+    matterBinDefaultSaveDay: "Matter bin storage days",
+    enterMatterBinDefaultSaveDay: "Please enter matter bin storage days!",
     docLink: "Document Link",
     tankDocLink: "https://tank-doc.eyeblue.cn",
     allowRegister: "Allow register",
