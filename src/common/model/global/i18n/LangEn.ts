@@ -238,6 +238,7 @@ let LangEn = {
     month: "1 Month",
     year: "1 Year",
     infinity: "Forever",
+    emptyHint: "No Share Yet",
   },
   user: {
     redirecting: "Redirecting...",

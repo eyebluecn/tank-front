@@ -239,6 +239,7 @@ let LangZh = {
     month: "1个月",
     year: "1年",
     infinity: "永远有效",
+    emptyHint: "暂无任何分享",
   },
   user: {
     redirecting: "正在转跳...",
