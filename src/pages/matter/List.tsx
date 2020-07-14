@@ -151,22 +151,21 @@ export default class List extends TankComponent<IProps, IState> {
   }
 
   refresh = () => {
-    // 初始化当前matter uuid
-    if(this.matter.uuid !== this.pager.getFilterValue("puuid")) {
-      this.matter.uuid = this.pager.getFilterValue("puuid") || Matter.MATTER_ROOT;
-    }
-
     // 清空暂存区
     this.selectedMatters = [];
-
     // 刷新文件列表
     this.refreshPager();
-
     // 刷新面包屑
     this.refreshBreadcrumbs();
   };
 
   refreshPager = () => {
+    // 初始化当前matter uuid
+    if (this.matter.uuid !== this.pager.getFilterValue("puuid")) {
+      this.matter.uuid =
+        this.pager.getFilterValue("puuid") || Matter.MATTER_ROOT;
+    }
+
     this.pager.setFilterValue("puuid", this.matter.uuid);
 
     //如果没有任何的排序，默认使用时间倒序和文件夹在顶部
@@ -179,6 +178,9 @@ export default class List extends TankComponent<IProps, IState> {
     if (!this.pager.getFilterValue("userUuid")) {
       this.pager.setFilterValue("userUuid", this.user.uuid);
     }
+
+    // 过滤掉被软删除的文件
+    this.pager.setFilterValue("deleted", false);
 
     this.pager.httpList();
   };
@@ -221,11 +223,11 @@ export default class List extends TankComponent<IProps, IState> {
 
   deleteBatch = () => {
     Modal.confirm({
-      title: Lang.t("actionCanNotRevertConfirm"),
+      title: Lang.t("actionDeleteConfirm"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         const uuids = this.selectedMatters.map((i) => i.uuid).toString();
-        this.matter.httpDeleteBatch(uuids, () => {
+        this.matter.httpSoftDeleteBatch(uuids, () => {
           MessageBoxUtil.success(Lang.t("operationSuccess"));
           this.refresh();
         });

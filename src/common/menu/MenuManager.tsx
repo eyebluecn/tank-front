@@ -13,7 +13,8 @@ import {
   PoweroffOutlined,
   SettingOutlined,
   ShareAltOutlined,
-  TeamOutlined
+  TeamOutlined,
+  DeleteOutlined
 } from '@ant-design/icons';
 import {LoginOutlined} from "@ant-design/icons/lib";
 import Preference from "../model/preference/Preference";
@@ -81,6 +82,7 @@ export default class MenuManager {
     } else {
       menuItems.push(new MenuItem(Lang.t("layout.allFiles"), '/matter/list', <AppstoreOutlined/>))
       menuItems.push(new MenuItem(Lang.t("layout.myShare"), '/share/list', <ShareAltOutlined/>))
+      menuItems.push(new MenuItem(Lang.t("layout.bin"), '/bin/list', <DeleteOutlined />))
 
       if (user.role === UserRole.ADMINISTRATOR) {
         menuItems.push(new MenuItem(Lang.t("layout.setting"), '/preference/index', <SettingOutlined/>))

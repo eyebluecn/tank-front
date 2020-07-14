@@ -21,9 +21,15 @@
     line-height: @base-height;
     margin-left: 10px;
     &-hot {
-      margin-left: 0;
-      margin-right: -10px;
-      padding: 0 10px;
+      position: relative;
+      &:after {
+        position: absolute;
+        top: 0;
+        right: -10px;
+        bottom: 0;
+        left: -10px;
+        content: '';
+      }
     }
   }
   .btn-action{

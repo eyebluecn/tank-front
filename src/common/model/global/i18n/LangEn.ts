@@ -70,6 +70,7 @@ let LangEn = {
   layout: {
     allFiles: "Files",
     myShare: "My Share",
+    bin: "Recycle bin",
     setting: "Setting",
     dashboard: "Dashboard",
     users: "Users",
@@ -84,6 +85,7 @@ let LangEn = {
     rename: "Rename",
     download: "Download",
     delete: "Delete",
+    hardDelete: "Hard delete",
     more: "More",
     share: "Share",
     close: "Close",
@@ -130,7 +132,8 @@ let LangEn = {
     newDirectory: "New directory",
     notChoose: "Not choose any file",
     exceed1000: "Exceed file limit 1000",
-    noImageCache: "No image cache"
+    noImageCache: "No image cache",
+    recycleBin: "Recycle bin"
   },
   router: {
     allFiles: "All Files",
@@ -326,6 +329,7 @@ let LangEn = {
   cancel: "Cancel",
   delete: "Delete",
   actionCanNotRevertConfirm: "This action cannot be reverted, confirm?",
+  actionDeleteConfirm: "Delete, confirm?",
   prompt: "Prompt",
   confirm: "Confirm",
   copy: "Copy",

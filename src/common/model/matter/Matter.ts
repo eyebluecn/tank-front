@@ -30,6 +30,9 @@ export default class Matter extends BaseEntity {
   //上次访问时间
   visitTime: Date | null = null;
   parent: Matter | null = null;
+  // 文件是否被软删除
+  deleted: boolean = false;
+  deleteTime: Date | null = null;
 
   /*
   这部分是辅助UI的字段信息
@@ -51,6 +54,8 @@ export default class Matter extends BaseEntity {
   speed: number = 0;
 
   static URL_MATTER_CREATE_DIRECTORY = "/api/matter/create/directory";
+  static URL_MATTER_SOFT_DELETE = "/api/matter/soft/delete";
+  static URL_MATTER_SOFT_DELETE_BATCH = "/api/matter/soft/delete/batch";
   static URL_MATTER_DELETE = "/api/matter/delete";
   static URL_MATTER_DELETE_BATCH = "/api/matter/delete/batch";
   static URL_MATTER_RENAME = "/api/matter/rename";
@@ -77,6 +82,7 @@ export default class Matter extends BaseEntity {
     super.assign(obj);
     this.assignEntity("parent", Matter);
     this.assignEntity("visitTime", Date);
+    this.assignEntity("deleteTime", Date);
   }
 
   getForm(): any {
@@ -104,6 +110,7 @@ export default class Matter extends BaseEntity {
       new InputFilter("关键字", "name"),
       new CheckFilter("文件夹", "dir"),
       new CheckFilter("应用数据", "alien"),
+      new CheckFilter("删除", "deleted"),
       new SortFilter("文件夹", "orderDir"),
       new SortFilter("下载次数", "orderTimes"),
       new SortFilter("大小", "orderSize"),
@@ -207,6 +214,28 @@ export default class Matter extends BaseEntity {
       },
       errorCallback,
       finallyCallback
+    );
+  }
+
+  httpSoftDelete(successCallback?: any, errorCallback?: any) {
+    this.httpPost(
+      Matter.URL_MATTER_SOFT_DELETE,
+      {uuid: this.uuid},
+      function (response: any) {
+        typeof successCallback === "function" && successCallback(response);
+      },
+      errorCallback
+    );
+  }
+
+  httpSoftDeleteBatch(uuids: string, successCallback?: any, errorCallback?: any) {
+    this.httpPost(
+      Matter.URL_MATTER_SOFT_DELETE_BATCH,
+      {uuids: uuids},
+      function (response: any) {
+        typeof successCallback === "function" && successCallback(response);
+      },
+      errorCallback
     );
   }
 

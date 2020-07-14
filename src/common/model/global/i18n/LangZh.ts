@@ -69,8 +69,9 @@ let LangZh = {
     finish: "完成",
   },
   layout: {
-    allFiles: "所有文件",
+    allFiles: "全部文件",
     myShare: "我的分享",
+    bin: "回收站",
     setting: "网站设置",
     dashboard: "监控统计",
     users: "用户管理",
@@ -85,6 +86,7 @@ let LangZh = {
     rename: "重命名",
     download: "下载",
     delete: "删除",
+    hardDelete: "彻底删除",
     more: "更多",
     share: "分享",
     close: "关闭",
@@ -131,7 +133,8 @@ let LangZh = {
     newDirectory: "新建文件夹",
     notChoose: "没有选择文件",
     exceed1000: "最多只能同时选取1000个文件",
-    noImageCache: "暂无图片缓存数据"
+    noImageCache: "暂无图片缓存数据",
+    recycleBin: "回收站"
   },
   router: {
     allFiles: "全部文件",
@@ -327,6 +330,7 @@ let LangZh = {
   cancel: "取消",
   delete: "删除",
   actionCanNotRevertConfirm: "此操作不可撤回, 是否继续?",
+  actionDeleteConfirm: "确定删除吗?",
   prompt: "提示",
   confirm: "确定",
   copy: "复制",
