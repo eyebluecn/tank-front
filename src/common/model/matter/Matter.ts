@@ -56,6 +56,8 @@ export default class Matter extends BaseEntity {
   static URL_MATTER_CREATE_DIRECTORY = "/api/matter/create/directory";
   static URL_MATTER_SOFT_DELETE = "/api/matter/soft/delete";
   static URL_MATTER_SOFT_DELETE_BATCH = "/api/matter/soft/delete/batch";
+  static URL_MATTER_RECOVERY = "/api/matter/recovery";
+  static URL_MATTER_RECOVERY_BATCH = "/api/matter/recovery/batch";
   static URL_MATTER_DELETE = "/api/matter/delete";
   static URL_MATTER_DELETE_BATCH = "/api/matter/delete/batch";
   static URL_MATTER_RENAME = "/api/matter/rename";
@@ -253,6 +255,28 @@ export default class Matter extends BaseEntity {
   httpDeleteBatch(uuids: string, successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_DELETE_BATCH,
+      {uuids: uuids},
+      function (response: any) {
+        typeof successCallback === "function" && successCallback(response);
+      },
+      errorCallback
+    );
+  }
+
+  httpRecovery(successCallback?: any, errorCallback?: any) {
+    this.httpPost(
+      Matter.URL_MATTER_RECOVERY,
+      {uuid: this.uuid},
+      function (response: any) {
+        typeof successCallback === "function" && successCallback(response);
+      },
+      errorCallback
+    );
+  }
+
+  httpRecoveryBatch(uuids: string, successCallback?: any, errorCallback?: any) {
+    this.httpPost(
+      Matter.URL_MATTER_RECOVERY_BATCH,
       {uuids: uuids},
       function (response: any) {
         typeof successCallback === "function" && successCallback(response);

@@ -19,6 +19,8 @@ import {
   EditOutlined,
   InfoCircleOutlined,
   EllipsisOutlined,
+  RedoOutlined,
+  CloseCircleOutlined
 } from "@ant-design/icons";
 import { Modal, Checkbox, Tooltip } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
@@ -32,6 +34,7 @@ interface IProps {
   director?: Director;
   onCreateDirectoryCallback?: () => any;
   onDeleteSuccess?: () => any;
+  onRecoverySuccess?: () => any;
   onCheckMatter?: (matter?: Matter) => any;
   onPreviewImage?: (matter: Matter) => any;
   onGoToDirectory?: (id: string) => any;
@@ -110,6 +113,19 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
         this.props.matter.httpDelete(() => {
           MessageBoxUtil.success(Lang.t("operationSuccess"));
           this.props.onDeleteSuccess!();
+        });
+      },
+    });
+  };
+
+  recoveryMatter = () => {
+    Modal.confirm({
+      title: Lang.t("actionRecoveryConfirm"),
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
+      onOk: () => {
+        this.props.matter.httpRecovery(() => {
+          MessageBoxUtil.success(Lang.t("operationSuccess"));
+          this.props.onRecoverySuccess!();
         });
       },
     });
@@ -228,6 +244,14 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     // 文件操作在正常模式 or 回收站模式下不同，其中回收站模式只保留查看信息与彻底删除操作
     const handles = recycleMode ? (
       <>
+        <Tooltip title={Lang.t("matter.recovery")}>
+          <RedoOutlined
+            className="btn-action"
+            onClick={(e) =>
+              SafeUtil.stopPropagationWrap(e)(this.recoveryMatter())
+            }
+          />
+        </Tooltip>
         <Tooltip title={Lang.t("matter.fileDetail")}>
           <InfoCircleOutlined
             className="btn-action"
@@ -239,7 +263,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
           />
         </Tooltip>
         <Tooltip title={Lang.t("matter.hardDelete")}>
-          <DeleteOutlined
+          <CloseCircleOutlined
             className="btn-action text-danger"
             onClick={(e) =>
               SafeUtil.stopPropagationWrap(e)(this.hardDeleteMatter())
@@ -345,12 +369,21 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
           {Lang.t("matter.fileDetail")}
         </div>
         <div
+          className="cell-btn navy"
+          onClick={(e) =>
+            SafeUtil.stopPropagationWrap(e)(this.recoveryMatter())
+          }
+        >
+          <RedoOutlined className="btn-action mr5" />
+          {Lang.t("matter.recovery")}
+        </div>
+        <div
           className="cell-btn text-danger"
           onClick={(e) =>
             SafeUtil.stopPropagationWrap(e)(this.hardDeleteMatter())
           }
         >
-          <DeleteOutlined className="btn-action mr5" />
+          <CloseCircleOutlined className="btn-action mr5" />
           {Lang.t("matter.hardDelete")}
         </div>
       </>

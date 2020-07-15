@@ -7,23 +7,15 @@ import Matter from "../../common/model/matter/Matter";
 import Moon from "../../common/model/global/Moon";
 import SortDirection from "../../common/model/base/SortDirection";
 import MatterPanel from "../matter/widget/MatterPanel";
-import {
-  Button,
-  Col,
-  Empty,
-  Input,
-  Modal,
-  Pagination,
-  Row,
-  Space,
-} from "antd";
+import { Button, Col, Empty, Input, Modal, Pagination, Row, Space } from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import {
   ExclamationCircleFilled,
   PlusSquareOutlined,
   MinusSquareOutlined,
   SyncOutlined,
-  DeleteOutlined,
+  RedoOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Sun from "../../common/model/global/Sun";
@@ -157,6 +149,20 @@ export default class List extends TankComponent<IProps, IState> {
     });
   };
 
+  recoverBatch = () => {
+    Modal.confirm({
+      title: Lang.t("actionRecoveryConfirm"),
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
+      onOk: () => {
+        const uuids = this.selectedMatters.map((i) => i.uuid).toString();
+        this.matter.httpRecoveryBatch(uuids, () => {
+          MessageBoxUtil.success(Lang.t("operationSuccess"));
+          this.refresh();
+        });
+      },
+    });
+  };
+
   searchFile = (value?: string) => {
     this.pager.resetFilter();
     if (value) {
@@ -256,10 +262,7 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   render() {
-    const {
-      pager,
-      selectedMatters,
-    } = this;
+    const { pager, selectedMatters } = this;
     return (
       <div className="matter-list">
         <BreadcrumbPanel breadcrumbModels={this.breadcrumbModels} />
@@ -285,14 +288,24 @@ export default class List extends TankComponent<IProps, IState> {
                 </Button>
               ) : null}
               {selectedMatters.length ? (
+                <>
+                  <Button
+                    type="primary"
+                    className="mb10"
+                    onClick={this.recoverBatch}
+                  >
+                    <RedoOutlined />
+                    {Lang.t("matter.recovery")}
+                  </Button>
                   <Button
                     type="primary"
                     className="mb10"
                     onClick={this.deleteBatch}
                   >
-                    <DeleteOutlined />
+                    <CloseCircleOutlined />
                     {Lang.t("matter.hardDelete")}
                   </Button>
+                </>
               ) : null}
 
               <Button type="primary" className="mb10" onClick={this.refresh}>
@@ -321,6 +334,7 @@ export default class List extends TankComponent<IProps, IState> {
                 matter={matter}
                 onGoToDirectory={this.goToDirectory}
                 onDeleteSuccess={this.refresh}
+                onRecoverySuccess={this.refresh}
                 onCheckMatter={this.checkMatter}
                 onPreviewImage={this.previewImage}
               />
