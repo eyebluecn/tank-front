@@ -98,6 +98,7 @@ let LangEn = {
     create: "Create",
     createTime: "Create Time",
     updateTime: "Update Time",
+    deleteTime: "Deleted Time",
     root: "Root",
     fillInPicLink: "Fill in Picture Link",
     rePick: "Re Choose",
@@ -134,7 +135,8 @@ let LangEn = {
     notChoose: "Not choose any file",
     exceed1000: "Exceed file limit 1000",
     noImageCache: "No image cache",
-    recycleBin: "Recycle bin"
+    recycleBin: "Recycle bin",
+    deleted: "Deleted",
   },
   router: {
     allFiles: "All Files",

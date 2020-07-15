@@ -1,9 +1,9 @@
 import React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import {RouteComponentProps} from "react-router-dom";
 import "./Detail.less";
 import TankComponent from "../../common/component/TankComponent";
 import Matter from "../../common/model/matter/Matter";
-import { Spin, Space } from "antd";
+import {Space, Spin, Tag} from "antd";
 import StringUtil from "../../common/util/StringUtil";
 import TankTitle from "../widget/TankTitle";
 import DownloadToken from "../../common/model/download/token/DownloadToken";
@@ -14,14 +14,17 @@ import ClipboardUtil from "../../common/util/ClipboardUtil";
 import Lang from "../../common/model/global/Lang";
 import InfoCell from "../widget/InfoCell";
 import TankContentCard from "../widget/TankContentCard";
+import Color from "../../common/model/base/option/Color";
 
 interface RouteParam {
   uuid: string;
 }
 
-interface IProps extends RouteComponentProps<RouteParam> {}
+interface IProps extends RouteComponentProps<RouteParam> {
+}
 
-interface IState {}
+interface IState {
+}
 
 export default class Detail extends TankComponent<IProps, IState> {
   matter = new Matter();
@@ -33,7 +36,7 @@ export default class Detail extends TankComponent<IProps, IState> {
   }
 
   componentDidMount() {
-    const { uuid } = this.props.match.params;
+    const {uuid} = this.props.match.params;
     this.matter.uuid = uuid;
     let that = this;
     this.matter.httpDetail((response: any) => {
@@ -45,7 +48,7 @@ export default class Detail extends TankComponent<IProps, IState> {
   }
 
   copyLink = () => {
-    const { privacy } = this.matter;
+    const {privacy} = this.matter;
     const textToCopy = this.matter.getDownloadUrl(
       privacy ? this.downloadToken.uuid! : undefined
     );
@@ -55,16 +58,16 @@ export default class Detail extends TankComponent<IProps, IState> {
   };
 
   render() {
-    const { matter } = this;
+    const {matter} = this;
     return (
       <Spin tip={Lang.t("loading")} spinning={matter.detailLoading}>
         <div className="page-matter-detail">
-          <TankTitle name={Lang.t("matter.fileDetail")} />
+          <TankTitle name={Lang.t("matter.fileDetail")}/>
 
           <TankContentCard>
             <div className="info">
               <InfoCell name={Lang.t("matter.fileInfo")}>
-                {matter.name}
+                {matter.name} <Tag color={Color.DANGER}>{Lang.t("matter.deleted")}</Tag>
               </InfoCell>
               <InfoCell name={Lang.t("matter.path")}>
                 {matter.path}
@@ -75,6 +78,13 @@ export default class Detail extends TankComponent<IProps, IState> {
               <InfoCell name={Lang.t("matter.updateTime")}>
                 {DateUtil.simpleDateTime(matter.updateTime)}
               </InfoCell>
+              {
+                matter.deleted && (
+                  <InfoCell name={Lang.t("matter.deleteTime")}>
+                    {DateUtil.simpleDateTime(matter.deleteTime)}
+                  </InfoCell>
+                )
+              }
               {!matter.dir ? (
                 <>
                   <InfoCell name={Lang.t("matter.size")}>
@@ -105,7 +115,7 @@ export default class Detail extends TankComponent<IProps, IState> {
         </div>
 
         {!matter.dir && matter.uuid && matter.isImage() ? (
-          <ImageCacheList initFilter={{ matterUuid: matter.uuid }} />
+          <ImageCacheList initFilter={{matterUuid: matter.uuid}}/>
         ) : null}
       </Spin>
     );

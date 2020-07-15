@@ -97,8 +97,9 @@ let LangZh = {
     moveTo: "移动到",
     upload: "上传",
     create: "新建",
-    createTime: "创建日期",
-    updateTime: "修改日期",
+    createTime: "创建时间",
+    updateTime: "修改时间",
+    deleteTime: "删除时间",
     root: "根目录",
     fillInPicLink: "请填写图片链接",
     rePick: "重新选择",
@@ -135,7 +136,8 @@ let LangZh = {
     notChoose: "没有选择文件",
     exceed1000: "最多只能同时选取1000个文件",
     noImageCache: "暂无图片缓存数据",
-    recycleBin: "回收站"
+    recycleBin: "回收站",
+    deleted: "已删除",
   },
   router: {
     allFiles: "全部文件",
