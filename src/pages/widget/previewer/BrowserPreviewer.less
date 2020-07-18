@@ -14,16 +14,30 @@
 
   .title-bar {
     height: 40px;
-
-    text-align: center;
-    line-height: 40px;
-    font-size: 16px;
     border-bottom: 1px solid #eee;
 
-    .close {
-      float: right;
-      margin-right: 20px;
+    display: flex;
+    flex-direction: row;
 
+    .left-part {
+      width: 40px;
+    }
+
+    .middle-part {
+      text-align: center;
+      line-height: 40px;
+      font-size: 16px;
+      flex: 1;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .right-part {
+      width: 40px;
+      text-align: center;
+      line-height: 40px;
     }
   }
 

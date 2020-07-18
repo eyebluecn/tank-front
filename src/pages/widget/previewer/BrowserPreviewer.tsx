@@ -65,13 +65,22 @@ export default class BrowserPreviewer extends React.Component<IProps, IState> {
     return <div className="browser-previewer">
       <div className="title-bar">
 
-        {this.props.name}({FileUtil.humanFileSize(this.props.size)})
+        <div className="left-part">
 
+        </div>
+
+        <div className="middle-part">
+          {this.props.name}({FileUtil.humanFileSize(this.props.size)})
+        </div>
+
+        <div className="right-part">
         <span className="close btn-action">
           <CloseOutlined onClick={() => {
             this.props.onClose()
           }}/>
         </span>
+        </div>
+
 
       </div>
       <div className="frame-area">

@@ -1,19 +1,21 @@
 import React from "react";
-import { Modal } from "antd";
+import {Modal} from "antd";
 import TankComponent from "../../../common/component/TankComponent";
 import Lang from "../../../common/model/global/Lang";
 import BottomLayout from "../BottomLayout";
 import DefaultLogoPng from "../../../assets/image/logo.png";
 import "./AboutModal.less";
+import Moon from "../../../common/model/global/Moon";
 
 interface IProps {
   onSuccess: () => any,
   onClose: () => any
 }
 
-interface IState {}
+interface IState {
+}
 
-export default class AboutModal extends TankComponent<IProps, IState>{
+export default class AboutModal extends TankComponent<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
@@ -45,14 +47,21 @@ export default class AboutModal extends TankComponent<IProps, IState>{
   };
 
   render() {
+    const {preference} = Moon.getSingleton();
     return (
-      <div className="box">
-        <p className="link" onClick={this.changeLang}>
-            {Lang.getSingleton().lang === "zh" ? "English" : "中文"}
+      <div className="about-modal-box">
+                <span className="item">
+          <span dangerouslySetInnerHTML={{__html: preference.copyright}}/>
+        </span>
+        <span className="item">
+          <span dangerouslySetInnerHTML={{__html: preference.record}}/>
+        </span>
+        <p className="item" onClick={this.changeLang}>
+          {Lang.getSingleton().lang === "zh" ? "English" : "中文"}
         </p>
         <p className="brand">
-          Powered by  <a target="_blank" href="https://github.com/eyebluecn/tank">
-          <img alt="logo" className="w30" src={DefaultLogoPng} />
+          Powered by <a target="_blank" href="https://github.com/eyebluecn/tank">
+          <img alt="logo" className="w30" src={DefaultLogoPng}/>
           {Lang.t("eyeblueTank")}
         </a>
         </p>
