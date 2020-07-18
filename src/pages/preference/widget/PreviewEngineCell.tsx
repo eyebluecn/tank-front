@@ -1,7 +1,7 @@
 import "./PreviewEngineCell.less";
 import React from "react";
 import PreviewEngine from "../../../common/model/preference/model/PreviewEngine";
-import { Tag, Tooltip } from "antd";
+import {Tag, Tooltip} from "antd";
 import Lang from "../../../common/model/global/Lang";
 import InfoCell from "../../widget/InfoCell";
 
@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export default function PreviewEngineCell(props: IProps) {
-  const { engine, order } = props;
+  const {engine, order} = props;
 
   return (
     <div className="preview-engine-cell">
@@ -19,14 +19,16 @@ export default function PreviewEngineCell(props: IProps) {
         <p className="title">
           {order ? Lang.t("preference.previewEngine", order) : Lang.t("preference.defaultPreview")}
         </p>
-        <InfoCell name={Lang.t("preference.engineReg")}>{engine.urlUI || engine.url}</InfoCell>
+        <InfoCell name={Lang.t("preference.engineReg")}>
+          {engine.url === '{originUrl}' ? '{url}' : engine.url}
+        </InfoCell>
         <InfoCell name={Lang.t("preference.engineSuffix")}>
           {engine.extensions}
         </InfoCell>
       </div>
       <div className="tip-box">
         {
-          order ? null: (
+          order ? null : (
             <Tooltip title={Lang.t("preference.defaultPreviewDesc")}>
               <Tag className="tip mr10" color="success">
                 {Lang.t("preference.defaultPreview")}

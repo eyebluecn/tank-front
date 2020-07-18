@@ -25,9 +25,6 @@ export default class PreviewEngine extends Base {
    */
   previewInSite: boolean = true;
 
-  // 前端辅助字段，展示给用户看的url
-  urlUI: string = "";
-
   constructor() {
     super();
   }
@@ -55,7 +52,6 @@ export default class PreviewEngine extends Base {
     //添加全局预览引擎，使用浏览器预览能力。
     let globalEngine: PreviewEngine = new PreviewEngine();
     globalEngine.url = "{originUrl}";
-    globalEngine.urlUI = "{url}";
     globalEngine.extensions = "*";
     globalEngine.previewInSite = true;
     defaultEngines.push(globalEngine);
