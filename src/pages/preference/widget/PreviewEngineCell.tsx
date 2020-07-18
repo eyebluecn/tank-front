@@ -19,7 +19,7 @@ export default function PreviewEngineCell(props: IProps) {
         <p className="title">
           {order ? Lang.t("preference.previewEngine", order) : Lang.t("preference.defaultPreview")}
         </p>
-        <InfoCell name={Lang.t("preference.engineReg")}>{engine.url}</InfoCell>
+        <InfoCell name={Lang.t("preference.engineReg")}>{engine.urlUI || engine.url}</InfoCell>
         <InfoCell name={Lang.t("preference.engineSuffix")}>
           {engine.extensions}
         </InfoCell>
