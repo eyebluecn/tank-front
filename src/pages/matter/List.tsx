@@ -61,7 +61,7 @@ export default class List extends TankComponent<IProps, IState> {
   //搜索的文字
   searchText: string | null = null;
   //获取分页的一个帮助器
-  pager = new Pager<Matter>(this, Matter, 100);
+  pager = new Pager<Matter>(this, Matter, Pager.MAX_PAGE_SIZE);
   user = Moon.getSingleton().user;
   preference = Moon.getSingleton().preference;
   //导演
@@ -172,11 +172,6 @@ export default class List extends TankComponent<IProps, IState> {
     if (!this.pager.getCurrentSortFilter()) {
       this.pager.setFilterValue("orderCreateTime", SortDirection.DESC);
       this.pager.setFilterValue("orderDir", SortDirection.DESC);
-    }
-
-    //如果没有设置用户的话，那么默认显示当前登录用户的资料
-    if (!this.pager.getFilterValue("userUuid")) {
-      this.pager.setFilterValue("userUuid", this.user.uuid);
     }
 
     // 过滤掉被软删除的文件

@@ -18,11 +18,9 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
-import Sun from "../../common/model/global/Sun";
 import { UserRole } from "../../common/model/user/UserRole";
-import BreadcrumbModel from "../../common/model/base/option/BreadcrumbModel";
-import BreadcrumbPanel from "../widget/BreadcrumbPanel";
 import Lang from "../../common/model/global/Lang";
+import TankTitle from "../widget/TankTitle";
 
 interface IProps extends RouteComponentProps {}
 
@@ -33,14 +31,10 @@ export default class List extends TankComponent<IProps, IState> {
   matter = new Matter();
   //当前选中的文件
   selectedMatters: Matter[] = [];
-  //搜索的文字
-  searchText: string | null = null;
   //获取分页的一个帮助器
-  pager = new Pager<Matter>(this, Matter, 100);
+  pager = new Pager<Matter>(this, Matter, Pager.MAX_PAGE_SIZE);
   user = Moon.getSingleton().user;
   preference = Moon.getSingleton().preference;
-  //当前面包屑模型数组。
-  breadcrumbModels: BreadcrumbModel[] = [];
 
   constructor(props: IProps) {
     super(props);
@@ -69,28 +63,13 @@ export default class List extends TankComponent<IProps, IState> {
     this.selectedMatters = [];
     // 刷新文件列表
     this.refreshPager();
-    // 刷新面包屑
-    this.refreshBreadcrumbs();
   };
 
   refreshPager = () => {
-    // 初始化当前matter uuid
-    if (this.matter.uuid !== this.pager.getFilterValue("puuid")) {
-      this.matter.uuid =
-        this.pager.getFilterValue("puuid") || Matter.MATTER_ROOT;
-    }
-
-    this.pager.setFilterValue("puuid", this.matter.uuid);
-
     //如果没有任何的排序，默认使用时间倒序和文件夹在顶部
     if (!this.pager.getCurrentSortFilter()) {
-      this.pager.setFilterValue("orderCreateTime", SortDirection.DESC);
+      this.pager.setFilterValue("orderDeleteTime", SortDirection.DESC);
       this.pager.setFilterValue("orderDir", SortDirection.DESC);
-    }
-
-    //如果没有设置用户的话，那么默认显示当前登录用户的资料
-    if (!this.pager.getFilterValue("userUuid")) {
-      this.pager.setFilterValue("userUuid", this.user.uuid);
     }
 
     // 过滤掉被软删除的文件
@@ -201,72 +180,11 @@ export default class List extends TankComponent<IProps, IState> {
     ImagePreviewer.showMultiPhoto(imageArray, startIndex);
   };
 
-  goToDirectory = (id: string) => {
-    this.searchText = null;
-    this.pager.setFilterValue("puuid", id);
-    this.pager.page = 0;
-    const query = this.pager.getParams();
-    Sun.navigateQueryTo({ path: "/matter/list", query });
-    this.refresh();
-  };
-
-  //刷新面包屑
-  refreshBreadcrumbs = () => {
-    const uuid = this.pager.getFilterValue("puuid") || Matter.MATTER_ROOT;
-
-    //根目录简单处理即可。
-    if (uuid === Matter.MATTER_ROOT) {
-      this.matter.uuid = Matter.MATTER_ROOT;
-      this.breadcrumbModels = [
-        {
-          name: Lang.t("matter.recycleBin"),
-          path: "/matter/list",
-          query: {},
-          displayDirect: true,
-        },
-      ];
-    } else {
-      this.matter.uuid = uuid;
-      this.matter.httpDetail(() => {
-        const arr = [];
-        let cur: Matter | null = this.matter;
-        do {
-          arr.push(cur);
-          cur = cur.parent;
-        } while (cur);
-
-        this.breadcrumbModels = arr.reduceRight(
-          (t: any, item: Matter, i: number) => {
-            const query = this.pager.getParams();
-            query["puuid"] = item.uuid!;
-            t.push({
-              name: item.name,
-              path: "/matter/list",
-              query: query,
-              displayDirect: !i, // 当前目录不需要导航
-            });
-            return t;
-          },
-          [
-            {
-              name: Lang.t("matter.recycleBin"),
-              path: "/matter/list",
-              query: {},
-              displayDirect: false,
-            },
-          ]
-        );
-        this.updateUI();
-      });
-    }
-  };
-
-  //TODO: 1. 时间应该显示删除时间。 2. 面包屑跳转有问题。
   render() {
     const { pager, selectedMatters } = this;
     return (
       <div className="matter-list">
-        <BreadcrumbPanel breadcrumbModels={this.breadcrumbModels} />
+        <TankTitle name={Lang.t("layout.bin")} />
 
         <Row className="mt10">
           <Col xs={24} sm={24} md={14} lg={16}>
@@ -333,7 +251,6 @@ export default class List extends TankComponent<IProps, IState> {
                 recycleMode
                 key={matter.uuid!}
                 matter={matter}
-                onGoToDirectory={this.goToDirectory}
                 onDeleteSuccess={this.refresh}
                 onRecoverySuccess={this.refresh}
                 onCheckMatter={this.checkMatter}

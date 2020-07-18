@@ -65,7 +65,6 @@ let LangZh = {
     validateAdminSuccess: "验证管理员成功！",
     pressToHome: "点击下方按钮来完成安装过程并进入首页。",
     enterHome: "完成，并进入首页",
-
     finish: "完成",
   },
   layout: {

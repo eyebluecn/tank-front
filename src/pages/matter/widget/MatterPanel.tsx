@@ -20,7 +20,7 @@ import {
   InfoCircleOutlined,
   EllipsisOutlined,
   RedoOutlined,
-  CloseCircleOutlined
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 import { Modal, Checkbox, Tooltip } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
@@ -30,7 +30,7 @@ import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
   matter: Matter;
-  recycleMode?: boolean; // 回收站模式，默认false
+  recycleMode?: boolean; // 回收站模式，默认false，简化相关操作，不可进入文件夹里
   director?: Director;
   onCreateDirectoryCallback?: () => any;
   onDeleteSuccess?: () => any;
@@ -215,13 +215,20 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   };
 
   clickRow = () => {
-    const { matter, director, onGoToDirectory, onPreviewImage } = this.props;
+    const {
+      matter,
+      recycleMode = false,
+      director,
+      onGoToDirectory,
+      onPreviewImage,
+    } = this.props;
     if (director && director.isEditing()) {
       console.error("导演正忙着，不予执行");
       return;
     }
 
     if (matter.dir) {
+      if (recycleMode) return;
       onGoToDirectory!(matter.uuid!);
     } else {
       //图片进行预览操作
@@ -342,11 +349,19 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
             {StringUtil.humanFileSize(matter.size)}
           </span>
         </Tooltip>
-        <Tooltip title={Lang.t("matter.updateTime")}>
-          <span className="matter-date mr10">
-            {DateUtil.simpleDateHourMinute(matter.updateTime)}
-          </span>
-        </Tooltip>
+        {recycleMode ? (
+          <Tooltip title={Lang.t("matter.deleteTime")}>
+            <span className="matter-date mr10">
+              {DateUtil.simpleDateHourMinute(matter.deleteTime)}
+            </span>
+          </Tooltip>
+        ) : (
+          <Tooltip title={Lang.t("matter.updateTime")}>
+            <span className="matter-date mr10">
+              {DateUtil.simpleDateHourMinute(matter.updateTime)}
+            </span>
+          </Tooltip>
+        )}
       </div>
     );
   };
@@ -458,7 +473,11 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     return (
       <div className="more-panel">
         <div className="cell-btn navy text">
-          <span>{DateUtil.simpleDateHourMinute(matter.updateTime)}</span>
+          <span>
+            {DateUtil.simpleDateHourMinute(
+              recycleMode ? matter.deleteTime : matter.updateTime
+            )}
+          </span>
           <span className="matter-size">
             {StringUtil.humanFileSize(matter.size)}
           </span>

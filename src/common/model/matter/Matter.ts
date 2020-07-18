@@ -121,6 +121,7 @@ export default class Matter extends BaseEntity {
       new InputFilter("分享uuid", "shareUuid"),
       new InputFilter("提取码", "shareCode"),
       new InputFilter("分享根目录", "shareRootUuid"),
+      new SortFilter('删除时间排序', 'orderDeleteTime'),
     ];
   }
 
