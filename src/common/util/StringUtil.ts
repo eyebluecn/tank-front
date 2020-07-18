@@ -14,7 +14,6 @@ export default class StringUtil {
     const regex = /_[a-z]/gm;
 
     return str.replace(regex, function (letter: any, index: any) {
-      console.log("letter", letter)
       return letter.substr(1).toUpperCase()
     })
   }

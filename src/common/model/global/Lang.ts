@@ -27,7 +27,7 @@ export default class Lang {
         lang = localLang
       }
       Lang.singleton.lang = lang
-      console.log("当前浏览器默认语言是：", lang)
+      console.info("current lang: ", lang)
 
     }
 

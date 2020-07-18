@@ -35,7 +35,7 @@ export default class Authentication extends TankComponent<IProps, IState> {
   componentDidMount() {
     let match = this.props.match;
 
-    console.log(match.params.authentication)
+
 
     this.user.httpAuthenticationLogin(match.params.authentication, function () {
       //转跳到首页

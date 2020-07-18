@@ -33,7 +33,6 @@ export default class Register extends TankComponent<IProps, IState> {
   }
 
   onFinish(values: any) {
-    console.log('Success:', values);
 
     let that = this
 
@@ -49,7 +48,7 @@ export default class Register extends TankComponent<IProps, IState> {
   };
 
   onFinishFailed(errorInfo: any) {
-    console.log('Failed:', errorInfo);
+
   };
 
 

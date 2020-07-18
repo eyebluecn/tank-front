@@ -34,7 +34,6 @@ export default class MysqlPanel extends TankComponent<IProps, IState> {
 
 
   onFinish(values: any) {
-    console.log('Success:', values);
 
     let that = this
     let install: Install = this.props.install
@@ -62,7 +61,7 @@ export default class MysqlPanel extends TankComponent<IProps, IState> {
   };
 
   onFinishFailed(errorInfo: any) {
-    console.log('Failed:', errorInfo);
+
   };
 
   goToNext() {

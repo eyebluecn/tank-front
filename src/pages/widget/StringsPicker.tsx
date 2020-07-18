@@ -83,7 +83,8 @@ export default class StringsPicker extends TankComponent<IProps, IState> {
 
   handleClose(removedTag: string) {
     const tags = this.state.tags.filter(tag => tag !== removedTag);
-    console.log(tags);
+
+
 
     this.setState({tags});
 
@@ -109,7 +110,7 @@ export default class StringsPicker extends TankComponent<IProps, IState> {
     if (inputValue && tags.indexOf(inputValue) === -1) {
       tags = [...tags, inputValue];
     }
-    console.log(tags);
+
     this.setState({
       tags,
       inputVisible: false,
