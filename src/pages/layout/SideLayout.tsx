@@ -11,7 +11,6 @@ import { Menu } from "antd";
 import MenuItem from "../../common/menu/MenuItem";
 import User from "../../common/model/user/User";
 import MenuManager from "../../common/menu/MenuManager";
-import { SelectParam } from "antd/lib/menu";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import Lang from "../../common/model/global/Lang";
 import AboutModal from "./widget/AboutModal";
@@ -27,7 +26,7 @@ export default class SideLayout extends TankComponent<IProps, IState> {
 
   componentDidMount() {}
 
-  onSelect(param: SelectParam) {
+  onSelect(param: any) {
     if (param.key === "about") {
       AboutModal.open();
       return;
