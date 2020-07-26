@@ -28,7 +28,7 @@ import InstallIndex from "./install/Index";
 import MatterList from "./matter/List";
 import MatterDetail from "./matter/Detail";
 
-import BinList from './bin/List';
+import BinList from "./bin/List";
 
 import ShareList from "./share/List";
 import ShareDetail from "./share/Detail";
@@ -76,12 +76,14 @@ class RawFrame extends TankComponent<IProps, IState> {
 
     this.preference.httpFetch(
       function () {
-        let whitePaths = ["/user/login", "/user/register"];
-        //如果当前本身是登录界面，那么不用去获取。
-        if (
-          whitePaths.indexOf(pathname) == -1 &&
-          !pathname.startsWith("/user/authentication")
-        ) {
+        let whitePaths = [
+          "/user/login",
+          "/user/register",
+          "/user/authentication",
+          "/share/detail",
+        ];
+        //如果当前本身是登录界面以及分享界面，那么不用去获取。
+        if (whitePaths.findIndex((path) => pathname.startsWith(path)) == -1) {
           that.user.httpInfo(null, null, function () {
             that.initialized = true;
             that.updateUI();
