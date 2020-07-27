@@ -70,7 +70,7 @@ export default class ShareDialogModal extends TankComponent<IProps, IState> {
             <span className="name">{share.name}</span>
           </div>
           <div className="mt15">
-            <span className="inline-block mr10">${Lang.t("share.sharer")}：{share.username}</span>
+            <span className="inline-block mr10">{Lang.t("share.sharer")}：{share.username}</span>
             <span className="inline-block mr10">
               {share.expireInfinity
                 ? Lang.t("share.noExpire")

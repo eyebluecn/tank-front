@@ -48,7 +48,6 @@ export default class Detail extends TankComponent<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    this.pager.enableHistory();
   }
 
   componentDidMount(): void {
@@ -210,7 +209,7 @@ export default class Detail extends TankComponent<IProps, IState> {
         {needShareCode ? (
           <div>
             <Row>
-              <Col span={12} offset={6} className="mt100">
+              <Col xs={20} sm={20} md={16} lg={10} className="share-code">
                 <Input.Search
                   placeholder={Lang.t("share.enterCode")}
                   enterButton={Lang.t("share.getFiles")}
