@@ -12,6 +12,7 @@
     "antd": "4.4.3",
     "axios": "^0.19.2",
     "camelcase": "^5.3.1",
+    "comma-separated-values": "^3.6.4",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "echarts": "^4.8.0",

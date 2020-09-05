@@ -31,7 +31,7 @@ export default class HttpUtil {
 
   static httpPost(url: any, params = {}, successCallback?: any, errorCallback?: any, finallyCallback?: any, opts?: any) {
 
-    axios
+    return axios
       .post(url, params, opts)
       .then(function (response) {
 

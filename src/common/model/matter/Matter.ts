@@ -497,7 +497,7 @@ export default class Matter extends BaseEntity {
         that.errorMessage = response;
         that.clear();
         that.defaultErrorHandler(response);
-        SafeUtil.safeCallback(failureCallback)();
+        SafeUtil.safeCallback(failureCallback)(that.getErrorMessage(response));
       },
       function () {
         that.loading = false;

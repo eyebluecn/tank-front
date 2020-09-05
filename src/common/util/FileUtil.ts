@@ -1,7 +1,7 @@
 import MimeUtil from "./MimeUtil";
 import StringUtil from "./StringUtil";
-import Moon from "../model/global/Moon";
 import Lang from "../model/global/Lang";
+import CSV from "comma-separated-values";
 
 export default class FileUtil {
   static isImage(name: string | null): boolean {
@@ -134,5 +134,19 @@ export default class FileUtil {
     } while (Math.abs(bytes) >= thresh && u < units.length - 1)
     return bytes.toFixed(1) + ' ' + units[u]
   }
+
+  static getErrorLogsToCSVUrl(logs: object) {
+    const _utf = "\uFEFF"; // 为了使文件以utf-8的编码模式，同时也是解决中文乱码的问题
+    if (window.Blob && window.URL && window.URL.createObjectURL) {
+      const csvStr = new CSV(logs, {
+        header: ["filename", "path", "errorMsg"],
+      }).encode();
+      const blob = new Blob([_utf + csvStr], {
+        type: "text/csv",
+      });
+      return URL.createObjectURL(blob);
+    }
+    return "";
+  };
 
 }

@@ -115,6 +115,10 @@ let LangZh = {
     expire: "有效期",
     copyLinkAndCode: "复制链接+提取码",
     uploaded: "已上传",
+    uploadDir: '上传文件夹',
+    uploadInfo: '上传信息',
+    uploadErrorInfo: '部分文件上传失败，可导出csv文件查看',
+    exportCSV: '导出上传错误详情',
     speed: "速度",
     fileInfo: "文件基本信息",
     fileName: "文件名",
@@ -137,6 +141,8 @@ let LangZh = {
     noImageCache: "暂无图片缓存数据",
     recycleBin: "回收站",
     deleted: "已删除",
+    unCompatibleBrowser: "当前浏览器不支持，请切换浏览器尝试",
+    canIUse: "查看当前浏览器是否支持，点击跳转"
   },
   router: {
     allFiles: "全部文件",

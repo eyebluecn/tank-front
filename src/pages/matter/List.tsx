@@ -18,6 +18,7 @@ import {
   Pagination,
   Row,
   Space,
+  Tooltip,
   Upload,
 } from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
@@ -32,6 +33,7 @@ import {
   DownloadOutlined,
   DragOutlined,
   ShareAltOutlined,
+  QuestionCircleOutlined,
 } from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Sun from "../../common/model/global/Sun";
@@ -44,6 +46,8 @@ import ShareDialogModal from "../share/widget/ShareDialogModal";
 import BreadcrumbModel from "../../common/model/base/option/BreadcrumbModel";
 import BreadcrumbPanel from "../widget/BreadcrumbPanel";
 import Lang from "../../common/model/global/Lang";
+import FileUtil from "../../common/util/FileUtil";
+import SafeUtil from "../../common/util/SafeUtil";
 
 interface IProps extends RouteComponentProps {}
 
@@ -74,6 +78,12 @@ export default class List extends TankComponent<IProps, IState> {
   newMatterRef = React.createRef<MatterPanel>();
   //用来判断是否展示遮罩层
   dragEnterCount = 0;
+
+  //临时文件list，用于上传文件夹功能
+  tempUploadList: File[] = [];
+
+  //上传错误日志
+  uploadErrorLogs: [string, string, string][] = [];
 
   constructor(props: IProps) {
     super(props);
@@ -247,15 +257,105 @@ export default class List extends TankComponent<IProps, IState> {
 
   triggerUpload = (fileObj: any) => {
     const { file } = fileObj;
-    if (file) this.launchUpload([file]);
+    if (file) this.launchUpload(file);
   };
 
-  launchUpload = (files: FileList | [File]) => {
+  debounce = (func: Function, wait: number) => {
+    let timer: any = null;
+    return (fileObj: any) => {
+      const { file } = fileObj;
+      this.tempUploadList.push(file);
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(func, wait);
+    };
+  };
+
+  triggerUploadDir = this.debounce(async () => {
+    await this.uploadDirectory();
+    if (!this.uploadErrorLogs.length) {
+      MessageBoxUtil.success(Lang.t("matter.uploaded"));
+    } else {
+      // 上传错误弹出提示框
+      const url = FileUtil.getErrorLogsToCSVUrl(this.uploadErrorLogs);
+      Modal.confirm({
+        title: Lang.t("matter.uploadInfo"),
+        icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
+        content: Lang.t("matter.uploadErrorInfo"),
+        okText: Lang.t("matter.exportCSV"),
+        onOk: () => {
+          if (url) {
+            window.open(url);
+          } else {
+            MessageBoxUtil.warn(Lang.t("matter.unCompatibleBrowser"));
+          }
+        },
+      });
+    }
+    this.tempUploadList = [];
+    this.uploadErrorLogs = [];
+    this.refresh();
+  }, 0);
+
+  uploadDirectory = async () => {
+    const dirPathUuidMap: any = {}; // 存储已经创建好的文件夹map
+    for (let i = 0; i < this.tempUploadList.length; i++) {
+      const file: File = this.tempUploadList[i];
+      const paths = file.webkitRelativePath.split("/");
+      const pPaths = paths.slice(0, paths.length - 1);
+      const pPathStr = pPaths.join("/");
+      if (!dirPathUuidMap[pPathStr]) {
+        // 递归创建其父文件夹
+        for (let j = 1; j <= pPaths.length; j++) {
+          const midPaths = pPaths.slice(0, j);
+          const midPathStr = midPaths.join("/");
+          if (!dirPathUuidMap[midPathStr]) {
+            const m = new Matter(this);
+            m.name = midPaths[midPaths.length - 1];
+            m.puuid =
+              j > 1
+                ? dirPathUuidMap[midPaths.slice(0, j - 1).join("/")]
+                : this.matter.uuid!;
+            m.userUuid = this.user.uuid!;
+            await m.httpCreateDirectory(
+              () => {
+                dirPathUuidMap[midPathStr] = m.uuid;
+              },
+              (msg: string) => {
+                this.uploadErrorLogs.push([
+                  file.name,
+                  file.webkitRelativePath,
+                  msg,
+                ]);
+              }
+            );
+          }
+        }
+      }
+      if (dirPathUuidMap[pPathStr]) {
+        this.launchUpload(file, dirPathUuidMap[pPathStr], (msg?: string) => {
+          this.uploadErrorLogs.push([
+            file.name,
+            file.webkitRelativePath,
+            `${msg}`,
+          ]);
+        });
+      }
+    }
+  };
+
+  launchUpload = (
+    f: File | FileList,
+    puuid = this.matter.uuid!,
+    errHandle = () => {}
+  ) => {
+    const files = f instanceof FileList ? f : [f];
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const m = new Matter(this);
       m.dir = false;
-      m.puuid = this.matter.uuid!;
+      m.puuid = puuid;
       m.userUuid = this.user.uuid!;
 
       //判断文件大小。
@@ -273,7 +373,10 @@ export default class List extends TankComponent<IProps, IState> {
       m.file = file;
       m.httpUpload(
         () => this.refresh(),
-        () => this.updateUI()
+        (msg: string) => {
+          this.updateUI();
+          SafeUtil.safeCallback(errHandle)(msg);
+        }
       );
 
       this.uploadMatters.push(m);
@@ -484,6 +587,29 @@ export default class List extends TankComponent<IProps, IState> {
                 <Button type="primary" className="mb10">
                   <CloudUploadOutlined />
                   {Lang.t("matter.upload")}
+                </Button>
+              </Upload>
+              <Upload
+                className="ant-upload"
+                customRequest={this.triggerUploadDir}
+                showUploadList={false}
+                directory
+              >
+                <Button type="primary" className="mb10">
+                  <CloudUploadOutlined />
+                  {Lang.t("matter.uploadDir")}
+                  <Tooltip title={Lang.t("matter.canIUse")}>
+                    <QuestionCircleOutlined
+                      className="btn-action"
+                      onClick={(e) =>
+                        SafeUtil.stopPropagationWrap(e)(
+                          window.open(
+                            "https://caniuse.com/#feat=input-file-directory"
+                          )
+                        )
+                      }
+                    />
+                  </Tooltip>
                 </Button>
               </Upload>
               <Button

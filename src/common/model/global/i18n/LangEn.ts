@@ -115,6 +115,10 @@ let LangEn = {
     expire: "Expire",
     copyLinkAndCode: "Copy link and code",
     uploaded: "Uploaded",
+    uploadDir: 'Upload dir',
+    uploadInfo: 'Upload Info',
+    uploadErrorInfo: 'Some files failed to upload, you can export CSV files for viewing',
+    exportCSV: 'Export upload error detail',
     speed: "Speed",
     fileInfo: "File basic info",
     fileName: "Filename",
@@ -137,6 +141,8 @@ let LangEn = {
     noImageCache: "No image cache",
     recycleBin: "Recycle bin",
     deleted: "Deleted",
+    unCompatibleBrowser: "The current browser does not support it. Please try choose another one",
+    canIUse: "To see if the current browser supports it"
   },
   router: {
     allFiles: "All Files",
