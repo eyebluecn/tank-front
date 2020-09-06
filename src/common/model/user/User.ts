@@ -123,20 +123,18 @@ export default class User extends BaseEntity {
   }
 
   //获取当前登录者的信息
-  httpInfo(successCallback?: any, errorCallback?: any, finalCallback?: any) {
+  httpInfo(loginRequired: boolean, finalCallback?: any) {
 
     let that = this;
-
-    let form = {};
-
-    this.httpGet(User.URL_INFO, form, function (response: any) {
-
-      that.assign(response.data.data);
-
-      SafeUtil.safeCallback(successCallback)(response);
-
-    }, errorCallback, finalCallback);
-
+    if(loginRequired) {       // httpGet有统一的登录处理机制
+      this.httpGet(User.URL_INFO, {}, function (response: any) {
+        that.assign(response.data.data);
+      }, null, finalCallback);
+    } else {
+      this.httpPureGet(User.URL_INFO, {}, function (response: any) {
+        that.assign(response.data.data);
+      }, () => {}, finalCallback);
+    }
   }
 
 

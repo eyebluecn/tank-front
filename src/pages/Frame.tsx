@@ -76,21 +76,30 @@ class RawFrame extends TankComponent<IProps, IState> {
 
     this.preference.httpFetch(
       function () {
+        // 白名单，不要求登录
         let whitePaths = [
           "/user/login",
           "/user/register",
           "/user/authentication",
+        ];
+        // 尝试登录名单，登录失败不做处理
+        let tryLoginPaths = [
           "/share/detail",
         ];
-        //如果当前本身是登录界面以及分享界面，那么不用去获取。
-        if (whitePaths.findIndex((path) => pathname.startsWith(path)) == -1) {
-          that.user.httpInfo(null, null, function () {
+
+        if(whitePaths.findIndex((path) => pathname.startsWith(path)) >= 0){
+          that.initialized = true;
+          that.updateUI();
+        } else if(tryLoginPaths.findIndex((path) => pathname.startsWith(path)) >= 0) {
+          that.user.httpInfo(false, function () {
             that.initialized = true;
             that.updateUI();
           });
         } else {
-          that.initialized = true;
-          that.updateUI();
+          that.user.httpInfo(true, function () {
+            that.initialized = true;
+            that.updateUI();
+          });
         }
       },
       function (errMessage: string, response: any) {

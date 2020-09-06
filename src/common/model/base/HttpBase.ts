@@ -198,6 +198,27 @@ export default class HttpBase extends ViewBase {
     }, opts);
   }
 
+  /**
+   * 基类中纯粹的http get请求。
+   *
+   */
+  httpPureGet(url: any, params = {}, successCallback?: any, errorCallback?: any, finallyCallback?: any, opts?: any) {
+
+    let that = this
+
+    if (!opts) {
+      opts = {}
+    }
+
+    return HttpUtil.httpGet(url, params, function (response: any) {
+      SafeUtil.safeCallback(successCallback)(response)
+    }, function (err: any) {
+      SafeUtil.safeCallback(errorCallback)(that.getErrorMessage(err.response))
+    }, function (res: any) {
+      SafeUtil.safeCallback(finallyCallback)(res)
+    }, opts);
+  }
+
 
   /**
    * 基类中的http请求会去统一处理错误情况。
