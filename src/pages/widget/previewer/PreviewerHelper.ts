@@ -35,8 +35,9 @@ export default class PreviewerHelper {
   /**
    * 对一个文件进行预览，自动选择预览引擎
    * @param matter 文件
+   * @param previewUrl 文件预览url，分享文件预览需从外部把previewUrl传入
    */
-  static preview(matter: Matter) {
+  static preview(matter: Matter, previewUrl?: string) {
     let fileName: string = matter.name;
     let extension: string = MimeUtil.getExtensionWithoutDot(fileName);
     if (!extension) {
@@ -74,19 +75,30 @@ export default class PreviewerHelper {
       let targetUrl = previewEngine.url;
 
       const engine: PreviewEngine = previewEngine;
-      const needToken: boolean =
-        matter.privacy && targetUrl.indexOf("{url}") !== -1;
 
-      PreviewerHelper.prepareMatterUrl(matter, needToken, function (url) {
-        targetUrl = targetUrl.replace("{originUrl}", matter.getPreviewUrl());
-        targetUrl = targetUrl.replace("{url}", encodeURIComponent(url));
-
+      if(previewUrl) {
+        targetUrl = targetUrl.replace("{originUrl}", previewUrl);
+        targetUrl = targetUrl.replace("{url}", previewUrl);
         if (engine.previewInSite) {
           BrowserPreviewer.show(fileName, targetUrl, matter.size);
         } else {
           window.open(targetUrl);
         }
-      });
+      } else {
+        const needToken = matter.privacy && targetUrl.indexOf("{url}") !== -1;
+
+        PreviewerHelper.prepareMatterUrl(matter, needToken, function (url) {
+          targetUrl = targetUrl.replace("{originUrl}", matter.getPreviewUrl());
+          targetUrl = targetUrl.replace("{url}", encodeURIComponent(url));
+
+          if (engine.previewInSite) {
+            BrowserPreviewer.show(fileName, targetUrl, matter.size);
+          } else {
+            window.open(targetUrl);
+          }
+        });
+      }
+
     }
   }
 }

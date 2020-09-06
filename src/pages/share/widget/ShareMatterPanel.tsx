@@ -34,7 +34,7 @@ export default class ShareMatterPanel extends TankComponent<IProps, IState> {
   }
 
   clickRow = () => {
-    const { matter, onGoToDirectory, onPreviewImage } = this.props;
+    const { matter, share, onGoToDirectory, onPreviewImage } = this.props;
 
     if (matter.dir) {
       onGoToDirectory(matter.uuid!);
@@ -43,7 +43,7 @@ export default class ShareMatterPanel extends TankComponent<IProps, IState> {
       if (matter.isImage()) {
         onPreviewImage(matter);
       } else {
-        matter.preview();
+        matter.preview(matter.getSharePreviewUrl(share.uuid!, share.code!, share.rootUuid));
       }
     }
   };

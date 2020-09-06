@@ -183,20 +183,22 @@ export default class Matter extends BaseEntity {
 
   //预览文件 在分享的预览中才主动传入previewUrl.
   preview(previewUrl?: string | null) {
-    let that = this;
-
     let shareMode = true;
     if (previewUrl) {
       shareMode = true;
     } else {
       shareMode = false;
-      previewUrl = that.getPreviewUrl();
+      previewUrl = this.getPreviewUrl();
     }
 
-    if (that.isImage()) {
+    if (this.isImage()) {
       ImagePreviewer.showSinglePhoto(previewUrl);
     } else {
-      PreviewerHelper.preview(this);
+      if(shareMode) {
+        PreviewerHelper.preview(this, previewUrl);
+      } else {
+        PreviewerHelper.preview(this);
+      }
     }
   }
 
@@ -562,7 +564,7 @@ export default class Matter extends BaseEntity {
   getSharePreviewUrl(
     shareUuid: string,
     shareCode: string,
-    shareRootUuid: String
+    shareRootUuid: string
   ): string {
     return `${EnvUtil.currentHost()}/api/alien/preview/${this.uuid}/${
       this.name
