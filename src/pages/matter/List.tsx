@@ -598,18 +598,6 @@ export default class List extends TankComponent<IProps, IState> {
                 <Button type="primary" className="mb10">
                   <CloudUploadOutlined />
                   {Lang.t("matter.uploadDir")}
-                  <Tooltip title={Lang.t("matter.canIUse")}>
-                    <QuestionCircleOutlined
-                      className="btn-action"
-                      onClick={(e) =>
-                        SafeUtil.stopPropagationWrap(e)(
-                          window.open(
-                            "https://caniuse.com/#feat=input-file-directory"
-                          )
-                        )
-                      }
-                    />
-                  </Tooltip>
                 </Button>
               </Upload>
               <Button
