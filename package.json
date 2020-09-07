@@ -3,9 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ant-design/icons": "^4.2.1",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
+    "@ant-design/icons": "4.2.1",
+    "pretty-format": "25.5.0",
     "@types/echarts": "^4.6.1",
     "@types/js-cookie": "^2.2.6",
     "@types/photoswipe": "^4.1.0",
@@ -34,8 +33,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "build": "node scripts/build.js"
   },
   "browserslist": {
     "production": [
