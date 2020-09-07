@@ -18,7 +18,6 @@ import {
   Pagination,
   Row,
   Space,
-  Tooltip,
   Upload,
 } from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
@@ -33,7 +32,6 @@ import {
   DownloadOutlined,
   DragOutlined,
   ShareAltOutlined,
-  QuestionCircleOutlined,
 } from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Sun from "../../common/model/global/Sun";
