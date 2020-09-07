@@ -301,7 +301,7 @@ export default class List extends TankComponent<IProps, IState> {
   uploadDirectory = async () => {
     const dirPathUuidMap: any = {}; // 存储已经创建好的文件夹map
     for (let i = 0; i < this.tempUploadList.length; i++) {
-      const file: File = this.tempUploadList[i];
+      const file: any = this.tempUploadList[i];
       const paths = file.webkitRelativePath.split("/");
       const pPaths = paths.slice(0, paths.length - 1);
       const pPathStr = pPaths.join("/");
