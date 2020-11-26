@@ -18,7 +18,7 @@ export default class Sun {
   reactRouter: any = null;
 
   //全局布局样式，是否展示出左边的菜单.
-  showDrawer: boolean = true;
+  showDrawer: boolean = false;
 
   //全局mobile标识
   isMobile: boolean = /Mobile|iP(hone|od|ad)|iOS|Android|BlackBerry/i.test(window.navigator.userAgent);
