@@ -3,8 +3,6 @@
  * 这个类不包含Base的子类，比如User, Preference.
  * 和Moon形成姊妹篇
  */
-import BrowserUtil from "../../util/BrowserUtil";
-import Cookies from "js-cookie"
 
 export default class Sun {
 

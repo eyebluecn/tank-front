@@ -3,7 +3,6 @@ import "./BottomLayout.less";
 import TankComponent from "../../common/component/TankComponent";
 import Moon from "../../common/model/global/Moon";
 import DefaultLogoPng from "../../assets/image/logo.png";
-import Cookies from "js-cookie";
 import Sun from "../../common/model/global/Sun";
 import Lang from "../../common/model/global/Lang";
 
@@ -23,8 +22,7 @@ export default class BottomLayout extends TankComponent<IProps, IState> {
     } else {
       Lang.getSingleton().lang = "zh";
     }
-    Cookies.set("_lang", Lang.getSingleton().lang);
-
+    localStorage.setItem("_lang", Lang.getSingleton().lang);
     Sun.updateFrame();
   }
 

@@ -2,7 +2,6 @@
  * 全局性的国际化
  */
 import BrowserUtil from "../../util/BrowserUtil";
-import Cookies from "js-cookie";
 import LangEn from "./i18n/LangEn";
 import LangZh from "./i18n/LangZh";
 
@@ -22,7 +21,7 @@ export default class Lang {
 
       //读取默认的语言
       let lang = BrowserUtil.browserLang()
-      let localLang = Cookies.get("_lang");
+      let localLang = localStorage.getItem("_lang");
       if (localLang === "zh" || localLang === "en") {
         lang = localLang
       }
