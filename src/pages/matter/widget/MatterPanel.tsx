@@ -27,6 +27,7 @@ import { CheckboxChangeEvent } from "antd/es/checkbox";
 import SafeUtil from "../../../common/util/SafeUtil";
 import ClipboardUtil from "../../../common/util/ClipboardUtil";
 import Lang from "../../../common/model/global/Lang";
+import MatterDeleteModal from "./MatterDeleteModal";
 
 interface IProps {
   matter: Matter;
@@ -93,16 +94,20 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   };
 
   deleteMatter = () => {
-    Modal.confirm({
-      title: Lang.t("actionDeleteConfirm"),
-      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
-      onOk: () => {
+    MatterDeleteModal.open(
+      () => {
         this.props.matter.httpSoftDelete(() => {
           MessageBoxUtil.success(Lang.t("operationSuccess"));
           this.props.onDeleteSuccess!();
         });
       },
-    });
+      () => {
+        this.props.matter.httpDelete(() => {
+          MessageBoxUtil.success(Lang.t("operationSuccess"));
+          this.props.onDeleteSuccess!();
+        });
+      }
+    );
   };
 
   hardDeleteMatter = () => {

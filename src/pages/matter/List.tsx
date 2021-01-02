@@ -39,6 +39,7 @@ import { UserRole } from "../../common/model/user/UserRole";
 import StringUtil from "../../common/util/StringUtil";
 import MoveBatchModal from "./widget/MoveBatchModal";
 import ShareOperationModal from "./widget/ShareOperationModal";
+import MatterDeleteModal from "./widget/MatterDeleteModal";
 import Share from "../../common/model/share/Share";
 import ShareDialogModal from "../share/widget/ShareDialogModal";
 import BreadcrumbModel from "../../common/model/base/option/BreadcrumbModel";
@@ -225,17 +226,21 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   deleteBatch = () => {
-    Modal.confirm({
-      title: Lang.t("actionDeleteConfirm"),
-      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
-      onOk: () => {
-        const uuids = this.selectedMatters.map((i) => i.uuid).toString();
+    const uuids = this.selectedMatters.map((i) => i.uuid).toString();
+    MatterDeleteModal.open(
+      () => {
         this.matter.httpSoftDeleteBatch(uuids, () => {
           MessageBoxUtil.success(Lang.t("operationSuccess"));
           this.refresh();
         });
       },
-    });
+      () => {
+        this.matter.httpDeleteBatch(uuids, () => {
+          MessageBoxUtil.success(Lang.t("operationSuccess"));
+          this.refresh();
+        });
+      }
+    );
   };
 
   downloadZip = () => {
