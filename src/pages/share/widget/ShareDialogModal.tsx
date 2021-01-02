@@ -2,7 +2,7 @@ import React from "react";
 import TankComponent from "../../../common/component/TankComponent";
 import Share from "../../../common/model/share/Share";
 import {Button, Modal} from "antd";
-import { CopyOutlined } from "@ant-design/icons";
+import { CopyOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import DateUtil from "../../../common/util/DateUtil";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import './ShareDialogModal.less';
@@ -38,6 +38,7 @@ export default class ShareDialogModal extends TankComponent<IProps, IState> {
     let modal = Modal.confirm({
       className: "share-modal",
       title: Lang.t("share.shareDetail"),
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       width: "90vw",
       okCancel: false,
       okButtonProps: {

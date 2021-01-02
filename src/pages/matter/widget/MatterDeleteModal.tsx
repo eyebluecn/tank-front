@@ -2,6 +2,9 @@ import React from "react";
 import TankComponent from "../../../common/component/TankComponent";
 import { Modal, Button } from "antd";
 import Lang from "../../../common/model/global/Lang";
+import {
+  ExclamationCircleFilled,
+} from "@ant-design/icons";
 import "./MatterDeleteModal.less";
 
 interface IProps {
@@ -21,6 +24,7 @@ export default class MatterDeleteModal extends TankComponent<IProps, IState> {
     let modal = Modal.warning({
       className: "delete-modal",
       title: Lang.t("delete"),
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       okCancel: false,
       okButtonProps: {
         className: "display-none",
