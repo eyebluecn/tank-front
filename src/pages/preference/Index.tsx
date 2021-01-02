@@ -1,11 +1,11 @@
-import React, { Children } from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
+import React, {Children} from "react";
+import {Link, RouteComponentProps} from "react-router-dom";
 import "./Index.less";
 import TankComponent from "../../common/component/TankComponent";
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
 import TankTitle from "../widget/TankTitle";
-import { Button, Divider, Empty, Tag, Tooltip, message } from "antd";
+import {Button, Divider, Empty, Tag, Tooltip, message} from "antd";
 import {
   EditOutlined,
   ThunderboltOutlined,
@@ -26,9 +26,11 @@ import {
 import PreviewEngineCell from "./widget/PreviewEngineCell";
 import PreviewEngine from "../../common/model/preference/model/PreviewEngine";
 
-interface IProps extends RouteComponentProps {}
+interface IProps extends RouteComponentProps {
+}
 
-interface IState {}
+interface IState {
+}
 
 export default class Index extends TankComponent<IProps, IState> {
   user: User = Moon.getSingleton().user;
@@ -69,9 +71,10 @@ export default class Index extends TankComponent<IProps, IState> {
     );
   }
 
+
   immediateScan() {
     const hide = message.loading(Lang.t("preference.scanLoading"), 0);
-    this.preference.httpSaveScan(
+    this.preference.httpScanOnce(
       () => {
         message.success(Lang.t("operationSuccess"));
       },
@@ -82,7 +85,7 @@ export default class Index extends TankComponent<IProps, IState> {
 
   render() {
     const {
-      previewConfig: { previewEngines },
+      previewConfig: {previewEngines},
       scanConfig,
     } = this.preference;
 
@@ -94,7 +97,7 @@ export default class Index extends TankComponent<IProps, IState> {
             type={"primary"}
             danger={true}
             onClick={this.cleanup.bind(this)}
-            icon={<ThunderboltOutlined />}
+            icon={<ThunderboltOutlined/>}
           >
             {Lang.t("preference.systemCleanup")}
           </Button>
@@ -105,7 +108,7 @@ export default class Index extends TankComponent<IProps, IState> {
             <header>
               <p className="title">{Lang.t("preference.basic")}</p>
               <Link to={"/preference/edit"}>
-                <Button type={"primary"} icon={<EditOutlined />}>
+                <Button type={"primary"} icon={<EditOutlined/>}>
                   {Lang.t("edit")}
                 </Button>
               </Link>
@@ -142,13 +145,13 @@ export default class Index extends TankComponent<IProps, IState> {
 
             <InfoCell name={Lang.t("preference.copyright")}>
               <span
-                dangerouslySetInnerHTML={{ __html: this.preference.copyright }}
+                dangerouslySetInnerHTML={{__html: this.preference.copyright}}
               />
             </InfoCell>
 
             <InfoCell name={Lang.t("preference.extraInfo")}>
               <span
-                dangerouslySetInnerHTML={{ __html: this.preference.record }}
+                dangerouslySetInnerHTML={{__html: this.preference.record}}
               />
             </InfoCell>
 
@@ -181,13 +184,13 @@ export default class Index extends TankComponent<IProps, IState> {
             </InfoCell>
           </div>
 
-          <Divider />
+          <Divider/>
 
           <div className="preview-info">
             <header>
               <p className="title">{Lang.t("preference.preview")}</p>
               <Link to={"/preference/engine/edit"}>
-                <Button type={"primary"} icon={<EditOutlined />}>
+                <Button type={"primary"} icon={<EditOutlined/>}>
                   {Lang.t("edit")}
                 </Button>
               </Link>
@@ -202,28 +205,30 @@ export default class Index extends TankComponent<IProps, IState> {
               ))}
               {Children.toArray(
                 PreviewEngine.defaultPreviewEngines().map((engine) => (
-                  <PreviewEngineCell engine={engine} />
+                  <PreviewEngineCell engine={engine}/>
                 ))
               )}
             </div>
           </div>
 
-          <Divider />
+          <Divider/>
 
           <div className="scan-info">
             <header>
               <p className="title">{Lang.t("preference.scan")}</p>
               <div>
-                <Button
-                  type="primary"
-                  className="mr10"
-                  icon={<ScanOutlined />}
-                  onClick={() => this.immediateScan()}
-                >
-                  立即扫描
-                </Button>
+                {scanConfig.enable ? (
+                  <Button
+                    type="primary"
+                    className="mr10"
+                    icon={<ScanOutlined/>}
+                    onClick={() => this.immediateScan()}
+                  >
+                    立即扫描
+                  </Button>) : ""}
+
                 <Link to={"/preference/scan/edit"}>
-                  <Button type={"primary"} icon={<EditOutlined />}>
+                  <Button type={"primary"} icon={<EditOutlined/>}>
                     {Lang.t("edit")}
                   </Button>
                 </Link>
@@ -245,7 +250,7 @@ export default class Index extends TankComponent<IProps, IState> {
                   )}
                 </>
               ) : (
-                <Empty description={Lang.t("preference.disabledScan")} />
+                <Empty description={Lang.t("preference.disabledScan")}/>
               )}
             </div>
           </div>
