@@ -1,4 +1,5 @@
-import {message} from "antd";
+import { message } from "antd";
+import axios, { CancelTokenSource } from "axios";
 import BaseEntity from "../base/BaseEntity";
 import Filter from "../base/filter/Filter";
 import HttpUtil from "../../util/HttpUtil";
@@ -52,6 +53,8 @@ export default class Matter extends BaseEntity {
   progress: number = 0;
   //实时上传速度 byte/s
   speed: number = 0;
+  //取消上传source
+  cancelSource: CancelTokenSource = axios.CancelToken.source();
 
   static URL_MATTER_CREATE_DIRECTORY = "/api/matter/create/directory";
   static URL_MATTER_SOFT_DELETE = "/api/matter/soft/delete";
@@ -121,7 +124,7 @@ export default class Matter extends BaseEntity {
       new InputFilter("分享uuid", "shareUuid"),
       new InputFilter("提取码", "shareCode"),
       new InputFilter("分享根目录", "shareRootUuid"),
-      new SortFilter('删除时间排序', 'orderDeleteTime'),
+      new SortFilter("删除时间排序", "orderDeleteTime"),
     ];
   }
 
@@ -194,7 +197,7 @@ export default class Matter extends BaseEntity {
     if (this.isImage()) {
       ImagePreviewer.showSinglePhoto(previewUrl);
     } else {
-      if(shareMode) {
+      if (shareMode) {
         PreviewerHelper.preview(this, previewUrl);
       } else {
         PreviewerHelper.preview(this);
@@ -208,7 +211,7 @@ export default class Matter extends BaseEntity {
     finallyCallback?: any
   ) {
     let that = this;
-    let form = {userUuid: that.userUuid, name: that.name, puuid: that.puuid};
+    let form = { userUuid: that.userUuid, name: that.name, puuid: that.puuid };
 
     return this.httpPost(
       Matter.URL_MATTER_CREATE_DIRECTORY,
@@ -225,7 +228,7 @@ export default class Matter extends BaseEntity {
   httpSoftDelete(successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_SOFT_DELETE,
-      {uuid: this.uuid},
+      { uuid: this.uuid },
       function (response: any) {
         typeof successCallback === "function" && successCallback(response);
       },
@@ -233,10 +236,14 @@ export default class Matter extends BaseEntity {
     );
   }
 
-  httpSoftDeleteBatch(uuids: string, successCallback?: any, errorCallback?: any) {
+  httpSoftDeleteBatch(
+    uuids: string,
+    successCallback?: any,
+    errorCallback?: any
+  ) {
     this.httpPost(
       Matter.URL_MATTER_SOFT_DELETE_BATCH,
-      {uuids: uuids},
+      { uuids: uuids },
       function (response: any) {
         typeof successCallback === "function" && successCallback(response);
       },
@@ -247,7 +254,7 @@ export default class Matter extends BaseEntity {
   httpDelete(successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_DELETE,
-      {uuid: this.uuid},
+      { uuid: this.uuid },
       function (response: any) {
         typeof successCallback === "function" && successCallback(response);
       },
@@ -258,7 +265,7 @@ export default class Matter extends BaseEntity {
   httpDeleteBatch(uuids: string, successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_DELETE_BATCH,
-      {uuids: uuids},
+      { uuids: uuids },
       function (response: any) {
         typeof successCallback === "function" && successCallback(response);
       },
@@ -269,7 +276,7 @@ export default class Matter extends BaseEntity {
   httpRecovery(successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_RECOVERY,
-      {uuid: this.uuid},
+      { uuid: this.uuid },
       function (response: any) {
         typeof successCallback === "function" && successCallback(response);
       },
@@ -280,7 +287,7 @@ export default class Matter extends BaseEntity {
   httpRecoveryBatch(uuids: string, successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_RECOVERY_BATCH,
-      {uuids: uuids},
+      { uuids: uuids },
       function (response: any) {
         typeof successCallback === "function" && successCallback(response);
       },
@@ -297,7 +304,7 @@ export default class Matter extends BaseEntity {
     let that = this;
     this.httpPost(
       Matter.URL_MATTER_RENAME,
-      {uuid: this.uuid, name: name},
+      { uuid: this.uuid, name: name },
       function (response: any) {
         that.assign(response.data.data);
         typeof successCallback === "function" && successCallback(response);
@@ -315,7 +322,7 @@ export default class Matter extends BaseEntity {
     let that = this;
     this.httpPost(
       Matter.URL_CHANGE_PRIVACY,
-      {uuid: this.uuid, privacy: privacy},
+      { uuid: this.uuid, privacy: privacy },
       function (response: any) {
         that.privacy = privacy;
         if (typeof successCallback === "function") {
@@ -335,7 +342,7 @@ export default class Matter extends BaseEntity {
     successCallback?: any,
     errorCallback?: any
   ) {
-    let form: any = {srcUuids: srcUuids};
+    let form: any = { srcUuids: srcUuids };
     if (destUuid) {
       form.destUuid = destUuid;
     } else {
@@ -495,6 +502,11 @@ export default class Matter extends BaseEntity {
         SafeUtil.safeCallback(successCallback)(response);
       },
       function (err: any) {
+        if (axios.isCancel(err)) {
+          that.clear();
+          SafeUtil.safeCallback(failureCallback)();
+          return;
+        }
         const response = err.response;
         that.errorMessage = response;
         that.clear();
@@ -524,8 +536,15 @@ export default class Matter extends BaseEntity {
           );
         }
         that.updateUI();
+      },
+      {
+        cancelToken: that.cancelSource.token,
       }
     );
+  }
+
+  cancelUpload() {
+    this.cancelSource.cancel();
   }
 
   //清除文件
