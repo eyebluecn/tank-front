@@ -87,7 +87,7 @@ export default class SideLayout extends TankComponent<IProps, IState> {
         <Menu
           theme="dark"
           selectedKeys={menuManager.getSelectedKeys()}
-          onSelect={this.onSelect.bind(this)}
+          onClick={this.onSelect.bind(this)}
           mode="inline"
         >
           {menuItems.map((menuItem: MenuItem, index: number) => {
