@@ -222,7 +222,8 @@ let LangZh = {
     scanPerHour: "每小时",
     scanCustom: "自定义",
     chooseUsers: "模糊搜索用户",
-    chooseUsersValidate: "请选择至少一个用户"
+    chooseUsersValidate: "请选择至少一个用户",
+    scanLoading: "扫描中，请稍后..."
   },
   share: {
     shareDetail: "分享详情",

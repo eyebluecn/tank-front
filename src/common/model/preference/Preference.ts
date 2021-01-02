@@ -12,6 +12,7 @@ export default class Preference extends BaseEntity {
   static URL_API_SYSTEM_CLEANUP = '/api/preference/system/cleanup'
   static URL_API_PREFERENCE_EDIT_PREVIEW_CONFIG = '/api/preference/edit/preview/config'
   static URL_API_PREFERENCE_EDIT_SCAN = '/api/preference/edit/scan/config'
+  static URL_API_PREFERENCE_SCAN_ONCE = '/api/preference/scan/once'
 
 
   //网站名称
@@ -139,6 +140,12 @@ export default class Preference extends BaseEntity {
 
     }, errorCallback, finalCallback);
 
+  }
+
+  httpScanOnce(successCallback?: any, errorCallback?: any, finalCallback?: any) {
+    this.httpGet(Preference.URL_API_PREFERENCE_SCAN_ONCE, {}, function (response: any) {
+      SafeUtil.safeCallback(successCallback)(response);
+    }, errorCallback, finalCallback)
   }
 
 }
