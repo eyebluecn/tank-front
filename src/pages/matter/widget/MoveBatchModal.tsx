@@ -5,7 +5,7 @@ import Pager from "../../../common/model/base/Pager";
 import Matter from "../../../common/model/matter/Matter";
 import "./MoveBatchModal.less";
 import Lang from "../../../common/model/global/Lang";
-import { FolderFilled, FolderOpenFilled } from "@ant-design/icons";
+import { FolderFilled, FolderOpenFilled, ExclamationCircleFilled } from "@ant-design/icons";
 
 interface IProps {
   onSuccess: (uuid: string) => any;
@@ -37,6 +37,7 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
     let modal = Modal.confirm({
       className: "move-modal",
       title: Lang.t("matter.moveTo"),
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       width: "90vw",
       okCancel: false,
       okButtonProps: {

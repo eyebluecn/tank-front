@@ -19,7 +19,7 @@ export default class UploadMatterPanel extends TankComponent<IProps, IState> {
   }
 
   format = (percent: number) => {
-    return `${percent.toFixed(1)}%`
+    return `${percent.toFixed(1)}%`;
   };
 
   render() {
@@ -44,9 +44,13 @@ export default class UploadMatterPanel extends TankComponent<IProps, IState> {
             <div>
               {`${Lang.t("matter.uploaded")}: ${StringUtil.humanFileSize(
                 matter.file!.size * matter.progress
-              )}/${StringUtil.humanFileSize(
-                matter.file!.size
-              )} ${Lang.t("matter.speed")}:${StringUtil.humanFileSize(matter.speed)}s`}
+              )}/${StringUtil.humanFileSize(matter.file!.size)} ${
+                matter.progress < 1
+                  ? `${Lang.t("matter.speed")}:${StringUtil.humanFileSize(
+                      matter.speed
+                    )}s`
+                  : Lang.t("matter.finishingTip")
+              }`}
             </div>
           </div>
         ) : null}

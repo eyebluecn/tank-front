@@ -143,7 +143,8 @@ let LangEn = {
     deleted: "Deleted",
     unCompatibleBrowser: "The current browser does not support it. Please try choose another one",
     canIUse: "To see if the current browser supports it",
-    intoRecycleBin: "Into the recycle bin"
+    intoRecycleBin: "Recycle bin",
+    finishingTip: "Please wait while files are sorted..."
   },
   router: {
     allFiles: "All Files",

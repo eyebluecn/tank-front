@@ -1,6 +1,7 @@
 import React from "react";
 import TankComponent from "../../../common/component/TankComponent";
 import { Modal, Button, Col, Row, Select } from "antd";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 import "./ShareOperationModal.less";
 import Share from "../../../common/model/share/Share";
 import {
@@ -27,6 +28,7 @@ export default class ShareOperationModal extends TankComponent<IProps, IState> {
     const modal = Modal.confirm({
       className: "share-modal",
       title: Lang.t("matter.share"),
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       width: "90vw",
       okCancel: false,
       okButtonProps: {
