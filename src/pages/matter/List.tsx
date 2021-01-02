@@ -60,8 +60,7 @@ export default class List extends TankComponent<IProps, IState> {
   matter = new Matter();
   //准备新建的文件。
   newMatter = new Matter();
-  //准备上传的一系列文件
-  uploadMatters = Moon.getSingleton().uploadMatters;
+
   //当前选中的文件
   selectedMatters: Matter[] = [];
   //搜索的文字
@@ -86,6 +85,9 @@ export default class List extends TankComponent<IProps, IState> {
 
   //上传错误日志
   uploadErrorLogs: [string, string, string][] = [];
+
+  //准备上传的一系列文件
+  static uploadMatters: Matter[] = [];
 
   //持有全局唯一的实例。
   static instance: List | null = null
@@ -146,10 +148,7 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   componentDidMount() {
-    // 将全局上传数组重新绑定到当前视图
-    this.uploadMatters.forEach((matter) => {
-      matter.reactComponent = this;
-    });
+
     //刷新一下列表
     if (this.user.role === UserRole.ADMINISTRATOR) {
       this.pager.getFilter("userUuid")!.visible = true;
@@ -390,17 +389,17 @@ export default class List extends TankComponent<IProps, IState> {
       m.file = file;
       m.httpUpload(
         () => {
-          const index = this.uploadMatters.findIndex((matter) => matter === m);
-          this.uploadMatters.splice(index, 1);
+          const index = List.uploadMatters.findIndex((matter) => matter === m);
+          List.uploadMatters.splice(index, 1);
           List.instance!.refresh();
         },
         (msg: string) => {
-          this.updateUI();
+          List.instance!.updateUI();
           SafeUtil.safeCallback(errHandle)(msg);
         }
       );
 
-      this.uploadMatters.push(m);
+      List.uploadMatters.push(m);
     }
   };
 
@@ -527,7 +526,6 @@ export default class List extends TankComponent<IProps, IState> {
       pager,
       director,
       selectedMatters,
-      uploadMatters,
       dragEnterCount,
     } = this;
     return (
@@ -648,7 +646,7 @@ export default class List extends TankComponent<IProps, IState> {
         </Row>
 
         {Children.toArray(
-          uploadMatters.map((m) => <UploadMatterPanel matter={m}/>)
+          List.uploadMatters.map((m) => <UploadMatterPanel matter={m}/>)
         )}
 
         {pager.data.length ? (

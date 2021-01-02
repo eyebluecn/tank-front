@@ -16,9 +16,6 @@ export default class Moon {
   //全局唯一的偏好设置
   preference: Preference = new Preference()
 
-  //全局上传通道
-  uploadMatters: Matter[] = [];
-
   //全局的一个store对象
   private static singleton: Moon | null = null
 
