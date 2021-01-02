@@ -22,16 +22,16 @@ import {
 } from "antd";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import {
-  ExclamationCircleFilled,
   CloudUploadOutlined,
-  PlusSquareOutlined,
-  MinusSquareOutlined,
-  FolderOutlined,
-  SyncOutlined,
   DeleteOutlined,
   DownloadOutlined,
   DragOutlined,
+  ExclamationCircleFilled,
+  FolderOutlined,
+  MinusSquareOutlined,
+  PlusSquareOutlined,
   ShareAltOutlined,
+  SyncOutlined,
 } from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Sun from "../../common/model/global/Sun";
@@ -47,6 +47,7 @@ import BreadcrumbPanel from "../widget/BreadcrumbPanel";
 import Lang from "../../common/model/global/Lang";
 import FileUtil from "../../common/util/FileUtil";
 import SafeUtil from "../../common/util/SafeUtil";
+import MatterSortPanel from "./widget/MatterSortPanel";
 
 interface IProps extends RouteComponentProps {}
 
@@ -632,6 +633,10 @@ export default class List extends TankComponent<IProps, IState> {
         {Children.toArray(
           uploadMatters.map((m) => <UploadMatterPanel matter={m} />)
         )}
+
+        {pager.data.length ? (
+          <MatterSortPanel pager={pager} refresh={() => this.refresh()} />
+        ) : null}
 
         {director.createMode ? (
           <MatterPanel
