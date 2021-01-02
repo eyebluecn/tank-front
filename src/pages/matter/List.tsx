@@ -139,6 +139,10 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   componentDidMount() {
+    // 将全局上传数组重新绑定到当前视图
+    this.uploadMatters.forEach((matter) => {
+      matter.reactComponent = this;
+    });
     //刷新一下列表
     if (this.user.role === UserRole.ADMINISTRATOR) {
       this.pager.getFilter("userUuid")!.visible = true;
@@ -376,7 +380,11 @@ export default class List extends TankComponent<IProps, IState> {
       }
       m.file = file;
       m.httpUpload(
-        () => this.refresh(),
+        () => {
+          const index = this.uploadMatters.findIndex((matter) => matter === m);
+          this.uploadMatters.splice(index, 1);
+          this.refresh();
+        },
         (msg: string) => {
           this.updateUI();
           SafeUtil.safeCallback(errHandle)(msg);
