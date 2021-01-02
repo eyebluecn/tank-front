@@ -62,6 +62,10 @@ export default class Preference extends BaseEntity {
     this.assignEntity("scanConfig", ScanConfig)
   }
 
+  getRecycleBinStatus() {
+    return this.deletedKeepDays > 0
+  }
+
   getForm(): any {
     return {
       name: this.name,

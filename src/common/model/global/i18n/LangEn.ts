@@ -223,7 +223,8 @@ let LangEn = {
     scanCustom: "Scan custom",
     chooseUsers: "Fuzzy search users",
     chooseUsersValidate: "choose one more user",
-    scanLoading: "waiting..."
+    scanLoading: "waiting...",
+    matterBinDefaultTip: "set zero means to turn off the recycle bin"
   },
   share: {
     shareDetail: "Share Detail",

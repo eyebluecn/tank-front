@@ -15,7 +15,6 @@ import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import Sun from "../../common/model/global/Sun";
 import Lang from "../../common/model/global/Lang";
 import MatterImage from "../matter/widget/MatterImage";
-import PreviewConfigPanel from "./widget/PreviewConfigPanel";
 
 interface IProps extends RouteComponentProps {
 }
@@ -214,8 +213,11 @@ export default class Edit extends TankComponent<IProps, IState> {
                 ]}
                 noStyle
               >
-                <InputNumber min={1} className="w150" />
+                <InputNumber min={0} className="w150" />
               </Form.Item>
+              <span className="pl10">
+                {Lang.t("preference.matterBinDefaultTip")}
+              </span>
             </Form.Item>
 
             <Form.Item

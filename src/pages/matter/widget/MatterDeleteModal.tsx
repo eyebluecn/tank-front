@@ -2,10 +2,10 @@ import React from "react";
 import TankComponent from "../../../common/component/TankComponent";
 import { Modal, Button } from "antd";
 import Lang from "../../../common/model/global/Lang";
-import {
-  ExclamationCircleFilled,
-} from "@ant-design/icons";
+import Moon from "../../../common/model/global/Moon";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 import "./MatterDeleteModal.less";
+import Preference from "../../../common/model/preference/Preference";
 
 interface IProps {
   onSoftDel: () => void;
@@ -19,6 +19,8 @@ export default class MatterDeleteModal extends TankComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
   }
+
+  static preference: Preference = Moon.getSingleton().preference;
 
   static open(onSoftDel: () => void, onHardDel: () => void) {
     let modal = Modal.warning({
@@ -55,12 +57,18 @@ export default class MatterDeleteModal extends TankComponent<IProps, IState> {
           <Button className="mr10" onClick={this.props.onClose}>
             {Lang.t("cancel")}
           </Button>
-          <Button type="primary" danger className="mr10" onClick={this.props.onHardDel}>
+          <Button
+            type="primary"
+            danger
+            onClick={this.props.onHardDel}
+          >
             {Lang.t("deleteDirectly")}
           </Button>
-          <Button type="primary" onClick={this.props.onSoftDel}>
-            {Lang.t("matter.intoRecycleBin")}
-          </Button>
+          {MatterDeleteModal.preference.getRecycleBinStatus() && (
+            <Button type="primary" className="ml10" onClick={this.props.onSoftDel}>
+              {Lang.t("matter.intoRecycleBin")}
+            </Button>
+          )}
         </div>
       </div>
     );
