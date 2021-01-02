@@ -340,6 +340,7 @@ let LangZh = {
   required: "必填",
   cancel: "取消",
   delete: "删除",
+  deleteDirectly: "直接删除",
   actionCanNotRevertConfirm: "此操作不可撤回, 是否继续?",
   actionDeleteConfirm: "确定删除吗?",
   actionRecoveryConfirm: "确定恢复吗?",
