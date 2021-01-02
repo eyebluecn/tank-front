@@ -222,7 +222,8 @@ let LangEn = {
     scanPerHour: "Scan every hour",
     scanCustom: "Scan custom",
     chooseUsers: "Fuzzy search users",
-    chooseUsersValidate: "choose one more user"
+    chooseUsersValidate: "choose one more user",
+    scanLoading: "waiting..."
   },
   share: {
     shareDetail: "Share Detail",

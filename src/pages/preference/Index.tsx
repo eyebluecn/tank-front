@@ -5,8 +5,12 @@ import TankComponent from "../../common/component/TankComponent";
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
 import TankTitle from "../widget/TankTitle";
-import { Button, Divider, Empty, Tag, Tooltip } from "antd";
-import { EditOutlined, ThunderboltOutlined } from "@ant-design/icons";
+import { Button, Divider, Empty, Tag, Tooltip, message } from "antd";
+import {
+  EditOutlined,
+  ThunderboltOutlined,
+  ScanOutlined,
+} from "@ant-design/icons";
 import InfoCell from "../widget/InfoCell";
 import Preference from "../../common/model/preference/Preference";
 import TankContentCard from "../widget/TankContentCard";
@@ -62,6 +66,17 @@ export default class Index extends TankComponent<IProps, IState> {
           MessageBoxUtil.success(Lang.t("operationSuccess"));
         });
       }
+    );
+  }
+
+  immediateScan() {
+    const hide = message.loading(Lang.t("preference.scanLoading"), 0);
+    this.preference.httpSaveScan(
+      () => {
+        message.success(Lang.t("operationSuccess"));
+      },
+      null,
+      hide
     );
   }
 
@@ -198,11 +213,21 @@ export default class Index extends TankComponent<IProps, IState> {
           <div className="scan-info">
             <header>
               <p className="title">{Lang.t("preference.scan")}</p>
-              <Link to={"/preference/scan/edit"}>
-                <Button type={"primary"} icon={<EditOutlined />}>
-                  {Lang.t("edit")}
+              <div>
+                <Button
+                  type="primary"
+                  className="mr10"
+                  icon={<ScanOutlined />}
+                  onClick={() => this.immediateScan()}
+                >
+                  立即扫描
                 </Button>
-              </Link>
+                <Link to={"/preference/scan/edit"}>
+                  <Button type={"primary"} icon={<EditOutlined />}>
+                    {Lang.t("edit")}
+                  </Button>
+                </Link>
+              </div>
             </header>
             <div className="content">
               {scanConfig.enable ? (
