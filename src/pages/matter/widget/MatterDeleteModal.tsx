@@ -55,11 +55,11 @@ export default class MatterDeleteModal extends TankComponent<IProps, IState> {
           <Button className="mr10" onClick={this.props.onClose}>
             {Lang.t("cancel")}
           </Button>
-          <Button type="primary" className="mr10" onClick={this.props.onSoftDel}>
-            {Lang.t("matter.intoRecycleBin")}
+          <Button type="primary" danger className="mr10" onClick={this.props.onHardDel}>
+            {Lang.t("deleteDirectly")}
           </Button>
-          <Button type="primary" danger onClick={this.props.onHardDel}>
-            {Lang.t("delete")}
+          <Button type="primary" onClick={this.props.onSoftDel}>
+            {Lang.t("matter.intoRecycleBin")}
           </Button>
         </div>
       </div>
