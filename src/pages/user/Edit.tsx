@@ -219,7 +219,7 @@ export default class Edit extends TankComponent<IProps, IState> {
                 initialValue={currentUser.sizeLimit}
                 noStyle
               >
-                <InputNumber min={-1} className='w150'/>
+                <InputNumber min={-1} className='w150' disabled={user.role !== UserRole.ADMINISTRATOR}/>
               </Form.Item>
               <span
                 className="pl10"> {Lang.t("user.current")}:
@@ -239,7 +239,7 @@ export default class Edit extends TankComponent<IProps, IState> {
                 initialValue={currentUser.totalSizeLimit}
                 noStyle
               >
-                <InputNumber min={-1} className='w150'/>
+                <InputNumber min={-1} className='w150' disabled={user.role !== UserRole.ADMINISTRATOR}/>
               </Form.Item>
               <span
                 className="pl10"> {Lang.t("user.current")}:
