@@ -142,7 +142,8 @@ let LangZh = {
     recycleBin: "回收站",
     deleted: "已删除",
     unCompatibleBrowser: "当前浏览器不支持，请切换浏览器尝试",
-    canIUse: "查看当前浏览器是否支持，点击跳转"
+    canIUse: "查看当前浏览器是否支持，点击跳转",
+    intoRecycleBin: "放入回收站"
   },
   router: {
     allFiles: "全部文件",
