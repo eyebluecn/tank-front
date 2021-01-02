@@ -57,7 +57,7 @@ export default class List extends TankComponent<IProps, IState> {
   //准备新建的文件。
   newMatter = new Matter();
   //准备上传的一系列文件
-  uploadMatters: Matter[] = [];
+  uploadMatters = Moon.getSingleton().uploadMatters;
   //当前选中的文件
   selectedMatters: Matter[] = [];
   //搜索的文字
