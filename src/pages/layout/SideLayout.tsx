@@ -91,6 +91,11 @@ export default class SideLayout extends TankComponent<IProps, IState> {
           mode="inline"
         >
           {menuItems.map((menuItem: MenuItem, index: number) => {
+            if (
+              menuItem.url === "/bin/list" &&
+              !preference.getRecycleBinStatus()
+            )
+              return null;
             return (
               <Menu.Item key={menuItem.url}>
                 {menuItem.icon}
