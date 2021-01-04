@@ -19,7 +19,7 @@ export default class UploadMatterPanel extends TankComponent<IProps, IState> {
     this.state = {};
   }
 
-  format = (percent: number) => {
+  format(percent: number) {
     return `${percent.toFixed(1)}%`;
   };
 

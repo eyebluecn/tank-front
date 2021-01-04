@@ -58,7 +58,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     this.state = {};
   }
 
-  prepareRename = () => {
+  prepareRename() {
     const { matter, director } = this.props;
     if (director!.isEditing()) {
       console.error("导演正忙着，不予执行");
@@ -86,14 +86,14 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     });
   };
 
-  clipboard = () => {
+  clipboard() {
     let textToCopy = this.props.matter.getDownloadUrl();
     ClipboardUtil.copy(textToCopy, () => {
       MessageBoxUtil.success(Lang.t("operationSuccess"));
     });
   };
 
-  deleteMatter = () => {
+  deleteMatter() {
     MatterDeleteModal.open(
       () => {
         this.props.matter.httpSoftDelete(() => {
@@ -110,7 +110,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     );
   };
 
-  hardDeleteMatter = () => {
+  hardDeleteMatter() {
     Modal.confirm({
       title: Lang.t("actionCanNotRevertConfirm"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
@@ -123,7 +123,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     });
   };
 
-  recoveryMatter = () => {
+  recoveryMatter() {
     Modal.confirm({
       title: Lang.t("actionRecoveryConfirm"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
@@ -136,12 +136,12 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     });
   };
 
-  changeMatterName = (e: any) => {
+  changeMatterName(e: any) {
     this.renameMatterName = e.currentTarget.value;
     this.updateUI();
   };
 
-  finishRename = () => {
+  finishRename() {
     //有可能按enter的时候和blur同时了。
     if (this.renamingLoading) {
       return;
@@ -169,7 +169,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     );
   };
 
-  finishCreateDirectory = () => {
+  finishCreateDirectory() {
     const { matter, director, onCreateDirectoryCallback } = this.props;
     matter.name = this.renameMatterName;
     matter.httpCreateDirectory(
@@ -187,7 +187,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     );
   };
 
-  blurTrigger = () => {
+  blurTrigger() {
     const { matter, director } = this.props;
     if (matter.editMode) {
       if (director!.createMode) {
@@ -198,28 +198,28 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     }
   };
 
-  enterTrigger = (e: any) => {
+  enterTrigger(e: any) {
     if (e.key.toLowerCase() === "enter") {
       this.inputRef.current!.blur();
     }
   };
 
-  changePrivacy = (privacy: boolean) => {
+  changePrivacy(privacy: boolean) {
     this.props.matter.httpChangePrivacy(privacy, () => {
       this.updateUI();
     });
   };
 
-  checkToggle = (e: CheckboxChangeEvent) => {
+  checkToggle(e: CheckboxChangeEvent) {
     this.props.matter.check = e.target.checked;
     this.props.onCheckMatter!(this.props.matter);
   };
 
-  highLight = () => {
+  highLight() {
     this.inputRef.current!.select();
   };
 
-  clickRow = () => {
+  clickRow() {
     const {
       matter,
       recycleMode = false,
@@ -245,12 +245,12 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     }
   };
 
-  toggleHandles = () => {
+  toggleHandles() {
     this.showMore = !this.showMore;
     this.updateUI();
   };
 
-  renderPcOperation = () => {
+  renderPcOperation() {
     const { matter, recycleMode = false } = this.props;
 
     // 文件操作在正常模式 or 回收站模式下不同，其中回收站模式只保留查看信息与彻底删除操作
@@ -371,7 +371,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     );
   };
 
-  renderMobileOperation = () => {
+  renderMobileOperation() {
     const { matter, recycleMode = false } = this.props;
 
     // 文件操作在正常模式 or 回收站模式下不同，其中回收站模式只保留查看信息与彻底删除操作
@@ -507,7 +507,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                 >
                   <Checkbox
                     checked={matter.check}
-                    onChange={this.checkToggle}
+                    onChange={e => this.checkToggle(e)}
                   />
                 </span>
                 <span className="cell">
@@ -540,10 +540,10 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
                       ref={this.inputRef}
                       className={matter.uuid!}
                       value={this.renameMatterName}
-                      onChange={this.changeMatterName.bind(this)}
+                      onChange={e => this.changeMatterName(e)}
                       placeholder={Lang.t("matter.enterName")}
-                      onBlur={this.blurTrigger.bind(this)}
-                      onKeyUp={this.enterTrigger.bind(this)}
+                      onBlur={() => this.blurTrigger()}
+                      onKeyUp={e => this.enterTrigger(e)}
                     />
                   </span>
                 ) : (

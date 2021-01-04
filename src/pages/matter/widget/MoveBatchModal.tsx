@@ -57,7 +57,7 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
     });
   }
 
-  fetchData = (treeNode: any, success: () => any) => {
+  fetchData(treeNode: any, success: () => any) {
     const { data: origin } = treeNode.props;
     this.pager.setFilterValue("puuid", treeNode.key);
     this.pager.httpList((response: any) => {
@@ -78,7 +78,7 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
     });
   };
 
-  onLoadData = (treeNode: any) => {
+  onLoadData(treeNode: any) {
     return new Promise((resolve) => {
       if (treeNode.props.children) {
         resolve();
@@ -91,7 +91,7 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
     });
   };
 
-  onSelect = (selectedKeys: any) => {
+  onSelect(selectedKeys: any) {
     if (selectedKeys.length) {
       this.targetUuid = selectedKeys[0];
       this.updateUI();
@@ -106,8 +106,8 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
           treeData={this.treeData}
           defaultExpandedKeys={["root"]}
           selectedKeys={[this.targetUuid]}
-          loadData={this.onLoadData}
-          onSelect={this.onSelect}
+          loadData={e => this.onLoadData(e)}
+          onSelect={e => this.onSelect(e)}
           icon={e => e.expanded ? <FolderOpenFilled className="text-primary f20" /> : <FolderFilled className="text-primary f20" />}
         />
         <div className="mt10 text-right">

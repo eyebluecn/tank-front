@@ -1,5 +1,5 @@
-import React, {Children} from "react";
-import {RouteComponentProps} from "react-router-dom";
+import React, { Children } from "react";
+import { RouteComponentProps } from "react-router-dom";
 import "./List.less";
 import TankComponent from "../../common/component/TankComponent";
 import Pager from "../../common/model/base/Pager";
@@ -35,7 +35,7 @@ import {
 } from "@ant-design/icons";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Sun from "../../common/model/global/Sun";
-import {UserRole} from "../../common/model/user/UserRole";
+import { UserRole } from "../../common/model/user/UserRole";
 import StringUtil from "../../common/util/StringUtil";
 import MoveBatchModal from "./widget/MoveBatchModal";
 import ShareOperationModal from "./widget/ShareOperationModal";
@@ -48,12 +48,11 @@ import Lang from "../../common/model/global/Lang";
 import FileUtil from "../../common/util/FileUtil";
 import SafeUtil from "../../common/util/SafeUtil";
 import MatterSortPanel from "./widget/MatterSortPanel";
+import { RcCustomRequestOptions } from "antd/lib/upload/interface";
 
-interface IProps extends RouteComponentProps {
-}
+interface IProps extends RouteComponentProps {}
 
-interface IState {
-}
+interface IState {}
 
 export default class List extends TankComponent<IProps, IState> {
   //当前文件夹信息。
@@ -90,12 +89,12 @@ export default class List extends TankComponent<IProps, IState> {
   static uploadMatters: Matter[] = [];
 
   //持有全局唯一的实例。
-  static instance: List | null = null
+  static instance: List | null = null;
 
   constructor(props: IProps) {
     super(props);
 
-    List.instance = this
+    List.instance = this;
   }
 
   //拖拽上传
@@ -148,7 +147,6 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   componentDidMount() {
-
     //刷新一下列表
     if (this.user.role === UserRole.ADMINISTRATOR) {
       this.pager.getFilter("userUuid")!.visible = true;
@@ -171,16 +169,16 @@ export default class List extends TankComponent<IProps, IState> {
     this.drag.remove();
   }
 
-  refresh = () => {
+  refresh() {
     // 清空暂存区
     this.selectedMatters = [];
     // 刷新文件列表
     this.refreshPager();
     // 刷新面包屑
     this.refreshBreadcrumbs();
-  };
+  }
 
-  refreshPager = () => {
+  refreshPager() {
     // 初始化当前matter uuid
     if (this.matter.uuid !== this.pager.getFilterValue("puuid")) {
       this.matter.uuid =
@@ -199,9 +197,9 @@ export default class List extends TankComponent<IProps, IState> {
     this.pager.setFilterValue("deleted", false);
 
     this.pager.httpList();
-  };
+  }
 
-  checkMatter = (matter?: Matter) => {
+  checkMatter(matter?: Matter) {
     if (matter) {
       if (matter.check) {
         this.selectedMatters.push(matter);
@@ -221,23 +219,23 @@ export default class List extends TankComponent<IProps, IState> {
       });
     }
     this.updateUI();
-  };
+  }
 
-  checkAll = () => {
+  checkAll() {
     this.pager.data.forEach((i) => {
       i.check = true;
     });
     this.checkMatter();
-  };
+  }
 
-  checkNone = () => {
+  checkNone() {
     this.pager.data.forEach((i) => {
       i.check = false;
     });
     this.checkMatter();
-  };
+  }
 
-  deleteBatch = () => {
+  deleteBatch() {
     const uuids = this.selectedMatters.map((i) => i.uuid).toString();
     MatterDeleteModal.open(
       () => {
@@ -253,14 +251,14 @@ export default class List extends TankComponent<IProps, IState> {
         });
       }
     );
-  };
+  }
 
-  downloadZip = () => {
+  downloadZip() {
     const uuids = this.selectedMatters.map((i) => i.uuid).toString();
     Matter.downloadZip(uuids);
-  };
+  }
 
-  toggleMoveBatch = () => {
+  toggleMoveBatch() {
     MoveBatchModal.open((targetUuid) => {
       const uuids = this.selectedMatters.map((i) => i.uuid).join(",");
       this.matter.httpMove(uuids, targetUuid, () => {
@@ -268,24 +266,24 @@ export default class List extends TankComponent<IProps, IState> {
         this.refresh();
       });
     });
-  };
+  }
 
-  triggerUpload = (fileObj: any) => {
-    const {file} = fileObj;
+  triggerUpload(fileObj: RcCustomRequestOptions) {
+    const { file } = fileObj;
     if (file) this.launchUpload(file);
-  };
+  }
 
-  debounce = (func: Function, wait: number) => {
+  debounce(func: Function, wait: number) {
     let timer: any = null;
     return (fileObj: any) => {
-      const {file} = fileObj;
+      const { file } = fileObj;
       this.tempUploadList.push(file);
       if (timer) {
         clearTimeout(timer);
       }
       timer = setTimeout(func, wait);
     };
-  };
+  }
 
   triggerUploadDir = this.debounce(async () => {
     await this.uploadDirectory();
@@ -296,7 +294,7 @@ export default class List extends TankComponent<IProps, IState> {
       const url = FileUtil.getErrorLogsToCSVUrl(this.uploadErrorLogs);
       Modal.confirm({
         title: Lang.t("matter.uploadInfo"),
-        icon: <ExclamationCircleFilled twoToneColor="#FFDC00"/>,
+        icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
         content: Lang.t("matter.uploadErrorInfo"),
         okText: Lang.t("matter.exportCSV"),
         onOk: () => {
@@ -313,7 +311,7 @@ export default class List extends TankComponent<IProps, IState> {
     this.refresh();
   }, 0);
 
-  uploadDirectory = async () => {
+  async uploadDirectory() {
     const dirPathUuidMap: any = {}; // 存储已经创建好的文件夹map
     for (let i = 0; i < this.tempUploadList.length; i++) {
       const file: File = this.tempUploadList[i];
@@ -358,14 +356,13 @@ export default class List extends TankComponent<IProps, IState> {
         });
       }
     }
-  };
+  }
 
-  launchUpload = (
+  launchUpload(
     f: File | FileList,
     puuid = this.matter.uuid!,
-    errHandle = () => {
-    }
-  ) => {
+    errHandle = () => {}
+  ) {
     const files = f instanceof FileList ? f : [f];
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -401,9 +398,9 @@ export default class List extends TankComponent<IProps, IState> {
 
       List.uploadMatters.push(m);
     }
-  };
+  }
 
-  shareBatch = () => {
+  shareBatch() {
     const uuids = this.selectedMatters.map((i) => i.uuid).join(",");
     ShareOperationModal.open((share: Share) => {
       share.httpCreate(uuids, () => {
@@ -412,7 +409,7 @@ export default class List extends TankComponent<IProps, IState> {
     });
   };
 
-  searchFile = (value?: string) => {
+  searchFile(value?: string) {
     this.pager.resetFilter();
     if (value) {
       this.pager.setFilterValue("orderCreateTime", SortDirection.DESC);
@@ -424,17 +421,17 @@ export default class List extends TankComponent<IProps, IState> {
     }
   };
 
-  changeSearch = (e: any) => {
+  changeSearch(e: any) {
     if (!e.currentTarget.value) this.searchFile();
   };
 
-  changePage = (page: number) => {
+  changePage(page: number) {
     this.pager.page = page - 1; // page的页数0基
     this.pager.httpList();
     this.updateUI();
   };
 
-  createDirectory = () => {
+  createDirectory() {
     this.newMatter.name = "matter.allFiles";
     this.newMatter.dir = true;
     this.newMatter.editMode = true;
@@ -446,7 +443,7 @@ export default class List extends TankComponent<IProps, IState> {
     setTimeout(() => this.newMatterRef.current!.highLight());
   };
 
-  previewImage = (matter: Matter) => {
+  previewImage(matter: Matter) {
     let imageArray: string[] = [];
     let startIndex = -1;
     this.pager.data.forEach((item) => {
@@ -461,17 +458,17 @@ export default class List extends TankComponent<IProps, IState> {
     ImagePreviewer.showMultiPhoto(imageArray, startIndex);
   };
 
-  goToDirectory = (id: string) => {
+  goToDirectory(id: string) {
     this.searchText = null;
     this.pager.setFilterValue("puuid", id);
     this.pager.page = 0;
     const query = this.pager.getParams();
-    Sun.navigateQueryTo({path: "/matter/list", query});
+    Sun.navigateQueryTo({ path: "/matter/list", query });
     this.refresh();
   };
 
   //刷新面包屑
-  refreshBreadcrumbs = () => {
+  refreshBreadcrumbs()  {
     const uuid = this.pager.getFilterValue("puuid") || Matter.MATTER_ROOT;
 
     //根目录简单处理即可。
@@ -522,27 +519,26 @@ export default class List extends TankComponent<IProps, IState> {
   };
 
   render() {
-    const {
-      pager,
-      director,
-      selectedMatters,
-      dragEnterCount,
-    } = this;
+    const { pager, director, selectedMatters, dragEnterCount } = this;
     return (
       <div className="matter-list">
         {dragEnterCount > 0 ? (
           <div className="obscure">
-            <CloudUploadOutlined className="white f50"/>
+            <CloudUploadOutlined className="white f50" />
           </div>
         ) : null}
-        <BreadcrumbPanel breadcrumbModels={this.breadcrumbModels}/>
+        <BreadcrumbPanel breadcrumbModels={this.breadcrumbModels} />
 
         <Row className="mt10">
           <Col xs={24} sm={24} md={14} lg={16}>
             <Space className="buttons">
               {selectedMatters.length !== pager.data.length ? (
-                <Button type="primary" className="mb10" onClick={this.checkAll}>
-                  <PlusSquareOutlined/>
+                <Button
+                  type="primary"
+                  className="mb10"
+                  onClick={() => this.checkAll()}
+                >
+                  <PlusSquareOutlined />
                   {Lang.t("selectAll")}
                 </Button>
               ) : null}
@@ -551,9 +547,9 @@ export default class List extends TankComponent<IProps, IState> {
                 <Button
                   type="primary"
                   className="mb10"
-                  onClick={this.checkNone}
+                  onClick={() => this.checkNone()}
                 >
-                  <MinusSquareOutlined/>
+                  <MinusSquareOutlined />
                   {Lang.t("cancel")}
                 </Button>
               ) : null}
@@ -562,36 +558,36 @@ export default class List extends TankComponent<IProps, IState> {
                   <Button
                     type="primary"
                     className="mb10"
-                    onClick={this.deleteBatch}
+                    onClick={() => this.deleteBatch()}
                   >
-                    <DeleteOutlined/>
+                    <DeleteOutlined />
                     {Lang.t("delete")}
                   </Button>
 
                   <Button
                     type="primary"
                     className="mb10"
-                    onClick={this.downloadZip}
+                    onClick={() => this.downloadZip()}
                   >
-                    <DownloadOutlined/>
+                    <DownloadOutlined />
                     {Lang.t("download")}
                   </Button>
 
                   <Button
                     type="primary"
                     className="mb10"
-                    onClick={this.toggleMoveBatch}
+                    onClick={() => this.toggleMoveBatch()}
                   >
-                    <DragOutlined/>
+                    <DragOutlined />
                     {Lang.t("matter.move")}
                   </Button>
 
                   <Button
                     type="primary"
                     className="mb10"
-                    onClick={this.shareBatch}
+                    onClick={() => this.shareBatch()}
                   >
-                    <ShareAltOutlined/>
+                    <ShareAltOutlined />
                     {Lang.t("matter.share")}
                   </Button>
                 </>
@@ -599,12 +595,12 @@ export default class List extends TankComponent<IProps, IState> {
 
               <Upload
                 className="ant-upload"
-                customRequest={this.triggerUpload}
+                customRequest={(e) => this.triggerUpload(e)}
                 showUploadList={false}
                 multiple
               >
                 <Button type="primary" className="mb10">
-                  <CloudUploadOutlined/>
+                  <CloudUploadOutlined />
                   {Lang.t("matter.upload")}
                 </Button>
               </Upload>
@@ -615,21 +611,25 @@ export default class List extends TankComponent<IProps, IState> {
                 directory
               >
                 <Button type="primary" className="mb10">
-                  <CloudUploadOutlined/>
+                  <CloudUploadOutlined />
                   {Lang.t("matter.uploadDir")}
                 </Button>
               </Upload>
               <Button
                 type="primary"
                 className="mb10"
-                onClick={this.createDirectory}
+                onClick={() => this.createDirectory()}
               >
-                <FolderOutlined/>
+                <FolderOutlined />
                 {Lang.t("matter.create")}
               </Button>
 
-              <Button type="primary" className="mb10" onClick={this.refresh}>
-                <SyncOutlined/>
+              <Button
+                type="primary"
+                className="mb10"
+                onClick={() => this.refresh()}
+              >
+                <SyncOutlined />
                 {Lang.t("refresh")}
               </Button>
             </Space>
@@ -639,18 +639,18 @@ export default class List extends TankComponent<IProps, IState> {
               className="mb10"
               placeholder={Lang.t("matter.searchFile")}
               onSearch={(value) => this.searchFile(value)}
-              onChange={this.changeSearch}
+              onChange={e => this.changeSearch(e)}
               enterButton
             />
           </Col>
         </Row>
 
         {Children.toArray(
-          List.uploadMatters.map((m) => <UploadMatterPanel matter={m}/>)
+          List.uploadMatters.map((m) => <UploadMatterPanel matter={m} />)
         )}
 
         {pager.data.length ? (
-          <MatterSortPanel pager={pager} refresh={() => this.refresh()}/>
+          <MatterSortPanel pager={pager} refresh={() => this.refresh()} />
         ) : null}
 
         {director.createMode ? (
@@ -658,7 +658,7 @@ export default class List extends TankComponent<IProps, IState> {
             ref={this.newMatterRef}
             matter={this.newMatter}
             director={director}
-            onCreateDirectoryCallback={this.refresh}
+            onCreateDirectoryCallback={() => this.refresh()}
           />
         ) : null}
         <div>
@@ -668,19 +668,19 @@ export default class List extends TankComponent<IProps, IState> {
                 key={matter.uuid!}
                 director={director}
                 matter={matter}
-                onGoToDirectory={this.goToDirectory}
-                onDeleteSuccess={this.refresh}
-                onCheckMatter={this.checkMatter}
-                onPreviewImage={this.previewImage}
+                onGoToDirectory={id => this.goToDirectory(id)}
+                onDeleteSuccess={() => this.refresh()}
+                onCheckMatter={m => this.checkMatter(m)}
+                onPreviewImage={m => this.previewImage(m)}
               />
             ))
           ) : (
-            <Empty description={Lang.t("matter.noContentYet")}/>
+            <Empty description={Lang.t("matter.noContentYet")} />
           )}
         </div>
         <Pagination
           className="mt10 pull-right"
-          onChange={this.changePage}
+          onChange={page => this.changePage(page)}
           current={pager.page + 1}
           total={pager.totalItems}
           pageSize={pager.pageSize}

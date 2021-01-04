@@ -28,18 +28,16 @@ interface IProps {
 interface IState {}
 
 export default class ImageCachePanel extends TankComponent<IProps, IState> {
-  //正在向服务器提交rename的请求
-  renamingLoading = false;
   // 小屏幕下操作栏
   showMore = false;
 
-  checkToggle = (e: CheckboxChangeEvent) => {
+  checkToggle(e: CheckboxChangeEvent) {
     const { imageCache, onCheckImageCache } = this.props;
     imageCache.check = e.target.checked;
     onCheckImageCache(imageCache);
   };
 
-  deleteImageCache = () => {
+  deleteImageCache() {
     Modal.confirm({
       title: Lang.t("actionCanNotRevertConfirm"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
@@ -52,7 +50,7 @@ export default class ImageCachePanel extends TankComponent<IProps, IState> {
     });
   };
 
-  toggleHandles = () => {
+  toggleHandles() {
     this.showMore = !this.showMore;
     this.updateUI();
   };
@@ -76,7 +74,7 @@ export default class ImageCachePanel extends TankComponent<IProps, IState> {
                   <Checkbox
                     onClick={(e) => SafeUtil.stopPropagationWrap(e)}
                     checked={imageCache.check}
-                    onChange={this.checkToggle}
+                    onChange={e => this.checkToggle(e)}
                   />
                 </span>
                 <span className="basic-span">
