@@ -48,7 +48,7 @@ export default class ShareOperationModal extends TankComponent<IProps, IState> {
     });
   };
 
-  selectChange = (value: ShareExpireOption) => {
+  selectChange(value: ShareExpireOption) {
     this.share.expireOption = value;
     this.updateUI();
   };
@@ -63,7 +63,7 @@ export default class ShareOperationModal extends TankComponent<IProps, IState> {
             <Select
               className="wp100"
               value={share.expireOption}
-              onChange={this.selectChange}
+              onChange={e => this.selectChange(e)}
             >
               {ShareExpireOptionList.map((option) => (
                 <Select.Option key={option.value} value={option.value}>

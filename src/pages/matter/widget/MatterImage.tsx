@@ -9,6 +9,7 @@ import "./MatterImage.less";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import SafeUtil from "../../../common/util/SafeUtil";
 import Lang from "../../../common/model/global/Lang";
+import {RcCustomRequestOptions} from "antd/lib/upload/interface";
 
 interface IProps {
   value?: string;
@@ -31,11 +32,11 @@ export default class MatterImage extends TankComponent<IProps, IState> {
     super(props);
   }
 
-  changeLink = (e: any) => {
+  changeLink(e: any) {
     SafeUtil.safeCallback(this.props.onChange)(e.target.value);
   };
 
-  triggerUpload = (fileObj: any) => {
+  triggerUpload(fileObj: RcCustomRequestOptions) {
     const { file } = fileObj;
     const { filter = "image", uploadHint = "" } = this.props;
     if (file) {
@@ -68,7 +69,7 @@ export default class MatterImage extends TankComponent<IProps, IState> {
     }
   };
 
-  toggleHandle = () => {
+  toggleHandle() {
     this.manual = !this.manual;
     this.updateUI();
   };
@@ -100,18 +101,18 @@ export default class MatterImage extends TankComponent<IProps, IState> {
               className="content"
               placeholder={Lang.t("matter.fillInPicLink")}
               value={value}
-              onChange={this.changeLink}
+              onChange={e => this.changeLink(e)}
             />
           ) : (
             <Upload
               className="content"
-              customRequest={this.triggerUpload}
+              customRequest={e => this.triggerUpload(e)}
               showUploadList={false}
             >
               <Button className="wp100 border-short">{Lang.t("matter.chooseImage")}</Button>
             </Upload>
           )}
-          <Button className="handle" type="primary" onClick={this.toggleHandle}>
+          <Button className="handle" type="primary" onClick={() => this.toggleHandle()}>
             {manual ? Lang.t("matter.uploadMode") : Lang.t("matter.fillMode")}
           </Button>
         </div>

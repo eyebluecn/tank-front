@@ -18,7 +18,7 @@ export default class MatterSortPanel extends TankComponent<IProps, IState> {
 
   static sortAutomaton = [SortDirection.ASC, SortDirection.DESC, null]; // 排序状态自动机：ASC -> DESC -> null -> ASC...
 
-  changeFilterOrder = (orderName: string) => {
+  changeFilterOrder(orderName: string) {
     const {pager} = this.props;
     ["orderName", "orderSize", "orderUpdateTime"]
       .filter((name) => name !== orderName)

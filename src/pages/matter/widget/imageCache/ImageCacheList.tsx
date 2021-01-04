@@ -32,7 +32,7 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
     this.refresh();
   }
 
-  deleteBatch = () => {
+  deleteBatch() {
     Modal.confirm({
       title: Lang.t("actionCanNotRevertConfirm"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00"/>,
@@ -47,14 +47,14 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
     });
   };
 
-  checkBatch = (check: boolean) => {
+  checkBatch(check: boolean) {
     this.pager.data.forEach((i) => {
       i.check = check;
     });
     this.checkImageCache();
   };
 
-  refresh = () => {
+  refresh() {
     const {initFilter} = this.props;
     if (initFilter) {
       for (let key in initFilter) {
@@ -68,7 +68,7 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
     this.selectedImageCaches = [];
   };
 
-  checkImageCache = (imageCache?: ImageCache) => {
+  checkImageCache(imageCache?: ImageCache) {
     if (imageCache) {
       if (imageCache.check) {
         this.selectedImageCaches.push(imageCache);
@@ -89,7 +89,7 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
     this.updateUI();
   };
 
-  previewImageCache = (imageCache: ImageCache) => {
+  previewImageCache(imageCache: ImageCache) {
     //从matter开始预览图片
     const imageArray: string[] = [];
     let startIndex = -1;
@@ -103,7 +103,7 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
     ImagePreviewer.showMultiPhoto(imageArray, startIndex);
   };
 
-  changePage = (page: number) => {
+  changePage(page: number) {
     this.pager.page = page - 1; // page的页数0基
     this.pager.httpList();
     this.updateUI();
@@ -120,7 +120,7 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
             <div>
               <Space>
                 {selectedImageCaches.length ? (
-                  <Button type="primary" onClick={this.deleteBatch}>
+                  <Button type="primary" onClick={() => this.deleteBatch()}>
                     <DeleteOutlined/>
                     {Lang.t("delete")}
                   </Button>
@@ -148,9 +148,9 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
             <ImageCachePanel
               key={imageCache.uuid!}
               imageCache={imageCache}
-              onDeleteSuccess={this.refresh}
-              onCheckImageCache={this.checkImageCache}
-              onPreviewImageCache={this.previewImageCache}
+              onDeleteSuccess={() => this.refresh()}
+              onCheckImageCache={e => this.checkImageCache(e)}
+              onPreviewImageCache={e => this.previewImageCache(e)}
             />
           ))}
 
@@ -158,7 +158,7 @@ export default class ImageCacheList extends TankComponent<IProps, IState> {
 
         <Pagination
           className="mt10 pull-right"
-          onChange={this.changePage}
+          onChange={page => this.changePage(page)}
           current={pager.page + 1}
           total={pager.totalItems}
           pageSize={pager.pageSize}

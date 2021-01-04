@@ -45,7 +45,7 @@ export default class Detail extends TankComponent<IProps, IState> {
     });
   }
 
-  copyLink = () => {
+  copyLink() {
     const { privacy } = this.matter;
     const textToCopy = this.matter.getDownloadUrl(
       privacy ? this.downloadToken.uuid! : undefined
@@ -55,7 +55,7 @@ export default class Detail extends TankComponent<IProps, IState> {
     });
   };
 
-  recovery = () => {
+  recovery() {
     this.matter.httpRecovery(() => {
       this.matter.httpDetail(() => {
         this.updateUI();
@@ -114,13 +114,13 @@ export default class Detail extends TankComponent<IProps, IState> {
                       <a onClick={() => matter.preview()}>
                         {Lang.t("matter.preview")}
                       </a>
-                      <a onClick={this.copyLink}>
+                      <a onClick={() => this.copyLink()}>
                         {matter.privacy
                           ? Lang.t("matter.oneTimeLink")
                           : Lang.t("matter.copyPath")}
                       </a>
                       {matter.deleted ? (
-                        <a onClick={this.recovery}>
+                        <a onClick={() => this.recovery()}>
                           {Lang.t("matter.recovery")}
                         </a>
                       ) : null}
@@ -130,7 +130,7 @@ export default class Detail extends TankComponent<IProps, IState> {
               ) : null}
               {matter.dir && matter.deleted && (
                 <InfoCell name={Lang.t("matter.operations")}>
-                  <a onClick={this.recovery}>{Lang.t("matter.recovery")}</a>
+                  <a onClick={() => this.recovery()}>{Lang.t("matter.recovery")}</a>
                 </InfoCell>
               )}
             </div>
