@@ -315,7 +315,8 @@ let LangZh = {
     transfigurationPromptText: "变身提示",
     transfigurationPrompt: "您将使用该用户的身份登录。请复制以下链接到其他浏览器访问，在当前浏览器访问会导致当前用户登录信息失效。",
     allUsers: "全部用户",
-    partialUsers: "局部用户"
+    partialUsers: "局部用户",
+    searchUser: "搜索用户"
   },
   model: {
     usernameRule: "用户名只能包含字母，数字和\"_\"",

@@ -315,7 +315,8 @@ let LangEn = {
     transfigurationPromptText: "Transfiguration Prompt",
     transfigurationPrompt: "You will login as this user.Please visit this link in other browser, if in current browser, you will logout.",
     allUsers: "All users",
-    partialUsers: "Partial users"
+    partialUsers: "Partial users",
+    searchUser: "Search user"
   },
   model: {
     usernameRule: "only lowercase letter and number and _ is permitted.",
