@@ -65,7 +65,7 @@ export default class Detail extends TankComponent<IProps, IState> {
     }
   }
 
-  refresh = () => {
+  refresh() {
     const puuid = BrowserUtil.getQueryByName("puuid") || Matter.MATTER_ROOT;
     if (puuid === Matter.MATTER_ROOT) {
       this.share.rootUuid = Matter.MATTER_ROOT
@@ -88,7 +88,7 @@ export default class Detail extends TankComponent<IProps, IState> {
     this.refreshMatterPager();
   };
 
-  refreshMatterPager = () => {
+  refreshMatterPager() {
     //只有当鉴权通过，并且不是分享根目录时需要才去进行page请求，根目录下matters已经通过browse接口拿到了
     const puuid = BrowserUtil.getQueryByName("puuid");
     if (!this.needShareCode && puuid && puuid !== Matter.MATTER_ROOT) {
@@ -109,17 +109,17 @@ export default class Detail extends TankComponent<IProps, IState> {
     }
   };
 
-  getFiles = (value: string) => {
+  getFiles(value: string) {
     this.share.code = value;
     this.refresh();
   };
 
-  downloadZip = () => {
+  downloadZip() {
     const puuid = BrowserUtil.getQueryByName("puuid") || Matter.MATTER_ROOT;
     this.share.downloadZip(puuid);
   };
 
-  cancelShare = () => {
+  cancelShare() {
     Modal.confirm({
       title: Lang.t("share.cancelPrompt"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00"/>,
@@ -132,7 +132,7 @@ export default class Detail extends TankComponent<IProps, IState> {
     });
   };
 
-  previewImage = (matter: Matter) => {
+  previewImage(matter: Matter) {
     let imageArray: string[] = [];
     let startIndex = -1;
     const {share} = this;
@@ -148,7 +148,7 @@ export default class Detail extends TankComponent<IProps, IState> {
     ImagePreviewer.showMultiPhoto(imageArray, startIndex);
   };
 
-  goToDirectory = (matterUuid?: string) => {
+  goToDirectory(matterUuid?: string) {
     const paramId = this.props.match.params.uuid;
 
     if (matterUuid) {
@@ -171,7 +171,7 @@ export default class Detail extends TankComponent<IProps, IState> {
     }
   };
 
-  refreshBreadcrumbs = () => {
+  refreshBreadcrumbs() {
     let that = this;
 
     //清空
@@ -214,7 +214,7 @@ export default class Detail extends TankComponent<IProps, IState> {
                   placeholder={Lang.t("share.enterCode")}
                   enterButton={Lang.t("share.getFiles")}
                   size="large"
-                  onSearch={this.getFiles}
+                  onSearch={this.getFiles.bind(this)}
                 />
               </Col>
             </Row>
@@ -236,13 +236,13 @@ export default class Detail extends TankComponent<IProps, IState> {
                 </div>
                 <div className="right-box">
                   <Space>
-                    <Button type="primary" onClick={this.downloadZip}>
+                    <Button type="primary" onClick={() => this.downloadZip()}>
                       <DownloadOutlined/>
                       {Lang.t("download")}
                     </Button>
                     {user.uuid && user.uuid === share.userUuid ? (
                       <>
-                        <Button danger onClick={this.cancelShare}>
+                        <Button danger onClick={() => this.cancelShare()}>
                           <StopOutlined/>
                           {Lang.t("share.cancelShare")}
                         </Button>
@@ -288,8 +288,8 @@ export default class Detail extends TankComponent<IProps, IState> {
                   key={matter.uuid!}
                   matter={matter}
                   share={share}
-                  onGoToDirectory={this.goToDirectory}
-                  onPreviewImage={this.previewImage}
+                  onGoToDirectory={this.goToDirectory.bind(this)}
+                  onPreviewImage={this.previewImage.bind(this)}
                 />
               ))
             ) : (

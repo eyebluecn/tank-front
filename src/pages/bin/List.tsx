@@ -58,14 +58,14 @@ export default class List extends TankComponent<IProps, IState> {
     }
   }
 
-  refresh = () => {
+  refresh() {
     // 清空暂存区
     this.selectedMatters = [];
     // 刷新文件列表
     this.refreshPager();
-  };
+  }
 
-  refreshPager = () => {
+  refreshPager() {
     //如果没有任何的排序，默认使用时间倒序和文件夹在顶部
     if (!this.pager.getCurrentSortFilter()) {
       this.pager.setFilterValue("orderDeleteTime", SortDirection.DESC);
@@ -76,9 +76,9 @@ export default class List extends TankComponent<IProps, IState> {
     this.pager.setFilterValue("deleted", true);
 
     this.pager.httpList();
-  };
+  }
 
-  checkMatter = (matter?: Matter) => {
+  checkMatter(matter?: Matter) {
     if (matter) {
       if (matter.check) {
         this.selectedMatters.push(matter);
@@ -98,23 +98,23 @@ export default class List extends TankComponent<IProps, IState> {
       });
     }
     this.updateUI();
-  };
+  }
 
-  checkAll = () => {
+  checkAll() {
     this.pager.data.forEach((i) => {
       i.check = true;
     });
     this.checkMatter();
-  };
+  }
 
-  checkNone = () => {
+  checkNone() {
     this.pager.data.forEach((i) => {
       i.check = false;
     });
     this.checkMatter();
-  };
+  }
 
-  deleteBatch = () => {
+  deleteBatch() {
     Modal.confirm({
       title: Lang.t("actionCanNotRevertConfirm"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
@@ -126,9 +126,9 @@ export default class List extends TankComponent<IProps, IState> {
         });
       },
     });
-  };
+  }
 
-  recoverBatch = () => {
+  recoverBatch() {
     Modal.confirm({
       title: Lang.t("actionRecoveryConfirm"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
@@ -140,9 +140,9 @@ export default class List extends TankComponent<IProps, IState> {
         });
       },
     });
-  };
+  }
 
-  searchFile = (value?: string) => {
+  searchFile(value?: string) {
     this.pager.resetFilter();
     if (value) {
       this.pager.setFilterValue("orderCreateTime", SortDirection.DESC);
@@ -153,19 +153,19 @@ export default class List extends TankComponent<IProps, IState> {
     } else {
       this.refresh();
     }
-  };
+  }
 
-  changeSearch = (e: any) => {
+  changeSearch(e: any) {
     if (!e.currentTarget.value) this.searchFile();
-  };
+  }
 
-  changePage = (page: number) => {
+  changePage(page: number) {
     this.pager.page = page - 1; // page的页数0基
     this.pager.httpList();
     this.updateUI();
-  };
+  }
 
-  previewImage = (matter: Matter) => {
+  previewImage(matter: Matter) {
     let imageArray: string[] = [];
     let startIndex = -1;
     this.pager.data.forEach((item) => {
@@ -178,7 +178,7 @@ export default class List extends TankComponent<IProps, IState> {
     });
 
     ImagePreviewer.showMultiPhoto(imageArray, startIndex);
-  };
+  }
 
   render() {
     const { pager, selectedMatters } = this;
@@ -190,7 +190,11 @@ export default class List extends TankComponent<IProps, IState> {
           <Col xs={24} sm={24} md={14} lg={16}>
             <Space className="buttons">
               {selectedMatters.length !== pager.data.length ? (
-                <Button type="primary" className="mb10" onClick={this.checkAll}>
+                <Button
+                  type="primary"
+                  className="mb10"
+                  onClick={() => this.checkAll()}
+                >
                   <PlusSquareOutlined />
                   {Lang.t("selectAll")}
                 </Button>
@@ -200,7 +204,7 @@ export default class List extends TankComponent<IProps, IState> {
                 <Button
                   type="primary"
                   className="mb10"
-                  onClick={this.checkNone}
+                  onClick={() => this.checkNone()}
                 >
                   <MinusSquareOutlined />
                   {Lang.t("cancel")}
@@ -211,7 +215,7 @@ export default class List extends TankComponent<IProps, IState> {
                   <Button
                     type="primary"
                     className="mb10"
-                    onClick={this.recoverBatch}
+                    onClick={() => this.recoverBatch()}
                   >
                     <RedoOutlined />
                     {Lang.t("matter.recovery")}
@@ -219,7 +223,7 @@ export default class List extends TankComponent<IProps, IState> {
                   <Button
                     type="primary"
                     className="mb10"
-                    onClick={this.deleteBatch}
+                    onClick={() => this.deleteBatch()}
                   >
                     <CloseCircleOutlined />
                     {Lang.t("matter.hardDelete")}
@@ -227,7 +231,11 @@ export default class List extends TankComponent<IProps, IState> {
                 </>
               ) : null}
 
-              <Button type="primary" className="mb10" onClick={this.refresh}>
+              <Button
+                type="primary"
+                className="mb10"
+                onClick={() => this.refresh()}
+              >
                 <SyncOutlined />
                 {Lang.t("refresh")}
               </Button>
@@ -238,7 +246,7 @@ export default class List extends TankComponent<IProps, IState> {
               className="mb10"
               placeholder={Lang.t("matter.searchFile")}
               onSearch={(value) => this.searchFile(value)}
-              onChange={this.changeSearch}
+              onChange={(e) => this.changeSearch(e)}
               enterButton
             />
           </Col>
@@ -251,10 +259,10 @@ export default class List extends TankComponent<IProps, IState> {
                 recycleMode
                 key={matter.uuid!}
                 matter={matter}
-                onDeleteSuccess={this.refresh}
-                onRecoverySuccess={this.refresh}
-                onCheckMatter={this.checkMatter}
-                onPreviewImage={this.previewImage}
+                onDeleteSuccess={() => this.refresh()}
+                onRecoverySuccess={() => this.refresh()}
+                onCheckMatter={(m) => this.checkMatter(m)}
+                onPreviewImage={(m) => this.previewImage(m)}
               />
             ))
           ) : (
@@ -263,7 +271,7 @@ export default class List extends TankComponent<IProps, IState> {
         </div>
         <Pagination
           className="mt10 pull-right"
-          onChange={this.changePage}
+          onChange={(page) => this.changePage(page)}
           current={pager.page + 1}
           total={pager.totalItems}
           pageSize={pager.pageSize}

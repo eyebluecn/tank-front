@@ -45,11 +45,11 @@ export default class MobileUserPanel extends TankComponent<IProps, IState> {
     this.state = {};
   }
 
-  clickRow = () => {
+  clickRow() {
     Sun.navigateTo(`/user/detail/${this.props.user.uuid}`);
   };
 
-  toggleHandles = () => {
+  toggleHandles() {
     this.showMore = !this.showMore;
     this.updateUI();
   };
@@ -59,7 +59,7 @@ export default class MobileUserPanel extends TankComponent<IProps, IState> {
 
     return (
       <div className="mobile-user">
-        <div className="panel" onClick={this.clickRow}>
+        <div className="panel" onClick={() => this.clickRow()}>
           <img className="avatar" src={user.getAvatarUrl()} />
           <p className="username one-line">{user.username}</p>
           <Tag color={UserRoleMap[user.role].color}>

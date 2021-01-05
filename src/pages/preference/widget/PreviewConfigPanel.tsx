@@ -20,7 +20,7 @@ export default class PreviewConfigPanel extends TankComponent<IProps, IState> {
     this.state = {};
   }
 
-  addEngine = () => {
+  addEngine() {
     let previewConfig: PreviewConfig = this.props.previewConfig;
 
     let engine: PreviewEngine = new PreviewEngine();
@@ -30,7 +30,7 @@ export default class PreviewConfigPanel extends TankComponent<IProps, IState> {
     this.updateUI();
   };
 
-  delEngineCell = (index: number) => {
+  delEngineCell(index: number) {
     this.props.previewConfig.previewEngines.splice(index, 1);
     this.updateUI();
   };
@@ -59,7 +59,7 @@ export default class PreviewConfigPanel extends TankComponent<IProps, IState> {
           type="dashed"
           block={true}
           icon={<PlusOutlined />}
-          onClick={this.addEngine.bind(this)}
+          onClick={() => this.addEngine()}
         >
           {Lang.t("preference.newEngine")}
         </Button>

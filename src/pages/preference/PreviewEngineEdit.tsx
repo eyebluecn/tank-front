@@ -34,14 +34,14 @@ export default class PreviewEngineEdit extends TankComponent<IProps, IState> {
     this.refresh();
   }
 
-  refresh = () => {
+  refresh() {
     this.preference.httpFetch(() => {
       this.preference.detailLoading = false;
       this.updateUI();
     });
   };
 
-  finish = (values: any) => {
+  finish(values: any) {
     this.preference.assign(values);
     this.preference.httpSavePreviewEngine(function () {
       MessageBoxUtil.success(Lang.t("operationSuccess"));
@@ -65,7 +65,7 @@ export default class PreviewEngineEdit extends TankComponent<IProps, IState> {
             {...layout}
             name="preview-engine"
             ref={this.formRef}
-            onFinish={this.finish}
+            onFinish={e => this.finish(e)}
             onValuesChange={this.updateUI}
           >
             <Form.Item label={<Tooltip title={Lang.t("preference.engineUsageHint")}>
