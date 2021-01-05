@@ -106,7 +106,7 @@ export default class MobileList extends TankComponent<IProps, IState> {
         <div>
           <Input.Search
             className="mb10"
-            placeholder={Lang.t("matter.searchFile")}
+            placeholder={Lang.t("user.searchUser")}
             onSearch={(value) => this.searchFile(value)}
             onChange={this.changeSearch.bind(this)}
             enterButton
