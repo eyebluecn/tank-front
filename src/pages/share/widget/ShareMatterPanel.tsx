@@ -33,7 +33,7 @@ export default class ShareMatterPanel extends TankComponent<IProps, IState> {
     super(props);
   }
 
-  clickRow = () => {
+  clickRow() {
     const { matter, share, onGoToDirectory, onPreviewImage } = this.props;
 
     if (matter.dir) {
@@ -48,7 +48,7 @@ export default class ShareMatterPanel extends TankComponent<IProps, IState> {
     }
   };
 
-  getIcon = () => {
+  getIcon() {
     const { matter, share } = this.props;
     if (matter.isImage()) {
       return ImageUtil.handleImageUrl(matter.getSharePreviewUrl(share.uuid!, share.code!, share.rootUuid), false, 100, 100)
@@ -57,12 +57,12 @@ export default class ShareMatterPanel extends TankComponent<IProps, IState> {
     }
   };
 
-  download = () => {
+  download() {
     const { matter, share } = this.props;
     matter.download(matter.getShareDownloadUrl(share.uuid!, share.code!, share.rootUuid))
   };
 
-  toggleHandles = () => {
+  toggleHandles() {
     this.showMore = !this.showMore;
     this.updateUI();
   };

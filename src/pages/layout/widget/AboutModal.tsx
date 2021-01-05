@@ -41,7 +41,7 @@ export default class AboutModal extends TankComponent<IProps, IState> {
     })
   };
 
-  changeLang = () => {
+  changeLang() {
     BottomLayout.changeLang();
     this.updateUI();
   };
@@ -56,7 +56,7 @@ export default class AboutModal extends TankComponent<IProps, IState> {
         <span className="item">
           <span dangerouslySetInnerHTML={{__html: preference.record}}/>
         </span>
-        <p className="item" onClick={this.changeLang}>
+        <p className="item" onClick={() => this.changeLang()}>
           {Lang.getSingleton().lang === "zh" ? "English" : "中文"}
         </p>
         <p className="brand">

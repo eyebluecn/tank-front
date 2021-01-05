@@ -32,12 +32,12 @@ export default class MobileList extends TankComponent<IProps, IState> {
     this.refresh();
   }
 
-  search = () => {
+  search() {
     this.pager.page = 0;
     this.refresh();
   };
 
-  refresh = () => {
+  refresh() {
     //如果没有任何的排序，默认使用时间倒序
     if (!this.pager.getCurrentSortFilter()) {
       this.pager.setFilterValue("orderCreateTime", SortDirection.DESC);
@@ -45,14 +45,14 @@ export default class MobileList extends TankComponent<IProps, IState> {
     this.pager.httpList();
   };
 
-  toggleStatus = (user: User) => {
+  toggleStatus(user: User) {
     user.httpToggleStatus(() => {
       MessageBoxUtil.success(Lang.t("operationSuccess"));
       this.updateUI();
     });
   };
 
-  delete = (user: User) => {
+  delete(user: User) {
     Modal.confirm({
       title: Lang.t("user.deleteHint", user.username),
       icon: <ExclamationCircleFilled twoToneColor={Color.WARNING} />,
@@ -65,11 +65,11 @@ export default class MobileList extends TankComponent<IProps, IState> {
     });
   };
 
-  transfiguration = (user: User) => {
+  transfiguration(user: User) {
     TransfigurationModal.open(user);
   };
 
-  searchFile = (value?: string) => {
+  searchFile(value?: string) {
     this.pager.resetFilter();
     if (value) {
       this.pager.setFilterValue("orderCreateTime", SortDirection.DESC);
@@ -80,11 +80,11 @@ export default class MobileList extends TankComponent<IProps, IState> {
     }
   };
 
-  changeSearch = (e: any) => {
+  changeSearch(e: any) {
     if (!e.currentTarget.value) this.searchFile();
   };
 
-  changePage = (page: number) => {
+  changePage(page: number) {
     this.pager.page = page - 1; // page的页数0基
     this.pager.httpList();
     this.updateUI();
@@ -108,7 +108,7 @@ export default class MobileList extends TankComponent<IProps, IState> {
             className="mb10"
             placeholder={Lang.t("matter.searchFile")}
             onSearch={(value) => this.searchFile(value)}
-            onChange={this.changeSearch}
+            onChange={this.changeSearch.bind(this)}
             enterButton
           />
         </div>
@@ -119,15 +119,15 @@ export default class MobileList extends TankComponent<IProps, IState> {
               key={user.uuid!}
               user={user}
               isCurrentUser={currentUser.uuid === user.uuid}
-              onToggleStatus={this.toggleStatus}
-              onDelete={this.delete}
-              onTransfiguration={this.transfiguration}
+              onToggleStatus={this.toggleStatus.bind(this)}
+              onDelete={this.delete.bind(this)}
+              onTransfiguration={this.transfiguration.bind(this)}
             />
           ))}
         </div>
         <Pagination
           className="mt10 pull-right"
-          onChange={this.changePage}
+          onChange={this.changePage.bind(this)}
           current={pager.page + 1}
           total={pager.totalItems}
           pageSize={pager.pageSize}

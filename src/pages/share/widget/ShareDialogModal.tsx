@@ -22,13 +22,13 @@ export default class ShareDialogModal extends TankComponent<IProps, IState> {
     super(props);
   }
 
-  clipboard = (text: string) => {
+  clipboard(text: string) {
     ClipboardUtil.copy(text, () => {
       MessageBoxUtil.success(Lang.t("copySuccess"));
     })
   };
 
-  copyAll = () => {
+  copyAll() {
     const { share } = this.props;
     const text = `${Lang.t("share.link")}：${share.getLink()} ${Lang.t("share.code")}：${share.code}`;
     this.clipboard(text);
@@ -97,7 +97,7 @@ export default class ShareDialogModal extends TankComponent<IProps, IState> {
         </div>
         <div className="mt10 text-right">
           <Button className="mr10" onClick={() => this.props.onClose()}>{Lang.t("close")}</Button>
-          <Button type="primary" onClick={this.copyAll}>{Lang.t("matter.copyLinkAndCode")}</Button>
+          <Button type="primary" onClick={() => this.copyAll()}>{Lang.t("matter.copyLinkAndCode")}</Button>
         </div>
       </div>
     );

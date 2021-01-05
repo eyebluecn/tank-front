@@ -65,7 +65,7 @@ export default class ScanEdit extends TankComponent<IProps, IState> {
     });
   }
 
-  finish = (values: any) => {
+  finish(values: any) {
     if (values.scope === ScanScopeType.CUSTOM) {
       this.preference.scanConfig.assign({
         ...values,
@@ -82,22 +82,22 @@ export default class ScanEdit extends TankComponent<IProps, IState> {
     });
   };
 
-  changeEnableScan = (value: boolean) => {
+  changeEnableScan(value: boolean) {
     this.preference.scanConfig.enable = value;
     this.updateUI();
   };
 
-  changeCronType = (value: ScanCronType) => {
+  changeCronType(value: ScanCronType) {
     this.preference.scanConfig.cronType = value;
     this.updateUI();
   };
 
-  changeScopeType = (value: ScanScopeType) => {
+  changeScopeType(value: ScanScopeType) {
     this.preference.scanConfig.scope = value;
     this.updateUI();
   };
 
-  fetchUser = (value: any) => {
+  fetchUser(value: any) {
     this.pager.resetFilter();
     this.pager.setFilterValue("orderCreateTime", SortDirection.DESC);
     this.pager.setFilterValue("username", value);
@@ -121,7 +121,7 @@ export default class ScanEdit extends TankComponent<IProps, IState> {
             name="preview-engine"
             ref={this.formRef}
             initialValues={preference.scanConfig}
-            onFinish={this.finish}
+            onFinish={this.finish.bind(this)}
             onValuesChange={() => this.updateUI}
           >
             <Form.Item
@@ -129,7 +129,7 @@ export default class ScanEdit extends TankComponent<IProps, IState> {
               valuePropName="checked"
               name="enable"
             >
-              <Switch onChange={this.changeEnableScan} />
+              <Switch onChange={this.changeEnableScan.bind(this)} />
             </Form.Item>
             {preference.scanConfig.enable && (
               <>
@@ -137,7 +137,7 @@ export default class ScanEdit extends TankComponent<IProps, IState> {
                   label={Lang.t("preference.scanCron")}
                   name="cronType"
                 >
-                  <Select onChange={this.changeCronType}>
+                  <Select onChange={this.changeCronType.bind(this)}>
                     {ScanCronTypeList.map((option) => (
                       <Select.Option key={option.value} value={option.value}>
                         {option.name}
@@ -160,7 +160,7 @@ export default class ScanEdit extends TankComponent<IProps, IState> {
                   </Form.Item>
                 )}
                 <Form.Item label={Lang.t("preference.scanScope")} name="scope">
-                  <Select onChange={this.changeScopeType}>
+                  <Select onChange={this.changeScopeType.bind(this)}>
                     {ScanScopeTypeList.map((option) => (
                       <Select.Option key={option.value} value={option.value}>
                         {option.name}
@@ -187,7 +187,7 @@ export default class ScanEdit extends TankComponent<IProps, IState> {
                         pager.loading ? <Spin size="small" /> : null
                       }
                       filterOption={false}
-                      onSearch={this.fetchUser}
+                      onSearch={this.fetchUser.bind(this)}
                       style={{ width: "100%" }}
                     >
                       {pager.data.map((user: User) => (

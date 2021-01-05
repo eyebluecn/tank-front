@@ -28,11 +28,11 @@ export default class List extends TankComponent<IProps, IState> {
     this.refresh();
   }
 
-  refresh = () => {
+  refresh() {
     this.pager.httpList();
   };
 
-  changePage = (page: number) => {
+  changePage(page: number) {
     this.pager.page = page - 1; // page的页数0基
     this.pager.httpList();
     this.updateUI();
@@ -46,12 +46,12 @@ export default class List extends TankComponent<IProps, IState> {
         <TankTitle name={Lang.t("layout.myShare")}/>
 
         {pager.data.map((share) => (
-          <ShareBar key={share.uuid!} share={share} onDeleteSuccess={this.refresh}/>
+          <ShareBar key={share.uuid!} share={share} onDeleteSuccess={() => this.refresh()}/>
         ))}
 
         <Pagination
           className="mt10 pull-right"
-          onChange={this.changePage}
+          onChange={this.changePage.bind(this)}
           current={pager.page + 1}
           total={pager.totalItems}
           pageSize={pager.pageSize}

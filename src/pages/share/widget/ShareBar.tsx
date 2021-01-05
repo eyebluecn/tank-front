@@ -32,11 +32,11 @@ export default class ShareBar extends TankComponent<IProps, IState> {
     super(props);
   }
 
-  showShare = () => {
+  showShare() {
     ShareDialogModal.open(this.props.share);
   };
 
-  delShare = () => {
+  delShare() {
     Modal.confirm({
       title: Lang.t("actionCanNotRevertConfirm"),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
@@ -49,7 +49,7 @@ export default class ShareBar extends TankComponent<IProps, IState> {
     });
   };
 
-  toggleHandles = () => {
+  toggleHandles() {
     this.showMore = !this.showMore;
     this.updateUI();
   };
