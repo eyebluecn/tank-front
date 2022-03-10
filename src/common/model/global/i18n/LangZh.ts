@@ -202,7 +202,7 @@ let LangZh = {
     defaultPreview: "默认引擎",
     previewEngine: "{}号引擎",
     defaultPreviewDesc: "默认预览引擎，不可移除",
-    engineRegHelper: "此处填写模板语法，{url}表示文件路径，预览时会自动替换成对应的文件url",
+    engineRegHelper: "此处填写模板语法：{url}表示文件路径，预览时会自动替换成对应的文件url；{b64url}表示base64机密后的路径，适用于kkfileview；",
     engineUsageHint: "对于一个文件的预览，使用第一个匹配到后缀名的引擎，没有配匹到则使用系统默认预览引擎",
     engineRegPlaceHolder: "例如：https://xxx.xxx.xxx?url={url}",
     engineSuffixPlaceHolder: '输入后缀，使用逗号分隔，不用带. 例如：doc,ppt,xls',

@@ -461,6 +461,7 @@ export default class List extends TankComponent<IProps, IState> {
   goToDirectory(id: string) {
     this.searchText = null;
     this.pager.setFilterValue("puuid", id);
+    this.pager.setFilterValue("name",null);
     this.pager.page = 0;
     const query = this.pager.getParams();
     Sun.navigateQueryTo({ path: "/matter/list", query });
