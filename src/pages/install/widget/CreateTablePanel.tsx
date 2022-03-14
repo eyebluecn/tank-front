@@ -14,6 +14,7 @@ import {
 } from "@ant-design/icons/lib";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import Lang from "../../../common/model/global/Lang";
+import InstallFieldInfo from "../../../common/model/install/InstallFieldInfo";
 
 interface IProps {
 
@@ -140,11 +141,13 @@ export default class CreateTablePanel extends TankComponent<IProps, IState> {
                   <div className="mt10">
                     {Lang.t("install.allFields")}:
                     {
-                      tableInfo.allFields.map(function (field: any, j: number) {
+                      tableInfo.allFields.filter((field: InstallFieldInfo, index: number) => {
+                        return field.name
+                      }).map(function (field: InstallFieldInfo, j: number) {
 
                         return (
                           <Tag className="mh5 mv5" key={j}>
-                            {field.DBName}
+                            {field.name}
                           </Tag>
                         )
                       })
@@ -157,11 +160,13 @@ export default class CreateTablePanel extends TankComponent<IProps, IState> {
                       <div className="mt10">
                         {Lang.t("install.missingFields")}:
                         {
-                          tableInfo.missingFields.map(function (field: any, j: number) {
+                          tableInfo.missingFields.filter((field: InstallFieldInfo, index: number) => {
+                            return field.name
+                          }).map(function (field: InstallFieldInfo, j: number) {
 
                             return (
                               <Tag className="mh5 mv5" key={j}>
-                                {field.DBName}
+                                {field.name}
                               </Tag>
                             )
                           })

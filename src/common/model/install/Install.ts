@@ -1,6 +1,8 @@
 import SafeUtil from '../../util/SafeUtil';
 import BaseEntity from '../base/BaseEntity';
 import User from "../user/User";
+import InstallTableInfo from "./InstallTableInfo";
+import Base from "../base/Base";
 
 export default class Install extends BaseEntity {
 
@@ -26,7 +28,7 @@ export default class Install extends BaseEntity {
   adminRepassword: string | null = null
 
   //表元信息
-  tableInfoList: any[] = []
+  tableInfoList: InstallTableInfo[] = []
 
   //管理员列表
   adminList: User[] = []
@@ -114,7 +116,8 @@ export default class Install extends BaseEntity {
     this.httpPost(Install.URL_TABLE_INFO_LIST, this.getForm(), function (response: any) {
 
       that.tableInfoList.splice(0, that.tableInfoList.length);
-      that.tableInfoList.push(...response.data.data)
+      let list = Base.renderList(response.data.data, InstallTableInfo);
+      that.tableInfoList.push(...list)
 
       SafeUtil.safeCallback(successCallback)(response);
 
