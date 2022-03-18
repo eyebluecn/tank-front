@@ -252,7 +252,9 @@ export default class Index extends TankComponent<IProps, IState> {
   refreshActiveIpTop10() {
     let that = this
     that.dashboard.httpActiveIpTop10(function (data: any) {
-      that.activeIpTop10 = data
+      if (data) {
+        that.activeIpTop10 = data
+      }
       that.updateUI()
     })
   }
@@ -410,7 +412,7 @@ export default class Index extends TankComponent<IProps, IState> {
           </Col>
 
 
-          <Col  xs={24} sm={24} md={12} lg={12}>
+          <Col xs={24} sm={24} md={12} lg={12}>
 
             <div className="figure-block">
               <div className="title">

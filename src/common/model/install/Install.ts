@@ -14,6 +14,9 @@ export default class Install extends BaseEntity {
   static URL_VALIDATE_ADMIN = '/api/install/validate/admin'
   static URL_FINISH = '/api/install/finish'
 
+  //数据库类型
+  dbType: string = "mysql"
+
   //数据库名
   mysqlPort: number = 3306
   mysqlHost: string = "127.0.0.1"
@@ -52,6 +55,7 @@ export default class Install extends BaseEntity {
 
   getMysqlForm() {
     return {
+      dbType: this.dbType,
       mysqlHost: this.mysqlHost,
       mysqlPort: this.mysqlPort,
       mysqlSchema: this.mysqlSchema,
@@ -63,6 +67,7 @@ export default class Install extends BaseEntity {
 
   getForm() {
     return {
+      dbType: this.dbType,
       mysqlPort: this.mysqlPort,
       mysqlHost: this.mysqlHost,
       mysqlSchema: this.mysqlSchema,

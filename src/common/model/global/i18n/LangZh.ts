@@ -21,7 +21,8 @@ let LangZh = {
     reRun: '立即重跑',
   },
   install: {
-    configMysql: "配置MySQL",
+    configMysql: "配置数据库",
+    dbType: "数据库类型",
     port: "端口",
     schema: "库名",
     username: "用户名",
@@ -30,6 +31,7 @@ let LangZh = {
     mysqlConnectionPass: "MySQL连接测试通过",
     testMysqlConnection: "测试MySQL连接",
     notice: "注意",
+    sqliteNotice1: "sqlite是一个轻量的文件数据库，无需安装即可使用",
     mysqlNotice1: "如果数据库和蓝眼云盘安装在同一台服务器，Host可以直接填写 127.0.0.1。",
     mysqlNotice2: "数据库账户的权限要求要能够创建表，否则第二步\"创建表\"操作会出错",
     validateMysqlFirst: "请首先验证数据库连接",

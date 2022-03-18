@@ -21,7 +21,8 @@ let LangEn = {
     reRun: 'ReRun',
   },
   install: {
-    configMysql: "Config MySQL",
+    configMysql: "Config Database",
+    dbType: "Database Type",
     port: "Port",
     schema: "Schema",
     username: "Username",
@@ -30,6 +31,7 @@ let LangEn = {
     mysqlConnectionPass: "Connect MySQL Ok",
     testMysqlConnection: "Tes MySQL Connection",
     notice: "Notice",
+    sqliteNotice1: "Sqlite is a tiny file database, you can use it without installation",
     mysqlNotice1: "If Mysql and EyeblueTank installed on the same server, Host is 127.0.0.1",
     mysqlNotice2: "Your mysql account must have access to create table, or the second step will fail.",
     validateMysqlFirst: "Please test the mysql connection firstly.",
