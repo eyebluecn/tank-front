@@ -144,7 +144,7 @@ export default class FileUtil {
       const blob = new Blob([_utf + csvStr], {
         type: "text/csv",
       });
-      return URL.createObjectURL(blob);
+      return window.URL.createObjectURL(blob);
     }
     return "";
   };

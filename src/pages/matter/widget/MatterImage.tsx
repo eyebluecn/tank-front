@@ -9,7 +9,9 @@ import "./MatterImage.less";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
 import SafeUtil from "../../../common/util/SafeUtil";
 import Lang from "../../../common/model/global/Lang";
-import {RcCustomRequestOptions} from "antd/lib/upload/interface";
+import {
+  UploadRequestOption as RcCustomRequestOptions
+} from 'rc-upload/lib/interface';
 
 interface IProps {
   value?: string;
@@ -37,12 +39,15 @@ export default class MatterImage extends TankComponent<IProps, IState> {
   };
 
   triggerUpload(fileObj: RcCustomRequestOptions) {
-    const { file } = fileObj;
+    const file = fileObj.file;
     const { filter = "image", uploadHint = "" } = this.props;
     if (file) {
-      if (this.user.sizeLimit >= 0 && file.size > this.user.sizeLimit) {
+
+      let fileSize = (file as any).size;
+
+      if (this.user.sizeLimit >= 0 && fileSize > this.user.sizeLimit) {
         MessageBoxUtil.error(
-          Lang.t("matter.sizeExceedLimit", file.size, this.user.sizeLimit)
+          Lang.t("matter.sizeExceedLimit", fileSize, this.user.sizeLimit)
         );
         return;
       }

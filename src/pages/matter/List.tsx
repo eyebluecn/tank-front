@@ -48,7 +48,9 @@ import Lang from "../../common/model/global/Lang";
 import FileUtil from "../../common/util/FileUtil";
 import SafeUtil from "../../common/util/SafeUtil";
 import MatterSortPanel from "./widget/MatterSortPanel";
-import { RcCustomRequestOptions } from "antd/lib/upload/interface";
+import {
+  UploadRequestOption as RcCustomRequestOptions
+} from 'rc-upload/lib/interface';
 
 interface IProps extends RouteComponentProps {}
 
@@ -270,7 +272,7 @@ export default class List extends TankComponent<IProps, IState> {
 
   triggerUpload(fileObj: RcCustomRequestOptions) {
     const { file } = fileObj;
-    if (file) this.launchUpload(file);
+    if (file) this.launchUpload(file as any);
   }
 
   debounce(func: Function, wait: number) {

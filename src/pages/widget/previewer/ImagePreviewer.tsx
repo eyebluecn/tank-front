@@ -129,7 +129,7 @@ export default class ImagePreviewer {
 
     let photoSwipe = new PhotoSwipe(div, PhotoSwipeUIDefault, items, options);
 
-    photoSwipe.listen('gettingData', function (index, item) {
+    photoSwipe.listen('gettingData', function (index: number, item: PhotoSwipe.Item) {
 
       if (!item.w || !item.h || item.w < 1 || item.h < 1) {
 

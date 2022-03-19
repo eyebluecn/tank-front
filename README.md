@@ -1,55 +1,46 @@
-[![蓝眼云盘logo](./doc/img/logo.png)](https://github.com/eyebluecn/tank)
+# Getting Started with Create React App
 
-[English Version](https://tank-doc.eyeblue.cn/en)
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-# 蓝眼云盘（3.1.4）
-[在线Demo](https://tank.eyeblue.cn) (体验账号： demo 密码：123456)
+## Available Scripts
 
-蓝眼云盘是蓝眼开源系列代表作品之一，致力于打造精致，优雅，简约的云盘。核心功能如下：
-1. 文件列表
-2. 文件/文件夹上传 + 拖拽上传
-3. 文件分享
-4. 文件监控统计
-5. 回收站
-6. 多用户
-7. [WebDav](https://tank-doc.eyeblue.cn/advance/webdav.html)
-8. [扫描磁盘任务](https://tank-doc.eyeblue.cn/advance/scan.html)
-9. [在线预览及自定义配置预览引擎](https://tank-doc.eyeblue.cn/advance/preview.html)
-10. 无需安装数据库，支持文件数据库sqlite.
+In the project directory, you can run:
 
-[更多内容请移步至文档](https://tank-doc.eyeblue.cn/)
+### `yarn start`
 
-前端技术栈：Typescript + React + Ant Design 4.0 + OOP
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### 软件截图
-#### PC端截图
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-![](./doc/img/tank0.png)
+### `yarn test`
 
-![](./doc/img/tank1.png)
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-![](./doc/img/tank2.png)
+### `yarn build`
 
-#### 手机端截图
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-![](./doc/img/mobile.png)
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-## [安装文档](https://tank-doc.eyeblue.cn/basic/install.html)
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### Contribution
+### `yarn eject`
 
-感谢所有蓝眼云盘的贡献者 [@zicla](https://github.com/zicla)，[@seaheart](https://github.com/seaheart)，[@yemuhe](https://github.com/yemuhe)，[@hxsherry](https://github.com/hxsherry)
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-如果您也想参与进来，请尽情的fork, star, post issue, pull requests
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-当然你可以加入钉钉群一起直接交流，在钉钉群中可以获取最新beta版本。
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-![](./doc/img/dingding.jpg)
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-群号：23156361
+## Learn More
 
-### License
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-[MIT](http://opensource.org/licenses/MIT)
-
-Copyright (c) 2017-present, eyeblue.cn
+To learn React, check out the [React documentation](https://reactjs.org/).

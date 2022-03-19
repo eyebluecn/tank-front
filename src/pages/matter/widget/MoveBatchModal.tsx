@@ -1,18 +1,19 @@
 import React from "react";
 import TankComponent from "../../../common/component/TankComponent";
-import { Modal, Tree, Button } from "antd";
+import {Modal, Tree, Button} from "antd";
 import Pager from "../../../common/model/base/Pager";
 import Matter from "../../../common/model/matter/Matter";
 import "./MoveBatchModal.less";
 import Lang from "../../../common/model/global/Lang";
-import { FolderFilled, FolderOpenFilled, ExclamationCircleFilled } from "@ant-design/icons";
+import {FolderFilled, FolderOpenFilled, ExclamationCircleFilled} from "@ant-design/icons";
 
 interface IProps {
   onSuccess: (uuid: string) => any;
   onClose: () => any;
 }
 
-interface IState {}
+interface IState {
+}
 
 export default class MoveBatchModal extends TankComponent<IProps, IState> {
   pager = new Pager<Matter>(this, Matter, 10);
@@ -37,7 +38,7 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
     let modal = Modal.confirm({
       className: "move-modal",
       title: Lang.t("matter.moveTo"),
-      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
+      icon: <ExclamationCircleFilled twoToneColor="#FFDC00"/>,
       width: "90vw",
       okCancel: false,
       okButtonProps: {
@@ -58,10 +59,10 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
   }
 
   fetchData(treeNode: any, success: () => any) {
-    const { data: origin } = treeNode.props;
+    const {data: origin} = treeNode.props;
     this.pager.setFilterValue("puuid", treeNode.key);
     this.pager.httpList((response: any) => {
-      const { data, page, totalPages } = response.data.data;
+      const {data, page, totalPages} = response.data.data;
       origin.children = (origin.children || []).concat(
         data.map((matter: Matter) => ({
           title: matter.name,
@@ -79,7 +80,8 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
   };
 
   onLoadData(treeNode: any) {
-    return new Promise((resolve) => {
+
+    return new Promise((resolve: any) => {
       if (treeNode.props.children) {
         resolve();
         return;
@@ -108,7 +110,8 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
           selectedKeys={[this.targetUuid]}
           loadData={e => this.onLoadData(e)}
           onSelect={e => this.onSelect(e)}
-          icon={e => e.expanded ? <FolderOpenFilled className="text-primary f20" /> : <FolderFilled className="text-primary f20" />}
+          icon={e => e.expanded ? <FolderOpenFilled className="text-primary f20"/> :
+            <FolderFilled className="text-primary f20"/>}
         />
         <div className="mt10 text-right">
           <Button className="mr10" onClick={() => this.props.onClose()}>
