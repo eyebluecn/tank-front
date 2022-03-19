@@ -14,7 +14,7 @@ import {
 import InfoCell from "../widget/InfoCell";
 import Preference from "../../common/model/preference/Preference";
 import TankContentCard from "../widget/TankContentCard";
-import FileUtil from "../../common/util/FileHelper";
+import FileHelper from "../../common/util/FileHelper";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Lang from "../../common/model/global/Lang";
 import SingleTextModal from "../widget/SingleTextModal";
@@ -162,11 +162,11 @@ export default class Index extends TankComponent<IProps, IState> {
             </InfoCell>
 
             <InfoCell name={Lang.t("preference.zipMaxSizeLimit")}>
-              {FileUtil.humanFileSize(this.preference.downloadDirMaxSize)}
+              {FileHelper.humanFileSize(this.preference.downloadDirMaxSize)}
             </InfoCell>
 
             <InfoCell name={Lang.t("preference.userDefaultSizeLimit")}>
-              {FileUtil.humanFileSize(this.preference.defaultTotalSizeLimit)}
+              {FileHelper.humanFileSize(this.preference.defaultTotalSizeLimit)}
             </InfoCell>
 
             <InfoCell name={Lang.t("preference.matterBinDefaultSaveDay")}>

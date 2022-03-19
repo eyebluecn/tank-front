@@ -6,7 +6,7 @@ import {Button, Form, Input, InputNumber, Select} from 'antd';
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
 import TankTitle from "../widget/TankTitle";
-import FileUtil from "../../common/util/FileHelper";
+import FileHelper from "../../common/util/FileHelper";
 import TankContentCard from "../widget/TankContentCard";
 import {FormInstance} from "antd/lib/form";
 import {SaveOutlined} from "@ant-design/icons/lib";
@@ -224,8 +224,8 @@ export default class Edit extends TankComponent<IProps, IState> {
               <span
                 className="pl10"> {Lang.t("user.current")}:
                 {(this.formRef && this.formRef.current) ?
-                  FileUtil.humanFileSize(this.formRef.current.getFieldValue("sizeLimit"))
-                  : FileUtil.humanFileSize(currentUser.sizeLimit)}
+                  FileHelper.humanFileSize(this.formRef.current.getFieldValue("sizeLimit"))
+                  : FileHelper.humanFileSize(currentUser.sizeLimit)}
               </span>
             </Form.Item>
 
@@ -244,8 +244,8 @@ export default class Edit extends TankComponent<IProps, IState> {
               <span
                 className="pl10"> {Lang.t("user.current")}:
                 {(this.formRef && this.formRef.current) ?
-                  FileUtil.humanFileSize(this.formRef.current.getFieldValue("totalSizeLimit"))
-                  : FileUtil.humanFileSize(currentUser.totalSizeLimit)}
+                  FileHelper.humanFileSize(this.formRef.current.getFieldValue("totalSizeLimit"))
+                  : FileHelper.humanFileSize(currentUser.totalSizeLimit)}
               </span>
             </Form.Item>
 

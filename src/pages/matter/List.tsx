@@ -45,7 +45,7 @@ import ShareDialogModal from "../share/widget/ShareDialogModal";
 import BreadcrumbModel from "../../common/model/base/option/BreadcrumbModel";
 import BreadcrumbPanel from "../widget/BreadcrumbPanel";
 import Lang from "../../common/model/global/Lang";
-import FileUtil from "../../common/util/FileHelper";
+import FileHelper from "../../common/util/FileHelper";
 import SafeUtil from "../../common/util/SafeUtil";
 import MatterSortPanel from "./widget/MatterSortPanel";
 import {
@@ -293,7 +293,7 @@ export default class List extends TankComponent<IProps, IState> {
       MessageBoxUtil.success(Lang.t("matter.uploaded"));
     } else {
       // 上传错误弹出提示框
-      const url = FileUtil.getErrorLogsToCSVUrl(this.uploadErrorLogs);
+      const url = FileHelper.getErrorLogsToCSVUrl(this.uploadErrorLogs);
       Modal.confirm({
         title: Lang.t("matter.uploadInfo"),
         icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,

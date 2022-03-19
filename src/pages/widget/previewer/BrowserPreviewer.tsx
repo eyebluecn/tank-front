@@ -1,7 +1,7 @@
 import "./BrowserPreviewer.less"
 import React from "react";
 import * as ReactDOM from 'react-dom';
-import FileUtil from "../../../common/util/FileHelper";
+import FileHelper from "../../../common/util/FileHelper";
 import {CloseOutlined} from "@ant-design/icons";
 
 interface IProps {
@@ -70,7 +70,7 @@ export default class BrowserPreviewer extends React.Component<IProps, IState> {
         </div>
 
         <div className="middle-part">
-          {this.props.name}({FileUtil.humanFileSize(this.props.size)})
+          {this.props.name}({FileHelper.humanFileSize(this.props.size)})
         </div>
 
         <div className="right-part">

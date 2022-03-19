@@ -3,7 +3,7 @@ import axios, { CancelTokenSource } from "axios";
 import BaseEntity from "../base/BaseEntity";
 import Filter from "../base/filter/Filter";
 import HttpUtil from "../../util/HttpUtil";
-import FileUtil from "../../util/FileHelper";
+import FileHelper from "../../util/FileHelper";
 import ImageUtil from "../../util/ImageUtil";
 import EnvUtil from "../../util/EnvUtil";
 import InputFilter from "../base/filter/InputFilter";
@@ -133,46 +133,46 @@ export default class Matter extends BaseEntity {
   }
 
   isImage() {
-    return FileUtil.isImage(this.name);
+    return FileHelper.isImage(this.name);
   }
 
   isPdf() {
-    return FileUtil.isPdf(this.name);
+    return FileHelper.isPdf(this.name);
   }
 
   isText() {
-    return FileUtil.isText(this.name);
+    return FileHelper.isText(this.name);
   }
 
   isDoc() {
-    return FileUtil.isDoc(this.name);
+    return FileHelper.isDoc(this.name);
   }
 
   isPpt() {
-    return FileUtil.isPpt(this.name);
+    return FileHelper.isPpt(this.name);
   }
 
   isXls() {
-    return FileUtil.isXls(this.name);
+    return FileHelper.isXls(this.name);
   }
 
   isAudio() {
-    return FileUtil.isAudio(this.name);
+    return FileHelper.isAudio(this.name);
   }
 
   isVideo() {
-    return FileUtil.isVideo(this.name);
+    return FileHelper.isVideo(this.name);
   }
 
   isPsd() {
-    return FileUtil.isPsd(this.name);
+    return FileHelper.isPsd(this.name);
   }
 
   getIcon() {
-    if (FileUtil.isImage(this.name)) {
+    if (FileHelper.isImage(this.name)) {
       return ImageUtil.handleImageUrl(this.getPreviewUrl(), false, 100, 100);
     } else {
-      return FileUtil.getIcon(this.name, this.dir);
+      return FileHelper.getIcon(this.name, this.dir);
     }
   }
 

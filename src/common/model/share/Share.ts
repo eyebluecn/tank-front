@@ -1,6 +1,6 @@
 import BaseEntity from "../base/BaseEntity";
 import Matter from "../matter/Matter";
-import FileUtil from "../../util/FileHelper";
+import FileHelper from "../../util/FileHelper";
 import EnvUtil from "../../util/EnvUtil";
 import {ShareType} from "./ShareType";
 import {ShareExpireOption, ShareExpireOptionMap} from "./ShareExpireOption";
@@ -62,12 +62,12 @@ export default class Share extends BaseEntity {
 
   getIcon() {
     if (this.shareType === ShareType.MIX) {
-      return FileUtil.getIcon(
+      return FileHelper.getIcon(
         "zip",
         false
       );
     } else {
-      return FileUtil.getIcon(
+      return FileHelper.getIcon(
         this.name,
         this.shareType === ShareType.DIRECTORY
       );

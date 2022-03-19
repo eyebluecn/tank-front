@@ -12,7 +12,7 @@ import Pager from "../../common/model/base/Pager";
 import Dashboard from '../../common/model/dashboard/Dashboard';
 import DateUtil from '../../common/util/DateUtil';
 import SortDirection from "../../common/model/base/SortDirection";
-import FileUtil from "../../common/util/FileHelper";
+import FileHelper from "../../common/util/FileHelper";
 import Matter from '../../common/model/matter/Matter';
 import Lang from "../../common/model/global/Lang";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
@@ -346,7 +346,7 @@ export default class Index extends TankComponent<IProps, IState> {
             <div className="text-block">
               <div className="upper">
                 <div className="indicator">{Lang.t("dashboard.totalFileSize")}</div>
-                <div className="amount">{FileUtil.humanFileSize(dashboard.totalFileSize)}</div>
+                <div className="amount">{FileHelper.humanFileSize(dashboard.totalFileSize)}</div>
                 <div>
                   <RatePanel name={Lang.t("dashboard.weekRate")} standardValue={this.standardWeekSize}
                              compareValue={this.compareWeekSize}/>
@@ -355,7 +355,7 @@ export default class Index extends TankComponent<IProps, IState> {
                 </div>
               </div>
               <div className="lower">
-                {Lang.t("dashboard.yesterdayMatterSize")}:{FileUtil.humanFileSize(yesterdayDashboard.fileSize)}
+                {Lang.t("dashboard.yesterdayMatterSize")}:{FileHelper.humanFileSize(yesterdayDashboard.fileSize)}
               </div>
             </div>
           </Col>
