@@ -1,9 +1,9 @@
 import BaseEntity from "../base/BaseEntity";
 import Matter from "../matter/Matter";
-import FileUtil from "../../util/FileUtil";
+import FileUtil from "../../util/FileHelper";
 import EnvUtil from "../../util/EnvUtil";
-import { ShareType } from "./ShareType";
-import { ShareExpireOption, ShareExpireOptionMap } from "./ShareExpireOption";
+import {ShareType} from "./ShareType";
+import {ShareExpireOption, ShareExpireOptionMap} from "./ShareExpireOption";
 import DateUtil from "../../util/DateUtil";
 import SafeUtil from "../../util/SafeUtil";
 import MessageBoxUtil from "../../util/MessageBoxUtil";
@@ -62,7 +62,10 @@ export default class Share extends BaseEntity {
 
   getIcon() {
     if (this.shareType === ShareType.MIX) {
-      return require("../../../assets/image/file/archive.svg");
+      return FileUtil.getIcon(
+        "zip",
+        false
+      );
     } else {
       return FileUtil.getIcon(
         this.name,
@@ -135,7 +138,7 @@ export default class Share extends BaseEntity {
   ) {
     this.httpPost(
       Share.URL_DELETE_BATCH,
-      { uuids: uuids },
+      {uuids: uuids},
       function (response: any) {
         SafeUtil.safeCallback(successCallback)(response);
       },

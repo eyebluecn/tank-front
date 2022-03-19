@@ -14,7 +14,7 @@ import {
 import InfoCell from "../widget/InfoCell";
 import Preference from "../../common/model/preference/Preference";
 import TankContentCard from "../widget/TankContentCard";
-import FileUtil from "../../common/util/FileUtil";
+import FileUtil from "../../common/util/FileHelper";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import Lang from "../../common/model/global/Lang";
 import SingleTextModal from "../widget/SingleTextModal";

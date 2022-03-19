@@ -2,6 +2,8 @@ const CracoLessPlugin = require('craco-less');
 
 module.exports = {
   devServer: {
+
+    // proxy for local development.
     proxy: {
       '/api': {
         target: 'http://localhost:6010',
@@ -14,6 +16,8 @@ module.exports = {
   },
   plugins: [
     {
+
+      // less loader.
       plugin: CracoLessPlugin,
       options: {
         lessLoaderOptions: {

@@ -6,7 +6,7 @@ import {Button, Form, Input, InputNumber, Select} from 'antd';
 import User from "../../common/model/user/User";
 import Moon from "../../common/model/global/Moon";
 import TankTitle from "../widget/TankTitle";
-import FileUtil from "../../common/util/FileUtil";
+import FileUtil from "../../common/util/FileHelper";
 import TankContentCard from "../widget/TankContentCard";
 import {FormInstance} from "antd/lib/form";
 import {SaveOutlined} from "@ant-design/icons/lib";

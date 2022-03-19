@@ -11,7 +11,7 @@ import TankContentCard from "../widget/TankContentCard";
 import { Link, RouteComponentProps } from "react-router-dom";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import { UserRole, UserRoleMap } from "../../common/model/user/UserRole";
-import FileUtil from "../../common/util/FileUtil";
+import FileUtil from "../../common/util/FileHelper";
 import { UserStatus, UserStatusMap } from "../../common/model/user/UserStatus";
 import BrowserUtil from "../../common/util/BrowserUtil";
 import SingleTextModal from "../widget/SingleTextModal";

@@ -4,7 +4,7 @@ import "./List.less";
 import SortDirection from "../../common/model/base/SortDirection";
 import Pager from "../../common/model/base/Pager";
 import StringUtil from "../../common/util/StringUtil";
-import FileUtil from "../../common/util/FileUtil";
+import FileUtil from "../../common/util/FileHelper";
 import DateUtil from "../../common/util/DateUtil";
 import FilterPanel from "../widget/filter/FilterPanel";
 import TableEmpty from "../widget/TableEmpty";

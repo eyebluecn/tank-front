@@ -1,7 +1,7 @@
 import "./BrowserPreviewer.less"
 import React from "react";
 import * as ReactDOM from 'react-dom';
-import FileUtil from "../../../common/util/FileUtil";
+import FileUtil from "../../../common/util/FileHelper";
 import {CloseOutlined} from "@ant-design/icons";
 
 interface IProps {

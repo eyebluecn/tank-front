@@ -45,7 +45,7 @@ import ShareDialogModal from "../share/widget/ShareDialogModal";
 import BreadcrumbModel from "../../common/model/base/option/BreadcrumbModel";
 import BreadcrumbPanel from "../widget/BreadcrumbPanel";
 import Lang from "../../common/model/global/Lang";
-import FileUtil from "../../common/util/FileUtil";
+import FileUtil from "../../common/util/FileHelper";
 import SafeUtil from "../../common/util/SafeUtil";
 import MatterSortPanel from "./widget/MatterSortPanel";
 import {

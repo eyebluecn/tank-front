@@ -3,7 +3,7 @@ import axios, { CancelTokenSource } from "axios";
 import BaseEntity from "../base/BaseEntity";
 import Filter from "../base/filter/Filter";
 import HttpUtil from "../../util/HttpUtil";
-import FileUtil from "../../util/FileUtil";
+import FileUtil from "../../util/FileHelper";
 import ImageUtil from "../../util/ImageUtil";
 import EnvUtil from "../../util/EnvUtil";
 import InputFilter from "../base/filter/InputFilter";

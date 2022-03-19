@@ -12,7 +12,7 @@ import Pager from "../../common/model/base/Pager";
 import Dashboard from '../../common/model/dashboard/Dashboard';
 import DateUtil from '../../common/util/DateUtil';
 import SortDirection from "../../common/model/base/SortDirection";
-import FileUtil from "../../common/util/FileUtil";
+import FileUtil from "../../common/util/FileHelper";
 import Matter from '../../common/model/matter/Matter';
 import Lang from "../../common/model/global/Lang";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";

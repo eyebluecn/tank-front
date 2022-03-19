@@ -6,7 +6,7 @@ import User from "../../../common/model/user/User";
 import { Link } from "react-router-dom";
 import { UserRoleMap } from "../../../common/model/user/UserRole";
 import { Tag, Tooltip } from "antd";
-import FileUtil from "../../../common/util/FileUtil";
+import FileUtil from "../../../common/util/FileHelper";
 import {
   UserStatus,
   UserStatusMap,

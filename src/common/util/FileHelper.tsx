@@ -2,6 +2,18 @@ import MimeUtil from "./MimeUtil";
 import StringUtil from "./StringUtil";
 import Lang from "../model/global/Lang";
 import CSV from "comma-separated-values";
+import archiveSvg from "../../assets/image/file/archive.svg";
+import audioSvg from "../../assets/image/file/audio.svg";
+import docSvg from "../../assets/image/file/doc.svg";
+import fileSvg from "../../assets/image/file/file.svg";
+import folderSvg from "../../assets/image/file/folder.svg";
+import imageSvg from "../../assets/image/file/image.svg";
+import pdfSvg from "../../assets/image/file/pdf.svg";
+import pptSvg from "../../assets/image/file/ppt.svg";
+import psdSvg from "../../assets/image/file/psd.svg";
+import textSvg from "../../assets/image/file/text.svg";
+import videoSvg from "../../assets/image/file/video.svg";
+import xlsSvg from "../../assets/image/file/xls.svg";
 
 export default class FileUtil {
   static isImage(name: string | null): boolean {
@@ -74,30 +86,30 @@ export default class FileUtil {
    */
   static getIcon(name: string | null, idDir: boolean = false): any {
     if (idDir) {
-      return require("../../assets/image/file/folder.svg");
+      return folderSvg;
     }
 
     if (FileUtil.isPdf(name)) {
-      return require("../../assets/image/file/pdf.svg");
+      return pdfSvg;
     } else if (FileUtil.isDoc(name)) {
-      return require("../../assets/image/file/doc.svg");
+      return docSvg;
     } else if (FileUtil.isPpt(name)) {
-      return require("../../assets/image/file/ppt.svg");
+      return pptSvg;
     } else if (FileUtil.isXls(name)) {
-      return require("../../assets/image/file/xls.svg");
+      return xlsSvg;
     } else if (FileUtil.isAudio(name)) {
-      return require("../../assets/image/file/audio.svg");
+      return audioSvg;
     } else if (
       FileUtil.isVideo(name) ||
       MimeUtil.getExtension(name) === ".mkv"
     ) {
-      return require("../../assets/image/file/video.svg");
+      return videoSvg;
     } else if (FileUtil.isText(name)) {
-      return require("../../assets/image/file/text.svg");
+      return textSvg;
     } else if (FileUtil.isPsd(name)) {
-      return require("../../assets/image/file/psd.svg");
+      return psdSvg;
     } else if (FileUtil.isImage(name)) {
-      return require("../../assets/image/file/image.svg");
+      return imageSvg;
     } else if (
       StringUtil.endWith(name, "zip") ||
       StringUtil.endWith(name, "rar") ||
@@ -106,9 +118,9 @@ export default class FileUtil {
       StringUtil.endWith(name, "tar") ||
       StringUtil.endWith(name, "gz")
     ) {
-      return require("../../assets/image/file/archive.svg");
+      return archiveSvg;
     } else {
-      return require("../../assets/image/file/file.svg");
+      return fileSvg;
     }
   }
 

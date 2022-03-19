@@ -11,7 +11,7 @@ import {
   SmallDashOutlined,
 } from "@ant-design/icons";
 import MessageBoxUtil from "../../../../common/util/MessageBoxUtil";
-import FileUtil from "../../../../common/util/FileUtil";
+import FileUtil from "../../../../common/util/FileHelper";
 import DateUtil from "../../../../common/util/DateUtil";
 import Expanding from "../../../widget/Expanding";
 import "./ImageCachePanel.less";
