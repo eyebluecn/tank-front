@@ -105,7 +105,7 @@ export default class SideLayout extends TankComponent<IProps, IState> {
           })}
           <Menu.Item className="visible-xs" key="about">
             <InfoCircleOutlined />
-            {Lang.t("layout.about")}
+            <span>{Lang.t("layout.about")}</span>
           </Menu.Item>
         </Menu>
       </div>
