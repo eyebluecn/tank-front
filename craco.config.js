@@ -2,7 +2,7 @@ const CracoLessPlugin = require('craco-less');
 
 module.exports = {
   devServer: {
-
+    port: 6015,
     // proxy for local development.
     proxy: {
       '/api': {
