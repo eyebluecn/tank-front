@@ -20,8 +20,10 @@
     vertical-align: middle;
     line-height: @base-height;
     margin-left: 10px;
+
     &-hot {
       position: relative;
+
       &:after {
         position: absolute;
         top: 0;
@@ -32,9 +34,11 @@
       }
     }
   }
-  .btn-action{
+
+  .btn-action {
     font-size: 15px;
   }
+
   .media {
     > .pull-left {
       padding-right: 1px;
@@ -69,7 +73,8 @@
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-      .icon{
+
+      .icon {
         font-size: 11px;
         margin-left: 3px;
       }
@@ -101,10 +106,7 @@
     }
 
     .matter-date {
-      vertical-align: middle;
-      line-height: @base-height;
-      margin-left: 10px;
-      width: 110px;
+      .basic-span;
     }
 
   }
@@ -141,6 +143,7 @@
       border-top: 1px solid #eee;
       line-height: @inner-cell-height;
       vertical-align: middle;
+
       &:first-child {
         border-top: none;
       }

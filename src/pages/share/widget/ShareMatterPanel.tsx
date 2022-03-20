@@ -71,7 +71,7 @@ export default class ShareMatterPanel extends TankComponent<IProps, IState> {
     const { matter } = this.props;
 
     return (
-      <div className="widget-matter-panel">
+      <div className="widget-share-matter-panel">
         <div onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.clickRow())}>
           <div className="media clearfix">
             <div className="pull-left">

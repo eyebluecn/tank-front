@@ -36,6 +36,15 @@
 
 ## [安装文档](https://tank-doc.eyeblue.cn/basic/install.html)
 
+## 启动本项目
+```shell
+# if not install yarn
+# npm install -g yarn
+
+yarn --registry=https://registry.npmmirror.com
+yarn start
+```
+
 ### Contribution
 
 感谢所有蓝眼云盘的贡献者 [@zicla](https://github.com/zicla)，[@seaheart](https://github.com/seaheart)，[@yemuhe](https://github.com/yemuhe)，[@hxsherry](https://github.com/hxsherry)

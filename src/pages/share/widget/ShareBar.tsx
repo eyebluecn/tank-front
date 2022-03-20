@@ -104,7 +104,7 @@ export default class ShareBar extends TankComponent<IProps, IState> {
                 </Tooltip>
 
                 <Tooltip title={Lang.t("share.expireTime")}>
-                  <span className="share-date w110 text-center">
+                  <span className="share-date text-center">
                     {share.expireInfinity
                       ? Lang.t("share.noExpire")
                       : DateUtil.simpleDateHourMinute(share.expireTime)}
