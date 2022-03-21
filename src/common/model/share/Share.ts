@@ -45,8 +45,8 @@ export default class Share extends BaseEntity {
     super.assignList("matters", Matter);
   }
 
-  getUrlPrefix() {
-    return "/api/share";
+  getTAG():string {
+    return "share"
   }
 
   getFilters() {

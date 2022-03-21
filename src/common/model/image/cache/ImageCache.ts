@@ -30,8 +30,8 @@ export default class ImageCache extends BaseEntity {
     super(reactComponent);
   }
 
-  getUrlPrefix() {
-    return "/api/image/cache"
+  getTAG(): string {
+    return "imageCache";
   }
 
   assign(obj: any) {

@@ -14,8 +14,9 @@ export default class DownloadToken extends BaseEntity {
     super(reactComponent);
   }
 
-  getUrlPrefix() {
-    return "/api/download/token";
+
+  getTAG(): string {
+    return "downloadToken";
   }
 
   assign(obj: any) {

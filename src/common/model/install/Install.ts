@@ -53,6 +53,12 @@ export default class Install extends BaseEntity {
 
   }
 
+
+  getTAG():string {
+    return "install"
+  }
+
+
   getMysqlForm() {
     return {
       dbType: this.dbType,

@@ -90,6 +90,9 @@ export default class Matter extends BaseEntity {
     this.assignEntity("deleteTime", Date);
   }
 
+  getTAG():string {
+    return "matter"
+  }
   getForm(): any {
     return {
       userUuid: this.userUuid,

@@ -2,6 +2,7 @@ import SafeUtil from '../../util/SafeUtil';
 import BaseEntity from '../base/BaseEntity';
 import Filter from "../base/filter/Filter";
 import SortFilter from "../base/filter/SortFilter";
+import StringUtil from "../../util/StringUtil";
 
 
 export default class Dashboard extends BaseEntity {
@@ -30,6 +31,10 @@ export default class Dashboard extends BaseEntity {
   assign(obj: any) {
     super.assign(obj);
 
+  }
+
+  getTAG(): string {
+    return "dashboard";
   }
 
   getFilters(): Filter[] {

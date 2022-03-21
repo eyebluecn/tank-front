@@ -50,6 +50,10 @@ export default class User extends BaseEntity {
 
   }
 
+  getTAG(): string {
+    return "user"
+  }
+
 
   getFilters(): Filter[] {
     return [
@@ -126,14 +130,15 @@ export default class User extends BaseEntity {
   httpInfo(loginRequired: boolean, finalCallback?: any) {
 
     let that = this;
-    if(loginRequired) {       // httpGet有统一的登录处理机制
+    if (loginRequired) {       // httpGet有统一的登录处理机制
       this.httpGet(User.URL_INFO, {}, function (response: any) {
         that.assign(response.data.data);
       }, null, finalCallback);
     } else {
       this.httpPureGet(User.URL_INFO, {}, function (response: any) {
         that.assign(response.data.data);
-      }, () => {}, finalCallback);
+      }, () => {
+      }, finalCallback);
     }
   }
 
