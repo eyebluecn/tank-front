@@ -359,6 +359,7 @@ export default class List extends TankComponent<IProps, IState> {
                                 StringUtil.humanFileSize(this.user.sizeLimit),
                             ),
                         );
+                        return;
                     }
                 }
                 m.file = file;
