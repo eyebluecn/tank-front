@@ -1,6 +1,6 @@
 {
   "name": "tank-front",
-  "version": "3.1.5",
+  "version": "3.1.6",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "4.7.0",
@@ -9,8 +9,8 @@
     "@types/node": "16.7.13",
     "@types/photoswipe": "^4.1.2",
     "@types/qs": "^6.9.7",
-    "@types/react": "17.0.20",
-    "@types/react-dom": "17.0.9",
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.2",
     "@types/react-router-dom": "^5.3.3",
     "antd": "4.19.2",
     "axios": "^0.26.1",

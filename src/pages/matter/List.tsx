@@ -39,6 +39,7 @@ import FileHelper from '../../common/util/FileHelper';
 import SafeUtil from '../../common/util/SafeUtil';
 import MatterSortPanel from './widget/MatterSortPanel';
 import { UploadRequestOption as RcCustomRequestOptions } from 'rc-upload/lib/interface';
+import Capacity from '../layout/widget/Capacity';
 
 interface IProps extends RouteComponentProps {}
 
@@ -220,12 +221,14 @@ export default class List extends TankComponent<IProps, IState> {
             () => {
                 this.matter.httpSoftDeleteBatch(uuids, () => {
                     MessageBoxUtil.success(Lang.t('operationSuccess'));
+                    Capacity.instance?.refresh();
                     this.refresh();
                 });
             },
             () => {
                 this.matter.httpDeleteBatch(uuids, () => {
                     MessageBoxUtil.success(Lang.t('operationSuccess'));
+                    Capacity.instance?.refresh();
                     this.refresh();
                 });
             },
@@ -367,10 +370,11 @@ export default class List extends TankComponent<IProps, IState> {
                     () => {
                         const index = List.uploadMatters.findIndex((matter) => matter === m);
                         List.uploadMatters.splice(index, 1);
-                        List.instance!.refresh();
+                        List.instance?.refresh();
+                        Capacity.instance?.refresh();
                     },
                     (msg: string) => {
-                        List.instance!.updateUI();
+                        List.instance?.updateUI();
                         SafeUtil.safeCallback(errHandle)(msg);
                     },
                 );
@@ -436,6 +440,11 @@ export default class List extends TankComponent<IProps, IState> {
         });
 
         ImagePreviewer.showMultiPhoto(imageArray, startIndex);
+    }
+
+    delete() {
+        Capacity.instance?.refresh();
+        this.refresh();
     }
 
     goToDirectory(id: string) {
@@ -643,7 +652,7 @@ export default class List extends TankComponent<IProps, IState> {
                                 director={director}
                                 matter={matter}
                                 onGoToDirectory={(id) => this.goToDirectory(id)}
-                                onDeleteSuccess={() => this.refresh()}
+                                onDeleteSuccess={() => this.delete()}
                                 onCheckMatter={(m) => this.checkMatter(m)}
                                 onPreviewImage={(m) => this.previewImage(m)}
                             />
