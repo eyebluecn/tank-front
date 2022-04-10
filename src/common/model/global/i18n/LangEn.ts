@@ -108,6 +108,7 @@ let LangEn = {
     uploadMode: "Upload Mode",
     fillMode: "Fill Mode",
     sizeExceedLimit: "File size exceed limit {}>{}",
+    dropNotDirectory: "Cannot drag and drop folders for uploading",
     setPublic: "Set as public",
     setPrivate: "Set as private",
     copyLink: "Copy Link",

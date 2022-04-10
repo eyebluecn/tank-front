@@ -108,6 +108,7 @@ let LangZh = {
     uploadMode: "上传模式",
     fillMode: "填写模式",
     sizeExceedLimit: "文件大小超过了限制{}>{}",
+    dropNotDirectory: "不可拖拽文件夹进行上传",
     setPublic: "设置为公有文件",
     setPrivate: "设置为私有文件",
     copyLink: "复制下载链接",
