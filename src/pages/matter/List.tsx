@@ -510,8 +510,8 @@ export default class List extends TankComponent<IProps, IState> {
                 ) : null}
                 <BreadcrumbPanel breadcrumbModels={this.breadcrumbModels} />
 
-                <Row className="mt10">
-                    <Col xs={24} sm={24} md={14} lg={16}>
+                <Row>
+                    <Col xs={24} sm={24} md={14} lg={16} className="mt10">
                         <Space className="buttons">
                             {selectedMatters.length !== pager.data.length ? (
                                 <Button
@@ -610,7 +610,7 @@ export default class List extends TankComponent<IProps, IState> {
                             </Button>
                         </Space>
                     </Col>
-                    <Col xs={24} sm={24} md={10} lg={8}>
+                    <Col xs={24} sm={24} md={10} lg={8} className="mt10">
                         <Input.Search
                             className="mb10"
                             placeholder={Lang.t('matter.searchFile')}
