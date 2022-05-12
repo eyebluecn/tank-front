@@ -1,7 +1,7 @@
 import React from 'react';
 import { Progress } from 'antd';
 import TankComponent from '../../../common/component/TankComponent';
-import FileHelper from '../../../common/util/FileHelper';
+import FileUtil from '../../../common/util/FileUtil';
 import Moon from '../../../common/model/global/Moon';
 import User from '../../../common/model/user/User';
 import { debounce } from '../../../common/util/OptimizeUtil';
@@ -38,7 +38,7 @@ export default class Capacity extends TankComponent<IProps, IState> {
                     />
                 )}
                 <div className="capacity-text">
-                    {`${FileHelper.humanFileSize(user.totalSize)} / ${FileHelper.humanFileSize(
+                    {`${FileUtil.humanFileSize(user.totalSize)} / ${FileUtil.humanFileSize(
                         user.totalSizeLimit,
                     )}`}
                 </div>

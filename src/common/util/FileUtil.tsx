@@ -15,7 +15,7 @@ import textSvg from "../../assets/image/file/text.svg";
 import videoSvg from "../../assets/image/file/video.svg";
 import xlsSvg from "../../assets/image/file/xls.svg";
 
-export default class FileHelper {
+export default class FileUtil {
   static isImage(name: string | null): boolean {
     let mimeType = MimeUtil.getMimeType(name);
     return StringUtil.startWith(mimeType, "image");
@@ -89,26 +89,26 @@ export default class FileHelper {
       return folderSvg;
     }
 
-    if (FileHelper.isPdf(name)) {
+    if (FileUtil.isPdf(name)) {
       return pdfSvg;
-    } else if (FileHelper.isDoc(name)) {
+    } else if (FileUtil.isDoc(name)) {
       return docSvg;
-    } else if (FileHelper.isPpt(name)) {
+    } else if (FileUtil.isPpt(name)) {
       return pptSvg;
-    } else if (FileHelper.isXls(name)) {
+    } else if (FileUtil.isXls(name)) {
       return xlsSvg;
-    } else if (FileHelper.isAudio(name)) {
+    } else if (FileUtil.isAudio(name)) {
       return audioSvg;
     } else if (
-      FileHelper.isVideo(name) ||
+      FileUtil.isVideo(name) ||
       MimeUtil.getExtension(name) === ".mkv"
     ) {
       return videoSvg;
-    } else if (FileHelper.isText(name)) {
+    } else if (FileUtil.isText(name)) {
       return textSvg;
-    } else if (FileHelper.isPsd(name)) {
+    } else if (FileUtil.isPsd(name)) {
       return psdSvg;
-    } else if (FileHelper.isImage(name)) {
+    } else if (FileUtil.isImage(name)) {
       return imageSvg;
     } else if (
       StringUtil.endWith(name, "zip") ||

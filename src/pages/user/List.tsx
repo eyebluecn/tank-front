@@ -4,7 +4,7 @@ import "./List.less";
 import SortDirection from "../../common/model/base/SortDirection";
 import Pager from "../../common/model/base/Pager";
 import StringUtil from "../../common/util/StringUtil";
-import FileHelper from "../../common/util/FileHelper";
+import FileUtil from "../../common/util/FileUtil";
 import DateUtil from "../../common/util/DateUtil";
 import FilterPanel from "../widget/filter/FilterPanel";
 import TableEmpty from "../widget/TableEmpty";
@@ -157,21 +157,21 @@ export default class List extends TankComponent<IProps, IState> {
         title: Lang.t("user.singleFileSizeLimit"),
         dataIndex: "sizeLimit",
         render: (text: any, record: User, index: number): React.ReactNode => (
-          <span>{FileHelper.humanFileSize(record.sizeLimit)}</span>
+          <span>{FileUtil.humanFileSize(record.sizeLimit)}</span>
         ),
       },
       {
         title: Lang.t("user.totalFileSize"),
         dataIndex: "totalSize",
         render: (text: any, record: User, index: number): React.ReactNode => (
-          <span>{FileHelper.humanFileSize(record.totalSize)}</span>
+          <span>{FileUtil.humanFileSize(record.totalSize)}</span>
         ),
       },
       {
         title: Lang.t("user.totalFileSizeLimit"),
         dataIndex: "totalSizeLimit",
         render: (text: any, record: User, index: number): React.ReactNode => (
-          <span>{FileHelper.humanFileSize(record.totalSizeLimit)}</span>
+          <span>{FileUtil.humanFileSize(record.totalSizeLimit)}</span>
         ),
       },
       {

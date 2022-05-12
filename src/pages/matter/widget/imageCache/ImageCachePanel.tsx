@@ -11,7 +11,7 @@ import {
   SmallDashOutlined,
 } from "@ant-design/icons";
 import MessageBoxUtil from "../../../../common/util/MessageBoxUtil";
-import FileHelper from "../../../../common/util/FileHelper";
+import FileUtil from "../../../../common/util/FileUtil";
 import DateUtil from "../../../../common/util/DateUtil";
 import Expanding from "../../../widget/Expanding";
 import "./ImageCachePanel.less";
@@ -103,7 +103,7 @@ export default class ImageCachePanel extends TankComponent<IProps, IState> {
                     }
                   />
                   <span className="image-cache-size">
-                    {FileHelper.humanFileSize(imageCache.size)}
+                    {FileUtil.humanFileSize(imageCache.size)}
                   </span>
                   <span className="image-cache-date">
                     {DateUtil.simpleDateHourMinute(imageCache.updateTime)}

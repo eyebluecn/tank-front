@@ -9,7 +9,7 @@ import {Button, Form, Input, InputNumber, Switch} from "antd";
 import {SaveOutlined} from "@ant-design/icons";
 import TankContentCard from "../widget/TankContentCard";
 import Preference from "../../common/model/preference/Preference";
-import FileHelper from "../../common/util/FileHelper";
+import FileUtil from "../../common/util/FileUtil";
 import {FormInstance} from "antd/lib/form";
 import MessageBoxUtil from "../../common/util/MessageBoxUtil";
 import Sun from "../../common/model/global/Sun";
@@ -164,10 +164,10 @@ export default class Edit extends TankComponent<IProps, IState> {
               <span className="pl10">
                 {Lang.t("preference.current")}:
                 {this.formRef && this.formRef.current
-                  ? FileHelper.humanFileSize(
+                  ? FileUtil.humanFileSize(
                       this.formRef.current.getFieldValue("downloadDirMaxSize")
                     )
-                  : FileHelper.humanFileSize(preference.defaultTotalSizeLimit)}
+                  : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
               </span>
             </Form.Item>
 
@@ -190,12 +190,12 @@ export default class Edit extends TankComponent<IProps, IState> {
               <span className="pl10">
                 {Lang.t("preference.current")}:
                 {this.formRef && this.formRef.current
-                  ? FileHelper.humanFileSize(
+                  ? FileUtil.humanFileSize(
                       this.formRef.current.getFieldValue(
                         "defaultTotalSizeLimit"
                       )
                     )
-                  : FileHelper.humanFileSize(preference.defaultTotalSizeLimit)}
+                  : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
               </span>
             </Form.Item>
 

@@ -11,7 +11,7 @@ import TankContentCard from "../widget/TankContentCard";
 import { Link, RouteComponentProps } from "react-router-dom";
 import ImagePreviewer from "../widget/previewer/ImagePreviewer";
 import { UserRole, UserRoleMap } from "../../common/model/user/UserRole";
-import FileHelper from "../../common/util/FileHelper";
+import FileUtil from "../../common/util/FileUtil";
 import { UserStatus, UserStatusMap } from "../../common/model/user/UserStatus";
 import BrowserUtil from "../../common/util/BrowserUtil";
 import SingleTextModal from "../widget/SingleTextModal";
@@ -207,15 +207,15 @@ export default class Detail extends TankComponent<IProps, IState> {
           </InfoCell>
 
           <InfoCell name={Lang.t("user.singleFileSizeLimit")}>
-            {FileHelper.humanFileSize(currentUser.sizeLimit)}
+            {FileUtil.humanFileSize(currentUser.sizeLimit)}
           </InfoCell>
 
           <InfoCell name={Lang.t("user.totalFileSizeLimit")}>
-            {FileHelper.humanFileSize(currentUser.totalSizeLimit)}
+            {FileUtil.humanFileSize(currentUser.totalSizeLimit)}
           </InfoCell>
 
           <InfoCell name={Lang.t("user.totalFileSize")}>
-            {FileHelper.humanFileSize(currentUser.totalSize)}
+            {FileUtil.humanFileSize(currentUser.totalSize)}
           </InfoCell>
 
           <InfoCell name={Lang.t("user.status")}>

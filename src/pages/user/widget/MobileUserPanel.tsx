@@ -6,7 +6,7 @@ import User from "../../../common/model/user/User";
 import { Link } from "react-router-dom";
 import { UserRoleMap } from "../../../common/model/user/UserRole";
 import { Tag, Tooltip } from "antd";
-import FileHelper from "../../../common/util/FileHelper";
+import FileUtil from "../../../common/util/FileUtil";
 import {
   UserStatus,
   UserStatusMap,
@@ -77,13 +77,13 @@ export default class MobileUserPanel extends TankComponent<IProps, IState> {
           {this.showMore ? (
             <div className="ml10 panel-detail">
               <InfoCell name={Lang.t("user.singleFileSizeLimit")}>
-                <span>{FileHelper.humanFileSize(user.sizeLimit)}</span>
+                <span>{FileUtil.humanFileSize(user.sizeLimit)}</span>
               </InfoCell>
               <InfoCell name={Lang.t("user.totalFileSize")}>
-                <span>{FileHelper.humanFileSize(user.totalSize)}</span>
+                <span>{FileUtil.humanFileSize(user.totalSize)}</span>
               </InfoCell>
               <InfoCell name={Lang.t("user.totalFileSizeLimit")}>
-                <span>{FileHelper.humanFileSize(user.totalSizeLimit)}</span>
+                <span>{FileUtil.humanFileSize(user.totalSizeLimit)}</span>
               </InfoCell>
               <InfoCell name={Lang.t("user.status")}>
                 <Tag color={UserStatusMap[user.status].color}>
