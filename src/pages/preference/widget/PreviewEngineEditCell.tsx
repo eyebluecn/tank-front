@@ -3,9 +3,8 @@ import "./PreviewEngineEditCell.less";
 import TankComponent from "../../../common/component/TankComponent";
 import PreviewEngine from "../../../common/model/preference/model/PreviewEngine";
 import { DeleteOutlined } from "@ant-design/icons";
-import { Form, Input, Switch, Tooltip } from "antd";
+import { Form, Input, Switch } from "antd";
 import Lang from "../../../common/model/global/Lang";
-import { QuestionCircleOutlined } from "@ant-design/icons";
 
 interface IProps {
   previewEngine: PreviewEngine;
@@ -38,14 +37,8 @@ export default class PreviewEngineEditCell extends TankComponent<IProps, IState>
         </div>
         <div className="engine-content">
           <Form.Item
-            label={
-              <Tooltip title={Lang.t("preference.engineRegHelper")}>
-                <div>
-                  {Lang.t("preference.engineReg")}
-                  <QuestionCircleOutlined className="btn-action text-warning" />
-                </div>
-              </Tooltip>
-            }
+            label={Lang.t("preference.engineReg")}
+            tooltip={Lang.t("preference.engineRegHelper")}
             rules={[
               { required: true, message: Lang.t("preference.engineRegHelper") },
             ]}
@@ -61,14 +54,8 @@ export default class PreviewEngineEditCell extends TankComponent<IProps, IState>
           </Form.Item>
 
           <Form.Item
-            label={
-              <Tooltip title={Lang.t("preference.engineSuffixPlaceHolder")}>
-                <div>
-                  {Lang.t("preference.engineSuffix")}
-                  <QuestionCircleOutlined className="btn-action text-warning" />
-                </div>
-              </Tooltip>
-            }
+            label={Lang.t("preference.engineSuffix")}
+            tooltip={Lang.t("preference.engineSuffixPlaceHolder")}
             rules={[
               {
                 required: true,
@@ -87,18 +74,10 @@ export default class PreviewEngineEditCell extends TankComponent<IProps, IState>
           </Form.Item>
 
           <Form.Item
-            label={
-              <Tooltip
-                title={`${Lang.t("preference.previewCurrent")} or ${Lang.t(
-                  "preference.previewOpen"
-                )}`}
-              >
-                <div>
-                  {Lang.t("preference.previewCurrent")}
-                  <QuestionCircleOutlined className="btn-action text-warning" />
-                </div>
-              </Tooltip>
-            }
+            label={Lang.t("preference.previewCurrent")}
+            tooltip={`${Lang.t("preference.previewCurrent")} or ${Lang.t(
+              "preference.previewOpen"
+            )}`}
           >
             <Switch
               checked={previewEngine.previewInSite}

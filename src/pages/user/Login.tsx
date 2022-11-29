@@ -79,7 +79,7 @@ export default class Login extends TankComponent<IProps, IState> {
       <div className="user-login">
 
         <Row>
-          <Col xs={{span: 24}} md={{span: 8, offset: 6}}>
+          <Col xs={{span: 24}} md={{span: 8, offset: 8}}>
 
             <div className="welcome">
               {Lang.t("user.welcomeLogin")}

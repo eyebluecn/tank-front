@@ -68,12 +68,7 @@ export default class PreviewEngineEdit extends TankComponent<IProps, IState> {
             onFinish={e => this.finish(e)}
             onValuesChange={this.updateUI}
           >
-            <Form.Item label={<Tooltip title={Lang.t("preference.engineUsageHint")}>
-              <div>
-                {Lang.t("preference.previewConfig")}
-                <QuestionCircleOutlined className="btn-action text-warning"/>
-              </div>
-            </Tooltip>}>
+            <Form.Item label={Lang.t("preference.previewConfig")} tooltip={Lang.t("preference.engineUsageHint")}>
               <PreviewConfigPanel previewConfig={preference.previewConfig}/>
             </Form.Item>
             <div className="text-right">
