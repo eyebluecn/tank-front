@@ -1,13 +1,11 @@
 import React from 'react';
-import "./FrameLoading.less"
-import TankComponent from "../../common/component/TankComponent";
-import {LoadingOutlined} from '@ant-design/icons';
+import './FrameLoading.less';
+import TankComponent from '../../common/component/TankComponent';
+import { LoadingOutlined } from '@ant-design/icons';
 
-interface IProps {
-}
+interface IProps {}
 
-interface IState {
-}
+interface IState {}
 
 /**
  * 主站加载控件。
@@ -15,28 +13,24 @@ interface IState {
  * 该控件采用fixed布局，会占据全屏
  */
 export default class FrameLoading extends TankComponent<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
 
-    constructor(props: IProps) {
-        super(props);
+    this.state = {};
+  }
 
-        this.state = {};
-    }
+  render() {
+    let that = this;
 
-    render() {
-
-        let that = this
-
-        return (
-            <div className="app-frame-loading">
-                <div className="loading-box">
-                    <div>
-                        <LoadingOutlined className={'loading-icon'}/>
-                    </div>
-                    <div className={'loading-text'}>
-                        加载中...
-                    </div>
-                </div>
-            </div>
-        )
-    }
+    return (
+      <div className="app-frame-loading">
+        <div className="loading-box">
+          <div>
+            <LoadingOutlined className={'loading-icon'} />
+          </div>
+          <div className={'loading-text'}>加载中...</div>
+        </div>
+      </div>
+    );
+  }
 }

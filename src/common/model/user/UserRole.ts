@@ -1,49 +1,42 @@
-import ColorSelectionOption from "../base/option/ColorSelectionOption";
-import Color from "../base/option/Color";
-import Lang from "../global/Lang";
-
+import ColorSelectionOption from '../base/option/ColorSelectionOption';
+import Color from '../base/option/Color';
+import Lang from '../global/Lang';
 
 enum UserRole {
-    GUEST = 'GUEST',
-    USER = 'USER',
-    SPACE = "SPACE",
-    ADMINISTRATOR = 'ADMINISTRATOR',
+  GUEST = 'GUEST',
+  USER = 'USER',
+  SPACE = 'SPACE',
+  ADMINISTRATOR = 'ADMINISTRATOR',
 }
 
-let UserRoles: UserRole[] = Object.keys(UserRole).map(k => k as UserRole);
+let UserRoles: UserRole[] = Object.keys(UserRole).map((k) => k as UserRole);
 
 let UserRoleMap: { [key in keyof typeof UserRole]: ColorSelectionOption } = {
-    GUEST: {
-        'name': Lang.t("user.roleGuest"),
-        'value': 'GUEST',
-        'color': Color.WARNING,
-    },
-    USER: {
-        'name': Lang.t("user.roleUser"),
-        'value': 'USER',
-        'color': Color.PRIMARY,
-    },
-    SPACE: {
-        'name': Lang.t("user.roleUserRoleSpace"),
-        'value': UserRole.SPACE,
-        'color': Color.SUCCESS,
-    },
-    ADMINISTRATOR: {
-        'name': Lang.t("user.roleAdministrator"),
-        'value': 'ADMINISTRATOR',
-        'color': Color.DANGER,
-    },
-
+  GUEST: {
+    name: Lang.t('user.roleGuest'),
+    value: 'GUEST',
+    color: Color.WARNING,
+  },
+  USER: {
+    name: Lang.t('user.roleUser'),
+    value: 'USER',
+    color: Color.PRIMARY,
+  },
+  SPACE: {
+    name: Lang.t('user.roleUserRoleSpace'),
+    value: UserRole.SPACE,
+    color: Color.SUCCESS,
+  },
+  ADMINISTRATOR: {
+    name: Lang.t('user.roleAdministrator'),
+    value: 'ADMINISTRATOR',
+    color: Color.DANGER,
+  },
 };
 
 let UserRoleList: ColorSelectionOption[] = [];
 UserRoles.forEach((type: UserRole, index: number) => {
-    UserRoleList.push(UserRoleMap[type]);
+  UserRoleList.push(UserRoleMap[type]);
 });
 
-
-export {UserRole, UserRoles, UserRoleMap, UserRoleList};
-
-
-
-
+export { UserRole, UserRoles, UserRoleMap, UserRoleList };

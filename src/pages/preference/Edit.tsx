@@ -1,242 +1,236 @@
-import React from "react";
-import {RouteComponentProps} from "react-router-dom";
-import "./Edit.less";
-import TankComponent from "../../common/component/TankComponent";
-import User from "../../common/model/user/User";
-import Moon from "../../common/model/global/Moon";
-import TankTitle from "../widget/TankTitle";
-import {Button, Form, Input, InputNumber, Switch} from "antd";
-import {SaveOutlined} from "@ant-design/icons";
-import TankContentCard from "../widget/TankContentCard";
-import Preference from "../../common/model/preference/Preference";
-import FileUtil from "../../common/util/FileUtil";
-import {FormInstance} from "antd/lib/form";
-import MessageBoxUtil from "../../common/util/MessageBoxUtil";
-import Sun from "../../common/model/global/Sun";
-import Lang from "../../common/model/global/Lang";
-import MatterImage from "../matter/widget/MatterImage";
+import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+import './Edit.less';
+import TankComponent from '../../common/component/TankComponent';
+import User from '../../common/model/user/User';
+import Moon from '../../common/model/global/Moon';
+import TankTitle from '../widget/TankTitle';
+import { Button, Form, Input, InputNumber, Switch } from 'antd';
+import { SaveOutlined } from '@ant-design/icons';
+import TankContentCard from '../widget/TankContentCard';
+import Preference from '../../common/model/preference/Preference';
+import FileUtil from '../../common/util/FileUtil';
+import { FormInstance } from 'antd/lib/form';
+import MessageBoxUtil from '../../common/util/MessageBoxUtil';
+import Sun from '../../common/model/global/Sun';
+import Lang from '../../common/model/global/Lang';
+import MatterImage from '../matter/widget/MatterImage';
 
-interface IProps extends RouteComponentProps {
-}
+interface IProps extends RouteComponentProps {}
 
-interface IState {
-}
+interface IState {}
 
 export default class Edit extends TankComponent<IProps, IState> {
-    formRef = React.createRef<FormInstance>();
+  formRef = React.createRef<FormInstance>();
 
-    user: User = Moon.getSingleton().user;
-    preference: Preference = Moon.getSingleton().preference;
+  user: User = Moon.getSingleton().user;
+  preference: Preference = Moon.getSingleton().preference;
 
-    constructor(props: IProps) {
-        super(props);
+  constructor(props: IProps) {
+    super(props);
 
-        this.state = {};
+    this.state = {};
 
-        this.preference.detailLoading = true;
-    }
+    this.preference.detailLoading = true;
+  }
 
-    componentDidMount() {
-        let that = this;
+  componentDidMount() {
+    let that = this;
 
-        that.refreshPreference();
-    }
+    that.refreshPreference();
+  }
 
-    refreshPreference() {
-        let that = this;
+  refreshPreference() {
+    let that = this;
 
-        that.preference.httpFetch(function () {
-            that.preference.detailLoading = false;
-            that.updateUI();
-        });
-    }
+    that.preference.httpFetch(function () {
+      that.preference.detailLoading = false;
+      that.updateUI();
+    });
+  }
 
-    onFinish(values: any) {
+  onFinish(values: any) {
+    let that = this;
 
+    let user = that.user;
 
-        let that = this;
+    that.preference.assign(values);
 
-        let user = that.user;
+    that.preference.httpSave(function () {
+      MessageBoxUtil.success(Lang.t('operationSuccess'));
 
-        that.preference.assign(values);
+      Sun.updateFrame();
 
-        that.preference.httpSave(function () {
-            MessageBoxUtil.success(Lang.t("operationSuccess"));
+      Sun.navigateTo('/preference/index');
+    });
+  }
 
-            Sun.updateFrame();
+  onFinishFailed(errorInfo: any) {}
 
-            Sun.navigateTo("/preference/index");
-        });
-    }
+  render() {
+    let that = this;
 
-    onFinishFailed(errorInfo: any) {
+    let preference = that.preference;
 
-    }
+    const layout = {
+      labelCol: { span: 6 },
+      wrapperCol: { span: 18 },
+    };
 
-    render() {
-        let that = this;
+    let initialValues: any = preference.getForm();
 
-        let preference = that.preference;
+    return (
+      <div className="page-preference-edit">
+        <TankTitle name={Lang.t('preference.editPreference')} />
 
-        const layout = {
-            labelCol: {span: 6},
-            wrapperCol: {span: 18},
-        };
+        <TankContentCard loading={preference.detailLoading}>
+          <Form
+            {...layout}
+            name="basic"
+            ref={this.formRef}
+            initialValues={initialValues}
+            onFinish={this.onFinish.bind(this)}
+            onFinishFailed={this.onFinishFailed.bind(this)}
+            onValuesChange={() => that.updateUI()}
+          >
+            <Form.Item
+              label={Lang.t('preference.websiteName')}
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: Lang.t('preference.enterWebsiteName'),
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
 
-        let initialValues: any = preference.getForm();
+            <Form.Item label="logo" name="logoUrl">
+              <MatterImage uploadHint={Lang.t('preference.logoSquare')} />
+            </Form.Item>
 
-        return (
-            <div className="page-preference-edit">
-                <TankTitle name={Lang.t("preference.editPreference")}/>
+            <Form.Item label="favicon" name="faviconUrl">
+              <MatterImage
+                filter=".ico"
+                previewWidth={60}
+                uploadHint={Lang.t('preference.onlyAllowIco')}
+              />
+            </Form.Item>
 
-                <TankContentCard loading={preference.detailLoading}>
-                    <Form
-                        {...layout}
-                        name="basic"
-                        ref={this.formRef}
-                        initialValues={initialValues}
-                        onFinish={this.onFinish.bind(this)}
-                        onFinishFailed={this.onFinishFailed.bind(this)}
-                        onValuesChange={() => that.updateUI()}
-                    >
-                        <Form.Item
-                            label={Lang.t("preference.websiteName")}
-                            name="name"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: Lang.t("preference.enterWebsiteName"),
-                                },
-                            ]}
-                        >
-                            <Input/>
-                        </Form.Item>
+            <Form.Item label={Lang.t('preference.copyright')} name="copyright">
+              <Input />
+            </Form.Item>
 
-                        <Form.Item label="logo" name="logoUrl">
-                            <MatterImage uploadHint={Lang.t("preference.logoSquare")}/>
-                        </Form.Item>
+            <Form.Item label={Lang.t('preference.extraInfo')} name="record">
+              <Input />
+            </Form.Item>
 
-                        <Form.Item label="favicon" name="faviconUrl">
-                            <MatterImage
-                                filter=".ico"
-                                previewWidth={60}
-                                uploadHint={Lang.t("preference.onlyAllowIco")}
-                            />
-                        </Form.Item>
+            <Form.Item
+              label={Lang.t('preference.zipMaxNumLimit')}
+              name="downloadDirMaxNum"
+              rules={[
+                {
+                  required: true,
+                  message: Lang.t('preference.enterZipMaxNumLimit'),
+                },
+              ]}
+            >
+              <InputNumber min={-1} max={1000} className="w150" />
+            </Form.Item>
 
-                        <Form.Item label={Lang.t("preference.copyright")} name="copyright">
-                            <Input/>
-                        </Form.Item>
-
-                        <Form.Item label={Lang.t("preference.extraInfo")} name="record">
-                            <Input/>
-                        </Form.Item>
-
-                        <Form.Item
-                            label={Lang.t("preference.zipMaxNumLimit")}
-                            name="downloadDirMaxNum"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: Lang.t("preference.enterZipMaxNumLimit"),
-                                },
-                            ]}
-                        >
-                            <InputNumber min={-1} max={1000} className="w150"/>
-                        </Form.Item>
-
-                        <Form.Item
-                            label={Lang.t("preference.zipMaxSizeLimit")}
-                            required={true}
-                        >
-                            <Form.Item
-                                name="downloadDirMaxSize"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: Lang.t("preference.enterZipMaxSizeLimit"),
-                                    },
-                                ]}
-                                noStyle
-                            >
-                                <InputNumber min={-1} className="w150"/>
-                            </Form.Item>
-                            <span className="pl10">
-                {Lang.t("preference.current")}:
-                                {this.formRef && this.formRef.current
-                                    ? FileUtil.humanFileSize(
-                                        this.formRef.current.getFieldValue("downloadDirMaxSize")
-                                    )
-                                    : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
+            <Form.Item
+              label={Lang.t('preference.zipMaxSizeLimit')}
+              required={true}
+            >
+              <Form.Item
+                name="downloadDirMaxSize"
+                rules={[
+                  {
+                    required: true,
+                    message: Lang.t('preference.enterZipMaxSizeLimit'),
+                  },
+                ]}
+                noStyle
+              >
+                <InputNumber min={-1} className="w150" />
+              </Form.Item>
+              <span className="pl10">
+                {Lang.t('preference.current')}:
+                {this.formRef && this.formRef.current
+                  ? FileUtil.humanFileSize(
+                      this.formRef.current.getFieldValue('downloadDirMaxSize')
+                    )
+                  : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
               </span>
-                        </Form.Item>
+            </Form.Item>
 
-                        <Form.Item
-                            label={Lang.t("preference.userDefaultSizeLimit")}
-                            required={true}
-                        >
-                            <Form.Item
-                                name="defaultTotalSizeLimit"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: Lang.t("preference.enterUserDefaultSizeLimit"),
-                                    },
-                                ]}
-                                noStyle
-                            >
-                                <InputNumber min={-1} className="w150"/>
-                            </Form.Item>
-                            <span className="pl10">
-                {Lang.t("preference.current")}:
-                                {this.formRef && this.formRef.current
-                                    ? FileUtil.humanFileSize(
-                                        this.formRef.current.getFieldValue(
-                                            "defaultTotalSizeLimit"
-                                        )
-                                    )
-                                    : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
+            <Form.Item
+              label={Lang.t('preference.userDefaultSizeLimit')}
+              required={true}
+            >
+              <Form.Item
+                name="defaultTotalSizeLimit"
+                rules={[
+                  {
+                    required: true,
+                    message: Lang.t('preference.enterUserDefaultSizeLimit'),
+                  },
+                ]}
+                noStyle
+              >
+                <InputNumber min={-1} className="w150" />
+              </Form.Item>
+              <span className="pl10">
+                {Lang.t('preference.current')}:
+                {this.formRef && this.formRef.current
+                  ? FileUtil.humanFileSize(
+                      this.formRef.current.getFieldValue(
+                        'defaultTotalSizeLimit'
+                      )
+                    )
+                  : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
               </span>
-                        </Form.Item>
+            </Form.Item>
 
-                        <Form.Item
-                            label={Lang.t("preference.matterBinDefaultSaveDay")}
-                            required={true}
-                        >
-                            <Form.Item
-                                name="deletedKeepDays"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: Lang.t("preference.enterMatterBinDefaultSaveDay"),
-                                    },
-                                ]}
-                                noStyle
-                            >
-                                <InputNumber min={0} className="w150"/>
-                            </Form.Item>
-                            <span className="pl10">
-                {Lang.t("preference.matterBinDefaultTip")}
+            <Form.Item
+              label={Lang.t('preference.matterBinDefaultSaveDay')}
+              required={true}
+            >
+              <Form.Item
+                name="deletedKeepDays"
+                rules={[
+                  {
+                    required: true,
+                    message: Lang.t('preference.enterMatterBinDefaultSaveDay'),
+                  },
+                ]}
+                noStyle
+              >
+                <InputNumber min={0} className="w150" />
+              </Form.Item>
+              <span className="pl10">
+                {Lang.t('preference.matterBinDefaultTip')}
               </span>
-                        </Form.Item>
+            </Form.Item>
 
-                        <Form.Item
-                            label={Lang.t("preference.allowRegister")}
-                            name="allowRegister"
-                            required={true}
-                            valuePropName="checked"
-                        >
-                            <Switch/>
-                        </Form.Item>
+            <Form.Item
+              label={Lang.t('preference.allowRegister')}
+              name="allowRegister"
+              required={true}
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
 
-                        <div className="text-right">
-                            <Button type="primary" htmlType="submit" icon={<SaveOutlined/>}>
-                                {Lang.t("save")}
-                            </Button>
-                        </div>
-                    </Form>
-                </TankContentCard>
+            <div className="text-right">
+              <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
+                {Lang.t('save')}
+              </Button>
             </div>
-        );
-    }
+          </Form>
+        </TankContentCard>
+      </div>
+    );
+  }
 }
