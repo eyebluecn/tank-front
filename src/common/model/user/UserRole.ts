@@ -6,6 +6,7 @@ import Lang from "../global/Lang";
 enum UserRole {
     GUEST = 'GUEST',
     USER = 'USER',
+    SPACE = "SPACE",
     ADMINISTRATOR = 'ADMINISTRATOR',
 }
 
@@ -21,6 +22,11 @@ let UserRoleMap: { [key in keyof typeof UserRole]: ColorSelectionOption } = {
         'name': Lang.t("user.roleUser"),
         'value': 'USER',
         'color': Color.PRIMARY,
+    },
+    SPACE: {
+        'name': Lang.t("user.roleUserRoleSpace"),
+        'value': UserRole.SPACE,
+        'color': Color.SUCCESS,
     },
     ADMINISTRATOR: {
         'name': Lang.t("user.roleAdministrator"),

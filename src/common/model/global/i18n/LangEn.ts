@@ -307,6 +307,7 @@ let LangEn = {
         goToLogin: "Go To Login",
         roleGuest: "Guest",
         roleUser: "User",
+        roleUserRoleSpace: "User Space Role",
         roleAdministrator: "Administrator",
         statusActive: "Ok",
         statusDisabled: "Disabled",
