@@ -4,8 +4,8 @@
 import SelectionOption from "./SelectionOption";
 
 export default interface IconIndexSelectionOption extends SelectionOption {
-  index: number,
-  icon: string,
+    index: number,
+    icon: string,
 }
 
 

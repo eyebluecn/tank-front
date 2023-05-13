@@ -4,5 +4,5 @@
 import SelectionOption from "./SelectionOption";
 
 export default interface StyleSelectionOption extends SelectionOption {
-  style: string,
+    style: string,
 }

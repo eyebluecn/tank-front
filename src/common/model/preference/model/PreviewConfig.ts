@@ -4,42 +4,40 @@
  */
 import Base from "../../base/Base";
 import PreviewEngine from "./PreviewEngine";
-import MimeUtil from "../../../util/MimeUtil";
-import MessageBoxUtil from "../../../util/MessageBoxUtil";
 
 /**
  * 预览配置
  */
 export default class PreviewConfig extends Base {
 
-  /**
-   * 预览引擎
-   */
-  previewEngines: PreviewEngine[] = []
+    /**
+     * 预览引擎
+     */
+    previewEngines: PreviewEngine[] = []
 
-  constructor() {
+    constructor() {
 
-    super()
+        super()
 
-  }
+    }
 
-  assign(obj: any) {
-    super.assign(obj);
+    assign(obj: any) {
+        super.assign(obj);
 
-    this.assignList("previewEngines", PreviewEngine)
-  }
+        this.assignList("previewEngines", PreviewEngine)
+    }
 
 
-  getForm(): any {
+    getForm(): any {
 
-    let forms = this.previewEngines.map((item: PreviewEngine, index: number) => {
-      return item.getForm()
-    })
+        let forms = this.previewEngines.map((item: PreviewEngine, index: number) => {
+            return item.getForm()
+        })
 
-    return {
-      previewEngines: forms
-    };
-  }
+        return {
+            previewEngines: forms
+        };
+    }
 
 
 }

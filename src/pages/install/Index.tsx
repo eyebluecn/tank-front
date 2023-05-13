@@ -27,81 +27,82 @@ interface IState {
 
 export default class Index extends TankComponent<IProps, IState> {
 
-  user: User = Moon.getSingleton().user;
+    user: User = Moon.getSingleton().user;
 
-  install: Install = new Install()
+    install: Install = new Install()
 
-  //当前高亮的tab
-  activeName: string = "first"
+    //当前高亮的tab
+    activeName: string = "first"
 
-  constructor(props: IProps) {
-    super(props);
+    constructor(props: IProps) {
+        super(props);
 
-    this.state = {};
-  }
-
-
-  componentDidMount() {
-    let that = this;
-
-    that.updateUI();
-  }
+        this.state = {};
+    }
 
 
-  render() {
+    componentDidMount() {
+        let that = this;
 
-    let that = this;
-
-    let install: Install = this.install
-
-    return (
-      <div className="page-install-index">
-
-        <TankTitle name={Lang.t("layout.install")}>
-
-        </TankTitle>
-
-        <TankContentCard>
-          <Tabs activeKey={this.activeName} onTabClick={(activeKey: string) => {
-
-            this.activeName = activeKey
-            this.updateUI()
-          }}>
-            <TabPane tab={Lang.t("install.configMysql")} key="first">
-              <MysqlPanel install={install} onNextStep={() => {
-                this.activeName = "second"
-                this.updateUI()
-              }}/>
-            </TabPane>
-            <TabPane tab={Lang.t("install.createTable")} disabled={!install.verified} key="second">
-              <CreateTablePanel install={install} onPreStep={() => {
-                this.activeName = "first"
-                this.updateUI()
-              }} onNextStep={() => {
-                this.activeName = "third"
-                this.updateUI()
-              }}/>
-            </TabPane>
-            <TabPane tab={Lang.t("install.setAdministrator")} disabled={!install.tableCreated()} key="third">
-              <SetAdminPanel install={install} onPreStep={() => {
-                this.activeName = "second"
-                this.updateUI()
-              }} onNextStep={() => {
-                this.activeName = "forth"
-                this.updateUI()
-              }}/>
-            </TabPane>
-            <TabPane tab={Lang.t("install.finish")} disabled={!install.adminConfigured} key="forth">
-              <FinishPanel install={install}/>
-            </TabPane>
-          </Tabs>
-
-        </TankContentCard>
+        that.updateUI();
+    }
 
 
-      </div>
-    );
-  }
+    render() {
+
+        let that = this;
+
+        let install: Install = this.install
+
+        return (
+            <div className="page-install-index">
+
+                <TankTitle name={Lang.t("layout.install")}>
+
+                </TankTitle>
+
+                <TankContentCard>
+                    <Tabs activeKey={this.activeName} onTabClick={(activeKey: string) => {
+
+                        this.activeName = activeKey
+                        this.updateUI()
+                    }}>
+                        <TabPane tab={Lang.t("install.configMysql")} key="first">
+                            <MysqlPanel install={install} onNextStep={() => {
+                                this.activeName = "second"
+                                this.updateUI()
+                            }}/>
+                        </TabPane>
+                        <TabPane tab={Lang.t("install.createTable")} disabled={!install.verified} key="second">
+                            <CreateTablePanel install={install} onPreStep={() => {
+                                this.activeName = "first"
+                                this.updateUI()
+                            }} onNextStep={() => {
+                                this.activeName = "third"
+                                this.updateUI()
+                            }}/>
+                        </TabPane>
+                        <TabPane tab={Lang.t("install.setAdministrator")} disabled={!install.tableCreated()}
+                                 key="third">
+                            <SetAdminPanel install={install} onPreStep={() => {
+                                this.activeName = "second"
+                                this.updateUI()
+                            }} onNextStep={() => {
+                                this.activeName = "forth"
+                                this.updateUI()
+                            }}/>
+                        </TabPane>
+                        <TabPane tab={Lang.t("install.finish")} disabled={!install.adminConfigured} key="forth">
+                            <FinishPanel install={install}/>
+                        </TabPane>
+                    </Tabs>
+
+                </TankContentCard>
+
+
+            </div>
+        );
+    }
 }
 
 

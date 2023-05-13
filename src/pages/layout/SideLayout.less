@@ -2,58 +2,58 @@
 
 //旁边布局
 .layout-side {
-    @nav-text-color: white;
-    @font-highlight-color: #ddd;
-    @left-border-color: @brand-primary;
+  @nav-text-color: white;
+  @font-highlight-color: #ddd;
+  @left-border-color: @brand-primary;
 
-    transition: all 0.4s;
-    position: fixed;
-    width: @sidebar-width;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 1000;
+  transition: all 0.4s;
+  position: fixed;
+  width: @sidebar-width;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1000;
 
-    background: #001529;
+  background: #001529;
 
-    //show-drawer只在手机屏幕生效
+  //show-drawer只在手机屏幕生效
+  @media (max-width: @screen-xs-max) {
+    left: -@sidebar-width;
+    &.show-drawer {
+      left: 0;
+    }
+  }
+
+  .avatar-area {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .username-area {
+    padding: 10px 20px;
+    text-align: center;
+    color: #bbb;
+
+    .username-text {
+      color: #bbb;
+      font-size: 16px;
+    }
+  }
+
+  .install-area {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+
+    .install-logo {
+      width: 80px;
+    }
+  }
+
+  .visible-xs {
+    display: none;
     @media (max-width: @screen-xs-max) {
-        left: -@sidebar-width;
-        &.show-drawer {
-            left: 0;
-        }
+      display: block;
     }
-
-    .avatar-area {
-        text-align: center;
-        margin-top: 40px;
-    }
-
-    .username-area {
-        padding: 10px 20px;
-        text-align: center;
-        color: #bbb;
-
-        .username-text {
-            color: #bbb;
-            font-size: 16px;
-        }
-    }
-
-    .install-area {
-        text-align: center;
-        margin-top: 40px;
-        margin-bottom: 20px;
-
-        .install-logo {
-            width: 80px;
-        }
-    }
-
-    .visible-xs {
-        display: none;
-        @media (max-width: @screen-xs-max) {
-            display: block;
-        }
-    }
+  }
 }

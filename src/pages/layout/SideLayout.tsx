@@ -5,20 +5,22 @@ import Preference from '../../common/model/preference/Preference';
 import Moon from '../../common/model/global/Moon';
 import DefaultLogoPng from '../../assets/image/logo.png';
 import Sun from '../../common/model/global/Sun';
-import { Link } from 'react-router-dom';
-import { UserRole } from '../../common/model/user/UserRole';
-import { Menu } from 'antd';
+import {Link} from 'react-router-dom';
+import {UserRole} from '../../common/model/user/UserRole';
+import {Menu} from 'antd';
 import MenuItem from '../../common/menu/MenuItem';
 import User from '../../common/model/user/User';
 import MenuManager from '../../common/menu/MenuManager';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import {InfoCircleOutlined} from '@ant-design/icons';
 import Lang from '../../common/model/global/Lang';
 import AboutModal from './widget/AboutModal';
 import Capacity from './widget/Capacity';
 
-interface IProps {}
+interface IProps {
+}
 
-interface IState {}
+interface IState {
+}
 
 export default class SideLayout extends TankComponent<IProps, IState> {
     constructor(props: IProps) {
@@ -75,7 +77,7 @@ export default class SideLayout extends TankComponent<IProps, IState> {
                     </div>
                 ) : (
                     <div className="install-area">
-                        <img alt="avatar" className="install-logo" src={DefaultLogoPng} />
+                        <img alt="avatar" className="install-logo" src={DefaultLogoPng}/>
                     </div>
                 )}
 
@@ -96,11 +98,11 @@ export default class SideLayout extends TankComponent<IProps, IState> {
                         );
                     })}
                     <Menu.Item className="visible-xs" key="about">
-                        <InfoCircleOutlined />
+                        <InfoCircleOutlined/>
                         <span>{Lang.t('layout.about')}</span>
                     </Menu.Item>
                 </Menu>
-                <Capacity />
+                <Capacity/>
             </div>
         );
     }

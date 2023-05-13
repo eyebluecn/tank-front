@@ -19,67 +19,67 @@ interface IState {
 
 export default class TopLayout extends TankComponent <IProps, IState> {
 
-  constructor(props: IProps) {
-    super(props)
-    this.state = {}
-  }
-
-  componentDidMount() {
-
-  }
-
-
-  goHome() {
-
-    Sun.navigateTo("/")
-  }
-
-  //logo可以使用自定义的。
-  logoUrl() {
-
-    let preference: Preference = Moon.getSingleton().preference
-    if (preference.logoUrl) {
-      return ImageUtil.handleImageUrl(preference.logoUrl, false, 200, 200)
-
-    } else {
-      return DefaultLogoPng
+    constructor(props: IProps) {
+        super(props)
+        this.state = {}
     }
-  }
 
-  toggleDrawer() {
-    Sun.getSingleton().showDrawer = !Sun.getSingleton().showDrawer
-    Sun.updateFrame()
-  }
+    componentDidMount() {
+
+    }
 
 
-  render() {
+    goHome() {
 
-    let that = this
+        Sun.navigateTo("/")
+    }
 
-    let preference: Preference = Moon.getSingleton().preference
-    return (
+    //logo可以使用自定义的。
+    logoUrl() {
 
-      <div className="layout-top">
+        let preference: Preference = Moon.getSingleton().preference
+        if (preference.logoUrl) {
+            return ImageUtil.handleImageUrl(preference.logoUrl, false, 200, 200)
 
-        <div className="logo-title-area" onClick={this.goHome.bind(this)}>
-          <img className="header-logo" src={this.logoUrl()} alt="logo"/>
-          <span className="header-title">{preference.name}</span>
-        </div>
+        } else {
+            return DefaultLogoPng
+        }
+    }
 
-        <div className="drawer-trigger">
-          {
-            Sun.getSingleton().showDrawer ? (
+    toggleDrawer() {
+        Sun.getSingleton().showDrawer = !Sun.getSingleton().showDrawer
+        Sun.updateFrame()
+    }
 
-              <MenuFoldOutlined onClick={this.toggleDrawer.bind(this)}/>
-            ) : (
-              <MenuUnfoldOutlined onClick={this.toggleDrawer.bind(this)}/>
-            )
-          }
-        </div>
 
-      </div>
+    render() {
 
-    )
-  }
+        let that = this
+
+        let preference: Preference = Moon.getSingleton().preference
+        return (
+
+            <div className="layout-top">
+
+                <div className="logo-title-area" onClick={this.goHome.bind(this)}>
+                    <img className="header-logo" src={this.logoUrl()} alt="logo"/>
+                    <span className="header-title">{preference.name}</span>
+                </div>
+
+                <div className="drawer-trigger">
+                    {
+                        Sun.getSingleton().showDrawer ? (
+
+                            <MenuFoldOutlined onClick={this.toggleDrawer.bind(this)}/>
+                        ) : (
+                            <MenuUnfoldOutlined onClick={this.toggleDrawer.bind(this)}/>
+                        )
+                    }
+                </div>
+
+            </div>
+
+        )
+    }
 }
 

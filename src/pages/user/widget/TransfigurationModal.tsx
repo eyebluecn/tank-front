@@ -7,12 +7,11 @@ import TankComponent from "../../../common/component/TankComponent";
 import BrowserUtil from "../../../common/util/BrowserUtil";
 import ClipboardUtil from "../../../common/util/ClipboardUtil";
 import MessageBoxUtil from "../../../common/util/MessageBoxUtil";
-import Moon from "../../../common/model/global/Moon";
 import Lang from "../../../common/model/global/Lang";
 
 interface IProps {
-  user: User
-  onClose: () => void
+    user: User
+    onClose: () => void
 }
 
 interface IState {
@@ -20,87 +19,87 @@ interface IState {
 
 export default class TransfigurationModal extends TankComponent<IProps, IState> {
 
-  authentication: string = ""
+    authentication: string = ""
 
-  constructor(props: IProps) {
-    super(props);
-  }
+    constructor(props: IProps) {
+        super(props);
+    }
 
-  componentDidMount() {
+    componentDidMount() {
 
-    let that = this
+        let that = this
 
-    this.props.user.httpTransfiguration(function (text: string) {
+        this.props.user.httpTransfiguration(function (text: string) {
 
-      that.authentication = text
-      that.updateUI()
+            that.authentication = text
+            that.updateUI()
 
-    })
+        })
 
-  }
+    }
 
-  static open(user: User) {
+    static open(user: User) {
 
-    let modal = Modal.success({
-      okCancel: false,
-      okButtonProps: {
-        className: "display-none"
-      },
-      icon: null,
-      content: <TransfigurationModal
-        user={user}
-        onClose={() => {
-          modal.destroy()
-        }}/>,
-    })
+        let modal = Modal.success({
+            okCancel: false,
+            okButtonProps: {
+                className: "display-none"
+            },
+            icon: null,
+            content: <TransfigurationModal
+                user={user}
+                onClose={() => {
+                    modal.destroy()
+                }}/>,
+        })
 
-  }
+    }
 
-  render() {
-
-
-    let that = this
-
-    let textToCopy = BrowserUtil.fullHost() + "/user/authentication/" + that.authentication
-
-    return (
-      <div className="widget-transfiguration-modal">
-
-        <div className="text-center">
-          <h2>
-            {Lang.t("user.transfigurationPromptText")}
-          </h2>
-        </div>
-        <div>
-          {Lang.t("user.transfigurationPrompt")}
-        </div>
-        <div>
-          {textToCopy}
-        </div>
-
-        <div className="text-center mt20">
-
-          <Button className="ml20" type="default" onClick={() => {
-            this.props.onClose()
-          }}>{Lang.t("close")}</Button>
-
-          <Button className="ml20"
-                  type="primary"
-                  onClick={() => {
-
-                    ClipboardUtil.copy(textToCopy, function () {
-                      MessageBoxUtil.success(Lang.t("copySuccess"))
-                      that.props.onClose()
-                    }, function () {
-                      MessageBoxUtil.error(Lang.t("copyError"))
-                    })
-                  }}>{Lang.t("copy")}</Button>
-        </div>
+    render() {
 
 
-      </div>
-    );
-  }
+        let that = this
+
+        let textToCopy = BrowserUtil.fullHost() + "/user/authentication/" + that.authentication
+
+        return (
+            <div className="widget-transfiguration-modal">
+
+                <div className="text-center">
+                    <h2>
+                        {Lang.t("user.transfigurationPromptText")}
+                    </h2>
+                </div>
+                <div>
+                    {Lang.t("user.transfigurationPrompt")}
+                </div>
+                <div>
+                    {textToCopy}
+                </div>
+
+                <div className="text-center mt20">
+
+                    <Button className="ml20" type="default" onClick={() => {
+                        this.props.onClose()
+                    }}>{Lang.t("close")}</Button>
+
+                    <Button className="ml20"
+                            type="primary"
+                            onClick={() => {
+
+                                ClipboardUtil.copy(textToCopy, function () {
+                                    MessageBoxUtil.success(Lang.t("copySuccess"))
+                                    that.props.onClose()
+                                }, function () {
+                                    MessageBoxUtil.error(Lang.t("copyError"))
+                                })
+                            }}>{Lang.t("copy")}</Button>
+                </div>
+
+
+            </div>
+        );
+    }
 }
 
 

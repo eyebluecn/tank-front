@@ -5,24 +5,24 @@ import {message} from 'antd';
  */
 export default class MessageBoxUtil {
 
-  static success(content: string) {
-    message.success(content)
-  }
+    static success(content: string) {
+        message.success(content)
+    }
 
-  static info(content: string) {
-    message.info(content)
-  }
+    static info(content: string) {
+        message.info(content)
+    }
 
-  static error(content: string) {
-    message.error(content)
-  }
+    static error(content: string) {
+        message.error(content)
+    }
 
-  static warn(content: string) {
-    message.warn(content)
-  }
+    static warn(content: string) {
+        message.warn(content)
+    }
 
-  static warning(content: string) {
-    message.warning(content)
-  }
+    static warning(content: string) {
+        message.warning(content)
+    }
 
 }

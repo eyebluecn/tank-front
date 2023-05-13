@@ -16,27 +16,27 @@ interface IState {
  */
 export default class FrameLoading extends TankComponent<IProps, IState> {
 
-  constructor(props: IProps) {
-    super(props);
+    constructor(props: IProps) {
+        super(props);
 
-    this.state = {};
-  }
+        this.state = {};
+    }
 
-  render() {
+    render() {
 
-    let that = this
+        let that = this
 
-    return (
-      <div className="app-frame-loading">
-        <div className="loading-box">
-          <div>
-            <LoadingOutlined className={'loading-icon'}/>
-          </div>
-          <div className={'loading-text'}>
-            加载中...
-          </div>
-        </div>
-      </div>
-    )
-  }
+        return (
+            <div className="app-frame-loading">
+                <div className="loading-box">
+                    <div>
+                        <LoadingOutlined className={'loading-icon'}/>
+                    </div>
+                    <div className={'loading-text'}>
+                        加载中...
+                    </div>
+                </div>
+            </div>
+        )
+    }
 }

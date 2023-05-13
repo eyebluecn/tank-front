@@ -7,8 +7,8 @@ import "./TableEmpty.less"
 import Pager from "../../common/model/base/Pager";
 
 interface IProps {
-  pager: Pager<any>
-  onRefresh?: () => void
+    pager: Pager<any>
+    onRefresh?: () => void
 }
 
 interface IState {
@@ -16,54 +16,54 @@ interface IState {
 
 class TableEmpty extends React.Component<IProps, IState> {
 
-  constructor(props: IProps) {
-    super(props);
+    constructor(props: IProps) {
+        super(props);
 
-    this.state = {};
-  }
+        this.state = {};
+    }
 
-  render() {
+    render() {
 
-    let that = this
+        let that = this
 
-    let pager = this.props.pager
+        let pager = this.props.pager
 
 
-    let emptyContent = (
-      <div className="empty-content">
-        <Empty
-          image={EmptyImage}
-          description="暂无数据"
-        >
+        let emptyContent = (
+            <div className="empty-content">
+                <Empty
+                    image={EmptyImage}
+                    description="暂无数据"
+                >
           <span className="link" onClick={event => {
-            SafeUtil.safeCallback(that.props.onRefresh)()
+              SafeUtil.safeCallback(that.props.onRefresh)()
           }
           }>点击重试</span>
-        </Empty>
-      </div>
-    )
-    let errorContent = (
-      <div className="error-content">
-        <Empty
-          image={ErrorImage}
-          description={pager.errorMessage}
-        >
+                </Empty>
+            </div>
+        )
+        let errorContent = (
+            <div className="error-content">
+                <Empty
+                    image={ErrorImage}
+                    description={pager.errorMessage}
+                >
           <span className="link" onClick={event => {
-            SafeUtil.safeCallback(that.props.onRefresh)()
+              SafeUtil.safeCallback(that.props.onRefresh)()
           }
           }>点击重试</span>
-        </Empty>
-      </div>
-    )
+                </Empty>
+            </div>
+        )
 
-    return (
-      <div className="widget-table-empty">
-        {pager.errorMessage ? errorContent : (pager.data.length ? "" : emptyContent)}
-      </div>
+        return (
+            <div className="widget-table-empty">
+                {pager.errorMessage ? errorContent : (pager.data.length ? "" : emptyContent)}
+            </div>
 
-    )
-      ;
-  }
+        )
+            ;
+    }
 }
 
 export default TableEmpty;

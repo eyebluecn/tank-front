@@ -22,68 +22,68 @@ interface IState {
 }
 
 export default class PreviewEngineEdit extends TankComponent<IProps, IState> {
-  formRef = React.createRef<FormInstance>();
-  preference: Preference = Moon.getSingleton().preference;
+    formRef = React.createRef<FormInstance>();
+    preference: Preference = Moon.getSingleton().preference;
 
-  constructor(props: IProps) {
-    super(props);
-    this.preference.detailLoading = true;
-  }
+    constructor(props: IProps) {
+        super(props);
+        this.preference.detailLoading = true;
+    }
 
-  componentDidMount() {
-    this.refresh();
-  }
+    componentDidMount() {
+        this.refresh();
+    }
 
-  refresh() {
-    this.preference.httpFetch(() => {
-      this.preference.detailLoading = false;
-      this.updateUI();
-    });
-  };
-
-  finish(values: any) {
-    this.preference.assign(values);
-    this.preference.httpSavePreviewEngine(function () {
-      MessageBoxUtil.success(Lang.t("operationSuccess"));
-      Sun.updateFrame();
-      Sun.navigateTo("/preference/index");
-    });
-  };
-
-  render() {
-    const {preference} = this;
-    const layout = {
-      labelCol: {span: 6},
-      wrapperCol: {span: 18},
+    refresh() {
+        this.preference.httpFetch(() => {
+            this.preference.detailLoading = false;
+            this.updateUI();
+        });
     };
 
-    return (
-      <div className="preference-preview-engine-edit">
-        <TankTitle name={Lang.t("preference.editPreviewEngine")}/>
-        <TankContentCard loading={preference.detailLoading}>
-          <Form
-            {...layout}
-            name="preview-engine"
-            ref={this.formRef}
-            onFinish={e => this.finish(e)}
-            onValuesChange={this.updateUI}
-          >
-            <Form.Item label={<Tooltip title={Lang.t("preference.engineUsageHint")}>
-              <div>
-                {Lang.t("preference.previewConfig")}
-                <QuestionCircleOutlined className="btn-action text-warning"/>
-              </div>
-            </Tooltip>}>
-              <PreviewConfigPanel previewConfig={preference.previewConfig}/>
-            </Form.Item>
-            <div className="text-right">
-              <Button type="primary" htmlType="submit" icon={<SaveOutlined/>}>
-                {Lang.t("save")}
-              </Button>
+    finish(values: any) {
+        this.preference.assign(values);
+        this.preference.httpSavePreviewEngine(function () {
+            MessageBoxUtil.success(Lang.t("operationSuccess"));
+            Sun.updateFrame();
+            Sun.navigateTo("/preference/index");
+        });
+    };
+
+    render() {
+        const {preference} = this;
+        const layout = {
+            labelCol: {span: 6},
+            wrapperCol: {span: 18},
+        };
+
+        return (
+            <div className="preference-preview-engine-edit">
+                <TankTitle name={Lang.t("preference.editPreviewEngine")}/>
+                <TankContentCard loading={preference.detailLoading}>
+                    <Form
+                        {...layout}
+                        name="preview-engine"
+                        ref={this.formRef}
+                        onFinish={e => this.finish(e)}
+                        onValuesChange={this.updateUI}
+                    >
+                        <Form.Item label={<Tooltip title={Lang.t("preference.engineUsageHint")}>
+                            <div>
+                                {Lang.t("preference.previewConfig")}
+                                <QuestionCircleOutlined className="btn-action text-warning"/>
+                            </div>
+                        </Tooltip>}>
+                            <PreviewConfigPanel previewConfig={preference.previewConfig}/>
+                        </Form.Item>
+                        <div className="text-right">
+                            <Button type="primary" htmlType="submit" icon={<SaveOutlined/>}>
+                                {Lang.t("save")}
+                            </Button>
+                        </div>
+                    </Form>
+                </TankContentCard>
             </div>
-          </Form>
-        </TankContentCard>
-      </div>
-    );
-  }
+        );
+    }
 }

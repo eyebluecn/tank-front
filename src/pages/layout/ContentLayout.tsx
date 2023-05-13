@@ -12,26 +12,26 @@ interface IState {
 
 export default class ContentLayout extends TankComponent <IProps, IState> {
 
-  constructor(props: IProps) {
-    super(props)
-    this.state = {}
-  }
+    constructor(props: IProps) {
+        super(props)
+        this.state = {}
+    }
 
-  componentDidMount() {
+    componentDidMount() {
 
-  }
+    }
 
-  render() {
+    render() {
 
-    let that = this
+        let that = this
 
-    return (
+        return (
 
-      <div id="layout-content" className="layout-content">
-        {this.props.children}
-      </div>
+            <div id="layout-content" className="layout-content">
+                {this.props.children}
+            </div>
 
-    )
-  }
+        )
+    }
 }
 

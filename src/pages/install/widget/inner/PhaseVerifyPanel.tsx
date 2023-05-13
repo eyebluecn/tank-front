@@ -9,11 +9,11 @@ import Lang from "../../../../common/model/global/Lang";
 
 interface IProps {
 
-  install: Install
+    install: Install
 
 
-  onSuccess: () => void
-  onPreStep: () => void
+    onSuccess: () => void
+    onPreStep: () => void
 
 }
 
@@ -24,103 +24,103 @@ interface IState {
 export default class PhaseVerifyPanel extends TankComponent<IProps, IState> {
 
 
-  constructor(props: IProps) {
-    super(props);
+    constructor(props: IProps) {
+        super(props);
 
-    this.state = {};
-  }
-
-
-  componentDidMount() {
-    let that = this;
-
-  }
+        this.state = {};
+    }
 
 
-  onFinish(values: any) {
+    componentDidMount() {
+        let that = this;
+
+    }
 
 
-    let that = this;
-    let install: Install = this.props.install
+    onFinish(values: any) {
 
-    install.adminUsername = values["adminUsername"]
-    install.adminPassword = values["adminPassword"]
 
-    install.httpValidateAdmin(function () {
-      MessageBoxUtil.success(Lang.t("install.validateAdminSuccess"))
+        let that = this;
+        let install: Install = this.props.install
 
-      that.props.onSuccess()
-    })
+        install.adminUsername = values["adminUsername"]
+        install.adminPassword = values["adminPassword"]
 
-  };
+        install.httpValidateAdmin(function () {
+            MessageBoxUtil.success(Lang.t("install.validateAdminSuccess"))
 
-  onFinishFailed(errorInfo: any) {
+            that.props.onSuccess()
+        })
 
-  };
-
-  render() {
-
-    let that = this;
-    let install: Install = this.props.install
-
-    const layout = {
-      labelCol: {span: 6},
-      wrapperCol: {span: 18},
     };
 
+    onFinishFailed(errorInfo: any) {
 
-    return (
-      <div className="widget-phase-verify-panel">
+    };
 
-        <div className="text-center">
-          <h2>{Lang.t("install.validateAdministrator")}</h2>
-        </div>
+    render() {
 
-        <Form
-          {...layout}
-          name="basic"
-          onFinish={this.onFinish.bind(this)}
-          onFinishFailed={this.onFinishFailed.bind(this)}
-          onValuesChange={() => {
-            that.updateUI()
-          }}
-        >
-          <Form.Item
-            label={Lang.t("install.administratorUsername")}
-            name="adminUsername"
-            rules={[{required: true, message: Lang.t("inputRequired")}]}
-          >
-            <Input/>
-          </Form.Item>
+        let that = this;
+        let install: Install = this.props.install
 
-          <Form.Item
-            label={Lang.t("install.administratorPassword")}
-            name="adminPassword"
-            rules={[{required: true, message: Lang.t("inputRequired")}]}
-          >
-            <Input.Password/>
-          </Form.Item>
+        const layout = {
+            labelCol: {span: 6},
+            wrapperCol: {span: 18},
+        };
 
-          <div className="text-right mt15">
 
-            <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowLeftOutlined/>}
-                    onClick={this.props.onPreStep.bind(this)}>
-              {Lang.t("install.preStep")}
-            </Button>
+        return (
+            <div className="widget-phase-verify-panel">
 
-            <Button className={'ml10'} type={"primary"}
-                    icon={<SendOutlined/>}
-                    htmlType="submit"
-            >
-              {Lang.t("submit")}
-            </Button>
+                <div className="text-center">
+                    <h2>{Lang.t("install.validateAdministrator")}</h2>
+                </div>
 
-          </div>
-        </Form>
+                <Form
+                    {...layout}
+                    name="basic"
+                    onFinish={this.onFinish.bind(this)}
+                    onFinishFailed={this.onFinishFailed.bind(this)}
+                    onValuesChange={() => {
+                        that.updateUI()
+                    }}
+                >
+                    <Form.Item
+                        label={Lang.t("install.administratorUsername")}
+                        name="adminUsername"
+                        rules={[{required: true, message: Lang.t("inputRequired")}]}
+                    >
+                        <Input/>
+                    </Form.Item>
 
-      </div>
-    );
-  }
+                    <Form.Item
+                        label={Lang.t("install.administratorPassword")}
+                        name="adminPassword"
+                        rules={[{required: true, message: Lang.t("inputRequired")}]}
+                    >
+                        <Input.Password/>
+                    </Form.Item>
+
+                    <div className="text-right mt15">
+
+                        <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowLeftOutlined/>}
+                                onClick={this.props.onPreStep.bind(this)}>
+                            {Lang.t("install.preStep")}
+                        </Button>
+
+                        <Button className={'ml10'} type={"primary"}
+                                icon={<SendOutlined/>}
+                                htmlType="submit"
+                        >
+                            {Lang.t("submit")}
+                        </Button>
+
+                    </div>
+                </Form>
+
+            </div>
+        );
+    }
 }
 
 

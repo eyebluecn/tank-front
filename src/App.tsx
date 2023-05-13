@@ -8,13 +8,13 @@ import en_US from 'antd/es/locale/en_US';
 import './App.less';
 
 function App() {
-  return (
-    <Router>
-      <ConfigProvider locale={en_US}>
-        <Frame/>
-      </ConfigProvider>
-    </Router>
-  );
+    return (
+        <Router>
+            <ConfigProvider locale={en_US}>
+                <Frame/>
+            </ConfigProvider>
+        </Router>
+    );
 }
 
 export default App;

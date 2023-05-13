@@ -5,28 +5,27 @@
  */
 import User from "../user/User";
 import Preference from "../preference/Preference";
-import Matter from "../matter/Matter";
 
 
 export default class Moon {
 
-  //全局具有唯一的用户，即当前登录的用户.
-  user: User = new User()
+    //全局具有唯一的用户，即当前登录的用户.
+    user: User = new User()
 
-  //全局唯一的偏好设置
-  preference: Preference = new Preference()
+    //全局唯一的偏好设置
+    preference: Preference = new Preference()
 
-  //全局的一个store对象
-  private static singleton: Moon | null = null
+    //全局的一个store对象
+    private static singleton: Moon | null = null
 
-  //使用懒加载模式。
-  static getSingleton(): Moon {
-    if (Moon.singleton == null) {
-      Moon.singleton = new Moon();
+    //使用懒加载模式。
+    static getSingleton(): Moon {
+        if (Moon.singleton == null) {
+            Moon.singleton = new Moon();
 
+        }
+
+        return Moon.singleton
     }
-
-    return Moon.singleton
-  }
 
 }

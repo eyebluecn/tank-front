@@ -19,7 +19,7 @@ import MatterImage from "../matter/widget/MatterImage";
 
 
 interface RouteParam {
-  uuid: string
+    uuid: string
 }
 
 
@@ -33,235 +33,235 @@ interface IState {
 
 export default class Edit extends TankComponent<IProps, IState> {
 
-  formRef = React.createRef<FormInstance>();
+    formRef = React.createRef<FormInstance>();
 
-  createMode: boolean = false
+    createMode: boolean = false
 
-  //登录的那个用户
-  user: User = Moon.getSingleton().user
+    //登录的那个用户
+    user: User = Moon.getSingleton().user
 
-  //当前页面正在编辑的用户
-  currentUser: User = new User(this)
+    //当前页面正在编辑的用户
+    currentUser: User = new User(this)
 
-  constructor(props: IProps) {
-    super(props);
+    constructor(props: IProps) {
+        super(props);
 
-    this.state = {};
-    this.currentUser.role = UserRole.USER
-  }
-
-  componentDidMount() {
-    let match = this.props.match;
-
-    if (match.params.uuid) {
-      this.createMode = false;
-      this.currentUser.uuid = match.params.uuid;
-      this.currentUser.httpDetail();
-    } else {
-      this.createMode = true;
-      this.updateUI()
+        this.state = {};
+        this.currentUser.role = UserRole.USER
     }
 
-  }
+    componentDidMount() {
+        let match = this.props.match;
 
-  onFinish(values: any) {
+        if (match.params.uuid) {
+            this.createMode = false;
+            this.currentUser.uuid = match.params.uuid;
+            this.currentUser.httpDetail();
+        } else {
+            this.createMode = true;
+            this.updateUI()
+        }
 
+    }
 
-    let that = this
-
-    let user: User = this.user
-    let currentUser: User = this.currentUser
-
-    currentUser.assign(values)
-
-    currentUser.httpSave(function () {
-      MessageBoxUtil.success(Lang.t("operationSuccess"))
-
-      //如果是自己的资料修改成功，更新一下本地。
-      if (user.uuid === currentUser.uuid) {
-        user.assign(currentUser)
-      }
-
-      Sun.navigateBack()
-    })
-
-  };
-
-  onFinishFailed(errorInfo: any) {
-
-  };
+    onFinish(values: any) {
 
 
-  render() {
+        let that = this
 
-    let that = this
+        let user: User = this.user
+        let currentUser: User = this.currentUser
 
-    let user: User = this.user
-    let currentUser: User = this.currentUser
+        currentUser.assign(values)
 
-    const layout = {
-      labelCol: {span: 6},
-      wrapperCol: {span: 18},
+        currentUser.httpSave(function () {
+            MessageBoxUtil.success(Lang.t("operationSuccess"))
+
+            //如果是自己的资料修改成功，更新一下本地。
+            if (user.uuid === currentUser.uuid) {
+                user.assign(currentUser)
+            }
+
+            Sun.navigateBack()
+        })
+
     };
 
-    //当前是否为编辑自己的模式。
-    let editSelf: boolean = false
-    if (!this.createMode && user.uuid === currentUser.uuid) {
-      editSelf = true
-    }
+    onFinishFailed(errorInfo: any) {
 
-    //是否可以编辑角色。
-    let roleEditable: boolean = false
-    if (this.createMode || (user.uuid !== currentUser.uuid && user.role === UserRole.ADMINISTRATOR)) {
-      roleEditable = true
-    }
+    };
 
-    return (
 
-      <div className="page-user-edit">
+    render() {
 
-        <TankTitle name={this.createMode ? Lang.t("user.createUser") : Lang.t("user.editUser")}>
+        let that = this
 
-        </TankTitle>
+        let user: User = this.user
+        let currentUser: User = this.currentUser
 
-        <TankContentCard loading={currentUser.detailLoading}>
+        const layout = {
+            labelCol: {span: 6},
+            wrapperCol: {span: 18},
+        };
 
-          <Form
-            {...layout}
-            name="basic"
-            ref={this.formRef}
-            onFinish={this.onFinish.bind(this)}
-            onFinishFailed={this.onFinishFailed.bind(this)}
-            onValuesChange={() => {
-              that.updateUI()
-            }}
-          >
-            {editSelf && (
-              <Form.Item
-                label={Lang.t("user.avatar")}
-                name="avatarUrl"
-                initialValue={currentUser.avatarUrl}
-              >
-                <MatterImage />
-              </Form.Item>
-            )}
+        //当前是否为编辑自己的模式。
+        let editSelf: boolean = false
+        if (!this.createMode && user.uuid === currentUser.uuid) {
+            editSelf = true
+        }
 
-            <Form.Item
-              label={Lang.t("user.username")}
-              name="username"
-              initialValue={currentUser.username}
-              rules={[{required: true, message: Lang.t("user.enterUsername")}]}
-            >
-              <Input disabled={!this.createMode}/>
-            </Form.Item>
+        //是否可以编辑角色。
+        let roleEditable: boolean = false
+        if (this.createMode || (user.uuid !== currentUser.uuid && user.role === UserRole.ADMINISTRATOR)) {
+            roleEditable = true
+        }
 
-            {
-              this.createMode && (
-                <Form.Item
-                  label={Lang.t("user.password")}
-                  name="password"
-                  rules={[{required: true, message: Lang.t("user.enterPassword")}]}
-                >
-                  <Input.Password/>
-                </Form.Item>
-              )
-            }
+        return (
 
-            {
-              this.createMode && (
-                <Form.Item
-                  name="confirmPassword"
-                  label={Lang.t("user.confirmPassword")}
-                  dependencies={['password']}
-                  hasFeedback
-                  rules={[
-                    {
-                      required: true,
-                      message: Lang.t("user.enterPassword"),
-                    },
-                    ({getFieldValue}) => ({
-                      validator(rule, value) {
-                        if (!value || getFieldValue('password') === value) {
-                          return Promise.resolve();
+            <div className="page-user-edit">
+
+                <TankTitle name={this.createMode ? Lang.t("user.createUser") : Lang.t("user.editUser")}>
+
+                </TankTitle>
+
+                <TankContentCard loading={currentUser.detailLoading}>
+
+                    <Form
+                        {...layout}
+                        name="basic"
+                        ref={this.formRef}
+                        onFinish={this.onFinish.bind(this)}
+                        onFinishFailed={this.onFinishFailed.bind(this)}
+                        onValuesChange={() => {
+                            that.updateUI()
+                        }}
+                    >
+                        {editSelf && (
+                            <Form.Item
+                                label={Lang.t("user.avatar")}
+                                name="avatarUrl"
+                                initialValue={currentUser.avatarUrl}
+                            >
+                                <MatterImage/>
+                            </Form.Item>
+                        )}
+
+                        <Form.Item
+                            label={Lang.t("user.username")}
+                            name="username"
+                            initialValue={currentUser.username}
+                            rules={[{required: true, message: Lang.t("user.enterUsername")}]}
+                        >
+                            <Input disabled={!this.createMode}/>
+                        </Form.Item>
+
+                        {
+                            this.createMode && (
+                                <Form.Item
+                                    label={Lang.t("user.password")}
+                                    name="password"
+                                    rules={[{required: true, message: Lang.t("user.enterPassword")}]}
+                                >
+                                    <Input.Password/>
+                                </Form.Item>
+                            )
                         }
-                        return Promise.reject(Lang.t("user.passwordNotSame"));
-                      },
-                    }),
-                  ]}
-                >
-                  <Input.Password/>
-                </Form.Item>
-              )
-            }
-            <Form.Item
-              label={Lang.t("user.role")}
-              name="role"
-              initialValue={currentUser.role}
-            >
-              <Select disabled={!roleEditable}>
-                {
-                  UserRoleList.filter((item: ColorSelectionOption, index: number) => {
-                    return item.value !== UserRole.GUEST
-                  }).map((item: ColorSelectionOption, index: number) => {
-                    return <Select.Option key={index} value={item.value}>{item.name}</Select.Option>
-                  })
-                }
-              </Select>
-            </Form.Item>
 
-            <Form.Item
-              label={Lang.t("user.singleFileSizeLimit")}
-              required={true}
-            >
-              <Form.Item
-                name="sizeLimit"
-                rules={[{required: true, message: Lang.t("inputRequired")}]}
-                initialValue={currentUser.sizeLimit}
-                noStyle
-              >
-                <InputNumber min={-1} className='w150' disabled={user.role !== UserRole.ADMINISTRATOR}/>
-              </Form.Item>
-              <span
-                className="pl10"> {Lang.t("user.current")}:
-                {(this.formRef && this.formRef.current) ?
-                  FileUtil.humanFileSize(this.formRef.current.getFieldValue("sizeLimit"))
-                  : FileUtil.humanFileSize(currentUser.sizeLimit)}
+                        {
+                            this.createMode && (
+                                <Form.Item
+                                    name="confirmPassword"
+                                    label={Lang.t("user.confirmPassword")}
+                                    dependencies={['password']}
+                                    hasFeedback
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: Lang.t("user.enterPassword"),
+                                        },
+                                        ({getFieldValue}) => ({
+                                            validator(rule, value) {
+                                                if (!value || getFieldValue('password') === value) {
+                                                    return Promise.resolve();
+                                                }
+                                                return Promise.reject(Lang.t("user.passwordNotSame"));
+                                            },
+                                        }),
+                                    ]}
+                                >
+                                    <Input.Password/>
+                                </Form.Item>
+                            )
+                        }
+                        <Form.Item
+                            label={Lang.t("user.role")}
+                            name="role"
+                            initialValue={currentUser.role}
+                        >
+                            <Select disabled={!roleEditable}>
+                                {
+                                    UserRoleList.filter((item: ColorSelectionOption, index: number) => {
+                                        return item.value !== UserRole.GUEST
+                                    }).map((item: ColorSelectionOption, index: number) => {
+                                        return <Select.Option key={index} value={item.value}>{item.name}</Select.Option>
+                                    })
+                                }
+                            </Select>
+                        </Form.Item>
+
+                        <Form.Item
+                            label={Lang.t("user.singleFileSizeLimit")}
+                            required={true}
+                        >
+                            <Form.Item
+                                name="sizeLimit"
+                                rules={[{required: true, message: Lang.t("inputRequired")}]}
+                                initialValue={currentUser.sizeLimit}
+                                noStyle
+                            >
+                                <InputNumber min={-1} className='w150' disabled={user.role !== UserRole.ADMINISTRATOR}/>
+                            </Form.Item>
+                            <span
+                                className="pl10"> {Lang.t("user.current")}:
+                                {(this.formRef && this.formRef.current) ?
+                                    FileUtil.humanFileSize(this.formRef.current.getFieldValue("sizeLimit"))
+                                    : FileUtil.humanFileSize(currentUser.sizeLimit)}
               </span>
-            </Form.Item>
+                        </Form.Item>
 
-            <Form.Item
-              label={Lang.t("user.totalFileSizeLimit")}
-              required={true}
-            >
-              <Form.Item
-                name="totalSizeLimit"
-                rules={[{required: true, message: Lang.t("inputRequired")}]}
-                initialValue={currentUser.totalSizeLimit}
-                noStyle
-              >
-                <InputNumber min={-1} className='w150' disabled={user.role !== UserRole.ADMINISTRATOR}/>
-              </Form.Item>
-              <span
-                className="pl10"> {Lang.t("user.current")}:
-                {(this.formRef && this.formRef.current) ?
-                  FileUtil.humanFileSize(this.formRef.current.getFieldValue("totalSizeLimit"))
-                  : FileUtil.humanFileSize(currentUser.totalSizeLimit)}
+                        <Form.Item
+                            label={Lang.t("user.totalFileSizeLimit")}
+                            required={true}
+                        >
+                            <Form.Item
+                                name="totalSizeLimit"
+                                rules={[{required: true, message: Lang.t("inputRequired")}]}
+                                initialValue={currentUser.totalSizeLimit}
+                                noStyle
+                            >
+                                <InputNumber min={-1} className='w150' disabled={user.role !== UserRole.ADMINISTRATOR}/>
+                            </Form.Item>
+                            <span
+                                className="pl10"> {Lang.t("user.current")}:
+                                {(this.formRef && this.formRef.current) ?
+                                    FileUtil.humanFileSize(this.formRef.current.getFieldValue("totalSizeLimit"))
+                                    : FileUtil.humanFileSize(currentUser.totalSizeLimit)}
               </span>
-            </Form.Item>
+                        </Form.Item>
 
-            <div className="text-right">
-              <Button type="primary" htmlType="submit" icon={<SaveOutlined/>}>
-                {this.createMode ? Lang.t("create") : Lang.t("save")}
-              </Button>
+                        <div className="text-right">
+                            <Button type="primary" htmlType="submit" icon={<SaveOutlined/>}>
+                                {this.createMode ? Lang.t("create") : Lang.t("save")}
+                            </Button>
+                        </div>
+
+                    </Form>
+                </TankContentCard>
+
+
             </div>
-
-          </Form>
-        </TankContentCard>
-
-
-      </div>
-    );
-  }
+        );
+    }
 }
 
 

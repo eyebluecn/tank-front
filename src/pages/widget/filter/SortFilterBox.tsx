@@ -8,8 +8,8 @@ import SortDirection from "../../../common/model/base/SortDirection";
 const Option = Select.Option;
 
 interface IProps {
-  sortFilter: SortFilter
-  onChange?: (value: SortDirection | null) => void
+    sortFilter: SortFilter
+    onChange?: (value: SortDirection | null) => void
 }
 
 interface IState {
@@ -17,38 +17,38 @@ interface IState {
 
 export default class SortFilterBox extends React.Component <IProps, IState> {
 
-  constructor(props: IProps) {
-    super(props);
+    constructor(props: IProps) {
+        super(props);
 
-    this.state = {};
-  }
+        this.state = {};
+    }
 
-  //改变某个filter的值
-  onValueChange = (value: string) => {
+    //改变某个filter的值
+    onValueChange = (value: string) => {
 
-    let that = this
+        let that = this
 
-    let sortFilter = this.props.sortFilter
+        let sortFilter = this.props.sortFilter
 
-    sortFilter.putValue(value)
+        sortFilter.putValue(value)
 
-    //通知外面变化了。
-    SafeUtil.safeCallback(that.props.onChange)(sortFilter.value)
+        //通知外面变化了。
+        SafeUtil.safeCallback(that.props.onChange)(sortFilter.value)
 
-    //更新UI
-    that.setState({})
+        //更新UI
+        that.setState({})
 
-  }
+    }
 
 
-  render() {
+    render() {
 
-    let that = this
+        let that = this
 
-    let sortFilter = this.props.sortFilter
+        let sortFilter = this.props.sortFilter
 
-    return (
-      <span className="filter-block sort-filter-box">
+        return (
+            <span className="filter-block sort-filter-box">
 
         <span className="filter-cell">
           <span className="filter-name">
@@ -63,8 +63,8 @@ export default class SortFilterBox extends React.Component <IProps, IState> {
           </Select>
         </span>
       </span>
-    );
-  }
+        );
+    }
 }
 
 

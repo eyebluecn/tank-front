@@ -144,6 +144,7 @@ export default class ImagePreviewer {
                 div.parentNode.removeChild(div);
             }
         });
-        photoSwipe.listen('afterChange', () => {});
+        photoSwipe.listen('afterChange', () => {
+        });
     }
 }

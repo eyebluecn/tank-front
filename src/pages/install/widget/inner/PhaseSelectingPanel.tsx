@@ -5,22 +5,22 @@ import Install from "../../../../common/model/install/Install";
 import User from "../../../../common/model/user/User";
 import {Button} from "antd";
 import {
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
-  SecurityScanOutlined,
-  SyncOutlined,
-  UserAddOutlined
+    ArrowLeftOutlined,
+    ArrowRightOutlined,
+    SecurityScanOutlined,
+    SyncOutlined,
+    UserAddOutlined
 } from "@ant-design/icons/lib";
 import Lang from "../../../../common/model/global/Lang";
 
 interface IProps {
-  install: Install
+    install: Install
 
-  onRefresh: () => void
-  onSelectVerify: () => void
-  onSelectCreate: () => void
-  onPreStep: () => void
-  onNextStep: () => void
+    onRefresh: () => void
+    onSelectVerify: () => void
+    onSelectCreate: () => void
+    onPreStep: () => void
+    onNextStep: () => void
 
 }
 
@@ -30,100 +30,100 @@ interface IState {
 
 export default class PhaseSelectingPanel extends TankComponent<IProps, IState> {
 
-  loadingAdminList: boolean = false
+    loadingAdminList: boolean = false
 
-  constructor(props: IProps) {
-    super(props);
+    constructor(props: IProps) {
+        super(props);
 
-    this.state = {};
-  }
-
-
-  componentDidMount() {
-    let that = this;
-
-    this.refreshAdminList()
-  }
+        this.state = {};
+    }
 
 
-  refreshAdminList() {
-    //开始创建管理员
-    let that = this;
-    let install: Install = this.props.install
+    componentDidMount() {
+        let that = this;
 
-    that.loadingAdminList = true
-    that.updateUI()
-
-    install.httpAdminList(null, null, function () {
-      that.loadingAdminList = false
-      that.updateUI()
-      that.props.onRefresh()
-    })
-  }
+        this.refreshAdminList()
+    }
 
 
-  render() {
+    refreshAdminList() {
+        //开始创建管理员
+        let that = this;
+        let install: Install = this.props.install
 
-    let that = this;
-    let install: Install = this.props.install
+        that.loadingAdminList = true
+        that.updateUI()
 
-    return (
-      <div className="widget-phase-selecting-panel">
+        install.httpAdminList(null, null, function () {
+            that.loadingAdminList = false
+            that.updateUI()
+            that.props.onRefresh()
+        })
+    }
 
-        <div>
-          {Lang.t("install.detectAdministrator")}:
-        </div>
-        {
-          install.adminList.map(function (admin: User, index: number) {
-            return (
-              <div key={index} className="mv10 bold">
-                {admin.username}
-              </div>
-            )
-          })
-        }
 
-        <div>
-          {Lang.t("install.useOrCreateAdministrator")}
-        </div>
+    render() {
 
-        <div className="text-right mt15">
-          <Button className={'ml10'} type={"default"}
-                  icon={<SyncOutlined/>}
-                  onClick={this.refreshAdminList.bind(this)}
-                  loading={this.loadingAdminList}
-          >
-            {Lang.t("refresh")}
-          </Button>
+        let that = this;
+        let install: Install = this.props.install
 
-          <Button className={'ml10'} type={"default"}
-                  icon={<SecurityScanOutlined/>}
-                  onClick={this.props.onSelectVerify.bind(this)}
-          >
-            {Lang.t("install.validateAdministrator")}
-          </Button>
+        return (
+            <div className="widget-phase-selecting-panel">
 
-          <Button className={'ml10'} type={"default"}
-                  icon={<UserAddOutlined/>}
-                  onClick={this.props.onSelectCreate.bind(this)}
-          >
-            {Lang.t("install.createAdministrator")}
-          </Button>
+                <div>
+                    {Lang.t("install.detectAdministrator")}:
+                </div>
+                {
+                    install.adminList.map(function (admin: User, index: number) {
+                        return (
+                            <div key={index} className="mv10 bold">
+                                {admin.username}
+                            </div>
+                        )
+                    })
+                }
 
-          <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowLeftOutlined/>}
-                  onClick={this.props.onPreStep.bind(this)}>
-            {Lang.t("install.preStep")}
-          </Button>
-          <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowRightOutlined/>}
-                  onClick={this.props.onNextStep.bind(this)}>
-            {Lang.t("install.nextStep")}
-          </Button>
+                <div>
+                    {Lang.t("install.useOrCreateAdministrator")}
+                </div>
 
-        </div>
+                <div className="text-right mt15">
+                    <Button className={'ml10'} type={"default"}
+                            icon={<SyncOutlined/>}
+                            onClick={this.refreshAdminList.bind(this)}
+                            loading={this.loadingAdminList}
+                    >
+                        {Lang.t("refresh")}
+                    </Button>
 
-      </div>
-    );
-  }
+                    <Button className={'ml10'} type={"default"}
+                            icon={<SecurityScanOutlined/>}
+                            onClick={this.props.onSelectVerify.bind(this)}
+                    >
+                        {Lang.t("install.validateAdministrator")}
+                    </Button>
+
+                    <Button className={'ml10'} type={"default"}
+                            icon={<UserAddOutlined/>}
+                            onClick={this.props.onSelectCreate.bind(this)}
+                    >
+                        {Lang.t("install.createAdministrator")}
+                    </Button>
+
+                    <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowLeftOutlined/>}
+                            onClick={this.props.onPreStep.bind(this)}>
+                        {Lang.t("install.preStep")}
+                    </Button>
+                    <Button className={'ml10'} ghost={true} type="primary" icon={<ArrowRightOutlined/>}
+                            onClick={this.props.onNextStep.bind(this)}>
+                        {Lang.t("install.nextStep")}
+                    </Button>
+
+                </div>
+
+            </div>
+        );
+    }
 }
 
 

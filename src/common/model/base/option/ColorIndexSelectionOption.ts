@@ -4,6 +4,6 @@
 import SelectionOption from "./SelectionOption";
 
 export default interface ColorSelectionOption extends SelectionOption {
-  index: number,
-  color: string,
+    index: number,
+    color: string,
 }

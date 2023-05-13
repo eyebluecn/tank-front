@@ -1,15 +1,17 @@
 import React from 'react';
-import { Progress } from 'antd';
+import {Progress} from 'antd';
 import TankComponent from '../../../common/component/TankComponent';
 import FileUtil from '../../../common/util/FileUtil';
 import Moon from '../../../common/model/global/Moon';
 import User from '../../../common/model/user/User';
-import { debounce } from '../../../common/util/OptimizeUtil';
+import {debounce} from '../../../common/util/OptimizeUtil';
 import './Capacity.less';
 
-interface IProps {}
+interface IProps {
+}
 
-interface IState {}
+interface IState {
+}
 
 export default class Capacity extends TankComponent<IProps, IState> {
     user: User = Moon.getSingleton().user;
@@ -26,7 +28,7 @@ export default class Capacity extends TankComponent<IProps, IState> {
     }
 
     render() {
-        const { user } = this;
+        const {user} = this;
         return (
             <div className="widget-capacity">
                 {user.totalSizeLimit !== -1 && (
