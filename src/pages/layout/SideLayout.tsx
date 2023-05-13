@@ -97,10 +97,13 @@ export default class SideLayout extends TankComponent<IProps, IState> {
                             </Menu.Item>
                         );
                     })}
-                    <Menu.Item className="visible-xs" key="about">
-                        <InfoCircleOutlined/>
-                        <span>{Lang.t('layout.about')}</span>
-                    </Menu.Item>
+                    {
+                        !Sun.getSingleton().isMobile && <Menu.Item className="visible-xs" key="about">
+                            <InfoCircleOutlined/>
+                            <span>{Lang.t('layout.about')}</span>
+                        </Menu.Item>
+                    }
+
                 </Menu>
                 <Capacity/>
             </div>
