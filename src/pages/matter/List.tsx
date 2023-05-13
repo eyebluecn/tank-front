@@ -69,6 +69,10 @@ export default class List extends TankComponent<IProps, IState> {
     share = new Share();
 
     newMatterRef = React.createRef<MatterPanel>();
+
+    // 最外层div
+    wrapperRef = React.createRef<HTMLDivElement>()
+
     //用来判断是否展示遮罩层
     dragEnterCount = 0;
 
@@ -118,24 +122,10 @@ export default class List extends TankComponent<IProps, IState> {
                 dragoverListener,
                 dropListener,
             } = this.drag;
-            const el = document.getElementById("layout-content")!;
-            el.addEventListener("dragenter", dragEnterListener);
-            el.addEventListener("dragleave", dragleaveListener);
-            el.addEventListener("dragover", dragoverListener);
-            el.addEventListener("drop", dropListener);
-        },
-        remove: () => {
-            const {
-                dragEnterListener,
-                dragleaveListener,
-                dragoverListener,
-                dropListener,
-            } = this.drag;
-            const el = document.getElementById("layout-content")!;
-            el.removeEventListener("dragenter", dragEnterListener);
-            el.removeEventListener("dragleave", dragleaveListener);
-            el.removeEventListener("dragover", dragoverListener);
-            el.removeEventListener("drop", dropListener);
+            this.wrapperRef.current?.addEventListener("dragenter", dragEnterListener);
+            this.wrapperRef.current?.addEventListener("dragleave", dragleaveListener);
+            this.wrapperRef.current?.addEventListener("dragover", dragoverListener);
+            this.wrapperRef.current?.addEventListener("drop", dropListener);
         },
     };
 
@@ -156,10 +146,6 @@ export default class List extends TankComponent<IProps, IState> {
             this.pager.enableHistory();
             this.refresh();
         }
-    }
-
-    componentWillUnmount() {
-        this.drag.remove();
     }
 
     refresh() {
@@ -536,7 +522,7 @@ export default class List extends TankComponent<IProps, IState> {
     render() {
         const {pager, director, selectedMatters, dragEnterCount} = this;
         return (
-            <div className="matter-list">
+            <div className="matter-list" ref={this.wrapperRef}>
                 {dragEnterCount > 0 ? (
                     <div className="obscure">
                         <CloudUploadOutlined className="white f50"/>
