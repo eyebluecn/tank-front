@@ -343,6 +343,8 @@ let LangZh = {
     sizeLimitTip: '请输入单文件大小限制',
     totalSizeLimit: '总大小限制',
     totalSizeLimitTip: '请输入总大小限制',
+    deleteHint:
+      '此操作将永久删除该空间, 请先删除空间所有文件和空间成员, 是否继续?',
   },
   model: {
     usernameRule: '用户名只能包含字母，数字和"_"',

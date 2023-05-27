@@ -3,14 +3,30 @@ import TankComponent from '../../common/component/TankComponent';
 import { RouteComponentProps } from 'react-router-dom';
 import Pager from '../../common/model/base/Pager';
 import Space, { FormValues } from '../../common/model/space/Space';
-import { Button, Card, Col, Pagination, Progress, Row, Tooltip } from 'antd';
+import {
+  Button,
+  Card,
+  Col,
+  Pagination,
+  Progress,
+  Row,
+  Tooltip,
+  Space as AntdSpace,
+  Modal,
+} from 'antd';
 import './List.less';
 import Lang from '../../common/model/global/Lang';
 import ModalForm from './widget/ModalForm';
 import TankTitle from '../widget/TankTitle';
 import FileUtil from '../../common/util/FileUtil';
 import MessageBoxUtil from '../../common/util/MessageBoxUtil';
-import { EditOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  ExclamationCircleFilled,
+  TeamOutlined,
+} from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons/lib';
+import Color from '../../common/model/base/option/Color';
 
 interface IProps extends RouteComponentProps {}
 
@@ -79,6 +95,22 @@ export default class List extends TankComponent<IProps, IState> {
     this.updateUI();
   }
 
+  handleDelete(space: Space) {
+    Modal.confirm({
+      title: Lang.t('space.deleteHint'),
+      icon: <ExclamationCircleFilled twoToneColor={Color.WARNING} />,
+      cancelText: Lang.t('cancel'),
+      okText: Lang.t('confirm'),
+      onOk: () => {
+        space.httpDel(() => {
+          MessageBoxUtil.success(Lang.t('operationSuccess'));
+          this.pager.httpList();
+        });
+      },
+    });
+  }
+  handleSpaceMember() {}
+
   render() {
     const { pager, modalState } = this;
 
@@ -97,17 +129,27 @@ export default class List extends TankComponent<IProps, IState> {
             return (
               <Col xs={24} sm={24} md={12} lg={8} key={space.uuid}>
                 <Card className="space-item" size="small">
-                  <div className="space-item-name-wrapper">
+                  <div className="space-item-name-wrapper mb10">
                     <div
-                      className="space-item-name mb10 one-line mh15"
+                      className="space-item-name one-line"
                       title={space.name!}
                     >
                       {space.name}
                     </div>
-                    <EditOutlined
-                      className="btn-edit hot-area"
-                      onClick={() => this.handleEdit(space)}
-                    />
+                    <AntdSpace className="space-item-icons">
+                      <TeamOutlined
+                        className="btn-action btn-member"
+                        onClick={() => this.handleSpaceMember()}
+                      />
+                      <EditOutlined
+                        className="btn-action btn-edit"
+                        onClick={() => this.handleEdit(space)}
+                      />
+                      <DeleteOutlined
+                        className="btn-action btn-del"
+                        onClick={() => this.handleDelete(space)}
+                      />
+                    </AntdSpace>
                   </div>
                   <div className="space-item-percent">
                     <Tooltip

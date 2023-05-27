@@ -350,6 +350,8 @@ let LangEn = {
     sizeLimitTip: 'Please enter single file limit',
     totalSizeLimit: 'Total space limit',
     totalSizeLimitTip: 'Please enter total space limit',
+    deleteHint:
+      'This operation will permanently delete the space. Please delete all files and members of the space first. Do you want to continue?',
   },
   model: {
     usernameRule: 'only lowercase letter and number and _ is permitted.',
