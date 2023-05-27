@@ -1,0 +1,33 @@
+.page-space-list {
+  min-height: 100%;
+  .space-item {
+    width: 100%;
+    &-name-wrapper {
+      position: relative;
+      .btn-edit {
+        position: absolute;
+        font-size: 16px;
+        right: 0;
+        top: 0;
+        line-height: 1.5715;
+        color: @primary-color;
+        cursor: pointer;
+        display: none;
+      }
+    }
+    &-name {
+      font-size: 16px;
+      text-align: center;
+      position: relative;
+      height: 25px;
+    }
+    &:hover {
+      .btn-edit {
+        display: block;
+      }
+    }
+  }
+  .space-pagination {
+    margin-top: 10px;
+  }
+}

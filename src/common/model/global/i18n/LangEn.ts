@@ -79,7 +79,7 @@ let LangEn = {
   },
   layout: {
     allFiles: 'Files',
-    myShare: 'My Share',
+    myShare: 'My share',
     bin: 'Recycle bin',
     setting: 'Setting',
     dashboard: 'Dashboard',
@@ -88,6 +88,7 @@ let LangEn = {
     about: 'About',
     install: 'Install',
     dragMouseUp: 'Put file here~',
+    space: 'Shared space',
   },
   matter: {
     file: 'File',
@@ -339,6 +340,16 @@ let LangEn = {
     allUsers: 'All users',
     partialUsers: 'Partial users',
     searchUser: 'Search user',
+  },
+  space: {
+    name: 'Shared space',
+    nameTip: 'Please enter space name, can not be modified later',
+    create: 'Create space',
+    totalSize: 'Already use',
+    sizeLimit: 'Single file limit',
+    sizeLimitTip: 'Please enter single file limit',
+    totalSizeLimit: 'Total space limit',
+    totalSizeLimitTip: 'Please enter total space limit',
   },
   model: {
     usernameRule: 'only lowercase letter and number and _ is permitted.',

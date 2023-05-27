@@ -84,6 +84,7 @@ let LangZh = {
     about: '关于',
     install: '安装网站',
     dragMouseUp: '可以松手啦~',
+    space: '共享空间',
   },
   matter: {
     file: '文件',
@@ -332,6 +333,16 @@ let LangZh = {
     allUsers: '全部用户',
     partialUsers: '局部用户',
     searchUser: '搜索用户',
+  },
+  space: {
+    name: '共享空间',
+    nameTip: '请输入空间名称，不可修改',
+    create: '创建空间',
+    totalSize: '已使用',
+    sizeLimit: '单文件限制',
+    sizeLimitTip: '请输入单文件大小限制',
+    totalSizeLimit: '总大小限制',
+    totalSizeLimitTip: '请输入总大小限制',
   },
   model: {
     usernameRule: '用户名只能包含字母，数字和"_"',

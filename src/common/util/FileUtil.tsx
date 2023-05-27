@@ -15,6 +15,7 @@ import textSvg from '../../assets/image/file/text.svg';
 import videoSvg from '../../assets/image/file/video.svg';
 import xlsSvg from '../../assets/image/file/xls.svg';
 
+export type Unit = 'B' | 'KB' | 'MB' | 'GB' | 'TB' | 'PB' | 'EB' | 'ZB' | 'YB';
 export default class FileUtil {
   static isImage(name: string | null): boolean {
     let mimeType = MimeUtil.getMimeType(name);
@@ -124,6 +125,18 @@ export default class FileUtil {
     }
   }
 
+  static sizeUnits: Unit[] = [
+    'B',
+    'KB',
+    'MB',
+    'GB',
+    'TB',
+    'PB',
+    'EB',
+    'ZB',
+    'YB',
+  ];
+
   //把一个大小转变成方便读的格式
   //human readable file size
   static humanFileSize(bytes: number, si: boolean = false): string {
@@ -144,6 +157,36 @@ export default class FileUtil {
       ++u;
     } while (Math.abs(bytes) >= thresh && u < units.length - 1);
     return bytes.toFixed(1) + ' ' + units[u];
+  }
+
+  // 把一个Unit单元转换成bytes
+  static unitToBytes(unit: Unit): number {
+    switch (unit) {
+      case 'B':
+      case 'KB':
+      case 'MB':
+      case 'GB':
+      case 'TB':
+      case 'PB':
+      case 'EB':
+      case 'ZB':
+      case 'YB':
+        return 1024 ** FileUtil.sizeUnits.indexOf(unit);
+      default:
+        throw Error('unitToBytes: unit is not valid');
+    }
+  }
+
+  // 把一个bytes转换成Unit单元
+  static bytesToNumUnitTuple(bytes: number): [number, Unit | undefined] {
+    if (bytes <= -1) return [-1, undefined];
+
+    let index = 0;
+    while (bytes >= 1024) {
+      bytes /= 1024;
+      index++;
+    }
+    return [Number(bytes.toFixed()), FileUtil.sizeUnits[index]];
   }
 
   static getErrorLogsToCSVUrl(logs: object) {
