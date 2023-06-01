@@ -345,6 +345,17 @@ let LangZh = {
     totalSizeLimitTip: '请输入总大小限制',
     deleteHint:
       '此操作将永久删除该空间, 请先删除空间所有文件和空间成员, 是否继续?',
+    memberManage: '空间成员管理',
+    member: '空间成员',
+    memberTip: '请搜索选择用户',
+    memberRole: '成员角色',
+    memberRoleTip: '请选择成员角色',
+    bindMember: '绑定空间成员',
+    unBindMember: '解绑空间成员',
+    unBindMemberHint: '此操作将解绑该空间成员, 是否继续?',
+    memberRoleReadonly: '只读',
+    memberRoleReadWrite: '可读写',
+    memberRoleAdmin: '管理员',
   },
   model: {
     usernameRule: '用户名只能包含字母，数字和"_"',
@@ -395,6 +406,7 @@ let LangZh = {
   all: '所有',
   refresh: '刷新',
   inputRequired: '该项必填',
+  selectRequired: '该项必选',
 };
 
 export default LangZh;

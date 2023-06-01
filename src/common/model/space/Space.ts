@@ -1,7 +1,7 @@
 import BaseEntity from '../base/BaseEntity';
 import User from '../user/User';
 
-export interface FormValues {
+export interface SpaceFormValues {
   name: string;
   sizeLimit: number;
   totalSizeLimit: number;
@@ -25,7 +25,7 @@ export default class Space extends BaseEntity {
     this.assignEntity('user', User);
   }
 
-  getForm(): FormValues {
+  getForm(): SpaceFormValues {
     return {
       name: this.name!,
       sizeLimit: this.sizeLimit,

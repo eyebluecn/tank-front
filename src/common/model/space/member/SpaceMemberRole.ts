@@ -1,5 +1,6 @@
-import SelectionOption from '../../base/option/SelectionOption';
 import Lang from '../../global/Lang';
+import ColorSelectionOption from '../../base/option/ColorSelectionOption';
+import Color from '../../base/option/Color';
 
 enum SpaceMemberRole {
   READ_ONLY = 'READ_ONLY',
@@ -11,22 +12,25 @@ const SpaceMemberRoles: SpaceMemberRole[] = Object.keys(SpaceMemberRole).map(
   (k) => k as SpaceMemberRole
 );
 
-const SpaceMemberRoleMap: Record<SpaceMemberRole, SelectionOption> = {
+const SpaceMemberRoleMap: Record<SpaceMemberRole, ColorSelectionOption> = {
   [SpaceMemberRole.READ_ONLY]: {
-    name: Lang.t('spaceMember.readOnly'),
+    name: Lang.t('space.memberRoleReadonly'),
     value: SpaceMemberRole.READ_ONLY,
+    color: Color.SUCCESS,
   },
   [SpaceMemberRole.READ_WRITE]: {
-    name: Lang.t('spaceMember.readWrite'),
+    name: Lang.t('space.memberRoleReadWrite'),
     value: SpaceMemberRole.READ_WRITE,
+    color: Color.PRIMARY,
   },
   [SpaceMemberRole.ADMIN]: {
-    name: Lang.t('spaceMember.admin'),
+    name: Lang.t('space.memberRoleAdmin'),
     value: SpaceMemberRole.ADMIN,
+    color: Color.DANGER,
   },
 };
 
-const SpaceMemberRoleList: SelectionOption[] = [];
+const SpaceMemberRoleList: ColorSelectionOption[] = [];
 SpaceMemberRoles.forEach((type: SpaceMemberRole, index: number) => {
   SpaceMemberRoleList.push(SpaceMemberRoleMap[type]);
 });

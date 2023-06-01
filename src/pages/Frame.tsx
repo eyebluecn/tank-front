@@ -45,6 +45,7 @@ import TopLayout from './layout/TopLayout';
 import ContentLayout from './layout/ContentLayout';
 
 import SpaceList from './space/List';
+import SpaceMemberList from './space/member/List';
 
 interface IProps extends RouteComponentProps<{}> {}
 
@@ -175,7 +176,12 @@ class RawFrame extends TankComponent<IProps, IState> {
                 <Route path="/share/detail/:uuid" component={ShareDetail} />
 
                 <Route path="/bin/list" component={BinList} />
-                <Route path="/space" component={SpaceList} />
+                <Route path="/space" exact component={SpaceList} />
+                <Route
+                  path="/space/:spaceUuid/member"
+                  exact
+                  component={SpaceMemberList}
+                />
               </div>
             ) : (
               <div className="pages-content">

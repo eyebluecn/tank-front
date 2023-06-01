@@ -2,22 +2,18 @@ import React from 'react';
 import { Form, Input, Modal } from 'antd';
 import Lang from '../../../common/model/global/Lang';
 import InputSize from '../../widget/form/InputSize';
-import { FormValues } from '../../../common/model/space/Space';
+import { FORM_LAYOUT } from '../../../common/const/Form';
+import { SpaceFormValues } from '../../../common/model/space/Space';
 
 interface Props {
   mode: 'create' | 'edit';
-  initialValues?: FormValues;
-  onOk: (values: FormValues) => void;
+  initialValues?: SpaceFormValues;
+  onOk: (values: SpaceFormValues) => void;
   onCancel: () => void;
 }
 const ModalForm = ({ mode, initialValues, onOk, onCancel }: Props) => {
   const isCreate = mode === 'create';
-  const [form] = Form.useForm<FormValues>();
-
-  const layout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 18 },
-  };
+  const [form] = Form.useForm<SpaceFormValues>();
 
   return (
     <Modal
@@ -29,7 +25,7 @@ const ModalForm = ({ mode, initialValues, onOk, onCancel }: Props) => {
       cancelText={Lang.t('cancel')}
     >
       <Form
-        {...layout}
+        {...FORM_LAYOUT}
         form={form}
         onFinish={onOk}
         initialValues={initialValues}

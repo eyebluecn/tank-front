@@ -352,6 +352,18 @@ let LangEn = {
     totalSizeLimitTip: 'Please enter total space limit',
     deleteHint:
       'This operation will permanently delete the space. Please delete all files and members of the space first. Do you want to continue?',
+    memberManage: 'Space member Manage',
+    member: 'member',
+    memberTip: 'Please enter member',
+    memberRole: 'Member role',
+    memberRoleTip: 'Please select member role',
+    bindMember: 'Bind space member',
+    unBindMember: 'Unbind space member',
+    unBindMemberHint:
+      'This operation will unbind the member from the space. Do you want to continue?',
+    memberRoleReadonly: 'Readonly',
+    memberRoleReadWrite: 'Read and write',
+    memberRoleAdmin: 'Admin',
   },
   model: {
     usernameRule: 'only lowercase letter and number and _ is permitted.',
@@ -401,6 +413,7 @@ let LangEn = {
   all: 'All',
   refresh: 'refresh',
   inputRequired: 'Input required',
+  selectRequired: 'Select required',
 };
 
 export default LangEn;

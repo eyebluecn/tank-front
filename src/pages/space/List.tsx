@@ -2,7 +2,7 @@ import React from 'react';
 import TankComponent from '../../common/component/TankComponent';
 import { RouteComponentProps } from 'react-router-dom';
 import Pager from '../../common/model/base/Pager';
-import Space, { FormValues } from '../../common/model/space/Space';
+import Space, { SpaceFormValues } from '../../common/model/space/Space';
 import {
   Button,
   Card,
@@ -36,7 +36,7 @@ export default class List extends TankComponent<IProps, IState> {
   modalState: {
     visible: boolean;
     mode: 'create' | 'edit';
-    initialValues?: FormValues;
+    initialValues?: SpaceFormValues;
   } = {
     visible: false,
     mode: 'create',
@@ -74,7 +74,7 @@ export default class List extends TankComponent<IProps, IState> {
     this.updateUI();
   }
 
-  handleConfirmModalForm(values: FormValues) {
+  handleConfirmModalForm(values: SpaceFormValues) {
     const space = new Space();
     space.assign(values);
     space.httpSave(
@@ -83,11 +83,11 @@ export default class List extends TankComponent<IProps, IState> {
         this.pager.httpList();
       },
       null,
-      () => this.handleCancelModalForm()
+      () => this.handleHideModalForm()
     );
   }
 
-  handleCancelModalForm() {
+  handleHideModalForm() {
     this.modalState = {
       ...this.modalState,
       visible: false,
@@ -109,7 +109,9 @@ export default class List extends TankComponent<IProps, IState> {
       },
     });
   }
-  handleSpaceMember() {}
+  handleSpaceMember(space: Space) {
+    this.props.history.push(`/space/${space.uuid}/member`);
+  }
 
   render() {
     const { pager, modalState } = this;
@@ -139,7 +141,7 @@ export default class List extends TankComponent<IProps, IState> {
                     <AntdSpace className="space-item-icons">
                       <TeamOutlined
                         className="btn-action btn-member"
-                        onClick={() => this.handleSpaceMember()}
+                        onClick={() => this.handleSpaceMember(space)}
                       />
                       <EditOutlined
                         className="btn-action btn-edit"
@@ -191,7 +193,7 @@ export default class List extends TankComponent<IProps, IState> {
             mode={modalState.mode}
             initialValues={modalState.initialValues}
             onOk={this.handleConfirmModalForm.bind(this)}
-            onCancel={() => this.handleCancelModalForm()}
+            onCancel={() => this.handleHideModalForm()}
           />
         )}
       </div>
