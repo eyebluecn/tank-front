@@ -27,6 +27,7 @@ import {
 } from '@ant-design/icons';
 import { DeleteOutlined } from '@ant-design/icons/lib';
 import Color from '../../common/model/base/option/Color';
+import SafeUtil from '../../common/util/SafeUtil';
 
 interface IProps extends RouteComponentProps {}
 
@@ -113,6 +114,10 @@ export default class List extends TankComponent<IProps, IState> {
     this.props.history.push(`/space/${space.uuid}/member`);
   }
 
+  handleSpaceMatterList(space: Space) {
+    this.props.history.push(`/space/${space.uuid}/matter/list`);
+  }
+
   render() {
     const { pager, modalState } = this;
 
@@ -130,7 +135,11 @@ export default class List extends TankComponent<IProps, IState> {
 
             return (
               <Col xs={24} sm={24} md={12} lg={8} key={space.uuid}>
-                <Card className="space-item" size="small">
+                <Card
+                  className="space-item"
+                  size="small"
+                  onClick={() => this.handleSpaceMatterList(space)}
+                >
                   <div className="space-item-name-wrapper mb10">
                     <div
                       className="space-item-name one-line"
@@ -141,15 +150,27 @@ export default class List extends TankComponent<IProps, IState> {
                     <AntdSpace className="space-item-icons">
                       <TeamOutlined
                         className="btn-action btn-member"
-                        onClick={() => this.handleSpaceMember(space)}
+                        onClick={(e) =>
+                          SafeUtil.stopPropagationWrap(e)(
+                            this.handleSpaceMember(space)
+                          )
+                        }
                       />
                       <EditOutlined
                         className="btn-action btn-edit"
-                        onClick={() => this.handleEdit(space)}
+                        onClick={(e) =>
+                          SafeUtil.stopPropagationWrap(e)(
+                            this.handleEdit(space)
+                          )
+                        }
                       />
                       <DeleteOutlined
                         className="btn-action btn-del"
-                        onClick={() => this.handleDelete(space)}
+                        onClick={(e) =>
+                          SafeUtil.stopPropagationWrap(e)(
+                            this.handleDelete(space)
+                          )
+                        }
                       />
                     </AntdSpace>
                   </div>

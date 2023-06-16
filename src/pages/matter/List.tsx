@@ -1,5 +1,4 @@
 import React, { Children } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import './List.less';
 import TankComponent from '../../common/component/TankComponent';
 import Pager from '../../common/model/base/Pager';
@@ -17,7 +16,7 @@ import {
   Modal,
   Pagination,
   Row,
-  Space,
+  Space as AntdSpace,
   Upload,
 } from 'antd';
 import MessageBoxUtil from '../../common/util/MessageBoxUtil';
@@ -35,7 +34,6 @@ import {
 } from '@ant-design/icons';
 import ImagePreviewer from '../widget/previewer/ImagePreviewer';
 import Sun from '../../common/model/global/Sun';
-import { UserRole } from '../../common/model/user/UserRole';
 import StringUtil from '../../common/util/StringUtil';
 import MoveBatchModal from './widget/MoveBatchModal';
 import ShareOperationModal from './widget/ShareOperationModal';
@@ -50,15 +48,22 @@ import SafeUtil from '../../common/util/SafeUtil';
 import MatterSortPanel from './widget/MatterSortPanel';
 import { UploadRequestOption as RcCustomRequestOptions } from 'rc-upload/lib/interface';
 import Capacity from '../layout/widget/Capacity';
+import Space from '../../common/model/space/Space';
 
-interface IProps extends RouteComponentProps {}
+interface IProps {
+  spaceUuid?: string;
+}
 
 interface IState {}
 
+// todo matter list 空间结构需要变更
+
 export default class List extends TankComponent<IProps, IState> {
-  //当前文件夹信息。
-  matter = new Matter();
-  //准备新建的文件。
+  // 当前空间
+  space = new Space();
+  // 当前目录
+  currentDirectory = new Matter();
+  //准备新建的文件
   newMatter = new Matter();
 
   //当前选中的文件
@@ -137,22 +142,24 @@ export default class List extends TankComponent<IProps, IState> {
     },
   };
 
-  componentDidMount() {
-    //刷新一下列表
-    if (this.user.role === UserRole.ADMINISTRATOR) {
-      this.pager.getFilter('userUuid')!.visible = true;
-    } else {
-      this.pager.setFilterValue('userUuid', this.user.uuid);
-    }
+  async componentDidMount() {
+    this.initSpace();
     this.pager.enableHistory();
     this.refresh();
+    this.refreshBreadcrumbs();
     this.drag.register();
   }
 
-  componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any) {
-    if (this.props.location.search !== nextProps.location.search) {
-      this.pager.enableHistory();
-      this.refresh();
+  componentWillReceiveProps() {
+    this.pager.enableHistory();
+    this.refresh();
+    this.refreshBreadcrumbs();
+  }
+
+  initSpace() {
+    if (this.props.spaceUuid) {
+      this.space.uuid = this.props.spaceUuid;
+      this.space.httpDetail(() => this.updateUI());
     }
   }
 
@@ -161,18 +168,12 @@ export default class List extends TankComponent<IProps, IState> {
     this.selectedMatters = [];
     // 刷新文件列表
     this.refreshPager();
-    // 刷新面包屑
-    this.refreshBreadcrumbs();
   }
 
   refreshPager() {
-    // 初始化当前matter uuid
-    if (this.matter.uuid !== this.pager.getFilterValue('puuid')) {
-      this.matter.uuid =
-        this.pager.getFilterValue('puuid') || Matter.MATTER_ROOT;
+    if (!this.pager.getFilterValue('puuid')) {
+      this.pager.setFilterValue('puuid', Matter.MATTER_ROOT);
     }
-
-    this.pager.setFilterValue('puuid', this.matter.uuid);
 
     //如果没有任何的排序，默认使用时间倒序和文件夹在顶部
     if (!this.pager.getCurrentSortFilter()) {
@@ -182,6 +183,11 @@ export default class List extends TankComponent<IProps, IState> {
 
     // 过滤掉被软删除的文件
     this.pager.setFilterValue('deleted', false);
+
+    // 空间下的文件
+    if (this.props.spaceUuid) {
+      this.pager.setFilterValue('spaceUuid', this.props.spaceUuid);
+    }
 
     this.pager.httpList();
   }
@@ -226,14 +232,14 @@ export default class List extends TankComponent<IProps, IState> {
     const uuids = this.selectedMatters.map((i) => i.uuid).toString();
     MatterDeleteModal.open(
       () => {
-        this.matter.httpSoftDeleteBatch(uuids, () => {
+        Matter.httpSoftDeleteBatch(uuids, () => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
           Capacity.instance?.refresh();
           this.refresh();
         });
       },
       () => {
-        this.matter.httpDeleteBatch(uuids, () => {
+        Matter.httpDeleteBatch(uuids, () => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
           Capacity.instance?.refresh();
           this.refresh();
@@ -250,7 +256,7 @@ export default class List extends TankComponent<IProps, IState> {
   toggleMoveBatch() {
     MoveBatchModal.open((targetUuid) => {
       const uuids = this.selectedMatters.map((i) => i.uuid).join(',');
-      this.matter.httpMove(uuids, targetUuid, () => {
+      Matter.httpMove(uuids, targetUuid, () => {
         MessageBoxUtil.success(Lang.t('operationSuccess'));
         this.refresh();
       });
@@ -318,7 +324,7 @@ export default class List extends TankComponent<IProps, IState> {
             m.puuid =
               j > 1
                 ? dirPathUuidMap[midPaths.slice(0, j - 1).join('/')]
-                : this.matter.uuid!;
+                : this.currentDirectory.uuid!;
             m.userUuid = this.user.uuid!;
             await m.httpCreateDirectory(
               () => {
@@ -349,13 +355,12 @@ export default class List extends TankComponent<IProps, IState> {
 
   launchUpload(
     f: File | FileList,
-    puuid = this.matter.uuid!,
+    puuid = this.currentDirectory.uuid!,
     errHandle = () => {}
   ) {
     const files = f instanceof FileList ? f : [f];
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      console.log(file);
       // 判断文件是否是文件夹，是的话则停止上传
       const fileReader = new FileReader();
       fileReader.readAsDataURL(files[i].slice(0, 3));
@@ -412,15 +417,9 @@ export default class List extends TankComponent<IProps, IState> {
   }
 
   searchFile(value?: string) {
-    this.pager.resetFilter();
-    if (value) {
-      this.pager.setFilterValue('orderCreateTime', SortDirection.DESC);
-      this.pager.setFilterValue('orderDir', SortDirection.DESC);
-      this.pager.setFilterValue('name', value);
-      this.pager.httpList();
-    } else {
-      this.refresh();
-    }
+    this.pager.setFilterValue('name', value);
+    this.pager.setFilterValue('page', 0);
+    this.refresh();
   }
 
   changeSearch(e: any) {
@@ -437,8 +436,7 @@ export default class List extends TankComponent<IProps, IState> {
     this.newMatter.name = 'matter.allFiles';
     this.newMatter.dir = true;
     this.newMatter.editMode = true;
-    this.newMatter.puuid = this.matter.uuid || 'root';
-    this.newMatter.userUuid = this.user.uuid!;
+    this.newMatter.puuid = this.currentDirectory.uuid || Matter.MATTER_ROOT;
     this.director.createMode = true;
 
     this.updateUI();
@@ -468,33 +466,37 @@ export default class List extends TankComponent<IProps, IState> {
   goToDirectory(id: string) {
     this.searchText = null;
     this.pager.setFilterValue('puuid', id);
-    this.pager.setFilterValue('name', null);
+    this.pager.removeFilter('name');
     this.pager.page = 0;
     const query = this.pager.getParams();
-    Sun.navigateQueryTo({ path: '/matter/list', query });
-    this.refresh();
+    Sun.navigateQueryTo({ path: this.getMatterListPath(), query });
+  }
+
+  getMatterListPath() {
+    if (this.props.spaceUuid)
+      return `/space/${this.props.spaceUuid}/matter/list`;
+    return '/matter/list';
   }
 
   //刷新面包屑
   refreshBreadcrumbs() {
-    const uuid = this.pager.getFilterValue('puuid') || Matter.MATTER_ROOT;
+    this.currentDirectory.uuid =
+      this.pager.getFilterValue('puuid') || Matter.MATTER_ROOT;
+    const isRootDirectory = this.currentDirectory.uuid === Matter.MATTER_ROOT;
 
     //根目录简单处理即可。
-    if (uuid === Matter.MATTER_ROOT) {
-      this.matter.uuid = Matter.MATTER_ROOT;
-      this.breadcrumbModels = [
-        {
-          name: Lang.t('matter.allFiles'),
-          path: '/matter/list',
-          query: {},
-          displayDirect: true,
-        },
-      ];
-    } else {
-      this.matter.uuid = uuid;
-      this.matter.httpDetail(() => {
+    const rootBreadcrumb = {
+      name: Lang.t('matter.allFiles'),
+      path: this.getMatterListPath(),
+      query: {},
+      displayDirect: isRootDirectory,
+    };
+
+    this.breadcrumbModels = [rootBreadcrumb];
+    if (!isRootDirectory) {
+      this.currentDirectory.httpDetail(() => {
         const arr = [];
-        let cur: Matter | null = this.matter;
+        let cur: Matter | null = this.currentDirectory;
         do {
           arr.push(cur);
           cur = cur.parent;
@@ -506,24 +508,33 @@ export default class List extends TankComponent<IProps, IState> {
             query['puuid'] = item.uuid!;
             t.push({
               name: item.name,
-              path: '/matter/list',
+              path: this.getMatterListPath(),
               query: query,
               displayDirect: !i, // 当前目录不需要导航
             });
             return t;
           },
-          [
-            {
-              name: Lang.t('matter.allFiles'),
-              path: '/matter/list',
-              query: {},
-              displayDirect: false,
-            },
-          ]
+          [rootBreadcrumb]
         );
+
         this.updateUI();
       });
     }
+  }
+
+  getBreadcrumbModels(): BreadcrumbModel[] {
+    if (this.props.spaceUuid) {
+      if (!this.space.name) return [];
+      return [
+        {
+          name: this.space.name,
+          path: `/space/${this.space.uuid}/matter/list`,
+          query: {},
+          displayDirect: true,
+        },
+      ].concat(this.breadcrumbModels);
+    }
+    return this.breadcrumbModels;
   }
 
   render() {
@@ -535,11 +546,11 @@ export default class List extends TankComponent<IProps, IState> {
             <CloudUploadOutlined className="white f50" />
           </div>
         ) : null}
-        <BreadcrumbPanel breadcrumbModels={this.breadcrumbModels} />
+        <BreadcrumbPanel breadcrumbModels={this.getBreadcrumbModels()} />
 
         <Row>
           <Col xs={24} sm={24} md={14} lg={16} className="mt10">
-            <Space className="buttons">
+            <AntdSpace className="buttons">
               {selectedMatters.length !== pager.data.length ? (
                 <Button
                   type="primary"
@@ -640,7 +651,7 @@ export default class List extends TankComponent<IProps, IState> {
                 <SyncOutlined />
                 {Lang.t('refresh')}
               </Button>
-            </Space>
+            </AntdSpace>
           </Col>
           <Col xs={24} sm={24} md={10} lg={8} className="mt10">
             <Input.Search
@@ -687,7 +698,7 @@ export default class List extends TankComponent<IProps, IState> {
           )}
         </div>
         <Pagination
-          className="mt10 pull-right"
+          className="matter-pagination pull-right"
           onChange={(page) => this.changePage(page)}
           current={pager.page + 1}
           total={pager.totalItems}

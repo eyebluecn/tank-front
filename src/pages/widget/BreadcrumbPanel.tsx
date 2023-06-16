@@ -22,14 +22,14 @@ export default class BreadcrumbPanel extends TankComponent<IProps, IState> {
   render() {
     return (
       <Breadcrumb>
-        <Breadcrumb.Item>
+        {/*<Breadcrumb.Item>
           <HomeOutlined
             className="cursor"
             onClick={() => {
               Sun.navigateTo('/');
             }}
           />
-        </Breadcrumb.Item>
+        </Breadcrumb.Item>*/}
 
         {this.props.breadcrumbModels.map(
           (item: BreadcrumbModel, index: number) => {

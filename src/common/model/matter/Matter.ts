@@ -16,6 +16,7 @@ import SafeUtil from '../../util/SafeUtil';
 import ImagePreviewer from '../../../pages/widget/previewer/ImagePreviewer';
 import MessageBoxUtil from '../../util/MessageBoxUtil';
 import PreviewerHelper from '../../../pages/widget/previewer/PreviewerHelper';
+import HttpBase from '../base/HttpBase';
 
 export default class Matter extends BaseEntity {
   puuid: string = '';
@@ -34,6 +35,7 @@ export default class Matter extends BaseEntity {
   // 文件是否被软删除
   deleted: boolean = false;
   deleteTime: Date | null = null;
+  spaceUuid: string | null = null;
 
   /*
     这部分是辅助UI的字段信息
@@ -129,6 +131,7 @@ export default class Matter extends BaseEntity {
       new InputFilter('提取码', 'shareCode'),
       new InputFilter('分享根目录', 'shareRootUuid'),
       new SortFilter('删除时间排序', 'orderDeleteTime'),
+      new InputFilter('空间uuid', 'spaceUuid'),
     ];
   }
 
@@ -240,12 +243,12 @@ export default class Matter extends BaseEntity {
     );
   }
 
-  httpSoftDeleteBatch(
+  static httpSoftDeleteBatch(
     uuids: string,
     successCallback?: any,
     errorCallback?: any
   ) {
-    this.httpPost(
+    new HttpBase().httpPost(
       Matter.URL_MATTER_SOFT_DELETE_BATCH,
       { uuids: uuids },
       function (response: any) {
@@ -266,8 +269,12 @@ export default class Matter extends BaseEntity {
     );
   }
 
-  httpDeleteBatch(uuids: string, successCallback?: any, errorCallback?: any) {
-    this.httpPost(
+  static httpDeleteBatch(
+    uuids: string,
+    successCallback?: any,
+    errorCallback?: any
+  ) {
+    new HttpBase().httpPost(
       Matter.URL_MATTER_DELETE_BATCH,
       { uuids: uuids },
       function (response: any) {
@@ -288,8 +295,12 @@ export default class Matter extends BaseEntity {
     );
   }
 
-  httpRecoveryBatch(uuids: string, successCallback?: any, errorCallback?: any) {
-    this.httpPost(
+  static httpRecoveryBatch(
+    uuids: string,
+    successCallback?: any,
+    errorCallback?: any
+  ) {
+    new HttpBase().httpPost(
       Matter.URL_MATTER_RECOVERY_BATCH,
       { uuids: uuids },
       function (response: any) {
@@ -340,7 +351,7 @@ export default class Matter extends BaseEntity {
     );
   }
 
-  httpMove(
+  static httpMove(
     srcUuids: string,
     destUuid: string,
     successCallback?: any,
@@ -352,7 +363,7 @@ export default class Matter extends BaseEntity {
     } else {
       form.destUuid = 'root';
     }
-    this.httpPost(
+    new HttpBase().httpPost(
       Matter.URL_MATTER_MOVE,
       form,
       function (response: any) {

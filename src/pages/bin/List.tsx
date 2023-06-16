@@ -120,7 +120,7 @@ export default class List extends TankComponent<IProps, IState> {
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         const uuids = this.selectedMatters.map((i) => i.uuid).toString();
-        this.matter.httpDeleteBatch(uuids, () => {
+        Matter.httpDeleteBatch(uuids, () => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
           this.refresh();
         });
@@ -134,7 +134,7 @@ export default class List extends TankComponent<IProps, IState> {
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         const uuids = this.selectedMatters.map((i) => i.uuid).toString();
-        this.matter.httpRecoveryBatch(uuids, () => {
+        Matter.httpRecoveryBatch(uuids, () => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
           this.refresh();
         });

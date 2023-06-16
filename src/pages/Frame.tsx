@@ -46,6 +46,7 @@ import ContentLayout from './layout/ContentLayout';
 
 import SpaceList from './space/List';
 import SpaceMemberList from './space/member/List';
+import SpaceMatterList from './space/matter/List';
 
 interface IProps extends RouteComponentProps<{}> {}
 
@@ -181,6 +182,11 @@ class RawFrame extends TankComponent<IProps, IState> {
                   path="/space/:spaceUuid/member"
                   exact
                   component={SpaceMemberList}
+                />
+                <Route
+                  path="/space/:spaceUuid/matter/list"
+                  exact
+                  component={SpaceMatterList}
                 />
               </div>
             ) : (
