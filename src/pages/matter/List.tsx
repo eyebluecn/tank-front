@@ -323,7 +323,7 @@ export default class List extends TankComponent<IProps, IState> {
               j > 1
                 ? dirPathUuidMap[midPaths.slice(0, j - 1).join('/')]
                 : this.currentDirectory.uuid!;
-            m.userUuid = this.user.uuid!;
+            m.spaceUuid = this.getSpaceUuid();
             await m.httpCreateDirectory(
               () => {
                 dirPathUuidMap[midPathStr] = m.uuid;
@@ -369,7 +369,7 @@ export default class List extends TankComponent<IProps, IState> {
         const m = new Matter(this);
         m.dir = false;
         m.puuid = puuid;
-        m.userUuid = this.user.uuid!;
+        m.spaceUuid = this.getSpaceUuid();
 
         //判断文件大小。
         if (this.user.sizeLimit >= 0) {

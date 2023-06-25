@@ -501,7 +501,7 @@ export default class Matter extends BaseEntity {
     //（兼容性：chrome，ff，IE9及以上）
     let formData = new FormData();
 
-    formData.append('userUuid', that.userUuid);
+    formData.append('spaceUuid', that.spaceUuid!);
     formData.append('puuid', that.puuid);
     formData.append('file', that.file!);
     formData.append('alien', that.alien.toString());
