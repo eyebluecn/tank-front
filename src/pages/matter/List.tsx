@@ -498,6 +498,7 @@ export default class List extends TankComponent<IProps, IState> {
 
     this.breadcrumbModels = [rootBreadcrumb];
     if (!isRootDirectory) {
+      this.currentDirectory.spaceUuid = this.getSpaceUuid();
       this.currentDirectory.httpDetail(() => {
         const arr = [];
         let cur: Matter | null = this.currentDirectory;

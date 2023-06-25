@@ -143,38 +143,6 @@ export default class Matter extends BaseEntity {
     return FileUtil.isImage(this.name);
   }
 
-  isPdf() {
-    return FileUtil.isPdf(this.name);
-  }
-
-  isText() {
-    return FileUtil.isText(this.name);
-  }
-
-  isDoc() {
-    return FileUtil.isDoc(this.name);
-  }
-
-  isPpt() {
-    return FileUtil.isPpt(this.name);
-  }
-
-  isXls() {
-    return FileUtil.isXls(this.name);
-  }
-
-  isAudio() {
-    return FileUtil.isAudio(this.name);
-  }
-
-  isVideo() {
-    return FileUtil.isVideo(this.name);
-  }
-
-  isPsd() {
-    return FileUtil.isPsd(this.name);
-  }
-
   getIcon() {
     if (FileUtil.isImage(this.name)) {
       return ImageUtil.handleImageUrl(this.getPreviewUrl(), false, 100, 100);
@@ -311,6 +279,49 @@ export default class Matter extends BaseEntity {
         typeof successCallback === 'function' && successCallback(response);
       },
       errorCallback
+    );
+  }
+
+  httpDetail(
+    successCallback?: any,
+    errorCallback?: any,
+    finallyCallback?: any
+  ) {
+    let that = this;
+    if (!this.uuid) {
+      this.errorMessage = 'uuid未指定，无法获取到详情！';
+
+      this.defaultErrorHandler(this.errorMessage, errorCallback);
+
+      return;
+    }
+
+    this.detailLoading = true;
+
+    this.httpGet(
+      this.getUrlDetail(),
+      {
+        uuid: this.uuid,
+        spaceUuid: this.spaceUuid,
+      },
+      function (response: any) {
+        that.detailLoading = false;
+
+        that.assign(response.data.data);
+
+        SafeUtil.safeCallback(successCallback)(response);
+      },
+      function (response: any) {
+        that.detailLoading = false;
+
+        if (typeof errorCallback === 'function') {
+          errorCallback(that.getErrorMessage(response), response);
+        } else {
+          //没有传入错误处理的方法就采用默认处理方法：toast弹出该错误信息。
+          that.defaultErrorHandler(response);
+        }
+      },
+      finallyCallback
     );
   }
 

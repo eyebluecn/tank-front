@@ -193,7 +193,7 @@ export default class List extends TankComponent<IProps, IState> {
                         </>
                       }
                     >
-                      <Progress percent={percent * 100} />
+                      <Progress percent={Math.round(percent * 100)} />
                     </Tooltip>
                   </div>
                 </Card>

@@ -4,7 +4,6 @@ import './TableEmpty.less';
 import TankComponent from '../../common/component/TankComponent';
 import BreadcrumbModel from '../../common/model/base/option/BreadcrumbModel';
 import Sun from '../../common/model/global/Sun';
-import { HomeOutlined } from '@ant-design/icons/lib';
 
 interface IProps {
   breadcrumbModels: BreadcrumbModel[];
@@ -22,15 +21,6 @@ export default class BreadcrumbPanel extends TankComponent<IProps, IState> {
   render() {
     return (
       <Breadcrumb>
-        {/*<Breadcrumb.Item>
-          <HomeOutlined
-            className="cursor"
-            onClick={() => {
-              Sun.navigateTo('/');
-            }}
-          />
-        </Breadcrumb.Item>*/}
-
         {this.props.breadcrumbModels.map(
           (item: BreadcrumbModel, index: number) => {
             if (item.displayDirect) {
