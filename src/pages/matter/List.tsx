@@ -56,8 +56,6 @@ interface IProps {
 
 interface IState {}
 
-// todo matter list 空间结构需要变更
-
 export default class List extends TankComponent<IProps, IState> {
   // 当前空间
   space = new Space();
@@ -432,11 +430,17 @@ export default class List extends TankComponent<IProps, IState> {
     this.updateUI();
   }
 
+  getSpaceUuid() {
+    if (this.props.spaceUuid) return this.props.spaceUuid;
+    return this.user.spaceUuid;
+  }
+
   createDirectory() {
     this.newMatter.name = 'matter.allFiles';
     this.newMatter.dir = true;
     this.newMatter.editMode = true;
     this.newMatter.puuid = this.currentDirectory.uuid || Matter.MATTER_ROOT;
+    this.newMatter.spaceUuid = this.getSpaceUuid();
     this.director.createMode = true;
 
     this.updateUI();

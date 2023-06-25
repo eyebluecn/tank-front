@@ -218,7 +218,11 @@ export default class Matter extends BaseEntity {
     finallyCallback?: any
   ) {
     let that = this;
-    let form = { userUuid: that.userUuid, name: that.name, puuid: that.puuid };
+    let form = {
+      name: this.name,
+      puuid: this.puuid,
+      spaceUuid: this.spaceUuid,
+    };
 
     return this.httpPost(
       Matter.URL_MATTER_CREATE_DIRECTORY,
@@ -319,7 +323,7 @@ export default class Matter extends BaseEntity {
     let that = this;
     this.httpPost(
       Matter.URL_MATTER_RENAME,
-      { uuid: this.uuid, name: name },
+      { uuid: this.uuid, spaceUuid: this.spaceUuid, name: name },
       function (response: any) {
         that.assign(response.data.data);
         typeof successCallback === 'function' && successCallback(response);

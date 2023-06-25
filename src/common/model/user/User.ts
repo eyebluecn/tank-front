@@ -33,6 +33,7 @@ export default class User extends BaseEntity {
   totalSize: number = 0;
   totalSizeLimit: number = -1;
   status: UserStatus = UserStatus.OK;
+  spaceUuid: string | null = null;
 
   constructor(reactComponent?: React.Component) {
     super(reactComponent);
