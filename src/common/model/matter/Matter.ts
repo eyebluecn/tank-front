@@ -216,8 +216,8 @@ export default class Matter extends BaseEntity {
   }
 
   static httpSoftDeleteBatch(
-    spaceUuid: string,
     uuids: string,
+    spaceUuid: string,
     successCallback?: any,
     errorCallback?: any
   ) {
@@ -244,12 +244,13 @@ export default class Matter extends BaseEntity {
 
   static httpDeleteBatch(
     uuids: string,
+    spaceUuid: string,
     successCallback?: any,
     errorCallback?: any
   ) {
     new HttpBase().httpPost(
       Matter.URL_MATTER_DELETE_BATCH,
-      { uuids: uuids },
+      { uuids, spaceUuid },
       function (response: any) {
         typeof successCallback === 'function' && successCallback(response);
       },

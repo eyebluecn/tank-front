@@ -229,15 +229,16 @@ export default class List extends TankComponent<IProps, IState> {
   deleteBatch() {
     const uuids = this.selectedMatters.map((i) => i.uuid).toString();
     MatterDeleteModal.open(
+      !!this.props.spaceUuid,
       () => {
-        Matter.httpSoftDeleteBatch(this.getSpaceUuid()!, uuids, () => {
+        Matter.httpSoftDeleteBatch(uuids, this.getSpaceUuid()!, () => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
           Capacity.instance?.refresh();
           this.refresh();
         });
       },
       () => {
-        Matter.httpDeleteBatch(uuids, () => {
+        Matter.httpDeleteBatch(uuids, this.getSpaceUuid()!, () => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
           Capacity.instance?.refresh();
           this.refresh();
@@ -692,6 +693,7 @@ export default class List extends TankComponent<IProps, IState> {
                 key={matter.uuid!}
                 director={director}
                 matter={matter}
+                isSpace={!!this.props.spaceUuid}
                 onGoToDirectory={(id) => this.goToDirectory(id)}
                 onDeleteSuccess={() => this.delete()}
                 onCheckMatter={(m) => this.checkMatter(m)}

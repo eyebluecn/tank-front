@@ -32,6 +32,7 @@ import MatterDeleteModal from './MatterDeleteModal';
 interface IProps {
   matter: Matter;
   recycleMode?: boolean; // 回收站模式，默认false，简化相关操作，不可进入文件夹里
+  isSpace?: boolean; // 是否共享空间下
   director?: Director;
   onCreateDirectoryCallback?: () => any;
   onDeleteSuccess?: () => any;
@@ -95,6 +96,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
 
   deleteMatter() {
     MatterDeleteModal.open(
+      !!this.props.isSpace,
       () => {
         this.props.matter.httpSoftDelete(() => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
