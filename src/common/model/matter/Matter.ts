@@ -207,7 +207,7 @@ export default class Matter extends BaseEntity {
   httpSoftDelete(successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_SOFT_DELETE,
-      { uuid: this.uuid },
+      { uuid: this.uuid, spaceUuid: this.spaceUuid },
       function (response: any) {
         typeof successCallback === 'function' && successCallback(response);
       },
@@ -216,13 +216,14 @@ export default class Matter extends BaseEntity {
   }
 
   static httpSoftDeleteBatch(
+    spaceUuid: string,
     uuids: string,
     successCallback?: any,
     errorCallback?: any
   ) {
     new HttpBase().httpPost(
       Matter.URL_MATTER_SOFT_DELETE_BATCH,
-      { uuids: uuids },
+      { uuids, spaceUuid },
       function (response: any) {
         typeof successCallback === 'function' && successCallback(response);
       },
@@ -233,7 +234,7 @@ export default class Matter extends BaseEntity {
   httpDelete(successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_DELETE,
-      { uuid: this.uuid },
+      { uuid: this.uuid, spaceUuid: this.spaceUuid },
       function (response: any) {
         typeof successCallback === 'function' && successCallback(response);
       },

@@ -230,7 +230,7 @@ export default class List extends TankComponent<IProps, IState> {
     const uuids = this.selectedMatters.map((i) => i.uuid).toString();
     MatterDeleteModal.open(
       () => {
-        Matter.httpSoftDeleteBatch(uuids, () => {
+        Matter.httpSoftDeleteBatch(this.getSpaceUuid()!, uuids, () => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
           Capacity.instance?.refresh();
           this.refresh();
@@ -533,9 +533,9 @@ export default class List extends TankComponent<IProps, IState> {
       return [
         {
           name: this.space.name,
-          path: `/space/${this.space.uuid}/matter/list`,
+          path: '/space',
           query: {},
-          displayDirect: true,
+          displayDirect: false,
         },
       ].concat(this.breadcrumbModels);
     }
