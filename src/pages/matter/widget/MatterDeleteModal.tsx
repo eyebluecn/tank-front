@@ -25,13 +25,10 @@ export default class MatterDeleteModal extends TankComponent<IProps, IState> {
 
   static open(isSpace: boolean, onSoftDel: () => void, onHardDel: () => void) {
     let modal = Modal.warning({
-      className: 'delete-modal',
+      className: 'delete-modal custom-handle-modal',
       title: Lang.t('delete'),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       okCancel: false,
-      okButtonProps: {
-        className: 'display-none',
-      },
       content: (
         <MatterDeleteModal
           isSpace={isSpace}

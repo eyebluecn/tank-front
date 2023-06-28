@@ -26,14 +26,11 @@ export default class ShareOperationModal extends TankComponent<IProps, IState> {
 
   static open = (confirmCallback: (share: Share) => any) => {
     const modal = Modal.confirm({
-      className: 'share-modal',
+      className: 'share-modal custom-handle-modal',
       title: Lang.t('matter.share'),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       width: '90vw',
       okCancel: false,
-      okButtonProps: {
-        className: 'display-none',
-      },
       content: (
         <ShareOperationModal
           onSuccess={(share: Share) => {

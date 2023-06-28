@@ -23,10 +23,8 @@ export default class ChangePasswordModal extends TankComponent<IProps, IState> {
 
   static open(user: User, onSuccess: () => void) {
     let modal = Modal.success({
+      className: 'custom-handle-modal',
       okCancel: false,
-      okButtonProps: {
-        className: 'display-none',
-      },
       icon: null,
       content: (
         <ChangePasswordModal

@@ -31,10 +31,8 @@ export default class SingleTextModal extends TankComponent<IProps, IState> {
     onSuccess: (text: string) => void
   ) {
     let modal = Modal.success({
+      className: 'custom-handle-modal',
       okCancel: false,
-      okButtonProps: {
-        className: 'display-none',
-      },
       icon: null,
       content: (
         <SingleTextModal

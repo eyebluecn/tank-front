@@ -38,14 +38,11 @@ export default class ShareDialogModal extends TankComponent<IProps, IState> {
 
   static open = (share: Share) => {
     let modal = Modal.confirm({
-      className: 'share-modal',
+      className: 'share-modal custom-handle-modal',
       title: Lang.t('share.shareDetail'),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       width: '90vw',
       okCancel: false,
-      okButtonProps: {
-        className: 'display-none',
-      },
       maskClosable: true,
       content: (
         <ShareDialogModal

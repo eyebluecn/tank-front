@@ -39,14 +39,11 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
 
   static open(onSuccess: (uuid: string) => void) {
     let modal = Modal.confirm({
-      className: 'move-modal',
+      className: 'move-modal custom-handle-modal',
       title: Lang.t('matter.moveTo'),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       width: '90vw',
       okCancel: false,
-      okButtonProps: {
-        className: 'display-none',
-      },
       content: (
         <MoveBatchModal
           onSuccess={(uuid: string) => {

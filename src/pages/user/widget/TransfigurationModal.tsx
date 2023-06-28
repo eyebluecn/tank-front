@@ -37,10 +37,8 @@ export default class TransfigurationModal extends TankComponent<
 
   static open(user: User) {
     let modal = Modal.success({
+      className: 'custom-handle-modal',
       okCancel: false,
-      okButtonProps: {
-        className: 'display-none',
-      },
       icon: null,
       content: (
         <TransfigurationModal
