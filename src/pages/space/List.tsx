@@ -13,6 +13,7 @@ import {
   Tooltip,
   Space as AntdSpace,
   Modal,
+  Empty,
 } from 'antd';
 import './List.less';
 import Lang from '../../common/model/global/Lang';
@@ -209,6 +210,9 @@ export default class List extends TankComponent<IProps, IState> {
           pageSize={pager.pageSize}
           hideOnSinglePage
         />
+
+        {pager.isEmpty() && <Empty description={Lang.t('space.emptyHint')} />}
+
         {modalState.visible && (
           <ModalForm
             mode={modalState.mode}

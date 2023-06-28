@@ -356,6 +356,7 @@ let LangZh = {
     memberRoleReadonly: '只读',
     memberRoleReadWrite: '可读写',
     memberRoleAdmin: '管理员',
+    emptyHint: '暂无任何空间',
   },
   model: {
     usernameRule: '用户名只能包含字母，数字和"_"',

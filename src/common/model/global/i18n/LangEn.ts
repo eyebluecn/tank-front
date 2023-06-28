@@ -364,6 +364,7 @@ let LangEn = {
     memberRoleReadonly: 'Readonly',
     memberRoleReadWrite: 'Read and write',
     memberRoleAdmin: 'Admin',
+    emptyHint: 'No Space Yet',
   },
   model: {
     usernameRule: 'only lowercase letter and number and _ is permitted.',
