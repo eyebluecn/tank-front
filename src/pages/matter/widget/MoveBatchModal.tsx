@@ -12,6 +12,7 @@ import {
 } from '@ant-design/icons';
 
 interface IProps {
+  spaceUuid: string;
   onSuccess: (uuid: string) => any;
   onClose: () => any;
 }
@@ -28,16 +29,13 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
     },
   ];
 
-  constructor(props: IProps) {
-    super(props);
-  }
-
   componentDidMount() {
+    this.pager.setFilterValue('spaceUuid', this.props.spaceUuid);
     this.pager.setFilterValue('orderCreateTime', 'DESC');
     this.pager.setFilterValue('dir', true);
   }
 
-  static open(onSuccess: (uuid: string) => void) {
+  static open(spaceUuid: string, onSuccess: (uuid: string) => void) {
     let modal = Modal.confirm({
       className: 'move-modal custom-handle-modal',
       title: Lang.t('matter.moveTo'),
@@ -46,6 +44,7 @@ export default class MoveBatchModal extends TankComponent<IProps, IState> {
       okCancel: false,
       content: (
         <MoveBatchModal
+          spaceUuid={spaceUuid}
           onSuccess={(uuid: string) => {
             modal.destroy();
             onSuccess(uuid);

@@ -75,9 +75,11 @@ export default class Matter extends BaseEntity {
   static MATTER_ROOT = 'root';
 
   //下载zip包
-  static downloadZip(uuidsString: string) {
+  static downloadZip(uuidsString: string, spaceUuid: string) {
     window.open(
-      EnvUtil.currentHost() + Matter.URL_MATTER_ZIP + '?uuids=' + uuidsString
+      `${EnvUtil.currentHost()}${
+        Matter.URL_MATTER_ZIP
+      }?uuids=${uuidsString}&spaceUuid=${spaceUuid}`
     );
   }
 
@@ -369,12 +371,13 @@ export default class Matter extends BaseEntity {
   }
 
   static httpMove(
+    spaceUuid: string,
     srcUuids: string,
     destUuid: string,
     successCallback?: any,
     errorCallback?: any
   ) {
-    let form: any = { srcUuids: srcUuids };
+    let form: any = { spaceUuid, srcUuids };
     if (destUuid) {
       form.destUuid = destUuid;
     } else {

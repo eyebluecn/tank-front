@@ -249,13 +249,13 @@ export default class List extends TankComponent<IProps, IState> {
 
   downloadZip() {
     const uuids = this.selectedMatters.map((i) => i.uuid).toString();
-    Matter.downloadZip(uuids);
+    Matter.downloadZip(uuids, this.getSpaceUuid()!);
   }
 
   toggleMoveBatch() {
-    MoveBatchModal.open((targetUuid) => {
+    MoveBatchModal.open(this.getSpaceUuid()!, (targetUuid) => {
       const uuids = this.selectedMatters.map((i) => i.uuid).join(',');
-      Matter.httpMove(uuids, targetUuid, () => {
+      Matter.httpMove(this.getSpaceUuid()!, uuids, targetUuid, () => {
         MessageBoxUtil.success(Lang.t('operationSuccess'));
         this.refresh();
       });
