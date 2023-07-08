@@ -19,6 +19,7 @@ import ImageUtil from '../../../common/util/ImageUtil';
 interface IProps {
   matter: Matter;
   share: Share;
+  currentShareRootUuid: string;
   onPreviewImage: (matter: Matter) => any;
   onGoToDirectory: (id: string) => any;
 }
@@ -34,7 +35,13 @@ export default class ShareMatterPanel extends TankComponent<IProps, IState> {
   }
 
   clickRow() {
-    const { matter, share, onGoToDirectory, onPreviewImage } = this.props;
+    const {
+      matter,
+      share,
+      currentShareRootUuid,
+      onGoToDirectory,
+      onPreviewImage,
+    } = this.props;
 
     if (matter.dir) {
       onGoToDirectory(matter.uuid!);
@@ -44,17 +51,25 @@ export default class ShareMatterPanel extends TankComponent<IProps, IState> {
         onPreviewImage(matter);
       } else {
         matter.preview(
-          matter.getSharePreviewUrl(share.uuid!, share.code!, share.rootUuid)
+          matter.getSharePreviewUrl(
+            share.uuid!,
+            share.code!,
+            currentShareRootUuid
+          )
         );
       }
     }
   }
 
   getIcon() {
-    const { matter, share } = this.props;
+    const { matter, share, currentShareRootUuid } = this.props;
     if (matter.isImage()) {
       return ImageUtil.handleImageUrl(
-        matter.getSharePreviewUrl(share.uuid!, share.code!, share.rootUuid),
+        matter.getSharePreviewUrl(
+          share.uuid!,
+          share.code!,
+          currentShareRootUuid
+        ),
         false,
         100,
         100
@@ -65,9 +80,9 @@ export default class ShareMatterPanel extends TankComponent<IProps, IState> {
   }
 
   download() {
-    const { matter, share } = this.props;
+    const { matter, share, currentShareRootUuid } = this.props;
     matter.download(
-      matter.getShareDownloadUrl(share.uuid!, share.code!, share.rootUuid)
+      matter.getShareDownloadUrl(share.uuid!, share.code!, currentShareRootUuid)
     );
   }
 

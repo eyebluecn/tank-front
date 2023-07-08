@@ -48,6 +48,7 @@ export default class Detail extends TankComponent<IProps, IState> {
   share = new Share(this);
   pager = new Pager<Matter>(this, Matter, Detail.sharePagerSize);
   user = Moon.getSingleton().user;
+  currentShareRootUuid = BrowserUtil.getQueryByName('shareRootUuid'); // 当前查看的分享的根目录uuid
 
   constructor(props: IProps) {
     super(props);
@@ -57,9 +58,6 @@ export default class Detail extends TankComponent<IProps, IState> {
     this.share.uuid = this.props.match.params.uuid;
 
     if (this.user.hasLogin()) {
-      //如果query中有rootUuid那么就更新.
-      this.share.rootUuid =
-        BrowserUtil.getQueryByName('shareRootUuid') || this.share.rootUuid;
       this.pager.enableHistory();
       this.pager.urlPage = Share.URL_MATTER_PAGE;
       this.refresh();
@@ -73,47 +71,38 @@ export default class Detail extends TankComponent<IProps, IState> {
   }
 
   refresh() {
-    const puuid = BrowserUtil.getQueryByName('puuid') || Matter.MATTER_ROOT;
-    if (puuid === Matter.MATTER_ROOT) {
-      this.share.rootUuid = Matter.MATTER_ROOT;
-    }
+    const puuid = BrowserUtil.getQueryByName('puuid') || Matter.MATTER_ROOT; // 当前目录的puuid
 
-    this.share.httpBrowse(puuid, this.share.rootUuid, () => {
+    this.share.httpBrowse(puuid, this.currentShareRootUuid!, () => {
+      this.needShareCode = false;
+
+      // 根目录下matters已经通过browse接口拿到了
       if (puuid === Matter.MATTER_ROOT) {
         this.pager.clear();
         this.pager.totalItems = this.share.matters.length;
         this.pager.data = this.share.matters;
+      } else {
+        this.refreshMatterPager();
       }
 
       //刷新面包屑，面包屑依赖于这个接口
       this.refreshBreadcrumbs();
-
-      this.needShareCode = false;
       this.updateUI();
     });
-
-    this.refreshMatterPager();
   }
 
   refreshMatterPager() {
-    //只有当鉴权通过，并且不是分享根目录时需要才去进行page请求，根目录下matters已经通过browse接口拿到了
     const puuid = BrowserUtil.getQueryByName('puuid');
-    if (!this.needShareCode && puuid && puuid !== Matter.MATTER_ROOT) {
-      const {
-        uuid: shareUuid,
-        code: shareCode,
-        rootUuid: shareRootUuid,
-      } = this.share;
-      this.pager.setFilterValues({
-        puuid,
-        shareUuid,
-        shareCode,
-        shareRootUuid,
-        orderCreateTime: SortDirection.DESC, // 默认以时间降序
-        orderDir: SortDirection.DESC, // 默认文件夹排在前面
-      });
-      this.pager.httpList();
-    }
+    const { uuid: shareUuid, code: shareCode } = this.share;
+    this.pager.setFilterValues({
+      puuid,
+      shareUuid,
+      shareCode,
+      shareRootUuid: this.currentShareRootUuid,
+      orderCreateTime: SortDirection.DESC, // 默认以时间降序
+      orderDir: SortDirection.DESC, // 默认文件夹排在前面
+    });
+    this.pager.httpList();
   }
 
   getFiles(value: string) {
@@ -123,7 +112,7 @@ export default class Detail extends TankComponent<IProps, IState> {
 
   downloadZip() {
     const puuid = BrowserUtil.getQueryByName('puuid') || Matter.MATTER_ROOT;
-    this.share.downloadZip(puuid);
+    this.share.downloadZip(this.currentShareRootUuid!, puuid);
   }
 
   cancelShare() {
@@ -146,7 +135,11 @@ export default class Detail extends TankComponent<IProps, IState> {
     this.pager.data.forEach((item) => {
       if (item.isImage()) {
         imageArray.push(
-          item.getSharePreviewUrl(share.uuid!, share.code!, share.rootUuid)
+          item.getSharePreviewUrl(
+            share.uuid!,
+            share.code!,
+            this.currentShareRootUuid!
+          )
         );
         if (item.uuid === matter.uuid) {
           startIndex = imageArray.length - 1;
@@ -161,10 +154,10 @@ export default class Detail extends TankComponent<IProps, IState> {
     const paramId = this.props.match.params.uuid;
 
     if (matterUuid) {
-      //share.rootUuid 一旦设置好了，只要根文件夹不换，那么就一直不会变。
+      // currentShareRootUuid 一旦设置好了，只要根文件夹不换，那么就一直不会变。
       const puuid = BrowserUtil.getQueryByName('puuid');
       if (!puuid || puuid === Matter.MATTER_ROOT) {
-        this.share.rootUuid = matterUuid;
+        this.currentShareRootUuid = matterUuid;
         this.pager.clear();
       }
 
@@ -174,7 +167,6 @@ export default class Detail extends TankComponent<IProps, IState> {
       Sun.navigateQueryTo({ path: `/share/detail/${paramId}`, query });
     } else {
       // 回到分享根目录，先将rootUuid交给根目录
-      this.share.rootUuid = Matter.MATTER_ROOT;
       this.pager.clear();
       Sun.navigateQueryTo({ path: `/share/detail/${paramId}` });
     }
@@ -297,6 +289,7 @@ export default class Detail extends TankComponent<IProps, IState> {
                   key={matter.uuid!}
                   matter={matter}
                   share={share}
+                  currentShareRootUuid={this.currentShareRootUuid!}
                   onGoToDirectory={this.goToDirectory.bind(this)}
                   onPreviewImage={this.previewImage.bind(this)}
                 />

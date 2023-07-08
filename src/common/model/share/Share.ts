@@ -24,9 +24,6 @@ export default class Share extends BaseEntity {
   matters: Matter[] = [];
   spaceUuid: string | null = null;
 
-  //当前分享正在查看的根目录matter的uuid。前端辅助字段。
-  rootUuid: string = Matter.MATTER_ROOT;
-
   //本地临时字段
   expireOption: ShareExpireOption = ShareExpireOption.MONTH;
 
@@ -97,11 +94,11 @@ export default class Share extends BaseEntity {
   }
 
   //下载zip包
-  downloadZip(puuid?: string) {
+  downloadZip(rootUuid: string, puuid?: string) {
     window.open(
       `${EnvUtil.currentHost()}${Share.URL_ZIP}?shareUuid=${this.uuid}&code=${
         this.code
-      }&puuid=${puuid}&rootUuid=${this.rootUuid}`
+      }&puuid=${puuid}&rootUuid=${rootUuid}`
     );
   }
 
