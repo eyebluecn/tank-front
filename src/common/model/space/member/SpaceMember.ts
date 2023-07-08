@@ -21,6 +21,11 @@ export default class SpaceMember extends BaseEntity {
     super(reactComponent);
   }
 
+  getTAG(): string {
+    return 'spaceMember';
+  }
+
+
   assign(obj: any) {
     super.assign(obj);
     this.assignEntity('user', User);
