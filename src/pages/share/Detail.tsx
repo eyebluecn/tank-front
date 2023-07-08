@@ -58,7 +58,7 @@ export default class Detail extends TankComponent<IProps, IState> {
     //如果query中有rootUuid那么就更新.
     this.share.rootUuid =
       BrowserUtil.getQueryByName('shareRootUuid') || this.share.rootUuid;
-
+    this.pager.urlPage = Share.URL_MATTER_PAGE;
     this.pager.enableHistory();
     this.refresh();
   }

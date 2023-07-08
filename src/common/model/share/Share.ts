@@ -22,6 +22,7 @@ export default class Share extends BaseEntity {
   dirMatter: Matter = new Matter();
   //当前share对应的matters
   matters: Matter[] = [];
+  spaceUuid: string | null = null;
 
   //当前分享正在查看的根目录matter的uuid。前端辅助字段。
   rootUuid: string = Matter.MATTER_ROOT;
@@ -33,6 +34,7 @@ export default class Share extends BaseEntity {
   static URL_BROWSE = '/api/share/browse';
   static URL_DELETE_BATCH = '/api/share/delete/batch';
   static URL_ZIP = '/api/share/zip';
+  static URL_MATTER_PAGE = '/api/share/matter/page';
 
   constructor(reactComponent?: React.Component) {
     super(reactComponent);
@@ -112,7 +114,8 @@ export default class Share extends BaseEntity {
     let that = this;
 
     const form = {
-      matterUuids: matterUuids,
+      matterUuids,
+      spaceUuid: this.spaceUuid,
       expireInfinity: this.expireOption === ShareExpireOption.INFINITY,
       expireTime: DateUtil.simpleDateTime(this.getExpireTime()),
     };

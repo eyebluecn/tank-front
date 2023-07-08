@@ -414,6 +414,7 @@ export default class List extends TankComponent<IProps, IState> {
   shareBatch() {
     const uuids = this.selectedMatters.map((i) => i.uuid).join(',');
     ShareOperationModal.open((share: Share) => {
+      share.spaceUuid = this.getSpaceUuid();
       share.httpCreate(uuids, () => {
         ShareDialogModal.open(share);
       });
