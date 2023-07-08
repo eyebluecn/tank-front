@@ -6,4 +6,5 @@ export default interface BreadcrumbModel {
   path: string;
   query: any;
   displayDirect: boolean;
+  onClick?: () => void;
 }

@@ -30,12 +30,16 @@ export default class BreadcrumbPanel extends TankComponent<IProps, IState> {
                 <Breadcrumb.Item key={index}>
                   <span
                     className="cursor"
-                    onClick={() => {
-                      Sun.navigateQueryTo({
-                        path: item.path,
-                        query: item.query,
-                      });
-                    }}
+                    onClick={
+                      item.onClick
+                        ? item.onClick
+                        : () => {
+                            Sun.navigateQueryTo({
+                              path: item.path,
+                              query: item.query,
+                            });
+                          }
+                    }
                   >
                     {item.name}
                   </span>

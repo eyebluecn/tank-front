@@ -48,7 +48,8 @@ export default class Detail extends TankComponent<IProps, IState> {
   share = new Share(this);
   pager = new Pager<Matter>(this, Matter, Detail.sharePagerSize);
   user = Moon.getSingleton().user;
-  currentShareRootUuid = BrowserUtil.getQueryByName('shareRootUuid'); // 当前查看的分享的根目录uuid
+  currentShareRootUuid =
+    BrowserUtil.getQueryByName('shareRootUuid') || Matter.MATTER_ROOT; // 当前查看的分享的根目录uuid
 
   constructor(props: IProps) {
     super(props);
@@ -56,10 +57,10 @@ export default class Detail extends TankComponent<IProps, IState> {
 
   componentDidMount(): void {
     this.share.uuid = this.props.match.params.uuid;
+    this.pager.urlPage = Share.URL_MATTER_PAGE;
 
     if (this.user.hasLogin()) {
       this.pager.enableHistory();
-      this.pager.urlPage = Share.URL_MATTER_PAGE;
       this.refresh();
     }
   }
@@ -150,26 +151,20 @@ export default class Detail extends TankComponent<IProps, IState> {
     ImagePreviewer.showMultiPhoto(imageArray, startIndex);
   }
 
-  goToDirectory(matterUuid?: string) {
+  goToDirectory(matterUuid: string) {
     const paramId = this.props.match.params.uuid;
 
-    if (matterUuid) {
-      // currentShareRootUuid 一旦设置好了，只要根文件夹不换，那么就一直不会变。
-      const puuid = BrowserUtil.getQueryByName('puuid');
-      if (!puuid || puuid === Matter.MATTER_ROOT) {
-        this.currentShareRootUuid = matterUuid;
-        this.pager.clear();
-      }
-
-      this.pager.setFilterValue('puuid', matterUuid);
-      this.pager.page = 0;
-      const query = this.pager.getParams();
-      Sun.navigateQueryTo({ path: `/share/detail/${paramId}`, query });
-    } else {
-      // 回到分享根目录，先将rootUuid交给根目录
+    // currentShareRootUuid 一旦设置好了，只要根文件夹不换，那么就一直不会变。
+    const puuid = BrowserUtil.getQueryByName('puuid');
+    if (!puuid || puuid === Matter.MATTER_ROOT) {
+      this.currentShareRootUuid = matterUuid;
       this.pager.clear();
-      Sun.navigateQueryTo({ path: `/share/detail/${paramId}` });
     }
+
+    this.pager.setFilterValue('puuid', matterUuid);
+    this.pager.page = 0;
+    const query = this.pager.getParams();
+    Sun.navigateQueryTo({ path: `/share/detail/${paramId}`, query });
   }
 
   refreshBreadcrumbs() {
@@ -183,6 +178,14 @@ export default class Detail extends TankComponent<IProps, IState> {
       path: '/share/detail/' + this.share.uuid,
       query: {},
       displayDirect: false,
+      onClick: () => {
+        Sun.navigateQueryTo({
+          path: `/share/detail/${this.share.uuid}`,
+          query: {},
+        });
+        this.currentShareRootUuid = Matter.MATTER_ROOT;
+        this.updateUI();
+      },
     });
 
     let pMatter = this.share.dirMatter;
