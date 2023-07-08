@@ -593,7 +593,6 @@ export default class List extends TankComponent<IProps, IState> {
                     <DeleteOutlined />
                     {Lang.t('delete')}
                   </Button>
-
                   <Button
                     type="primary"
                     className="mb10"
@@ -602,7 +601,6 @@ export default class List extends TankComponent<IProps, IState> {
                     <DownloadOutlined />
                     {Lang.t('download')}
                   </Button>
-
                   <Button
                     type="primary"
                     className="mb10"
@@ -612,14 +610,17 @@ export default class List extends TankComponent<IProps, IState> {
                     {Lang.t('matter.move')}
                   </Button>
 
-                  <Button
-                    type="primary"
-                    className="mb10"
-                    onClick={() => this.shareBatch()}
-                  >
-                    <ShareAltOutlined />
-                    {Lang.t('matter.share')}
-                  </Button>
+                  {/*共享空间下暂不支持分享功能*/}
+                  {!this.props.spaceUuid && (
+                    <Button
+                      type="primary"
+                      className="mb10"
+                      onClick={() => this.shareBatch()}
+                    >
+                      <ShareAltOutlined />
+                      {Lang.t('matter.share')}
+                    </Button>
+                  )}
                 </>
               ) : null}
 
