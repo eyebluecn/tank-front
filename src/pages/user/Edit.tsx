@@ -65,19 +65,23 @@ export default class Edit extends TankComponent<IProps, IState> {
 
     currentUser.assign(values);
 
-    currentUser.httpSave(function () {
-      MessageBoxUtil.success(Lang.t('operationSuccess'));
+    currentUser.httpSave(
+      {
+        sizeLimit: values.sizeLimit,
+        totalSizeLimit: values.totalSizeLimit,
+      },
+      function () {
+        MessageBoxUtil.success(Lang.t('operationSuccess'));
 
-      //如果是自己的资料修改成功，更新一下本地。
-      if (user.uuid === currentUser.uuid) {
-        user.assign(currentUser);
+        //如果是自己的资料修改成功，更新一下本地。
+        if (user.uuid === currentUser.uuid) {
+          user.assign(currentUser);
+        }
+
+        Sun.navigateBack();
       }
-
-      Sun.navigateBack();
-    });
+    );
   }
-
-  onFinishFailed(errorInfo: any) {}
 
   render() {
     let that = this;
@@ -121,7 +125,6 @@ export default class Edit extends TankComponent<IProps, IState> {
             name="basic"
             ref={this.formRef}
             onFinish={this.onFinish.bind(this)}
-            onFinishFailed={this.onFinishFailed.bind(this)}
             onValuesChange={() => {
               that.updateUI();
             }}
@@ -208,7 +211,7 @@ export default class Edit extends TankComponent<IProps, IState> {
               required
               name="sizeLimit"
               rules={[{ required: true, message: Lang.t('inputRequired') }]}
-              initialValue={currentUser.sizeLimit}
+              initialValue={currentUser.space?.sizeLimit}
             >
               <InputSize
                 className="w200"
@@ -221,7 +224,7 @@ export default class Edit extends TankComponent<IProps, IState> {
               required
               name="totalSizeLimit"
               rules={[{ required: true, message: Lang.t('inputRequired') }]}
-              initialValue={currentUser.totalSizeLimit}
+              initialValue={currentUser.space?.totalSizeLimit}
             >
               <InputSize
                 className="w200"

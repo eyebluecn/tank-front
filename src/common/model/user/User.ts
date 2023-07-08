@@ -8,6 +8,7 @@ import Filter from '../base/filter/Filter';
 import SortFilter from '../base/filter/SortFilter';
 import InputFilter from '../base/filter/InputFilter';
 import SelectionFilter from '../base/filter/SelectionFilter';
+import Space from '../space/Space';
 
 export default class User extends BaseEntity {
   //获取当前登录者的信息
@@ -28,12 +29,9 @@ export default class User extends BaseEntity {
   avatarUrl: string | null = null;
   lastIp: string | null = null;
   lastTime: Date = new Date();
-  //默认大小限制100Mb.
-  sizeLimit: number = 104857600;
-  totalSize: number = 0;
-  totalSizeLimit: number = -1;
   status: UserStatus = UserStatus.OK;
   spaceUuid: string | null = null;
+  space: Space | null = null;
 
   constructor(reactComponent?: React.Component) {
     super(reactComponent);
@@ -43,6 +41,7 @@ export default class User extends BaseEntity {
     super.assign(obj);
 
     this.assignEntity('lastTime', Date);
+    this.assignEntity('space', Space);
   }
 
   getTAG(): string {
@@ -64,8 +63,6 @@ export default class User extends BaseEntity {
       password: this.password,
       role: this.role,
       avatarUrl: this.avatarUrl,
-      sizeLimit: this.sizeLimit,
-      totalSizeLimit: this.totalSizeLimit,
       uuid: this.uuid ? this.uuid : null,
     };
   }
@@ -159,6 +156,41 @@ export default class User extends BaseEntity {
         finalCallback
       );
     }
+  }
+
+  httpSave(
+    limit: {
+      sizeLimit: number;
+      totalSizeLimit: number;
+    },
+    successCallback?: any,
+    errorCallback?: any,
+    finallyCallback?: any
+  ) {
+    let that = this;
+
+    let url = this.getUrlCreate();
+    if (this.uuid) {
+      url = this.getUrlEdit();
+    }
+
+    this.errorMessage = this.validate();
+    if (this.errorMessage) {
+      that.defaultErrorHandler(this.errorMessage, errorCallback);
+      return;
+    }
+
+    this.httpPost(
+      url,
+      { ...this.getForm(), ...limit },
+      function (response: any) {
+        that.assign(response.data.data);
+
+        SafeUtil.safeCallback(successCallback)(response);
+      },
+      errorCallback,
+      finallyCallback
+    );
   }
 
   //退出登录

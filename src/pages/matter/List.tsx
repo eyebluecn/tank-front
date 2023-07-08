@@ -373,13 +373,13 @@ export default class List extends TankComponent<IProps, IState> {
         m.spaceUuid = this.getSpaceUuid();
 
         //判断文件大小。
-        if (this.user.sizeLimit >= 0) {
-          if (file.size > this.user.sizeLimit) {
+        if (this.user.space!.sizeLimit >= 0) {
+          if (file.size > this.user.space!.sizeLimit) {
             MessageBoxUtil.error(
               Lang.t(
                 'matter.sizeExceedLimit',
                 StringUtil.humanFileSize(file.size),
-                StringUtil.humanFileSize(this.user.sizeLimit)
+                this.user.space?.getHumanizeSizeLimit()
               )
             );
             return;

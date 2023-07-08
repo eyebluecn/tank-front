@@ -132,8 +132,6 @@ export default class List extends TankComponent<IProps, IState> {
 
         <Row gutter={[10, 10]}>
           {pager.data.map((space) => {
-            const percent = space.totalSize! / space.totalSizeLimit!;
-
             return (
               <Col xs={24} sm={24} md={12} lg={8} key={space.uuid}>
                 <Card
@@ -181,20 +179,20 @@ export default class List extends TankComponent<IProps, IState> {
                         <>
                           <div>
                             {Lang.t('space.sizeLimit')}：
-                            {FileUtil.humanFileSize(space.sizeLimit!)}
+                            {space.getHumanizeSizeLimit()}
                           </div>
                           <div>
                             {Lang.t('space.totalSize')}：
-                            {FileUtil.humanFileSize(space.totalSize!)}
+                            {space.getHumanizeTotalSize()}
                           </div>
                           <div>
                             {Lang.t('space.totalSizeLimit')}：
-                            {FileUtil.humanFileSize(space.totalSizeLimit!)}
+                            {space.getHumanizeTotalSizeLimit()}
                           </div>
                         </>
                       }
                     >
-                      <Progress percent={Math.round(percent * 100)} />
+                      <Progress percent={Math.round(space.getUsedPercent())} />
                     </Tooltip>
                   </div>
                 </Card>

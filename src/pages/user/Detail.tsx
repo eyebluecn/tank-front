@@ -213,15 +213,15 @@ export default class Detail extends TankComponent<IProps, IState> {
           </InfoCell>
 
           <InfoCell name={Lang.t('user.singleFileSizeLimit')}>
-            {FileUtil.humanFileSize(currentUser.sizeLimit)}
+            {currentUser.space?.getHumanizeSizeLimit()}
           </InfoCell>
 
           <InfoCell name={Lang.t('user.totalFileSizeLimit')}>
-            {FileUtil.humanFileSize(currentUser.totalSizeLimit)}
+            {currentUser.space?.getHumanizeTotalSizeLimit()}
           </InfoCell>
 
           <InfoCell name={Lang.t('user.totalFileSize')}>
-            {FileUtil.humanFileSize(currentUser.totalSize)}
+            {currentUser.space?.getHumanizeTotalSize()}
           </InfoCell>
 
           <InfoCell name={Lang.t('user.status')}>

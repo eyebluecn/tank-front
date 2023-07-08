@@ -9,13 +9,11 @@ import { Button, Form, Input, InputNumber, Switch } from 'antd';
 import { SaveOutlined } from '@ant-design/icons';
 import TankContentCard from '../widget/TankContentCard';
 import Preference from '../../common/model/preference/Preference';
-import FileUtil from '../../common/util/FileUtil';
 import { FormInstance } from 'antd/lib/form';
 import MessageBoxUtil from '../../common/util/MessageBoxUtil';
 import Sun from '../../common/model/global/Sun';
 import Lang from '../../common/model/global/Lang';
 import MatterImage from '../matter/widget/MatterImage';
-import { UserRole } from '../../common/model/user/UserRole';
 import InputSize from '../widget/form/InputSize';
 
 interface IProps extends RouteComponentProps {}

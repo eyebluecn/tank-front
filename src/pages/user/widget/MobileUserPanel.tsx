@@ -77,13 +77,13 @@ export default class MobileUserPanel extends TankComponent<IProps, IState> {
           {this.showMore ? (
             <div className="ml10 panel-detail">
               <InfoCell name={Lang.t('user.singleFileSizeLimit')}>
-                <span>{FileUtil.humanFileSize(user.sizeLimit)}</span>
+                <span>{user.space?.getHumanizeSizeLimit()}</span>
               </InfoCell>
               <InfoCell name={Lang.t('user.totalFileSize')}>
-                <span>{FileUtil.humanFileSize(user.totalSize)}</span>
+                <span>{user.space?.getHumanizeTotalSize()}</span>
               </InfoCell>
               <InfoCell name={Lang.t('user.totalFileSizeLimit')}>
-                <span>{FileUtil.humanFileSize(user.totalSizeLimit)}</span>
+                <span>{user.space?.getHumanizeTotalSizeLimit()}</span>
               </InfoCell>
               <InfoCell name={Lang.t('user.status')}>
                 <Tag color={UserStatusMap[user.status].color}>

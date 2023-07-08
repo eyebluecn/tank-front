@@ -1,5 +1,6 @@
 import BaseEntity from '../base/BaseEntity';
 import User from '../user/User';
+import FileUtil from '../../util/FileUtil';
 
 export interface SpaceFormValues {
   name: string;
@@ -32,5 +33,24 @@ export default class Space extends BaseEntity {
       totalSizeLimit: this.totalSizeLimit,
       uuid: this.uuid ? this.uuid : null,
     };
+  }
+
+  getHumanizeTotalSize() {
+    return FileUtil.humanFileSize(this.totalSize);
+  }
+
+  getHumanizeSizeLimit() {
+    return FileUtil.humanFileSize(this.sizeLimit);
+  }
+
+  getHumanizeTotalSizeLimit() {
+    return FileUtil.humanFileSize(this.totalSizeLimit);
+  }
+
+  getUsedPercent() {
+    if (this.totalSizeLimit === 0) {
+      return 0;
+    }
+    return (this.totalSize / this.totalSizeLimit) * 100;
   }
 }

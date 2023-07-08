@@ -42,9 +42,12 @@ export default class MatterImage extends TankComponent<IProps, IState> {
     if (file) {
       let fileSize = (file as any).size;
 
-      if (this.user.sizeLimit >= 0 && fileSize > this.user.sizeLimit) {
+      if (
+        this.user.space!.sizeLimit >= 0 &&
+        fileSize > this.user.space!.sizeLimit
+      ) {
         MessageBoxUtil.error(
-          Lang.t('matter.sizeExceedLimit', fileSize, this.user.sizeLimit)
+          Lang.t('matter.sizeExceedLimit', fileSize, this.user.space!.sizeLimit)
         );
         return;
       }

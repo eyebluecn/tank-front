@@ -27,20 +27,20 @@ export default class Capacity extends TankComponent<IProps, IState> {
 
   render() {
     const { user } = this;
+    if (!user.space) return null;
+
     return (
       <div className="widget-capacity">
-        {user.totalSizeLimit !== -1 && (
+        {user.space!.totalSizeLimit !== -1 && (
           <Progress
-            percent={(user.totalSize / user.totalSizeLimit) * 100}
+            percent={user.space.getUsedPercent()}
             showInfo={false}
             strokeColor="#215891"
             trailColor="#ddd"
           />
         )}
         <div className="capacity-text">
-          {`${FileUtil.humanFileSize(
-            user.totalSize
-          )} / ${FileUtil.humanFileSize(user.totalSizeLimit)}`}
+          {`${user.space.getHumanizeTotalSize()} / ${user.space.getHumanizeTotalSizeLimit()}`}
         </div>
       </div>
     );

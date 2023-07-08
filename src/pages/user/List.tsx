@@ -155,23 +155,20 @@ export default class List extends TankComponent<IProps, IState> {
       },
       {
         title: Lang.t('user.singleFileSizeLimit'),
-        dataIndex: 'sizeLimit',
         render: (text: any, record: User, index: number): React.ReactNode => (
-          <span>{FileUtil.humanFileSize(record.sizeLimit)}</span>
+          <span>{record.space?.getHumanizeSizeLimit()}</span>
         ),
       },
       {
         title: Lang.t('user.totalFileSize'),
-        dataIndex: 'totalSize',
         render: (text: any, record: User, index: number): React.ReactNode => (
-          <span>{FileUtil.humanFileSize(record.totalSize)}</span>
+          <span>{record.space?.getHumanizeTotalSize()}</span>
         ),
       },
       {
         title: Lang.t('user.totalFileSizeLimit'),
-        dataIndex: 'totalSizeLimit',
         render: (text: any, record: User, index: number): React.ReactNode => (
-          <span>{FileUtil.humanFileSize(record.totalSizeLimit)}</span>
+          <span>{record.space?.getHumanizeTotalSizeLimit()}</span>
         ),
       },
       {
