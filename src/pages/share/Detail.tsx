@@ -55,12 +55,15 @@ export default class Detail extends TankComponent<IProps, IState> {
 
   componentDidMount(): void {
     this.share.uuid = this.props.match.params.uuid;
-    //如果query中有rootUuid那么就更新.
-    this.share.rootUuid =
-      BrowserUtil.getQueryByName('shareRootUuid') || this.share.rootUuid;
-    this.pager.urlPage = Share.URL_MATTER_PAGE;
-    this.pager.enableHistory();
-    this.refresh();
+
+    if (this.user.hasLogin()) {
+      //如果query中有rootUuid那么就更新.
+      this.share.rootUuid =
+        BrowserUtil.getQueryByName('shareRootUuid') || this.share.rootUuid;
+      this.pager.enableHistory();
+      this.pager.urlPage = Share.URL_MATTER_PAGE;
+      this.refresh();
+    }
   }
 
   componentWillReceiveProps(nextProps: Readonly<IProps>, nextContext: any) {
@@ -82,7 +85,7 @@ export default class Detail extends TankComponent<IProps, IState> {
         this.pager.data = this.share.matters;
       }
 
-      //刷新面包屑
+      //刷新面包屑，面包屑依赖于这个接口
       this.refreshBreadcrumbs();
 
       this.needShareCode = false;

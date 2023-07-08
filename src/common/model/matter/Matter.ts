@@ -610,7 +610,7 @@ export default class Matter extends BaseEntity {
     shareCode: string,
     shareRootUuid: string
   ): string {
-    return `${EnvUtil.currentHost()}/api/alien/download/${this.uuid}/${
+    return `${EnvUtil.currentHost()}/api/share/matter/download/${this.uuid}/${
       this.name
     }?shareUuid=${shareUuid}&shareCode=${shareCode}&shareRootUuid=${shareRootUuid}`;
   }
@@ -620,7 +620,7 @@ export default class Matter extends BaseEntity {
     shareCode: string,
     shareRootUuid: string
   ): string {
-    return `${EnvUtil.currentHost()}/api/alien/preview/${this.uuid}/${
+    return `${EnvUtil.currentHost()}/api/share/matter/preview/${this.uuid}/${
       this.name
     }?shareUuid=${shareUuid}&shareCode=${shareCode}&shareRootUuid=${shareRootUuid}`;
   }

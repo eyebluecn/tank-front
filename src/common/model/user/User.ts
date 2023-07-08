@@ -44,6 +44,10 @@ export default class User extends BaseEntity {
     this.assignEntity('space', Space);
   }
 
+  hasLogin(): boolean {
+    return this.role !== UserRole.GUEST;
+  }
+
   getTAG(): string {
     return 'user';
   }
