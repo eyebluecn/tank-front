@@ -93,8 +93,9 @@ export default class List extends TankComponent<IProps, IState> {
   //上传错误日志
   uploadErrorLogs: [string, string, string][] = [];
 
-  //准备上传的一系列文件
-  static uploadMatters: Matter[] = [];
+  // 全局的上传对象
+  uploadMattersMap: Record<string, Matter[]> =
+    Moon.getSingleton().uploadMattersMap;
 
   //持有全局唯一的实例。
   static instance: List | null = null;
@@ -231,14 +232,14 @@ export default class List extends TankComponent<IProps, IState> {
     MatterDeleteModal.open(
       !!this.props.spaceUuid,
       () => {
-        Matter.httpSoftDeleteBatch(uuids, this.getSpaceUuid()!, () => {
+        Matter.httpSoftDeleteBatch(uuids, this.getSpaceUuid(), () => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
           Capacity.instance?.refresh();
           this.refresh();
         });
       },
       () => {
-        Matter.httpDeleteBatch(uuids, this.getSpaceUuid()!, () => {
+        Matter.httpDeleteBatch(uuids, this.getSpaceUuid(), () => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
           Capacity.instance?.refresh();
           this.refresh();
@@ -249,13 +250,13 @@ export default class List extends TankComponent<IProps, IState> {
 
   downloadZip() {
     const uuids = this.selectedMatters.map((i) => i.uuid).toString();
-    Matter.downloadZip(uuids, this.getSpaceUuid()!);
+    Matter.downloadZip(uuids, this.getSpaceUuid());
   }
 
   toggleMoveBatch() {
-    MoveBatchModal.open(this.getSpaceUuid()!, (targetUuid) => {
+    MoveBatchModal.open(this.getSpaceUuid(), (targetUuid) => {
       const uuids = this.selectedMatters.map((i) => i.uuid).join(',');
-      Matter.httpMove(this.getSpaceUuid()!, uuids, targetUuid, () => {
+      Matter.httpMove(this.getSpaceUuid(), uuids, targetUuid, () => {
         MessageBoxUtil.success(Lang.t('operationSuccess'));
         this.refresh();
       });
@@ -388,10 +389,10 @@ export default class List extends TankComponent<IProps, IState> {
         m.file = file;
         m.httpUpload(
           () => {
-            const index = List.uploadMatters.findIndex(
+            const index = this.uploadMattersMap[this.getSpaceUuid()].findIndex(
               (matter) => matter === m
             );
-            List.uploadMatters.splice(index, 1);
+            this.uploadMattersMap[this.getSpaceUuid()].splice(index, 1);
             List.instance?.refresh();
             Capacity.instance?.refresh();
           },
@@ -401,7 +402,11 @@ export default class List extends TankComponent<IProps, IState> {
           }
         );
 
-        List.uploadMatters.push(m);
+        if (this.uploadMattersMap[this.getSpaceUuid()]) {
+          this.uploadMattersMap[this.getSpaceUuid()].push(m);
+        } else {
+          this.uploadMattersMap[this.getSpaceUuid()] = [m];
+        }
       };
     }
   }
@@ -433,7 +438,7 @@ export default class List extends TankComponent<IProps, IState> {
 
   getSpaceUuid() {
     if (this.props.spaceUuid) return this.props.spaceUuid;
-    return this.user.spaceUuid;
+    return this.user.spaceUuid!;
   }
 
   createDirectory() {
@@ -671,7 +676,9 @@ export default class List extends TankComponent<IProps, IState> {
         </Row>
 
         {Children.toArray(
-          List.uploadMatters.map((m) => <UploadMatterPanel matter={m} />)
+          this.uploadMattersMap[this.getSpaceUuid()]?.map((m) => (
+            <UploadMatterPanel matter={m} />
+          ))
         )}
 
         {pager.data.length ? (
