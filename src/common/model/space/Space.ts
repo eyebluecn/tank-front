@@ -21,6 +21,11 @@ export default class Space extends BaseEntity {
     super(reactComponent);
   }
 
+  getTAG(): string {
+    return 'space';
+  }
+
+
   assign(obj: any) {
     super.assign(obj);
     this.assignEntity('user', User);
