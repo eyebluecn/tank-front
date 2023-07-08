@@ -610,9 +610,9 @@ export default class Matter extends BaseEntity {
     shareCode: string,
     shareRootUuid: string
   ): string {
-    return `${EnvUtil.currentHost()}/api/share/matter/download/${this.uuid}/${
-      this.name
-    }?shareUuid=${shareUuid}&shareCode=${shareCode}&shareRootUuid=${shareRootUuid}`;
+    return `${EnvUtil.currentHost()}/api/share/matter/download?matterUuid=${
+      this.uuid
+    }&shareUuid=${shareUuid}&shareCode=${shareCode}&shareRootUuid=${shareRootUuid}`;
   }
 
   getSharePreviewUrl(
@@ -620,8 +620,8 @@ export default class Matter extends BaseEntity {
     shareCode: string,
     shareRootUuid: string
   ): string {
-    return `${EnvUtil.currentHost()}/api/share/matter/preview/${this.uuid}/${
-      this.name
-    }?shareUuid=${shareUuid}&shareCode=${shareCode}&shareRootUuid=${shareRootUuid}`;
+    return `${EnvUtil.currentHost()}/api/share/matter/preview?matterUuid=${
+      this.uuid
+    }&shareUuid=${shareUuid}&shareCode=${shareCode}&shareRootUuid=${shareRootUuid}`;
   }
 }
