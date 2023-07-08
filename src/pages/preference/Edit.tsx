@@ -15,6 +15,8 @@ import MessageBoxUtil from '../../common/util/MessageBoxUtil';
 import Sun from '../../common/model/global/Sun';
 import Lang from '../../common/model/global/Lang';
 import MatterImage from '../matter/widget/MatterImage';
+import { UserRole } from '../../common/model/user/UserRole';
+import InputSize from '../widget/form/InputSize';
 
 interface IProps extends RouteComponentProps {}
 
@@ -142,55 +144,29 @@ export default class Edit extends TankComponent<IProps, IState> {
             <Form.Item
               label={Lang.t('preference.zipMaxSizeLimit')}
               required={true}
+              name="downloadDirMaxSize"
+              rules={[
+                {
+                  required: true,
+                  message: Lang.t('preference.enterZipMaxSizeLimit'),
+                },
+              ]}
             >
-              <Form.Item
-                name="downloadDirMaxSize"
-                rules={[
-                  {
-                    required: true,
-                    message: Lang.t('preference.enterZipMaxSizeLimit'),
-                  },
-                ]}
-                noStyle
-              >
-                <InputNumber min={-1} className="w150" />
-              </Form.Item>
-              <span className="pl10">
-                {Lang.t('preference.current')}:
-                {this.formRef && this.formRef.current
-                  ? FileUtil.humanFileSize(
-                      this.formRef.current.getFieldValue('downloadDirMaxSize')
-                    )
-                  : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
-              </span>
+              <InputSize className="w200" />
             </Form.Item>
 
             <Form.Item
               label={Lang.t('preference.userDefaultSizeLimit')}
               required={true}
+              name="defaultTotalSizeLimit"
+              rules={[
+                {
+                  required: true,
+                  message: Lang.t('preference.enterUserDefaultSizeLimit'),
+                },
+              ]}
             >
-              <Form.Item
-                name="defaultTotalSizeLimit"
-                rules={[
-                  {
-                    required: true,
-                    message: Lang.t('preference.enterUserDefaultSizeLimit'),
-                  },
-                ]}
-                noStyle
-              >
-                <InputNumber min={-1} className="w150" />
-              </Form.Item>
-              <span className="pl10">
-                {Lang.t('preference.current')}:
-                {this.formRef && this.formRef.current
-                  ? FileUtil.humanFileSize(
-                      this.formRef.current.getFieldValue(
-                        'defaultTotalSizeLimit'
-                      )
-                    )
-                  : FileUtil.humanFileSize(preference.defaultTotalSizeLimit)}
-              </span>
+              <InputSize className="w200" />
             </Form.Item>
 
             <Form.Item

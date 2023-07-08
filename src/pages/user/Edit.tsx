@@ -16,6 +16,7 @@ import MessageBoxUtil from '../../common/util/MessageBoxUtil';
 import Sun from '../../common/model/global/Sun';
 import Lang from '../../common/model/global/Lang';
 import MatterImage from '../matter/widget/MatterImage';
+import InputSize from '../widget/form/InputSize';
 
 interface RouteParam {
   uuid: string;
@@ -204,56 +205,28 @@ export default class Edit extends TankComponent<IProps, IState> {
 
             <Form.Item
               label={Lang.t('user.singleFileSizeLimit')}
-              required={true}
+              required
+              name="sizeLimit"
+              rules={[{ required: true, message: Lang.t('inputRequired') }]}
+              initialValue={currentUser.sizeLimit}
             >
-              <Form.Item
-                name="sizeLimit"
-                rules={[{ required: true, message: Lang.t('inputRequired') }]}
-                initialValue={currentUser.sizeLimit}
-                noStyle
-              >
-                <InputNumber
-                  min={-1}
-                  className="w150"
-                  disabled={user.role !== UserRole.ADMINISTRATOR}
-                />
-              </Form.Item>
-              <span className="pl10">
-                {' '}
-                {Lang.t('user.current')}:
-                {this.formRef && this.formRef.current
-                  ? FileUtil.humanFileSize(
-                      this.formRef.current.getFieldValue('sizeLimit')
-                    )
-                  : FileUtil.humanFileSize(currentUser.sizeLimit)}
-              </span>
+              <InputSize
+                className="w200"
+                disabled={user.role !== UserRole.ADMINISTRATOR}
+              />
             </Form.Item>
 
             <Form.Item
               label={Lang.t('user.totalFileSizeLimit')}
-              required={true}
+              required
+              name="totalSizeLimit"
+              rules={[{ required: true, message: Lang.t('inputRequired') }]}
+              initialValue={currentUser.totalSizeLimit}
             >
-              <Form.Item
-                name="totalSizeLimit"
-                rules={[{ required: true, message: Lang.t('inputRequired') }]}
-                initialValue={currentUser.totalSizeLimit}
-                noStyle
-              >
-                <InputNumber
-                  min={-1}
-                  className="w150"
-                  disabled={user.role !== UserRole.ADMINISTRATOR}
-                />
-              </Form.Item>
-              <span className="pl10">
-                {' '}
-                {Lang.t('user.current')}:
-                {this.formRef && this.formRef.current
-                  ? FileUtil.humanFileSize(
-                      this.formRef.current.getFieldValue('totalSizeLimit')
-                    )
-                  : FileUtil.humanFileSize(currentUser.totalSizeLimit)}
-              </span>
+              <InputSize
+                className="w200"
+                disabled={user.role !== UserRole.ADMINISTRATOR}
+              />
             </Form.Item>
 
             <div className="text-right">

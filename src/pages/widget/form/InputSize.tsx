@@ -50,12 +50,12 @@ const InputSize = ({
   return (
     <Space>
       <InputNumber
-        {...otherProps}
         value={num}
         addonAfter={renderAfter()}
         min={-1}
         precision={0}
         onChange={handleChangeNum}
+        {...otherProps}
       />
       {num === -1 && (
         <Tag color={Color.PRIMARY}>{Lang.t('preference.noLimit')}</Tag>
