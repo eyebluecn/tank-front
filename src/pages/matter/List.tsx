@@ -128,16 +128,48 @@ export default class List extends TankComponent<IProps, IState> {
       this.updateUI();
     },
     register: () => {
-      const {
-        dragEnterListener,
-        dragleaveListener,
-        dragoverListener,
-        dropListener,
-      } = this.drag;
-      this.wrapperRef.current?.addEventListener('dragenter', dragEnterListener);
-      this.wrapperRef.current?.addEventListener('dragleave', dragleaveListener);
-      this.wrapperRef.current?.addEventListener('dragover', dragoverListener);
-      this.wrapperRef.current?.addEventListener('drop', dropListener);
+      this.wrapperRef.current?.addEventListener(
+        'dragenter',
+        this.drag.dragEnterListener
+      );
+      this.wrapperRef.current?.addEventListener(
+        'dragleave',
+        this.drag.dragleaveListener
+      );
+      this.wrapperRef.current?.addEventListener(
+        'dragover',
+        this.drag.dragoverListener
+      );
+      this.wrapperRef.current?.addEventListener('drop', this.drag.dropListener);
+    },
+    unregister: () => {
+      this.wrapperRef.current?.addEventListener(
+        'dragenter',
+        this.drag.dragEnterListener
+      );
+      this.wrapperRef.current?.addEventListener(
+        'dragleave',
+        this.drag.dragleaveListener
+      );
+      this.wrapperRef.current?.addEventListener(
+        'dragover',
+        this.drag.dragoverListener
+      );
+      this.wrapperRef.current?.addEventListener('drop', this.drag.dropListener);
+    },
+  };
+
+  paste = {
+    pasteListener: (e: ClipboardEvent) => {
+      if (e.clipboardData?.files?.length! > 0) {
+        this.launchUpload(e.clipboardData?.files!);
+      }
+    },
+    register: () => {
+      document.addEventListener('paste', this.paste.pasteListener);
+    },
+    unregister: () => {
+      document.removeEventListener('paste', this.paste.pasteListener);
     },
   };
 
@@ -147,6 +179,12 @@ export default class List extends TankComponent<IProps, IState> {
     this.refresh();
     this.refreshBreadcrumbs();
     this.drag.register();
+    this.paste.register();
+  }
+
+  componentWillUnmount() {
+    this.drag.unregister();
+    this.paste.unregister();
   }
 
   componentWillReceiveProps() {
