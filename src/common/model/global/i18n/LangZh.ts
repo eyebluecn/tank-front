@@ -161,6 +161,8 @@ let LangZh = {
     crawlFilenameTip: '请输入文件名',
     crawlBackground: '后台抓取',
     crawlSuccessTip: '抓取成功',
+    crawlDescription:
+      '抓取文件指后台将从指定资源链接直接下载到蓝眼云盘当前目录下',
   },
   router: {
     allFiles: '全部文件',

@@ -167,6 +167,8 @@ let LangEn = {
     crawlFilenameTip: 'Please enter filename',
     crawlBackground: 'Background',
     crawlSuccessTip: 'Crawl successfully',
+    crawlDescription:
+      'Crawl files refers to the backend downloading directly from the specified resource link to the current directory of EyeblueTank',
   },
   router: {
     allFiles: 'All Files',
