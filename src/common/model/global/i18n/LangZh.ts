@@ -106,6 +106,7 @@ let LangZh = {
     createTime: '创建时间',
     updateTime: '修改时间',
     deleteTime: '删除时间',
+    uploadUserNickname: '上传者',
     root: '根目录',
     fillInPicLink: '请填写图片链接',
     rePick: '重新选择',

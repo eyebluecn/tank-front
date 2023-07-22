@@ -17,6 +17,7 @@ import ImagePreviewer from '../../../pages/widget/previewer/ImagePreviewer';
 import MessageBoxUtil from '../../util/MessageBoxUtil';
 import PreviewerHelper from '../../../pages/widget/previewer/PreviewerHelper';
 import HttpBase from '../base/HttpBase';
+import User from "../user/User";
 
 export default class Matter extends BaseEntity {
   puuid: string = '';
@@ -32,6 +33,7 @@ export default class Matter extends BaseEntity {
   //上次访问时间
   visitTime: Date | null = null;
   parent: Matter | null = null;
+  user: User = new User();
   // 文件是否被软删除
   deleted: boolean = false;
   deleteTime: Date | null = null;
@@ -90,6 +92,7 @@ export default class Matter extends BaseEntity {
   assign(obj: any) {
     super.assign(obj);
     this.assignEntity('parent', Matter);
+    this.assignEntity('user', User);
     this.assignEntity('visitTime', Date);
     this.assignEntity('deleteTime', Date);
   }
