@@ -17,6 +17,7 @@ import TankContentCard from '../widget/TankContentCard';
 import Color from '../../common/model/base/option/Color';
 
 interface RouteParam {
+  spaceUuid?: string;
   uuid: string;
 }
 
@@ -34,13 +35,13 @@ export default class Detail extends TankComponent<IProps, IState> {
   }
 
   componentDidMount() {
-    const { uuid } = this.props.match.params;
+    const { spaceUuid, uuid } = this.props.match.params;
     this.matter.uuid = uuid;
-    let that = this;
+    this.matter.spaceUuid = spaceUuid as string | null;
     this.matter.httpDetail((response: any) => {
-      that.updateUI();
+      this.updateUI();
       if (!response.data.data.dir) {
-        that.downloadToken.httpFetchDownloadToken(that.matter.uuid!);
+        this.downloadToken.httpFetchDownloadToken(this.matter.uuid!);
       }
     });
   }

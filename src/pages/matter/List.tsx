@@ -15,7 +15,6 @@ import {
   Empty,
   Input,
   Menu,
-  message,
   Modal,
   Pagination,
   Row,
@@ -54,7 +53,9 @@ import MatterSortPanel from './widget/MatterSortPanel';
 import { UploadRequestOption as RcCustomRequestOptions } from 'rc-upload/lib/interface';
 import Capacity from '../layout/widget/Capacity';
 import Space from '../../common/model/space/Space';
-import MatterCrawlModal, { ICrawlFormValues } from './widget/MatterCrawlModal';
+import MatterCrawlModal from './widget/MatterCrawlModal';
+import SpaceMember from '../../common/model/space/member/SpaceMember';
+import { SpaceMemberRole } from '../../common/model/space/member/SpaceMemberRole';
 
 interface IProps {
   spaceUuid?: string;
@@ -63,9 +64,11 @@ interface IProps {
 interface IState {}
 
 export default class List extends TankComponent<IProps, IState> {
+  isInSpace = !!this.props.spaceUuid; // 是否在空间中
   // 当前空间
   space = new Space();
-  isInSpace = !!this.props.spaceUuid; // 是否在空间中
+  // 当前用户在当前空间下的成员信息
+  spaceMember = new SpaceMember();
   // 当前目录
   currentDirectory = new Matter();
   //准备新建的文件
@@ -208,6 +211,7 @@ export default class List extends TankComponent<IProps, IState> {
     if (this.props.spaceUuid) {
       this.space.uuid = this.props.spaceUuid;
       this.space.httpDetail(() => this.updateUI());
+      this.spaceMember.httpMine(this.props.spaceUuid, () => this.updateUI());
     }
   }
 
@@ -518,13 +522,22 @@ export default class List extends TankComponent<IProps, IState> {
     ImagePreviewer.showMultiPhoto(imageArray, startIndex);
   }
 
+  goDetail(matter: Matter) {
+    const prefix = this.isInSpace ? `/space/${this.getSpaceUuid()}` : '';
+    Sun.navigateTo(`${prefix}/matter/detail/${matter.uuid}`);
+  }
+
   pagerAndCapacityRefresh() {
     Capacity.instance?.refresh();
     this.refresh();
   }
 
+  // 如果在空间下，有些操作权限只对管理员和读写成员开放
   checkHandlePermission() {
-    return true;
+    if (!this.isInSpace) return true;
+    return [SpaceMemberRole.ADMIN, SpaceMemberRole.READ_WRITE].includes(
+      this.spaceMember.role!
+    );
   }
 
   handleCloseMatterCrawlModal() {
@@ -788,6 +801,7 @@ export default class List extends TankComponent<IProps, IState> {
 
         {director.createMode ? (
           <MatterPanel
+            mode="normal"
             ref={this.newMatterRef}
             matter={this.newMatter}
             director={director}
@@ -798,14 +812,18 @@ export default class List extends TankComponent<IProps, IState> {
           {pager.loading || pager.data.length ? (
             pager.data.map((matter) => (
               <MatterPanel
+                mode={this.isInSpace ? 'space' : 'normal'}
+                spaceMemberRole={
+                  this.isInSpace ? this.spaceMember.role! : undefined
+                }
                 key={matter.uuid!}
                 director={director}
                 matter={matter}
-                isSpace={this.isInSpace}
                 onGoToDirectory={(id) => this.goToDirectory(id)}
                 onDeleteSuccess={() => this.pagerAndCapacityRefresh()}
                 onCheckMatter={(m) => this.checkMatter(m)}
                 onPreviewImage={(m) => this.previewImage(m)}
+                onGoDetail={(m) => this.goDetail(m)}
               />
             ))
           ) : (

@@ -378,7 +378,7 @@ export default class Matter extends BaseEntity {
     let that = this;
     this.httpPost(
       Matter.URL_CHANGE_PRIVACY,
-      { uuid: this.uuid, privacy: privacy },
+      { uuid: this.uuid, privacy: privacy, spaceUuid: this.spaceUuid },
       function (response: any) {
         that.privacy = privacy;
         if (typeof successCallback === 'function') {

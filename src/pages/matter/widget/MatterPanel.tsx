@@ -3,43 +3,40 @@ import Matter from '../../../common/model/matter/Matter';
 import TankComponent from '../../../common/component/TankComponent';
 import Director from './Director';
 import './MatterPanel.less';
-import Sun from '../../../common/model/global/Sun';
 import StringUtil from '../../../common/util/StringUtil';
 import DateUtil from '../../../common/util/DateUtil';
 import AnimateUtil from '../../../common/util/AnimateUtil';
 import MessageBoxUtil from '../../../common/util/MessageBoxUtil';
 import Expanding from '../../widget/Expanding';
 import {
-  CloseCircleOutlined,
   DeleteOutlined,
   DownloadOutlined,
   EditOutlined,
   EllipsisOutlined,
-  ExclamationCircleFilled,
   InfoCircleOutlined,
   LinkOutlined,
   LockOutlined,
-  RedoOutlined,
   UnlockOutlined,
 } from '@ant-design/icons';
-import { Checkbox, Dropdown, Menu, Modal, Tooltip } from 'antd';
+import { Checkbox, Dropdown, Menu, Tooltip } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import SafeUtil from '../../../common/util/SafeUtil';
 import ClipboardUtil from '../../../common/util/ClipboardUtil';
 import Lang from '../../../common/model/global/Lang';
 import MatterDeleteModal from './MatterDeleteModal';
+import { SpaceMemberRole } from '../../../common/model/space/member/SpaceMemberRole';
 
 interface IProps {
   matter: Matter;
-  recycleMode?: boolean; // 回收站模式，默认false，简化相关操作，不可进入文件夹里
-  isSpace?: boolean; // 是否共享空间下
+  mode: 'normal' | 'space'; // normal:正常模式，space:空间模式
+  spaceMemberRole?: SpaceMemberRole; // 用户在当前空间下的角色,只有在space模式下才有值
   director?: Director;
   onCreateDirectoryCallback?: () => any;
   onDeleteSuccess?: () => any;
-  onRecoverySuccess?: () => any;
   onCheckMatter?: (matter?: Matter) => any;
   onPreviewImage?: (matter: Matter) => any;
   onGoToDirectory?: (id: string) => any;
+  onGoDetail?: (matter: Matter) => any;
 }
 
 interface IState {}
@@ -57,6 +54,14 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {};
+  }
+
+  // 如果在空间下，有些操作权限只对管理员和读写成员开放
+  checkHandlePermission() {
+    if (this.props.mode !== 'space') return true;
+    return [SpaceMemberRole.ADMIN, SpaceMemberRole.READ_WRITE].includes(
+      this.props.spaceMemberRole!
+    );
   }
 
   prepareRename() {
@@ -96,7 +101,7 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
 
   deleteMatter() {
     MatterDeleteModal.open(
-      !!this.props.isSpace,
+      this.props.mode === 'space',
       () => {
         this.props.matter.httpSoftDelete(() => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
@@ -110,32 +115,6 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
         });
       }
     );
-  }
-
-  hardDeleteMatter() {
-    Modal.confirm({
-      title: Lang.t('actionCanNotRevertConfirm'),
-      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
-      onOk: () => {
-        this.props.matter.httpDelete(() => {
-          MessageBoxUtil.success(Lang.t('operationSuccess'));
-          this.props.onDeleteSuccess!();
-        });
-      },
-    });
-  }
-
-  recoveryMatter() {
-    Modal.confirm({
-      title: Lang.t('actionRecoveryConfirm'),
-      icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
-      onOk: () => {
-        this.props.matter.httpRecovery(() => {
-          MessageBoxUtil.success(Lang.t('operationSuccess'));
-          this.props.onRecoverySuccess!();
-        });
-      },
-    });
   }
 
   changeMatterName(e: any) {
@@ -222,20 +201,14 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   }
 
   clickRow() {
-    const {
-      matter,
-      recycleMode = false,
-      director,
-      onGoToDirectory,
-      onPreviewImage,
-    } = this.props;
+    const { matter, director, onGoToDirectory, onPreviewImage, mode } =
+      this.props;
     if (director && director.isEditing()) {
       console.error('导演正忙着，不予执行');
       return;
     }
 
     if (matter.dir) {
-      if (recycleMode) return;
       onGoToDirectory!(matter.uuid!);
     } else {
       //图片进行预览操作
@@ -253,197 +226,93 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
   }
 
   renderPcOperation() {
-    const { matter, recycleMode = false } = this.props;
-
-    // 文件操作在正常模式 or 回收站模式下不同，其中回收站模式只保留查看信息与彻底删除操作
-    const handles = recycleMode ? (
-      <>
-        <Tooltip title={Lang.t('matter.recovery')}>
-          <RedoOutlined
-            className="btn-action"
-            onClick={(e) =>
-              SafeUtil.stopPropagationWrap(e)(this.recoveryMatter())
-            }
-          />
-        </Tooltip>
-        <Tooltip title={Lang.t('matter.fileDetail')}>
-          <InfoCircleOutlined
-            className="btn-action"
-            onClick={(e) =>
-              SafeUtil.stopPropagationWrap(e)(
-                Sun.navigateTo('/matter/detail/' + matter.uuid)
-              )
-            }
-          />
-        </Tooltip>
-        <Tooltip title={Lang.t('matter.hardDelete')}>
-          <CloseCircleOutlined
-            className="btn-action text-danger"
-            onClick={(e) =>
-              SafeUtil.stopPropagationWrap(e)(this.hardDeleteMatter())
-            }
-          />
-        </Tooltip>
-      </>
-    ) : (
-      <>
-        {!matter.dir && matter.privacy && (
-          <Tooltip title={Lang.t('matter.setPublic')}>
-            <UnlockOutlined
-              className="btn-action"
-              onClick={(e) =>
-                SafeUtil.stopPropagationWrap(e)(this.changePrivacy(false))
-              }
-            />
-          </Tooltip>
-        )}
-        {!matter.dir && !matter.privacy && (
-          <Tooltip title={Lang.t('matter.setPrivate')}>
-            <LockOutlined
-              className="btn-action"
-              onClick={(e) =>
-                SafeUtil.stopPropagationWrap(e)(this.changePrivacy(true))
-              }
-            />
-          </Tooltip>
-        )}
-        <Tooltip title={Lang.t('matter.fileDetail')}>
-          <InfoCircleOutlined
-            className="btn-action"
-            onClick={(e) =>
-              SafeUtil.stopPropagationWrap(e)(
-                Sun.navigateTo('/matter/detail/' + matter.uuid)
-              )
-            }
-          />
-        </Tooltip>
-        <Tooltip title={Lang.t('matter.rename')}>
-          <EditOutlined
-            className="btn-action"
-            onClick={(e) =>
-              SafeUtil.stopPropagationWrap(e)(this.prepareRename())
-            }
-          />
-        </Tooltip>
-        <Tooltip title={Lang.t('matter.copyPath')}>
-          <LinkOutlined
-            className="btn-action"
-            onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.clipboard())}
-          />
-        </Tooltip>
-        <Tooltip title={Lang.t('matter.download')}>
-          <DownloadOutlined
-            className="btn-action"
-            onClick={(e) => SafeUtil.stopPropagationWrap(e)(matter.download())}
-          />
-        </Tooltip>
-        <Tooltip title={Lang.t('matter.delete')}>
-          <DeleteOutlined
-            className="btn-action text-danger"
-            onClick={(e) =>
-              SafeUtil.stopPropagationWrap(e)(this.deleteMatter())
-            }
-          />
-        </Tooltip>
-      </>
-    );
+    const { matter } = this.props;
 
     return (
       <div className="right-part">
-        <span className="matter-operation text-theme">{handles}</span>
+        <span className="matter-operation text-theme">
+          {!matter.dir && matter.privacy && (
+            <Tooltip title={Lang.t('matter.setPublic')}>
+              <UnlockOutlined
+                className="btn-action"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.changePrivacy(false))
+                }
+              />
+            </Tooltip>
+          )}
+          {!matter.dir && !matter.privacy && (
+            <Tooltip title={Lang.t('matter.setPrivate')}>
+              <LockOutlined
+                className="btn-action"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.changePrivacy(true))
+                }
+              />
+            </Tooltip>
+          )}
+          <Tooltip title={Lang.t('matter.fileDetail')}>
+            <InfoCircleOutlined
+              className="btn-action"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(this.props.onGoDetail?.(matter))
+              }
+            />
+          </Tooltip>
+          <Tooltip title={Lang.t('matter.rename')}>
+            <EditOutlined
+              className="btn-action"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(this.prepareRename())
+              }
+            />
+          </Tooltip>
+          <Tooltip title={Lang.t('matter.copyPath')}>
+            <LinkOutlined
+              className="btn-action"
+              onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.clipboard())}
+            />
+          </Tooltip>
+          <Tooltip title={Lang.t('matter.download')}>
+            <DownloadOutlined
+              className="btn-action"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(matter.download())
+              }
+            />
+          </Tooltip>
+          <Tooltip title={Lang.t('matter.delete')}>
+            <DeleteOutlined
+              className="btn-action text-danger"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(this.deleteMatter())
+              }
+            />
+          </Tooltip>
+        </span>
         <Tooltip title={Lang.t('matter.size')}>
           <span className="matter-size">
             {StringUtil.humanFileSize(matter.size)}
           </span>
         </Tooltip>
-        {recycleMode ? (
-          <Tooltip title={Lang.t('matter.deleteTime')}>
-            <span className="matter-date mr10">
-              {DateUtil.simpleDateHourMinute(matter.deleteTime)}
-            </span>
-          </Tooltip>
-        ) : (
-          <Tooltip title={Lang.t('matter.updateTime')}>
-            <span className="matter-date mr10">
-              {DateUtil.simpleDateHourMinute(matter.updateTime)}
-            </span>
-          </Tooltip>
-        )}
+        <Tooltip title={Lang.t('matter.updateTime')}>
+          <span className="matter-date mr10">
+            {DateUtil.simpleDateHourMinute(matter.updateTime)}
+          </span>
+        </Tooltip>
       </div>
     );
   }
 
-  // 文件操作在正常模式 or 回收站模式下不同，其中回收站模式只保留查看信息与彻底删除操作
   getHandles() {
-    const { matter, recycleMode = false } = this.props;
-    // 回收站模式
-    if (recycleMode)
-      return [
-        <div
-          className="cell-btn navy"
-          onClick={(e) =>
-            SafeUtil.stopPropagationWrap(e)(
-              Sun.navigateTo('/matter/detail/' + this.props.matter.uuid)
-            )
-          }
-        >
-          <InfoCircleOutlined className="btn-action mr5" />
-          {Lang.t('matter.fileDetail')}
-        </div>,
-        <div
-          className="cell-btn navy"
-          onClick={(e) =>
-            SafeUtil.stopPropagationWrap(e)(this.recoveryMatter())
-          }
-        >
-          <RedoOutlined className="btn-action mr5" />
-          {Lang.t('matter.recovery')}
-        </div>,
-        <div
-          className="cell-btn text-danger"
-          onClick={(e) =>
-            SafeUtil.stopPropagationWrap(e)(this.hardDeleteMatter())
-          }
-        >
-          <CloseCircleOutlined className="btn-action mr5" />
-          {Lang.t('matter.hardDelete')}
-        </div>,
-      ];
+    const { matter } = this.props;
 
     // 普通模式
-    const handles = [];
-    if (!matter.dir) {
-      handles.push(
-        matter.privacy ? (
-          <div
-            className="cell-btn navy"
-            onClick={(e) =>
-              SafeUtil.stopPropagationWrap(e)(this.changePrivacy(false))
-            }
-          >
-            <UnlockOutlined className="btn-action mr5" />
-            {Lang.t('matter.setPublic')}
-          </div>
-        ) : (
-          <div
-            className="cell-btn navy"
-            onClick={(e) =>
-              SafeUtil.stopPropagationWrap(e)(this.changePrivacy(true))
-            }
-          >
-            <LockOutlined className="btn-action mr5" />
-            {Lang.t('matter.setPrivate')}
-          </div>
-        )
-      );
-    }
-    handles.push(
+    const handles = [
       <div
         className="cell-btn navy"
         onClick={(e) =>
-          SafeUtil.stopPropagationWrap(e)(
-            Sun.navigateTo('/matter/detail/' + matter.uuid)
-          )
+          SafeUtil.stopPropagationWrap(e)(this.props.onGoDetail?.(matter))
         }
       >
         <InfoCircleOutlined className="btn-action mr5" />
@@ -476,22 +345,44 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
       >
         <DeleteOutlined className="btn-action mr5" />
         {Lang.t('matter.delete')}
-      </div>
-    );
+      </div>,
+    ];
+    if (!matter.dir) {
+      handles.unshift(
+        matter.privacy ? (
+          <div
+            className="cell-btn navy"
+            onClick={(e) =>
+              SafeUtil.stopPropagationWrap(e)(this.changePrivacy(false))
+            }
+          >
+            <UnlockOutlined className="btn-action mr5" />
+            {Lang.t('matter.setPublic')}
+          </div>
+        ) : (
+          <div
+            className="cell-btn navy"
+            onClick={(e) =>
+              SafeUtil.stopPropagationWrap(e)(this.changePrivacy(true))
+            }
+          >
+            <LockOutlined className="btn-action mr5" />
+            {Lang.t('matter.setPrivate')}
+          </div>
+        )
+      );
+    }
+
     return handles;
   }
 
   renderMobileOperation() {
-    const { matter, recycleMode = false } = this.props;
+    const { matter } = this.props;
 
     return (
       <div className="more-panel">
         <div className="cell-btn navy text">
-          <span>
-            {DateUtil.simpleDateHourMinute(
-              recycleMode ? matter.deleteTime : matter.updateTime
-            )}
-          </span>
+          <span>{DateUtil.simpleDateHourMinute(matter.updateTime)}</span>
           <span className="matter-size">
             {StringUtil.humanFileSize(matter.size)}
           </span>
