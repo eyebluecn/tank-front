@@ -6,7 +6,6 @@ import Pager from '../../common/model/base/Pager';
 import Matter from '../../common/model/matter/Matter';
 import Moon from '../../common/model/global/Moon';
 import SortDirection from '../../common/model/base/SortDirection';
-import MatterPanel from '../matter/widget/MatterPanel';
 import { Button, Col, Empty, Input, Modal, Pagination, Row, Space } from 'antd';
 import MessageBoxUtil from '../../common/util/MessageBoxUtil';
 import {
@@ -21,6 +20,8 @@ import ImagePreviewer from '../widget/previewer/ImagePreviewer';
 import { UserRole } from '../../common/model/user/UserRole';
 import Lang from '../../common/model/global/Lang';
 import TankTitle from '../widget/TankTitle';
+import BinMatterPanel from './widget/BinMatterPanel';
+import Sun from '../../common/model/global/Sun';
 
 interface IProps extends RouteComponentProps {}
 
@@ -180,6 +181,10 @@ export default class List extends TankComponent<IProps, IState> {
     ImagePreviewer.showMultiPhoto(imageArray, startIndex);
   }
 
+  goDetail(matter: Matter) {
+    Sun.navigateTo(`/matter/detail/${matter.uuid}`);
+  }
+
   render() {
     const { pager, selectedMatters } = this;
     return (
@@ -255,14 +260,14 @@ export default class List extends TankComponent<IProps, IState> {
         <div>
           {pager.loading || pager.data.length ? (
             pager.data.map((matter) => (
-              <MatterPanel
-                recycleMode
-                key={matter.uuid!}
+              <BinMatterPanel
+                key={matter.uuid}
                 matter={matter}
                 onDeleteSuccess={() => this.refresh()}
                 onRecoverySuccess={() => this.refresh()}
                 onCheckMatter={(m) => this.checkMatter(m)}
                 onPreviewImage={(m) => this.previewImage(m)}
+                onGoDetail={(m) => this.goDetail(m)}
               />
             ))
           ) : (

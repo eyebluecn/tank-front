@@ -4,6 +4,7 @@ import { SpaceMemberRole } from './SpaceMemberRole';
 import Filter from '../../base/filter/Filter';
 import SortFilter from '../../base/filter/SortFilter';
 import InputFilter from '../../base/filter/InputFilter';
+import SafeUtil from '../../../util/SafeUtil';
 
 export interface SpaceMemberFormValues {
   spaceUuid: string;
@@ -17,6 +18,8 @@ export default class SpaceMember extends BaseEntity {
   role: SpaceMemberRole | null = null;
   user: User | null = null;
 
+  static URL_SPACE_MEMBER_MINE = '/api/space/member/mine';
+
   constructor(reactComponent?: React.Component) {
     super(reactComponent);
   }
@@ -24,7 +27,6 @@ export default class SpaceMember extends BaseEntity {
   getTAG(): string {
     return 'spaceMember';
   }
-
 
   assign(obj: any) {
     super.assign(obj);
@@ -45,5 +47,17 @@ export default class SpaceMember extends BaseEntity {
       role: this.role!,
       uuid: this.uuid ? this.uuid : null,
     };
+  }
+
+  httpMine(spaceUuid: string, successCallback?: any, errorCallback?: any) {
+    this.httpGet(
+      SpaceMember.URL_SPACE_MEMBER_MINE,
+      { spaceUuid },
+      (response: any) => {
+        this.assign(response.data.data);
+        SafeUtil.safeCallback(successCallback)(response);
+      },
+      errorCallback
+    );
   }
 }
