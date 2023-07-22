@@ -154,6 +154,13 @@ let LangZh = {
     canIUse: '查看当前浏览器是否支持，点击跳转',
     intoRecycleBin: '放入回收站',
     finishingTip: '后台文件整理中，请稍候...',
+    crawl: '抓取文件',
+    crawlLink: '链接',
+    crawlLinkTip: '请输入链接',
+    crawlFilename: '文件名',
+    crawlFilenameTip: '请输入文件名',
+    crawlBackground: '后台抓取',
+    crawlSuccessTip: '抓取成功',
   },
   router: {
     allFiles: '全部文件',
@@ -408,6 +415,7 @@ let LangZh = {
   refresh: '刷新',
   inputRequired: '该项必填',
   selectRequired: '该项必选',
+  more: '更多',
 };
 
 export default LangZh;

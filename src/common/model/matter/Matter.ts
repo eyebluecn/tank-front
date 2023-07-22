@@ -68,9 +68,9 @@ export default class Matter extends BaseEntity {
   static URL_MATTER_RENAME = '/api/matter/rename';
   static URL_CHANGE_PRIVACY = '/api/matter/change/privacy';
   static URL_MATTER_MOVE = '/api/matter/move';
-  static URL_MATTER_DOWNLOAD = '/api/matter/download';
   static URL_MATTER_UPLOAD = '/api/matter/upload';
   static URL_MATTER_ZIP = '/api/matter/zip';
+  static URL_MATTER_CRAWL = '/api/matter/crawl';
 
   static MATTER_ROOT = 'root';
 
@@ -241,6 +241,28 @@ export default class Matter extends BaseEntity {
         typeof successCallback === 'function' && successCallback(response);
       },
       errorCallback
+    );
+  }
+
+  static httpCrawl(
+    body: {
+      url: string;
+      puuid: string;
+      filename: string;
+      spaceUuid: string;
+    },
+    successCallback?: any,
+    errorCallback?: any,
+    finallyCallback?: any
+  ) {
+    new HttpBase().httpPost(
+      Matter.URL_MATTER_CRAWL,
+      body,
+      function (response: any) {
+        typeof successCallback === 'function' && successCallback(response);
+      },
+      errorCallback,
+      finallyCallback
     );
   }
 

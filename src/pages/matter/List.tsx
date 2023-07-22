@@ -11,8 +11,11 @@ import UploadMatterPanel from './widget/UploadMatterPanel';
 import {
   Button,
   Col,
+  Dropdown,
   Empty,
   Input,
+  Menu,
+  message,
   Modal,
   Pagination,
   Row,
@@ -21,12 +24,14 @@ import {
 } from 'antd';
 import MessageBoxUtil from '../../common/util/MessageBoxUtil';
 import {
+  CloudDownloadOutlined,
   CloudUploadOutlined,
   DeleteOutlined,
   DownloadOutlined,
   DragOutlined,
   ExclamationCircleFilled,
   FolderOutlined,
+  MenuOutlined,
   MinusSquareOutlined,
   PlusSquareOutlined,
   ShareAltOutlined,
@@ -49,6 +54,7 @@ import MatterSortPanel from './widget/MatterSortPanel';
 import { UploadRequestOption as RcCustomRequestOptions } from 'rc-upload/lib/interface';
 import Capacity from '../layout/widget/Capacity';
 import Space from '../../common/model/space/Space';
+import MatterCrawlModal, { ICrawlFormValues } from './widget/MatterCrawlModal';
 
 interface IProps {
   spaceUuid?: string;
@@ -59,6 +65,7 @@ interface IState {}
 export default class List extends TankComponent<IProps, IState> {
   // 当前空间
   space = new Space();
+  isInSpace = !!this.props.spaceUuid; // 是否在空间中
   // 当前目录
   currentDirectory = new Matter();
   //准备新建的文件
@@ -83,6 +90,7 @@ export default class List extends TankComponent<IProps, IState> {
 
   // 最外层div
   wrapperRef = React.createRef<HTMLDivElement>();
+  uploadDirectoryBtnRef = React.createRef<HTMLElement>();
 
   //用来判断是否展示遮罩层
   dragEnterCount = 0;
@@ -96,6 +104,9 @@ export default class List extends TankComponent<IProps, IState> {
   // 全局的上传对象
   uploadMattersMap: Record<string, Matter[]> =
     Moon.getSingleton().uploadMattersMap;
+
+  // 抓取模态窗状态
+  crawlModalVisible = false;
 
   //持有全局唯一的实例。
   static instance: List | null = null;
@@ -507,9 +518,18 @@ export default class List extends TankComponent<IProps, IState> {
     ImagePreviewer.showMultiPhoto(imageArray, startIndex);
   }
 
-  delete() {
+  pagerAndCapacityRefresh() {
     Capacity.instance?.refresh();
     this.refresh();
+  }
+
+  checkHandlePermission() {
+    return true;
+  }
+
+  handleCloseMatterCrawlModal() {
+    this.crawlModalVisible = false;
+    this.pagerAndCapacityRefresh();
   }
 
   goToDirectory(id: string) {
@@ -587,6 +607,29 @@ export default class List extends TankComponent<IProps, IState> {
     return this.breadcrumbModels;
   }
 
+  getDropdownMenu() {
+    return (
+      <Menu>
+        <Menu.Item
+          icon={<CloudUploadOutlined />}
+          onClick={() => this.uploadDirectoryBtnRef.current?.click()}
+        >
+          {Lang.t('matter.uploadDir')}
+        </Menu.Item>
+
+        <Menu.Item
+          icon={<CloudDownloadOutlined />}
+          onClick={() => {
+            this.crawlModalVisible = true;
+            this.updateUI();
+          }}
+        >
+          {Lang.t('matter.crawl')}
+        </Menu.Item>
+      </Menu>
+    );
+  }
+
   render() {
     const { pager, director, selectedMatters, dragEnterCount } = this;
     return (
@@ -627,30 +670,34 @@ export default class List extends TankComponent<IProps, IState> {
                   <Button
                     type="primary"
                     className="mb10"
-                    onClick={() => this.deleteBatch()}
-                  >
-                    <DeleteOutlined />
-                    {Lang.t('delete')}
-                  </Button>
-                  <Button
-                    type="primary"
-                    className="mb10"
                     onClick={() => this.downloadZip()}
                   >
                     <DownloadOutlined />
                     {Lang.t('download')}
                   </Button>
-                  <Button
-                    type="primary"
-                    className="mb10"
-                    onClick={() => this.toggleMoveBatch()}
-                  >
-                    <DragOutlined />
-                    {Lang.t('matter.move')}
-                  </Button>
+                  {this.checkHandlePermission() && (
+                    <>
+                      <Button
+                        type="primary"
+                        className="mb10"
+                        onClick={() => this.deleteBatch()}
+                      >
+                        <DeleteOutlined />
+                        {Lang.t('delete')}
+                      </Button>
+                      <Button
+                        type="primary"
+                        className="mb10"
+                        onClick={() => this.toggleMoveBatch()}
+                      >
+                        <DragOutlined />
+                        {Lang.t('matter.move')}
+                      </Button>
+                    </>
+                  )}
 
                   {/*共享空间下暂不支持分享功能*/}
-                  {!this.props.spaceUuid && (
+                  {!this.isInSpace && (
                     <Button
                       type="primary"
                       className="mb10"
@@ -663,36 +710,38 @@ export default class List extends TankComponent<IProps, IState> {
                 </>
               ) : null}
 
-              <Upload
-                className="ant-upload"
-                customRequest={(e) => this.triggerUpload(e)}
-                showUploadList={false}
-                multiple
-              >
-                <Button type="primary" className="mb10">
-                  <CloudUploadOutlined />
-                  {Lang.t('matter.upload')}
-                </Button>
-              </Upload>
-              <Upload
-                className="ant-upload"
-                customRequest={this.triggerUploadDir}
-                showUploadList={false}
-                directory
-              >
-                <Button type="primary" className="mb10">
-                  <CloudUploadOutlined />
-                  {Lang.t('matter.uploadDir')}
-                </Button>
-              </Upload>
-              <Button
-                type="primary"
-                className="mb10"
-                onClick={() => this.createDirectory()}
-              >
-                <FolderOutlined />
-                {Lang.t('matter.create')}
-              </Button>
+              {this.checkHandlePermission() && (
+                <>
+                  <Upload
+                    className="ant-upload"
+                    customRequest={(e) => this.triggerUpload(e)}
+                    showUploadList={false}
+                    multiple
+                  >
+                    <Button type="primary" className="mb10">
+                      <CloudUploadOutlined />
+                      {Lang.t('matter.upload')}
+                    </Button>
+                  </Upload>
+                  <Button
+                    type="primary"
+                    className="mb10"
+                    onClick={() => this.createDirectory()}
+                  >
+                    <FolderOutlined />
+                    {Lang.t('matter.create')}
+                  </Button>
+                  <Dropdown
+                    trigger={['hover']}
+                    overlay={this.getDropdownMenu()}
+                  >
+                    <Button type="primary" className="mb10">
+                      <MenuOutlined />
+                      {Lang.t('more')}
+                    </Button>
+                  </Dropdown>
+                </>
+              )}
 
               <Button
                 type="primary"
@@ -702,6 +751,18 @@ export default class List extends TankComponent<IProps, IState> {
                 <SyncOutlined />
                 {Lang.t('refresh')}
               </Button>
+
+              <Upload
+                className="ant-upload display-none"
+                customRequest={this.triggerUploadDir}
+                showUploadList={false}
+                directory
+              >
+                <Button type="primary" ref={this.uploadDirectoryBtnRef}>
+                  <CloudUploadOutlined />
+                  {Lang.t('matter.uploadDir')}
+                </Button>
+              </Upload>
             </AntdSpace>
           </Col>
           <Col xs={24} sm={24} md={10} lg={8} className="mt10">
@@ -740,9 +801,9 @@ export default class List extends TankComponent<IProps, IState> {
                 key={matter.uuid!}
                 director={director}
                 matter={matter}
-                isSpace={!!this.props.spaceUuid}
+                isSpace={this.isInSpace}
                 onGoToDirectory={(id) => this.goToDirectory(id)}
-                onDeleteSuccess={() => this.delete()}
+                onDeleteSuccess={() => this.pagerAndCapacityRefresh()}
                 onCheckMatter={(m) => this.checkMatter(m)}
                 onPreviewImage={(m) => this.previewImage(m)}
               />
@@ -759,6 +820,13 @@ export default class List extends TankComponent<IProps, IState> {
           pageSize={pager.pageSize}
           hideOnSinglePage
         />
+        {this.crawlModalVisible && (
+          <MatterCrawlModal
+            spaceUuid={this.getSpaceUuid()}
+            puuid={this.currentDirectory.uuid!}
+            onClose={this.handleCloseMatterCrawlModal.bind(this)}
+          />
+        )}
       </div>
     );
   }

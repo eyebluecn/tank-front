@@ -160,6 +160,13 @@ let LangEn = {
     canIUse: 'To see if the current browser supports it',
     intoRecycleBin: 'Recycle bin',
     finishingTip: 'Please wait while files are sorted...',
+    crawl: 'Crawl File',
+    crawlLink: 'Link',
+    crawlLinkTip: 'Please enter link',
+    crawlFilename: 'Filename',
+    crawlFilenameTip: 'Please enter filename',
+    crawlBackground: 'Background',
+    crawlSuccessTip: 'Crawl successfully',
   },
   router: {
     allFiles: 'All Files',
@@ -415,6 +422,7 @@ let LangEn = {
   refresh: 'refresh',
   inputRequired: 'Input required',
   selectRequired: 'Select required',
+  more: 'More',
 };
 
 export default LangEn;
