@@ -31,7 +31,7 @@ export default class User extends BaseEntity {
   lastTime: Date = new Date();
   status: UserStatus = UserStatus.OK;
   spaceUuid: string | null = null;
-  space: Space | null = null;
+  space: Space = new Space();
 
   constructor(reactComponent?: React.Component) {
     super(reactComponent);

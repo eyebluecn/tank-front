@@ -427,7 +427,7 @@ export default class List extends TankComponent<IProps, IState> {
         m.spaceUuid = this.getSpaceUuid();
 
         //判断文件大小。
-        if (this.user.space!.sizeLimit >= 0) {
+        if (this.user.space.sizeLimit >= 0) {
           if (file.size > this.user.space!.sizeLimit) {
             MessageBoxUtil.error(
               Lang.t(
