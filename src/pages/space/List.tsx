@@ -174,26 +174,15 @@ export default class List extends TankComponent<IProps, IState> {
                     </AntdSpace>
                   </div>
                   <div className="space-item-percent">
-                    <Tooltip
-                      title={
-                        <>
-                          <div>
-                            {Lang.t('space.sizeLimit')}：
-                            {space.getHumanizeSizeLimit()}
-                          </div>
-                          <div>
-                            {Lang.t('space.totalSize')}：
-                            {space.getHumanizeTotalSize()}
-                          </div>
-                          <div>
-                            {Lang.t('space.totalSizeLimit')}：
-                            {space.getHumanizeTotalSizeLimit()}
-                          </div>
-                        </>
-                      }
-                    >
-                      <Progress percent={Math.round(space.getUsedPercent())} />
-                    </Tooltip>
+                    <Progress percent={Math.round(space.getUsedPercent())} />
+                    <div>
+                      {space.getHumanizeTotalSize()} /{' '}
+                      {space.getHumanizeTotalSizeLimit()}
+                    </div>
+                    <div>
+                      {Lang.t('space.sizeLimit')}：
+                      {space.getHumanizeSizeLimit()}
+                    </div>
                   </div>
                 </Card>
               </Col>
