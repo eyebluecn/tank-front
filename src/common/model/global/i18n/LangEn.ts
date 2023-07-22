@@ -110,6 +110,7 @@ let LangEn = {
     createTime: 'Create Time',
     updateTime: 'Update Time',
     deleteTime: 'Deleted Time',
+    uploadUserNickname: 'Upload User',
     root: 'Root',
     fillInPicLink: 'Fill in Picture Link',
     rePick: 'Re Choose',

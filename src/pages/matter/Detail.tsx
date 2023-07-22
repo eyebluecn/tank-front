@@ -94,6 +94,9 @@ export default class Detail extends TankComponent<IProps, IState> {
                   {DateUtil.simpleDateTime(matter.deleteTime)}
                 </InfoCell>
               )}
+              <InfoCell name={Lang.t('matter.uploadUserNickname')}>
+                {matter.user.username}
+              </InfoCell>
               <InfoCell name={Lang.t('matter.size')}>
                 {StringUtil.humanFileSize(matter.size)}
               </InfoCell>
