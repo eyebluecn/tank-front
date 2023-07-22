@@ -48,6 +48,10 @@ export default class User extends BaseEntity {
     return this.role !== UserRole.GUEST;
   }
 
+  isAdmin(): boolean {
+    return this.role === UserRole.ADMINISTRATOR;
+  }
+
   getTAG(): string {
     return 'user';
   }

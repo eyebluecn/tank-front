@@ -26,7 +26,6 @@ import {
 import Color from '../../../common/model/base/option/Color';
 import MessageBoxUtil from '../../../common/util/MessageBoxUtil';
 import ModalForm from './widget/ModalForm';
-import FilterPanel from '../../widget/filter/FilterPanel';
 
 interface IProps
   extends RouteComponentProps<{
@@ -38,6 +37,7 @@ export default class SpaceMemberList extends TankComponent<IProps, IState> {
   spaceUuid = this.props.match.params.spaceUuid;
   pager = new Pager<SpaceMember>(this, SpaceMember, 10);
   currentUser: User = Moon.getSingleton().user;
+  spaceMember = new SpaceMember(); // 当前用户在当前空间下的身份
   modalState: {
     visible: boolean;
     mode: 'create' | 'edit';
@@ -50,6 +50,7 @@ export default class SpaceMemberList extends TankComponent<IProps, IState> {
   componentDidMount() {
     this.pager.enableHistory();
     this.pager.setFilterValue('spaceUuid', this.spaceUuid);
+    this.spaceMember.httpMine(this.spaceUuid, () => this.updateUI());
     this.refresh();
   }
 
@@ -169,34 +170,37 @@ export default class SpaceMemberList extends TankComponent<IProps, IState> {
       },
       {
         title: Lang.t('operation'),
-        render: (_, record) => (
-          <>
-            <Tooltip title={Lang.t('edit')}>
-              <Typography.Link>
-                <EditOutlined
+        render: (_, record) =>
+          this.spaceMember.role === SpaceMemberRole.ADMIN ? (
+            <>
+              <Tooltip title={Lang.t('edit')}>
+                <Typography.Link>
+                  <EditOutlined
+                    className="btn-action"
+                    onClick={() => this.handleEdit(record)}
+                  />
+                </Typography.Link>
+              </Tooltip>
+              <Tooltip title={Lang.t('space.unBindMember')}>
+                <DeleteOutlined
                   className="btn-action"
-                  onClick={() => this.handleEdit(record)}
+                  style={{ color: Color.DANGER }}
+                  onClick={() => this.handleDelete(record)}
                 />
-              </Typography.Link>
-            </Tooltip>
-            <Tooltip title={Lang.t('space.unBindMember')}>
-              <DeleteOutlined
-                className="btn-action"
-                style={{ color: Color.DANGER }}
-                onClick={() => this.handleDelete(record)}
-              />
-            </Tooltip>
-          </>
-        ),
+              </Tooltip>
+            </>
+          ) : null,
       },
     ];
 
     return (
       <div className="page-space-member-list">
         <TankTitle name={Lang.t('space.memberManage')}>
-          <Button type="primary" onClick={() => this.handleCreate()}>
-            {Lang.t('space.bindMember')}
-          </Button>
+          {this.spaceMember.role === SpaceMemberRole.ADMIN && (
+            <Button type="primary" onClick={() => this.handleCreate()}>
+              {Lang.t('space.bindMember')}
+            </Button>
+          )}
         </TankTitle>
         <Table
           rowKey="uuid"

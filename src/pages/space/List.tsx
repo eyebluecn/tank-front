@@ -10,7 +10,6 @@ import {
   Pagination,
   Progress,
   Row,
-  Tooltip,
   Space as AntdSpace,
   Modal,
   Empty,
@@ -19,7 +18,6 @@ import './List.less';
 import Lang from '../../common/model/global/Lang';
 import ModalForm from './widget/ModalForm';
 import TankTitle from '../widget/TankTitle';
-import FileUtil from '../../common/util/FileUtil';
 import MessageBoxUtil from '../../common/util/MessageBoxUtil';
 import {
   EditOutlined,
@@ -29,11 +27,13 @@ import {
 import { DeleteOutlined } from '@ant-design/icons/lib';
 import Color from '../../common/model/base/option/Color';
 import SafeUtil from '../../common/util/SafeUtil';
+import Moon from '../../common/model/global/Moon';
 
 interface IProps extends RouteComponentProps {}
 
 interface IState {}
 export default class List extends TankComponent<IProps, IState> {
+  user = Moon.getSingleton().user;
   pager = new Pager<Space>(this, Space, Pager.MAX_PAGE_SIZE);
   modalState: {
     visible: boolean;
@@ -125,9 +125,11 @@ export default class List extends TankComponent<IProps, IState> {
     return (
       <div className="page-space-list">
         <TankTitle name={Lang.t('space.name')}>
-          <Button type="primary" onClick={() => this.handleCreate()}>
-            {Lang.t('space.create')}
-          </Button>
+          {this.user.isAdmin() && (
+            <Button type="primary" onClick={() => this.handleCreate()}>
+              {Lang.t('space.create')}
+            </Button>
+          )}
         </TankTitle>
 
         <Row gutter={[10, 10]}>
@@ -155,22 +157,26 @@ export default class List extends TankComponent<IProps, IState> {
                           )
                         }
                       />
-                      <EditOutlined
-                        className="btn-action btn-edit"
-                        onClick={(e) =>
-                          SafeUtil.stopPropagationWrap(e)(
-                            this.handleEdit(space)
-                          )
-                        }
-                      />
-                      <DeleteOutlined
-                        className="btn-action btn-del"
-                        onClick={(e) =>
-                          SafeUtil.stopPropagationWrap(e)(
-                            this.handleDelete(space)
-                          )
-                        }
-                      />
+                      {this.user.isAdmin() && (
+                        <>
+                          <EditOutlined
+                            className="btn-action btn-edit"
+                            onClick={(e) =>
+                              SafeUtil.stopPropagationWrap(e)(
+                                this.handleEdit(space)
+                              )
+                            }
+                          />
+                          <DeleteOutlined
+                            className="btn-action btn-del"
+                            onClick={(e) =>
+                              SafeUtil.stopPropagationWrap(e)(
+                                this.handleDelete(space)
+                              )
+                            }
+                          />
+                        </>
+                      )}
                     </AntdSpace>
                   </div>
                   <div className="space-item-percent">

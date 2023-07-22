@@ -60,6 +60,7 @@ export default class MatterImage extends TankComponent<IProps, IState> {
         dir: false,
         alien: true,
         userUuid: this.user.uuid,
+        spaceUuid: this.user.space.uuid,
       });
       this.matter.httpUpload(
         () => {
