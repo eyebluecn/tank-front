@@ -231,26 +231,31 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
     return (
       <div className="right-part">
         <span className="matter-operation text-theme">
-          {!matter.dir && matter.privacy && (
-            <Tooltip title={Lang.t('matter.setPublic')}>
-              <UnlockOutlined
-                className="btn-action"
-                onClick={(e) =>
-                  SafeUtil.stopPropagationWrap(e)(this.changePrivacy(false))
-                }
-              />
-            </Tooltip>
+          {this.checkHandlePermission() && (
+            <>
+              {!matter.dir && matter.privacy && (
+                <Tooltip title={Lang.t('matter.setPublic')}>
+                  <UnlockOutlined
+                    className="btn-action"
+                    onClick={(e) =>
+                      SafeUtil.stopPropagationWrap(e)(this.changePrivacy(false))
+                    }
+                  />
+                </Tooltip>
+              )}
+              {!matter.dir && !matter.privacy && (
+                <Tooltip title={Lang.t('matter.setPrivate')}>
+                  <LockOutlined
+                    className="btn-action"
+                    onClick={(e) =>
+                      SafeUtil.stopPropagationWrap(e)(this.changePrivacy(true))
+                    }
+                  />
+                </Tooltip>
+              )}
+            </>
           )}
-          {!matter.dir && !matter.privacy && (
-            <Tooltip title={Lang.t('matter.setPrivate')}>
-              <LockOutlined
-                className="btn-action"
-                onClick={(e) =>
-                  SafeUtil.stopPropagationWrap(e)(this.changePrivacy(true))
-                }
-              />
-            </Tooltip>
-          )}
+
           <Tooltip title={Lang.t('matter.fileDetail')}>
             <InfoCircleOutlined
               className="btn-action"
@@ -259,14 +264,16 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
               }
             />
           </Tooltip>
-          <Tooltip title={Lang.t('matter.rename')}>
-            <EditOutlined
-              className="btn-action"
-              onClick={(e) =>
-                SafeUtil.stopPropagationWrap(e)(this.prepareRename())
-              }
-            />
-          </Tooltip>
+          {this.checkHandlePermission() && (
+            <Tooltip title={Lang.t('matter.rename')}>
+              <EditOutlined
+                className="btn-action"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.prepareRename())
+                }
+              />
+            </Tooltip>
+          )}
           <Tooltip title={Lang.t('matter.copyPath')}>
             <LinkOutlined
               className="btn-action"
@@ -281,14 +288,16 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
               }
             />
           </Tooltip>
-          <Tooltip title={Lang.t('matter.delete')}>
-            <DeleteOutlined
-              className="btn-action text-danger"
-              onClick={(e) =>
-                SafeUtil.stopPropagationWrap(e)(this.deleteMatter())
-              }
-            />
-          </Tooltip>
+          {this.checkHandlePermission() && (
+            <Tooltip title={Lang.t('matter.delete')}>
+              <DeleteOutlined
+                className="btn-action text-danger"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.deleteMatter())
+                }
+              />
+            </Tooltip>
+          )}
         </span>
         <Tooltip title={Lang.t('matter.size')}>
           <span className="matter-size">
@@ -318,13 +327,19 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
         <InfoCircleOutlined className="btn-action mr5" />
         {Lang.t('matter.fileDetail')}
       </div>,
-      <div
-        className="cell-btn navy"
-        onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.prepareRename())}
-      >
-        <EditOutlined className="btn-action mr5" />
-        {Lang.t('matter.rename')}
-      </div>,
+      ...(this.checkHandlePermission()
+        ? [
+            <div
+              className="cell-btn navy"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(this.prepareRename())
+              }
+            >
+              <EditOutlined className="btn-action mr5" />
+              {Lang.t('matter.rename')}
+            </div>,
+          ]
+        : []),
       <div
         className="cell-btn navy"
         onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.clipboard())}
@@ -339,15 +354,21 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
         <DownloadOutlined className="btn-action mr5" />
         {Lang.t('matter.download')}
       </div>,
-      <div
-        className="cell-btn text-danger"
-        onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.deleteMatter())}
-      >
-        <DeleteOutlined className="btn-action mr5" />
-        {Lang.t('matter.delete')}
-      </div>,
+      ...(this.checkHandlePermission()
+        ? [
+            <div
+              className="cell-btn text-danger"
+              onClick={(e) =>
+                SafeUtil.stopPropagationWrap(e)(this.deleteMatter())
+              }
+            >
+              <DeleteOutlined className="btn-action mr5" />
+              {Lang.t('matter.delete')}
+            </div>,
+          ]
+        : []),
     ];
-    if (!matter.dir) {
+    if (this.checkHandlePermission() && !matter.dir) {
       handles.unshift(
         matter.privacy ? (
           <div
