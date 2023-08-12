@@ -51,8 +51,11 @@ export default class BrowserPreviewer extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="browser-previewer-wrapper">
-        <div className="browser-previewer">
+      <div
+        className="browser-previewer-wrapper"
+        onClick={() => this.props.onClose()}
+      >
+        <div className="browser-previewer" onClick={(e) => e.stopPropagation()}>
           <div className="title-bar">
             <div className="left-part"></div>
 

@@ -71,7 +71,7 @@ export default class ImagePreviewer extends TankComponent<any, any> {
       return (
         <Space>
           <DownloadOutlined
-            className="f18 toolbar-icon"
+            className="f18 toolbar-icon btn-action"
             onClick={() => {
               const a = document.createElement('a');
               a.setAttribute('download', '');
@@ -84,13 +84,13 @@ export default class ImagePreviewer extends TankComponent<any, any> {
             }}
           />
           <RotateRightOutlined
-            className="f18 toolbar-icon"
+            className="f18 toolbar-icon btn-action"
             onClick={() => {
               overlayProps.onRotate(overlayProps.rotate + 90);
             }}
           />
           <CloseOutlined
-            className="f18 toolbar-icon"
+            className="f18 toolbar-icon btn-action"
             onClick={() => overlayProps.onClose()}
           />
         </Space>
