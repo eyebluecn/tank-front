@@ -1,45 +1,45 @@
-import PhotoSwipe from 'photoswipe';
-import 'photoswipe/style.css';
-import { UIElementData } from 'photoswipe/dist/types/ui/ui';
+import React from 'react';
+import { PhotoSlider } from 'react-photo-view';
+import 'react-photo-view/dist/react-photo-view.css';
+import ReactDOM from 'react-dom';
+import { OverlayRenderProps } from 'react-photo-view/dist/types';
+import {
+  CloseOutlined,
+  DownloadOutlined,
+  RotateRightOutlined,
+} from '@ant-design/icons';
+import TankComponent from '../../../common/component/TankComponent';
+import { Space } from 'antd';
+import './ImagePreviewer.less';
 
 /**
  * 图片预览器
  * 支持预览一张图片或者多张图片
+ * 参考文档：https://zhuanlan.zhihu.com/p/473554342
+ * https://gitee.com/MinJieLiu/react-photo-view
  */
-export default class ImagePreviewer {
-  static downloadElement: UIElementData = {
-    name: 'download-button',
-    order: 8,
-    isButton: true,
-    tagName: 'a',
+export default class ImagePreviewer extends TankComponent<any, any> {
+  static initialized: boolean = false;
 
-    // SVG with outline
-    html: {
-      isCustomSVG: true,
-      inner:
-        '<path d="M20.5 14.3 17.1 18V10h-2.2v7.9l-3.4-3.6L10 16l6 6.1 6-6.1ZM23 23H9v2h14Z" id="pswp__icn-download"/>',
-      outlineID: 'pswp__icn-download',
-    },
-    onInit: (el, pswp) => {
-      el.setAttribute('download', '');
-      el.setAttribute('target', '_blank');
-      el.setAttribute('rel', 'noopener');
+  static singletonRef = React.createRef<ImagePreviewer>();
 
-      pswp.on('change', () => {
-        (el as HTMLAnchorElement).href = pswp.currSlide?.data.src!;
-      });
-    },
-  };
+  //组件的私有变量
+  visible: boolean = true;
+  urls: string[] = [];
+  index: number = 0;
 
-  static getImageSize(
-    url: string
-  ): Promise<{ width?: number; height?: number }> {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve({ width: img.width, height: img.height });
-      img.onerror = () => resolve({ width: undefined, height: undefined });
-      img.src = url;
-    });
+  //初始化
+  private static init() {
+    let div: HTMLElement = document.createElement('div');
+    div.id = 'photo-container';
+
+    //添加到body
+    document.body.appendChild(div);
+
+    ReactDOM.render(
+      <ImagePreviewer ref={ImagePreviewer.singletonRef} />,
+      document.getElementById('photo-container')
+    );
   }
 
   //展示一张图片
@@ -47,23 +47,72 @@ export default class ImagePreviewer {
     ImagePreviewer.showMultiPhoto([url], 0);
   }
 
-  static async showMultiPhoto(urls: string[], index: number = 0) {
-    const sizes = await Promise.all(
-      urls.map((url) => ImagePreviewer.getImageSize(url))
+  //展示一系列图片
+  static showMultiPhoto(urls: string[], index: number = 0) {
+    if (!ImagePreviewer.initialized) {
+      ImagePreviewer.initialized = true;
+      ImagePreviewer.init();
+    }
+
+    ImagePreviewer.singletonRef.current?.show(urls, index);
+  }
+
+  show(urls: string[], index: number = 0) {
+    this.urls = urls;
+    this.index = index;
+    this.visible = true;
+    this.updateUI();
+  }
+
+  render() {
+    let toolBar: (overlayProps: OverlayRenderProps) => React.ReactNode = (
+      overlayProps: OverlayRenderProps
+    ) => {
+      return (
+        <Space>
+          <DownloadOutlined
+            className="f18 toolbar-icon"
+            onClick={() => {
+              const a = document.createElement('a');
+              a.setAttribute('download', '');
+              a.setAttribute('target', '_blank');
+              a.setAttribute('rel', 'noopener');
+              a.href = overlayProps.images[overlayProps.index].src!;
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+            }}
+          />
+          <RotateRightOutlined
+            className="f18 toolbar-icon"
+            onClick={() => {
+              overlayProps.onRotate(overlayProps.rotate + 90);
+            }}
+          />
+          <CloseOutlined
+            className="f18 toolbar-icon"
+            onClick={() => overlayProps.onClose()}
+          />
+        </Space>
+      );
+    };
+
+    return (
+      <PhotoSlider
+        className="widget-image-previewer"
+        images={this.urls.map((item: string) => ({ src: item, key: item }))}
+        visible={this.visible}
+        onClose={() => {
+          this.visible = false;
+          this.updateUI();
+        }}
+        index={this.index}
+        onIndexChange={(index: number) => {
+          this.index = index;
+          this.updateUI();
+        }}
+        toolbarRender={toolBar}
+      />
     );
-
-    const pswp = new PhotoSwipe({
-      dataSource: urls.map((url, index) => ({
-        src: url,
-        width: sizes[index].width,
-        height: sizes[index].height,
-      })),
-      index,
-    });
-
-    pswp.on('uiRegister', () => {
-      pswp.ui?.registerElement(ImagePreviewer.downloadElement);
-    });
-    pswp.init();
   }
 }
