@@ -50,6 +50,7 @@ export default class List extends TankComponent<IProps, IState> {
 
   componentDidMount() {
     this.pager.enableHistory();
+    this.pager.setFilterValue('type', 'SHARED'); // 列表只展示共享空间
     this.pager.httpList();
   }
 
