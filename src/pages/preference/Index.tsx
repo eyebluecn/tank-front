@@ -221,7 +221,7 @@ export default class Index extends TankComponent<IProps, IState> {
                     icon={<ScanOutlined />}
                     onClick={() => this.immediateScan()}
                   >
-                    立即扫描
+                    {Lang.t('preference.scanImmediately')}
                   </Button>
                 ) : (
                   ''
@@ -244,8 +244,8 @@ export default class Index extends TankComponent<IProps, IState> {
                     {ScanScopeTypeMap[scanConfig.scope].name}
                   </InfoCell>
                   {scanConfig.scope === ScanScopeType.CUSTOM && (
-                    <InfoCell name={Lang.t('preference.scanUsers')}>
-                      {scanConfig.usernames.join(', ')}
+                    <InfoCell name={Lang.t('preference.scanSpaces')}>
+                      {scanConfig.spaceNames.join(', ')}
                     </InfoCell>
                   )}
                 </>

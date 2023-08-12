@@ -1,215 +1,208 @@
-import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import './ScanEdit.less';
-import TankComponent from '../../common/component/TankComponent';
-import Preference from '../../common/model/preference/Preference';
-import Moon from '../../common/model/global/Moon';
+import React, { useEffect, useRef, useState } from 'react';
 import Lang from '../../common/model/global/Lang';
-import TankTitle from '../widget/TankTitle';
 import TankContentCard from '../widget/TankContentCard';
+import TankTitle from '../widget/TankTitle';
+import Preference from '../../common/model/preference/Preference';
 import { Button, Form, Input, Select, Spin, Switch } from 'antd';
-import { FormInstance } from 'antd/lib/form';
 import { SaveOutlined } from '@ant-design/icons';
-import MessageBoxUtil from '../../common/util/MessageBoxUtil';
-import Sun from '../../common/model/global/Sun';
-import {
-  ScanScopeType,
-  ScanScopeTypeList,
-} from '../../common/model/preference/model/ScanScopeType';
 import {
   ScanCronType,
   ScanCronTypeList,
   ScanCronTypeValueList,
 } from '../../common/model/preference/model/ScanCronType';
+import {
+  ScanScopeType,
+  ScanScopeTypeList,
+} from '../../common/model/preference/model/ScanScopeType';
+import Space from '../../common/model/space/Space';
 import Pager from '../../common/model/base/Pager';
-import User from '../../common/model/user/User';
 import SortDirection from '../../common/model/base/SortDirection';
+import MessageBoxUtil from '../../common/util/MessageBoxUtil';
+import Sun from '../../common/model/global/Sun';
+import { debounce } from '../../common/util/OptimizeUtil';
 
-interface IProps extends RouteComponentProps {}
+const ScanEdit = () => {
+  const layout = {
+    labelCol: { span: 6 },
+    wrapperCol: { span: 18 },
+  };
+  const pager = useRef(new Pager<Space>(null, Space, Pager.MAX_PAGE_SIZE));
+  const preference = useRef(new Preference());
+  const [loading, setLoading] = useState(true);
+  const [spaceList, setSpaceList] = useState<Space[]>([]);
+  const [form] = Form.useForm();
 
-interface IState {}
-
-export default class ScanEdit extends TankComponent<IProps, IState> {
-  formRef = React.createRef<FormInstance>();
-
-  preference: Preference = Moon.getSingleton().preference;
-  pager: Pager<User> = new Pager<User>(this, User, 10);
-
-  constructor(props: IProps) {
-    super(props);
-    this.preference.detailLoading = true;
-  }
-
-  componentDidMount() {
-    this.preference.httpFetch(() => {
-      this.preference.detailLoading = false;
-
-      // 给前端辅助字段赋值
-      this.preference.scanConfig.cronType = this.preference.scanConfig.cron;
-      if (
-        !ScanCronTypeValueList.includes(this.preference.scanConfig.cronType!)
-      ) {
-        this.preference.scanConfig.cronType = ScanCronType.CUSTOM;
-      }
-
-      if (this.preference.scanConfig.scope !== ScanScopeType.ALL) {
-        this.preference.scanConfig.users =
-          this.preference.scanConfig.usernames.map((name: string) => ({
-            label: name,
-            value: name,
-          }));
-      }
-
-      this.updateUI();
-    });
-  }
-
-  finish(values: any) {
-    if (values.scope === ScanScopeType.CUSTOM) {
-      this.preference.scanConfig.assign({
-        ...values,
-        usernames: values.users.map((item: any) => item.value),
-      });
-    } else {
-      this.preference.scanConfig.assign(values);
-    }
-
-    this.preference.httpSaveScan(function () {
+  const handleFinish = async () => {
+    const values = await form.validateFields();
+    preference.current.scanConfig.assign(values);
+    preference.current.httpSaveScan(function () {
       MessageBoxUtil.success(Lang.t('operationSuccess'));
       Sun.updateFrame();
       Sun.navigateTo('/preference/index');
     });
-  }
+  };
 
-  changeEnableScan(value: boolean) {
-    this.preference.scanConfig.enable = value;
-    this.updateUI();
-  }
+  const handleRefreshSpace = debounce((keyword?: string) => {
+    pager.current.setFilterValue('orderCreateTime', SortDirection.DESC);
+    pager.current.setFilterValue('name', keyword);
+    pager.current.httpList(() => setSpaceList(pager.current.data));
+  }, 200);
 
-  changeCronType(value: ScanCronType) {
-    this.preference.scanConfig.cronType = value;
-    this.updateUI();
-  }
+  useEffect(() => {
+    preference.current.detailLoading = true;
+    preference.current.httpFetch(() => {
+      preference.current.scanConfig.cronType = ScanCronTypeValueList.includes(
+        preference.current.scanConfig.cron!
+      )
+        ? preference.current.scanConfig.cron
+        : ScanCronType.CUSTOM;
+      setLoading(false);
+    });
+    handleRefreshSpace();
+  }, []);
 
-  changeScopeType(value: ScanScopeType) {
-    this.preference.scanConfig.scope = value;
-    this.updateUI();
-  }
-
-  fetchUser(value: any) {
-    this.pager.resetFilter();
-    this.pager.setFilterValue('orderCreateTime', SortDirection.DESC);
-    this.pager.setFilterValue('username', value);
-    this.pager.httpList();
-  }
-
-  render() {
-    const { preference, pager } = this;
-
-    const layout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 },
-    };
-
-    return (
-      <div className="preference-scan-edit">
-        <TankTitle name={Lang.t('preference.editScan')} />
-        <TankContentCard loading={preference.detailLoading}>
-          <Form
-            {...layout}
-            name="preview-engine"
-            ref={this.formRef}
-            initialValues={preference.scanConfig}
-            onFinish={this.finish.bind(this)}
-            onValuesChange={() => this.updateUI}
+  return (
+    <div className="preference-scan-edit">
+      <TankTitle name={Lang.t('preference.editScan')} />
+      <TankContentCard loading={loading}>
+        <Form
+          {...layout}
+          form={form}
+          initialValues={preference.current.scanConfig}
+          onFinish={handleFinish}
+        >
+          <Form.Item
+            label={Lang.t('preference.enableScan')}
+            valuePropName="checked"
+            name="enable"
+            required
           >
-            <Form.Item
-              label={Lang.t('preference.enableScan')}
-              valuePropName="checked"
-              name="enable"
-            >
-              <Switch onChange={this.changeEnableScan.bind(this)} />
-            </Form.Item>
-            {preference.scanConfig.enable && (
-              <>
-                <Form.Item
-                  label={Lang.t('preference.scanCron')}
-                  name="cronType"
-                >
-                  <Select onChange={this.changeCronType.bind(this)}>
-                    {ScanCronTypeList.map((option) => (
-                      <Select.Option key={option.value} value={option.value}>
-                        {option.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-                {preference.scanConfig.cronType === ScanCronType.CUSTOM && (
-                  <Form.Item
-                    label={Lang.t('preference.cron')}
-                    name="cron"
-                    rules={[
-                      {
-                        required: true,
-                        message: Lang.t('preference.cronValidate'),
-                      },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
-                )}
-                <Form.Item label={Lang.t('preference.scanScope')} name="scope">
-                  <Select onChange={this.changeScopeType.bind(this)}>
-                    {ScanScopeTypeList.map((option) => (
-                      <Select.Option key={option.value} value={option.value}>
-                        {option.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-                {preference.scanConfig.scope === ScanScopeType.CUSTOM && (
-                  <Form.Item
-                    label={Lang.t('preference.scanUsers')}
-                    name="users"
-                    rules={[
-                      {
-                        required: true,
-                        message: Lang.t('preference.chooseUsersValidate'),
-                      },
-                    ]}
-                  >
-                    <Select
-                      mode="multiple"
-                      labelInValue
-                      placeholder={Lang.t('preference.chooseUsers')}
-                      notFoundContent={
-                        pager.loading ? <Spin size="small" /> : null
-                      }
-                      filterOption={false}
-                      onSearch={this.fetchUser.bind(this)}
-                      style={{ width: '100%' }}
+            <Switch />
+          </Form.Item>
+
+          <Form.Item dependencies={['enable']} noStyle>
+            {({ getFieldValue }) => {
+              return (
+                getFieldValue('enable') && (
+                  <>
+                    <Form.Item
+                      label={Lang.t('preference.scanCron')}
+                      name="cronType"
+                      required
+                      rules={[
+                        {
+                          required: true,
+                          message: Lang.t('preference.scanCronValidate'),
+                        },
+                      ]}
                     >
-                      {pager.data.map((user: User) => (
-                        <Select.Option
-                          key={user.username!}
-                          value={user.username!}
-                        >
-                          {user.username}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                )}
-              </>
-            )}
-            <div className="text-right">
-              <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
-                {Lang.t('save')}
-              </Button>
-            </div>
-          </Form>
-        </TankContentCard>
-      </div>
-    );
-  }
-}
+                      <Select>
+                        {ScanCronTypeList.map((option) => (
+                          <Select.Option
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+
+                    <Form.Item dependencies={['cronType']} noStyle>
+                      {({ getFieldValue }) => {
+                        return (
+                          getFieldValue('cronType') === ScanCronType.CUSTOM && (
+                            <Form.Item
+                              label={Lang.t('preference.cron')}
+                              name="cron"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: Lang.t('preference.cronValidate'),
+                                },
+                              ]}
+                            >
+                              <Input />
+                            </Form.Item>
+                          )
+                        );
+                      }}
+                    </Form.Item>
+
+                    <Form.Item
+                      label={Lang.t('preference.scanScope')}
+                      name="scope"
+                      required
+                      rules={[
+                        {
+                          required: true,
+                          message: Lang.t('preference.scanScopeValidate'),
+                        },
+                      ]}
+                    >
+                      <Select>
+                        {ScanScopeTypeList.map((option) => (
+                          <Select.Option
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+
+                    <Form.Item dependencies={['scope']} noStyle>
+                      {({ getFieldValue }) => {
+                        return (
+                          getFieldValue('scope') === ScanScopeType.CUSTOM && (
+                            <Form.Item
+                              label={Lang.t('preference.scanSpaces')}
+                              name="spaceNames"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: Lang.t(
+                                    'preference.chooseSpacesValidate'
+                                  ),
+                                },
+                              ]}
+                            >
+                              <Select
+                                mode="multiple"
+                                placeholder={Lang.t('preference.chooseSpaces')}
+                                className="wp100"
+                                filterOption={false}
+                                onSearch={handleRefreshSpace}
+                              >
+                                {spaceList.map((space: Space) => (
+                                  <Select.Option
+                                    key={space.name}
+                                    value={space.name}
+                                  >
+                                    {space.name}
+                                  </Select.Option>
+                                ))}
+                              </Select>
+                            </Form.Item>
+                          )
+                        );
+                      }}
+                    </Form.Item>
+                  </>
+                )
+              );
+            }}
+          </Form.Item>
+          <div className="text-right">
+            <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
+              {Lang.t('save')}
+            </Button>
+          </div>
+        </Form>
+      </TankContentCard>
+    </div>
+  );
+};
+
+export default ScanEdit;

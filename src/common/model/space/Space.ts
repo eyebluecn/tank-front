@@ -1,6 +1,8 @@
 import BaseEntity from '../base/BaseEntity';
 import User from '../user/User';
 import FileUtil from '../../util/FileUtil';
+import Filter from '../base/filter/Filter';
+import InputFilter from '../base/filter/InputFilter';
 
 export interface SpaceFormValues {
   name: string;
@@ -16,6 +18,7 @@ export default class Space extends BaseEntity {
   totalSizeLimit: number = 0;
   userUuid: string | null = null;
   user: User | null = null;
+  type: 'PRIVATE' | 'SHARED' | null = null;
 
   constructor(reactComponent?: React.Component) {
     super(reactComponent);
@@ -25,6 +28,13 @@ export default class Space extends BaseEntity {
     return 'space';
   }
 
+  getFilters(): Filter[] {
+    return [
+      ...super.getFilters(),
+      new InputFilter('空间名称', 'name'),
+      new InputFilter('空间类型', 'type'),
+    ];
+  }
 
   assign(obj: any) {
     super.assign(obj);

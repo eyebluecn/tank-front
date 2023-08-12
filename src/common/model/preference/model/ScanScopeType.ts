@@ -14,11 +14,11 @@ const ScanScopeTypeMap: {
   [key in keyof typeof ScanScopeType]: SelectionOption;
 } = {
   ALL: {
-    name: Lang.t('user.allUsers'),
+    name: Lang.t('space.allSpaces'),
     value: 'ALL',
   },
   CUSTOM: {
-    name: Lang.t('user.partialUsers'),
+    name: Lang.t('space.partialSpaces'),
     value: 'CUSTOM',
   },
 };
