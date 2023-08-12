@@ -1,16 +1,22 @@
-.browser-previewer {
+.browser-previewer-wrapper {
 
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-
+  padding: 24px;
+  background: rgba(0,0,0,0.3);
   z-index: 1000;
-  background: white;
 
-  display: flex;
-  flex-direction: column;
+  .browser-previewer {
+    height: 100%;
+    background: white;
+
+    display: flex;
+    flex-direction: column;
+  }
+
 
   .title-bar {
     height: 40px;

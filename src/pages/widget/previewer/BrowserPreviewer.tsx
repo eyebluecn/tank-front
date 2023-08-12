@@ -51,28 +51,30 @@ export default class BrowserPreviewer extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="browser-previewer">
-        <div className="title-bar">
-          <div className="left-part"></div>
+      <div className="browser-previewer-wrapper">
+        <div className="browser-previewer">
+          <div className="title-bar">
+            <div className="left-part"></div>
 
-          <div className="middle-part">
-            {this.props.name}({FileUtil.humanFileSize(this.props.size)})
-          </div>
+            <div className="middle-part">
+              {this.props.name}({FileUtil.humanFileSize(this.props.size)})
+            </div>
 
-          <div className="right-part">
-            <span className="close btn-action">
-              <CloseOutlined
-                onClick={() => {
-                  this.props.onClose();
-                }}
-              />
-            </span>
+            <div className="right-part">
+              <span className="close btn-action">
+                <CloseOutlined
+                  onClick={() => {
+                    this.props.onClose();
+                  }}
+                />
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="frame-area">
-          <iframe width="100%" height="100%" src={this.props.url}>
-            iframe may not supported.
-          </iframe>
+          <div className="frame-area">
+            <iframe width="100%" height="100%" src={this.props.url}>
+              iframe may not supported.
+            </iframe>
+          </div>
         </div>
       </div>
     );
