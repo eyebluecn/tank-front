@@ -1,90 +1,45 @@
-import './ImagePreviewer.less';
 import PhotoSwipe from 'photoswipe';
-import PhotoSwipeUIDefault from 'photoswipe/dist/photoswipe-ui-default';
-//PhotoSwipe的样式
-import 'photoswipe/dist/photoswipe.css';
-import 'photoswipe/dist/default-skin/default-skin.css';
+import 'photoswipe/style.css';
+import { UIElementData } from 'photoswipe/dist/types/ui/ui';
 
 /**
  * 图片预览器
  * 支持预览一张图片或者多张图片
  */
 export default class ImagePreviewer {
-  private static pswpDom(): HTMLElement {
-    let innerHTML = `
-    <!-- Background of PhotoSwipe.
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
+  static downloadElement: UIElementData = {
+    name: 'download-button',
+    order: 8,
+    isButton: true,
+    tagName: 'a',
 
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
+    // SVG with outline
+    html: {
+      isCustomSVG: true,
+      inner:
+        '<path d="M20.5 14.3 17.1 18V10h-2.2v7.9l-3.4-3.6L10 16l6 6.1 6-6.1ZM23 23H9v2h14Z" id="pswp__icn-download"/>',
+      outlineID: 'pswp__icn-download',
+    },
+    onInit: (el, pswp) => {
+      el.setAttribute('download', '');
+      el.setAttribute('target', '_blank');
+      el.setAttribute('rel', 'noopener');
 
-        <!-- Container that holds slides.
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
+      pswp.on('change', () => {
+        (el as HTMLAnchorElement).href = pswp.currSlide?.data.src!;
+      });
+    },
+  };
 
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                      <div class="pswp__preloader__cut">
-                        <div class="pswp__preloader__donut"></div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-    `;
-
-    let div: HTMLElement = document.createElement('div');
-    div.className = 'pswp';
-    div.setAttribute('tabIndex', '-1');
-    div.setAttribute('role', 'dialog');
-    div.setAttribute('aria-hidden', 'true');
-
-    div.innerHTML = innerHTML;
-
-    return div;
+  static getImageSize(
+    url: string
+  ): Promise<{ width?: number; height?: number }> {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve({ width: img.width, height: img.height });
+      img.onerror = () => resolve({ width: undefined, height: undefined });
+      img.src = url;
+    });
   }
 
   //展示一张图片
@@ -92,61 +47,23 @@ export default class ImagePreviewer {
     ImagePreviewer.showMultiPhoto([url], 0);
   }
 
-  //展示一系列图片
-  static showMultiPhoto(urls: string[], index: number = 0) {
-    let that = this;
-    let items: PhotoSwipe.Item[] = [];
-    urls.forEach((url) => {
-      items.push({
-        src: url,
-        w: 0,
-        h: 0,
-      });
-    });
-
-    let options = {
-      closeEl: false,
-      //不需要历史纪录
-      history: false,
-      //不需要全屏按钮
-      fullscreenEl: false,
-      //不需要分享按钮
-      shareEl: false,
-      //当前从第0张展示。
-      index: index,
-      tapToClose: true,
-    };
-
-    //获取dom节点
-    let div = ImagePreviewer.pswpDom();
-    //添加到body
-    document.body.appendChild(div);
-
-    let photoSwipe = new PhotoSwipe(div, PhotoSwipeUIDefault, items, options);
-
-    photoSwipe.listen(
-      'gettingData',
-      function (index: number, item: PhotoSwipe.Item) {
-        if (!item.w || !item.h || item.w < 1 || item.h < 1) {
-          //这里为了获取图片真实大小
-          const img: HTMLImageElement = new Image();
-          img.onload = function () {
-            item.w = img.width;
-            item.h = img.height;
-            photoSwipe.updateSize(true); // reinit Items
-          };
-          img.src = item.src!;
-        }
-      }
+  static async showMultiPhoto(urls: string[], index: number = 0) {
+    const sizes = await Promise.all(
+      urls.map((url) => ImagePreviewer.getImageSize(url))
     );
-    photoSwipe.init();
 
-    photoSwipe.listen('close', () => {
-      if (div.parentNode) {
-        //移除节点
-        div.parentNode.removeChild(div);
-      }
+    const pswp = new PhotoSwipe({
+      dataSource: urls.map((url, index) => ({
+        src: url,
+        width: sizes[index].width,
+        height: sizes[index].height,
+      })),
+      index,
     });
-    photoSwipe.listen('afterChange', () => {});
+
+    pswp.on('uiRegister', () => {
+      pswp.ui?.registerElement(ImagePreviewer.downloadElement);
+    });
+    pswp.init();
   }
 }

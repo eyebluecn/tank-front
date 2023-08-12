@@ -1,4 +1,3 @@
-import './ImagePreviewer.less';
 import MimeUtil from '../../../common/util/MimeUtil';
 import MessageBoxUtil from '../../../common/util/MessageBoxUtil';
 import Moon from '../../../common/model/global/Moon';
