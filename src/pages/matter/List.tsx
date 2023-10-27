@@ -791,7 +791,7 @@ export default class List extends TankComponent<IProps, IState> {
 
         {Children.toArray(
           this.uploadMattersMap[this.getSpaceUuid()]?.map((m) => (
-            <UploadMatterPanel matter={m} />
+            <UploadMatterPanel key={m.autoId} matter={m} />
           ))
         )}
 
