@@ -274,12 +274,17 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
               />
             </Tooltip>
           )}
-          <Tooltip title={Lang.t('matter.copyPath')}>
-            <LinkOutlined
-              className="btn-action"
-              onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.clipboard())}
-            />
-          </Tooltip>
+          {/*文件夹不支持复制路径 安全问题*/}
+          {!matter.dir && (
+            <Tooltip title={Lang.t('matter.copyPath')}>
+              <LinkOutlined
+                className="btn-action"
+                onClick={(e) =>
+                  SafeUtil.stopPropagationWrap(e)(this.clipboard())
+                }
+              />
+            </Tooltip>
+          )}
           <Tooltip title={Lang.t('matter.download')}>
             <DownloadOutlined
               className="btn-action"
@@ -340,13 +345,17 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
             </div>,
           ]
         : []),
-      <div
-        className="cell-btn navy"
-        onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.clipboard())}
-      >
-        <LinkOutlined className="btn-action mr5" />
-        {Lang.t('matter.copyLink')}
-      </div>,
+      ...(matter.dir
+        ? []
+        : [
+            <div
+              className="cell-btn navy"
+              onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.clipboard())}
+            >
+              <LinkOutlined className="btn-action mr5" />
+              {Lang.t('matter.copyLink')}
+            </div>,
+          ]),
       <div
         className="cell-btn navy"
         onClick={(e) => SafeUtil.stopPropagationWrap(e)(matter.download())}
