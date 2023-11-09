@@ -30,10 +30,8 @@ export default class ShareDialogModal extends TankComponent<IProps, IState> {
 
   copyAll() {
     const { share } = this.props;
-    const text = `${Lang.t('share.link')}：${share.getLink()} ${Lang.t(
-      'share.code'
-    )}：${share.code}`;
-    this.clipboard(text);
+    const url = `${share.getLink()}?code=${share.code}`;
+    this.clipboard(url);
   }
 
   static open = (share: Share) => {

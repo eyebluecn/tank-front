@@ -59,7 +59,11 @@ export default class Detail extends TankComponent<IProps, IState> {
     this.share.uuid = this.props.match.params.uuid;
     this.pager.urlPage = Share.URL_MATTER_PAGE;
 
-    if (this.user.hasLogin()) {
+    if (!!BrowserUtil.getQueryByName('code')) {
+      this.getFiles(BrowserUtil.getQueryByName('code')!);
+      // 去除url中的code query
+      window.history.replaceState({}, '', window.location.pathname);
+    } else if (this.user.hasLogin()) {
       this.pager.enableHistory();
       this.refresh();
     }

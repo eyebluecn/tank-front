@@ -9,6 +9,7 @@ import ShareBar from './widget/ShareBar';
 
 import './List.less';
 import Lang from '../../common/model/global/Lang';
+import SortDirection from '../../common/model/base/SortDirection';
 
 interface IProps extends RouteComponentProps {}
 
@@ -23,6 +24,7 @@ export default class List extends TankComponent<IProps, IState> {
 
   componentDidMount() {
     this.pager.enableHistory();
+    this.pager.setFilterValue('orderCreateTime', SortDirection.DESC);
     this.refresh();
   }
 
