@@ -1,6 +1,6 @@
 {
   "name": "tank-front",
-  "version": "3.1.6",
+  "version": "4.0.3",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "4.7.0",

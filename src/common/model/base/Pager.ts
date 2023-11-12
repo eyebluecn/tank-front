@@ -175,20 +175,6 @@ export default class Pager<T> extends HttpBase {
     }
   }
 
-  //根据key来删除某个Filter
-  removeFilter(key: string) {
-    if (!this.filters || !this.filters.length) {
-      return;
-    }
-    for (let i = 0; i < this.filters.length; i++) {
-      let filter = this.filters[i];
-      if (filter.key === key) {
-        this.filters.splice(i, 1);
-        break;
-      }
-    }
-  }
-
   //隐藏某个Filter，实际上我们可以根据这个filter来筛选，只不过不出现在NbFilter中而已。
   showFilter(key: string, visible = true) {
     if (!this.filters || !this.filters.length) {

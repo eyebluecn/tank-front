@@ -475,12 +475,14 @@ export default class List extends TankComponent<IProps, IState> {
   }
 
   searchFile(value?: string) {
+    console.log('search', value);
     this.pager.setFilterValue('name', value);
     this.pager.setFilterValue('page', 0);
     this.refresh();
   }
 
   changeSearch(e: any) {
+    console.log('change', e.currentTarget.value);
     if (!e.currentTarget.value) this.searchFile();
   }
 
@@ -547,8 +549,10 @@ export default class List extends TankComponent<IProps, IState> {
 
   goToDirectory(id: string) {
     this.searchText = null;
-    this.pager.setFilterValue('puuid', id);
-    this.pager.removeFilter('name');
+    this.pager.setFilterValues({
+      puuid: id,
+      name: undefined,
+    });
     this.pager.page = 0;
     const query = this.pager.getParams();
     Sun.navigateQueryTo({ path: this.getMatterListPath(), query });
