@@ -1,5 +1,5 @@
 let LangEn = {
-  eyeblueTank: 'EyeblueTank',
+  docuMind:'DocuMind',
   dashboard: {
     totalInvokeNum: 'Total PV',
     weekRate: 'Week',
@@ -34,7 +34,7 @@ let LangEn = {
     sqliteNotice1:
       'Sqlite is a tiny file database, you can use it without installation',
     mysqlNotice1:
-      'If Mysql and EyeblueTank installed on the same server, Host is 127.0.0.1',
+      'If Mysql and DocuMind installed on the same server, Host is 127.0.0.1',
     mysqlNotice2:
       'Your mysql account must have access to create table, or the second step will fail.',
     validateMysqlFirst: 'Please test the mysql connection firstly.',
@@ -68,7 +68,7 @@ let LangEn = {
     administratorPassword: 'password',
     administratorRePassword: 'Enter administrator password again',
     usernameRule:
-      'EyeblueTank will use username as directory name, so only lowercase letter and number and _ is permitted.',
+      'DocuMind will use username as directory name, so only lowercase letter and number and _ is permitted.',
     congratulationInstall: 'Congratulations, install successfully!',
     configAdminFirst: 'Please config administrator first.',
     createAdminSuccess: 'Create administrator successfully!',
@@ -169,7 +169,7 @@ let LangEn = {
     crawlBackground: 'Background',
     crawlSuccessTip: 'Crawl successfully',
     crawlDescription:
-      'Crawl files refers to the backend downloading directly from the specified resource link to the current directory of EyeblueTank',
+      'Crawl files refers to the backend downloading directly from the specified resource link to the current directory of DocuMind',
   },
   router: {
     allFiles: 'All Files',
@@ -206,7 +206,7 @@ let LangEn = {
     matterBinDefaultSaveDay: 'Matter bin storage days',
     enterMatterBinDefaultSaveDay: 'Please enter matter bin storage days!',
     docLink: 'Document Link',
-    tankDocLink: 'https://tank-doc.eyeblue.cn',
+    tankDocLink: 'https://xxx',
     allowRegister: 'Allow register',
     systemCleanup: 'System Cleanup',
     systemCleanupDescription:

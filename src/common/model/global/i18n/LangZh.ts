@@ -1,5 +1,5 @@
 let LangZh = {
-  eyeblueTank: '蓝眼云盘',
+  docuMind: 'DocuMind',
   dashboard: {
     totalInvokeNum: '总PV',
     weekRate: '周环比',
@@ -200,7 +200,7 @@ let LangZh = {
     matterBinDefaultSaveDay: '回收站默认保留天数',
     enterMatterBinDefaultSaveDay: '默认回收站默认保留天数必填!',
     docLink: '文档链接',
-    tankDocLink: 'https://tank-doc.eyeblue.cn/zh',
+    tankDocLink: 'https://xxx',
     allowRegister: '允许自主注册',
     systemCleanup: '重置系统',
     systemCleanupDescription: '重置系统将清空除管理员账号外所有数据',

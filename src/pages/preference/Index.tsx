@@ -175,8 +175,8 @@ export default class Index extends TankComponent<IProps, IState> {
             </InfoCell>
 
             <InfoCell name={Lang.t('preference.docLink')}>
-              <a href={'https://tank-doc.eyeblue.cn/zh'} target="_blank">
-                https://tank-doc.eyeblue.cn/zh
+              <a href={'xxx'} target="_blank">
+                https://xxx
               </a>
             </InfoCell>
           </div>

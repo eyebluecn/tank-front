@@ -5,12 +5,12 @@
 .layout-top {
 
   transition: all 0.4s;
-  height: @top-navigation-height;
+  height: @top-navigation-height+20;
   background-color: white;
   border-bottom: 1px solid #eeeeee;
   position: fixed;
   top: 0;
-  left: @sidebar-width;
+  left: 0; //@sidebar-width
   right: 0;
   z-index: 100;
   display: flex;
@@ -24,7 +24,8 @@
   .logo-title-area {
 
     height: @top-navigation-height;
-    margin-left: 10px;
+    margin-left: 35px;
+    margin-top: 10px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -33,7 +34,7 @@
 
 
     .header-logo {
-      height: @top-navigation-height - 12;
+      height: @top-navigation-height ;
     }
 
     .header-title {
@@ -54,6 +55,23 @@
       color: black;
       font-size: 25px;
     }
+  }
+
+  .avatar-area {
+    text-align: center;
+    margin-top: 1px;
+
+    .avatar-middle {
+      width: 45px; /* Adjust the width to your desired size */
+      height: 45px; /* Adjust the height to your desired size */
+      margin-right: 10px;
+      margin-top: 8px;
+    }
+  }
+
+  .username-text {
+    color: #bbb;
+    font-size: 16px;
   }
 
   //小屏幕

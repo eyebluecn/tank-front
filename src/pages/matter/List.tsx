@@ -32,9 +32,11 @@ import {
   FolderOutlined,
   MenuOutlined,
   MinusSquareOutlined,
-  PlusSquareOutlined,
+  PlusOutlined,
+  UploadOutlined,
   ShareAltOutlined,
   SyncOutlined,
+  SelectOutlined,
 } from '@ant-design/icons';
 import ImagePreviewer from '../widget/previewer/ImagePreviewer';
 import Sun from '../../common/model/global/Sun';
@@ -624,24 +626,37 @@ export default class List extends TankComponent<IProps, IState> {
     return this.breadcrumbModels;
   }
 
+//{Lang.t('matter.create')}
+//{Lang.t('matter.upload')}
   getDropdownMenu() {
     return (
       <Menu>
         <Menu.Item
-          icon={<CloudUploadOutlined />}
-          onClick={() => this.uploadDirectoryBtnRef.current?.click()}
+          icon={<FolderOutlined />}
+          onClick={() => this.createDirectory()}
         >
-          {Lang.t('matter.uploadDir')}
+         Create dir
         </Menu.Item>
 
         <Menu.Item
-          icon={<CloudDownloadOutlined />}
-          onClick={() => {
-            this.crawlModalVisible = true;
-            this.updateUI();
-          }}
+          icon={<CloudUploadOutlined />}
         >
-          {Lang.t('matter.crawl')}
+            <Upload
+              className="ant-upload"
+              customRequest={(e) => this.triggerUpload(e)}
+              showUploadList={false}
+              multiple
+            >
+              Upload file
+            </Upload>
+        </Menu.Item>     
+
+
+        <Menu.Item
+          icon={<UploadOutlined />}
+          onClick={() => this.uploadDirectoryBtnRef.current?.click()}
+        >
+          {Lang.t('matter.uploadDir')}
         </Menu.Item>
       </Menu>
     );
@@ -663,18 +678,18 @@ export default class List extends TankComponent<IProps, IState> {
             <AntdSpace className="buttons">
               {selectedMatters.length !== pager.data.length ? (
                 <Button
-                  type="primary"
+                  type="default"
                   className="mb10"
                   onClick={() => this.checkAll()}
                 >
-                  <PlusSquareOutlined />
+                  <SelectOutlined />
                   {Lang.t('selectAll')}
                 </Button>
               ) : null}
               {pager.data.length &&
               selectedMatters.length === pager.data.length ? (
                 <Button
-                  type="primary"
+                  type="default"
                   className="mb10"
                   onClick={() => this.checkNone()}
                 >
@@ -685,7 +700,7 @@ export default class List extends TankComponent<IProps, IState> {
               {selectedMatters.length ? (
                 <>
                   <Button
-                    type="primary"
+                    type="default"
                     className="mb10"
                     onClick={() => this.downloadZip()}
                   >
@@ -695,7 +710,7 @@ export default class List extends TankComponent<IProps, IState> {
                   {this.checkHandlePermission() && (
                     <>
                       <Button
-                        type="primary"
+                        type="default"
                         className="mb10"
                         onClick={() => this.deleteBatch()}
                       >
@@ -703,7 +718,7 @@ export default class List extends TankComponent<IProps, IState> {
                         {Lang.t('delete')}
                       </Button>
                       <Button
-                        type="primary"
+                        type="default"
                         className="mb10"
                         onClick={() => this.toggleMoveBatch()}
                       >
@@ -716,7 +731,7 @@ export default class List extends TankComponent<IProps, IState> {
                   {/*共享空间下暂不支持分享功能*/}
                   {!this.isInSpace && (
                     <Button
-                      type="primary"
+                      type="default"
                       className="mb10"
                       onClick={() => this.shareBatch()}
                     >
@@ -729,39 +744,32 @@ export default class List extends TankComponent<IProps, IState> {
 
               {this.checkHandlePermission() && (
                 <>
-                  <Upload
-                    className="ant-upload"
-                    customRequest={(e) => this.triggerUpload(e)}
-                    showUploadList={false}
-                    multiple
-                  >
-                    <Button type="primary" className="mb10">
-                      <CloudUploadOutlined />
-                      {Lang.t('matter.upload')}
-                    </Button>
-                  </Upload>
-                  <Button
-                    type="primary"
-                    className="mb10"
-                    onClick={() => this.createDirectory()}
-                  >
-                    <FolderOutlined />
-                    {Lang.t('matter.create')}
-                  </Button>
                   <Dropdown
                     trigger={['hover']}
                     overlay={this.getDropdownMenu()}
                   >
-                    <Button type="primary" className="mb10">
-                      <MenuOutlined />
-                      {Lang.t('more')}
+                    <Button type="default" className="mb10">
+                    <PlusOutlined />
+                      New
                     </Button>
                   </Dropdown>
                 </>
               )}
 
               <Button
-                type="primary"
+                type="default"
+                className="mb10"
+                onClick={() => {
+                  this.crawlModalVisible = true;
+                  this.updateUI();
+                }}
+              >
+                <CloudDownloadOutlined />
+                {Lang.t('matter.crawl')}
+              </Button>
+
+              <Button
+                type="default"
                 className="mb10"
                 onClick={() => this.refresh()}
               >
@@ -775,7 +783,7 @@ export default class List extends TankComponent<IProps, IState> {
                 showUploadList={false}
                 directory
               >
-                <Button type="primary" ref={this.uploadDirectoryBtnRef}>
+                <Button type="default" ref={this.uploadDirectoryBtnRef}>
                   <CloudUploadOutlined />
                   {Lang.t('matter.uploadDir')}
                 </Button>

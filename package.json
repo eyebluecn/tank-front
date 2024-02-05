@@ -1,6 +1,6 @@
 {
-  "name": "tank-front",
-  "version": "4.0.3",
+  "name": "documind-front",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "4.7.0",
@@ -17,6 +17,7 @@
     "craco-less": "2.0.0",
     "echarts": "4.8.0",
     "echarts-for-react": "2.0.16",
+    "next": "^14.1.0",
     "qs": "^6.10.3",
     "react": "17.0.2",
     "react-dom": "17.0.2",

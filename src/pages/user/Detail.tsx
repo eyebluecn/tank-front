@@ -246,10 +246,10 @@ export default class Detail extends TankComponent<IProps, IState> {
             <InfoCell name={Lang.t('user.docLink')}>
               <a
                 className="f14"
-                href="https://tank-doc.eyeblue.cn"
+                href="xxx"
                 target="_blank"
               >
-                https://tank-doc.eyeblue.cn
+                https://xxx
               </a>
             </InfoCell>
           )}

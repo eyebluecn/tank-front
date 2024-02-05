@@ -7,6 +7,8 @@ import DefaultLogoPng from '../../assets/image/logo.png';
 import Sun from '../../common/model/global/Sun';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons/lib';
 import ImageUtil from '../../common/util/ImageUtil';
+import { Link } from 'react-router-dom';
+import User from '../../common/model/user/User';
 
 interface IProps {}
 
@@ -41,6 +43,7 @@ export default class TopLayout extends TankComponent<IProps, IState> {
 
   render() {
     let that = this;
+    const user: User = Moon.getSingleton().user;
 
     let preference: Preference = Moon.getSingleton().preference;
     return (
@@ -57,6 +60,22 @@ export default class TopLayout extends TankComponent<IProps, IState> {
             <MenuUnfoldOutlined onClick={this.toggleDrawer.bind(this)} />
           )}
         </div>
+
+        {preference.installed ? (
+          <div>
+            <div className="avatar-area" onMouseEnter={()=>{
+              <span className="username-text">{user.username}</span>
+            }}>
+              <Link className="username-text" to={'/user/detail/' + user.uuid}>
+                <img
+                  alt="avatar"
+                  className="avatar-middle"
+                  src={user.getAvatarUrl()}
+                />
+              </Link>
+            </div>
+          </div>
+        ) :null}
       </div>
     );
   }

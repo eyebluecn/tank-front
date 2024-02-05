@@ -83,6 +83,8 @@ export default class User extends BaseEntity {
     }
   }
 
+
+
   //登录
   httpLogin(
     username: string,
@@ -102,7 +104,22 @@ export default class User extends BaseEntity {
       User.URL_LOGIN,
       form,
       function (response: any) {
-        that.assign(response.data.data);
+      
+        const userdata={
+          Uuid: "123456",
+          Sort: 666,
+          UpdateTime:"2018-01-01 00:00:00",
+          CreateTime:'2018-01-01 00:00:00',
+          Role:"USER",
+          Username: "Jrm",
+          Password: "123",
+          LastTime: '2018-01-01 00:00:00',
+      
+          SpaceUuid: "888",
+          Status: "OK",
+      }
+
+      that.assign(userdata) //*^*that.assign(response.data.data);
 
         SafeUtil.safeCallback(successCallback)(response);
       },
