@@ -105,8 +105,8 @@ export default class PreviewerHelper {
 
       if (previewUrl) {
         targetUrl = targetUrl.replace('{originUrl}', previewUrl);
-        targetUrl = targetUrl.replace('{b64Url}', previewUrl);
-        targetUrl = targetUrl.replace('{url}', previewUrl);
+        targetUrl = targetUrl.replace('{b64Url}', encodeURIComponent(PreviewerHelper.b64EncodeUnicode(previewUrl)));
+        targetUrl = targetUrl.replace('{url}', encodeURIComponent(previewUrl));
         if (engine.previewInSite) {
           BrowserPreviewer.show(fileName, targetUrl, matter.size);
         } else {
