@@ -1,0 +1,44 @@
+.widget-matter-create-item {
+  border-top: 1px solid #eee;
+  background-color: white;
+  display: flex;
+  align-content: center;
+  flex-wrap: nowrap;
+  line-height: 48px;
+
+  .checkbox-wrapper {
+    margin-left: 10px;
+    position: relative;
+    flex-shrink: 0;
+    &:after {
+      position: absolute;
+      top: 0;
+      right: -10px;
+      bottom: 0;
+      left: -10px;
+      content: '';
+    }
+  }
+
+  .icon-wrapper {
+    margin-left: 10px;
+    width: 24px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    img {
+      width: 24px;
+    }
+  }
+
+  .name-wrapper {
+    flex-grow: 1;
+    margin-left: 10px;
+    overflow: hidden;
+    .name-input {
+      width: calc(100% - 20px);
+      height: 26px;
+      padding: 6px;
+    }
+  }
+}

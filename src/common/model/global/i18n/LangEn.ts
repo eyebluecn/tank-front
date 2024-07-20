@@ -31,12 +31,9 @@ let LangEn = {
     mysqlConnectionPass: 'Connect MySQL Ok',
     testMysqlConnection: 'Tes MySQL Connection',
     notice: 'Notice',
-    sqliteNotice1:
-      'Sqlite is a tiny file database, you can use it without installation',
-    mysqlNotice1:
-      'If Mysql and EyeblueTank installed on the same server, Host is 127.0.0.1',
-    mysqlNotice2:
-      'Your mysql account must have access to create table, or the second step will fail.',
+    sqliteNotice1: 'Sqlite is a tiny file database, you can use it without installation',
+    mysqlNotice1: 'If Mysql and EyeblueTank installed on the same server, Host is 127.0.0.1',
+    mysqlNotice2: 'Your mysql account must have access to create table, or the second step will fail.',
     validateMysqlFirst: 'Please test the mysql connection firstly.',
     preStep: 'Pre Step',
     nextStep: 'Next Step',
@@ -48,27 +45,22 @@ let LangEn = {
     missingFields: 'Missing fields',
     tableNotice: "'Create Tables' will trigger the following actions:",
     tableNotice1: 'If a table not exist, create it.',
-    tableNotice2:
-      'If a table exist and no fields missing, nothing will do on this table.',
-    tableNotice3:
-      'If a table exist but some fields is missing, it will add the missing fields.',
-    tableNotice4:
-      'If a table exist and some fields not necessary, nothing will do on this table.',
+    tableNotice2: 'If a table exist and no fields missing, nothing will do on this table.',
+    tableNotice3: 'If a table exist but some fields is missing, it will add the missing fields.',
+    tableNotice4: 'If a table exist and some fields not necessary, nothing will do on this table.',
     oneKeyCreate: 'Create Tables',
     createFinish: 'Finish Creating Tables',
     createTableSuccess: 'Create tables successfully',
     crateTableFirst: "Please click 'Create Tables'",
     setAdministrator: 'Config Administrator',
     detectAdministrator: 'Detect the following administrators:',
-    useOrCreateAdministrator:
-      'You can validate one of them, or you can create a new one.',
+    useOrCreateAdministrator: 'You can validate one of them, or you can create a new one.',
     validateAdministrator: 'Validate administrator',
     createAdministrator: 'Create administrator',
     administratorUsername: 'username',
     administratorPassword: 'password',
     administratorRePassword: 'Enter administrator password again',
-    usernameRule:
-      'EyeblueTank will use username as directory name, so only lowercase letter and number and _ is permitted.',
+    usernameRule: 'EyeblueTank will use username as directory name, so only lowercase letter and number and _ is permitted.',
     congratulationInstall: 'Congratulations, install successfully!',
     configAdminFirst: 'Please config administrator first.',
     createAdminSuccess: 'Create administrator successfully!',
@@ -109,6 +101,7 @@ let LangEn = {
     create: 'Create',
     createTime: 'Create Time',
     updateTime: 'Update Time',
+    updateDate: 'Update Date',
     deleteTime: 'Deleted Time',
     uploadUserNickname: 'Upload User',
     root: 'Root',
@@ -130,8 +123,7 @@ let LangEn = {
     uploaded: 'Uploaded',
     uploadDir: 'Upload dir',
     uploadInfo: 'Upload Info',
-    uploadErrorInfo:
-      'Some files failed to upload, you can export CSV files for viewing',
+    uploadErrorInfo: 'Some files failed to upload, you can export CSV files for viewing',
     exportCSV: 'Export upload error detail',
     speed: 'Speed',
     fileInfo: 'File basic info',
@@ -144,8 +136,7 @@ let LangEn = {
     downloadTimes: 'Download times',
     operations: 'Operation',
     oneTimeLink: 'One time link',
-    oneTimeLinkInfo:
-      'One time link will expire after downloading, click to copy',
+    oneTimeLinkInfo: 'One time link will expire after downloading, click to copy',
     imageCache: 'Image cache',
     searchFile: 'Search file',
     noContentYet: 'No content under this directory yet',
@@ -156,8 +147,7 @@ let LangEn = {
     noImageCache: 'No image cache',
     recycleBin: 'Recycle bin',
     deleted: 'Deleted',
-    unCompatibleBrowser:
-      'The current browser does not support it. Please try choose another one',
+    unCompatibleBrowser: 'The current browser does not support it. Please try choose another one',
     canIUse: 'To see if the current browser supports it',
     intoRecycleBin: 'Recycle bin',
     finishingTip: 'Please wait while files are sorted...',
@@ -209,10 +199,8 @@ let LangEn = {
     tankDocLink: 'https://tank-doc.eyeblue.cn',
     allowRegister: 'Allow register',
     systemCleanup: 'System Cleanup',
-    systemCleanupDescription:
-      "This operation will cleanup everything except administrators' data",
-    systemCleanupPrompt:
-      "This operation will cleanup everything except administrators' account data, please input login password.",
+    systemCleanupDescription: "This operation will cleanup everything except administrators' data",
+    systemCleanupPrompt: "This operation will cleanup everything except administrators' account data, please input login password.",
     previewConfig: 'File Preview Config',
     editPreference: 'Edit Preference',
     editPreviewEngine: 'Edit Preview engine',
@@ -229,13 +217,10 @@ let LangEn = {
     defaultPreview: 'Default preview engine',
     previewEngine: 'Number {} preview engine',
     defaultPreviewDesc: 'Default preview engine, can not be removed',
-    engineUsageHint:
-      'Previewing a file using the first engine matches the extentions.',
-    engineRegHelper:
-      'template syntax, {url} represents the file path, the preview will automatically replace with the corresponding file url',
+    engineUsageHint: 'Previewing a file using the first engine matches the extentions.',
+    engineRegHelper: 'template syntax, {url} represents the file path, the preview will automatically replace with the corresponding file url',
     engineRegPlaceHolder: 'eg：https://xxx.xxx.xxx?url={url}',
-    engineSuffixPlaceHolder:
-      'suffix can not be null, split by comma, look like: doc,ppt,xls',
+    engineSuffixPlaceHolder: 'suffix can not be null, split by comma, look like: doc,ppt,xls',
     previewCurrent: 'preview in current page',
     previewOpen: 'preview in new page',
     editScan: 'Edit Scan disk',
@@ -325,8 +310,7 @@ let LangEn = {
     sync: 'Sync',
     activeUser: 'Active this user',
     deleteUser: 'Delete this user',
-    deleteHint:
-      "This action will delete {}'s all records, including files,shares,user infos etc. Continue？",
+    deleteHint: "This action will delete {}'s all records, including files,shares,user infos etc. Continue？",
     welcomeLogin: 'Welcome Login',
     logining: 'Login...',
     login: 'Login',
@@ -348,8 +332,7 @@ let LangEn = {
     editUser: 'Edit User',
     editSomebodyPassword: "Edit {}'s Password",
     transfigurationPromptText: 'Transfiguration Prompt',
-    transfigurationPrompt:
-      'You will login as this user.Please visit this link in other browser, if in current browser, you will logout.',
+    transfigurationPrompt: 'You will login as this user.Please visit this link in other browser, if in current browser, you will logout.',
     searchUser: 'Search user',
   },
   space: {
@@ -361,8 +344,7 @@ let LangEn = {
     sizeLimitTip: 'Please enter single file limit',
     totalSizeLimit: 'Total space limit',
     totalSizeLimitTip: 'Please enter total space limit',
-    deleteHint:
-      'This operation will permanently delete the space. Please delete all files and members of the space first. Do you want to continue?',
+    deleteHint: 'This operation will permanently delete the space. Please delete all files and members of the space first. Do you want to continue?',
     memberManage: 'Space member Manage',
     member: 'member',
     memberTip: 'Please enter member',
@@ -370,8 +352,7 @@ let LangEn = {
     memberRoleTip: 'Please select member role',
     bindMember: 'Bind space member',
     unBindMember: 'Unbind space member',
-    unBindMemberHint:
-      'This operation will unbind the member from the space. Do you want to continue?',
+    unBindMemberHint: 'This operation will unbind the member from the space. Do you want to continue?',
     memberRoleReadonly: 'Readonly',
     memberRoleReadWrite: 'Read and write',
     memberRoleAdmin: 'Admin',
@@ -429,6 +410,6 @@ let LangEn = {
   inputRequired: 'Input required',
   selectRequired: 'Select required',
   more: 'More',
-};
+}
 
-export default LangEn;
+export default LangEn

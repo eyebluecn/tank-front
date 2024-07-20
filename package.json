@@ -3,6 +3,7 @@
   "version": "4.0.4",
   "private": true,
   "dependencies": {
+    "@ahooksjs/use-url-state": "^3.5.1",
     "@ant-design/icons": "4.7.0",
     "@craco/craco": "6.4.3",
     "@types/echarts": "4.6.1",
@@ -11,9 +12,11 @@
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.2",
     "@types/react-router-dom": "^5.3.3",
+    "ahooks": "^3.8.0",
     "antd": "4.19.2",
-    "axios": "^0.26.1",
+    "axios": "^1.7.2",
     "comma-separated-values": "^3.6.4",
+    "copy-to-clipboard": "^3.3.3",
     "craco-less": "2.0.0",
     "echarts": "4.8.0",
     "echarts-for-react": "2.0.16",
@@ -46,7 +49,9 @@
   "devDependencies": {
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
-    "prettier": "^2.8.8"
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "prettier": "^3.2.5",
+    "react-app-alias": "^2.2.2"
   },
   "husky": {
     "hooks": {
@@ -58,5 +63,6 @@
       "prettier --write",
       "git add"
     ]
-  }
+  },
+  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
 }
