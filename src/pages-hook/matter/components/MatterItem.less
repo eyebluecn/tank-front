@@ -1,0 +1,103 @@
+.widget-matter-item {
+  .matter-item {
+    border-top: 1px solid #eee;
+    background-color: white;
+    display: flex;
+    align-content: center;
+    flex-wrap: nowrap;
+    line-height: 48px;
+    &:hover {
+      cursor: pointer;
+      background: aliceblue;
+      .pc-operations .operations {
+        display: inline-flex;
+      }
+    }
+
+    .checkbox-wrapper {
+      margin-left: 10px;
+      position: relative;
+      flex-shrink: 0;
+      &:after {
+        position: absolute;
+        top: 0;
+        right: -10px;
+        bottom: 0;
+        left: -10px;
+        content: '';
+      }
+    }
+
+    .icon-wrapper {
+      margin-left: 10px;
+      width: 24px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      img {
+        width: 24px;
+      }
+    }
+
+    .name-wrapper {
+      flex-grow: 1;
+      margin-left: 10px;
+      overflow: hidden;
+      .name-input {
+        width: 100%;
+        height: 26px;
+        padding: 6px;
+      }
+      .name-info {
+        max-width: 100%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        .icon {
+          width: 11px;
+          font-size: 11px;
+          margin-left: 3px;
+        }
+      }
+    }
+
+    .handles {
+      flex-shrink: 0;
+      margin: 0 10px;
+    }
+
+    .pc-operations {
+      display: flex;
+      .operations {
+        display: none;
+      }
+      .size {
+        margin-left: 16px;
+        width: 80px;
+        text-align: left;
+      }
+      .date {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .mobile-operations {
+    display: block;
+    border-top: 1px solid #eee;
+    padding-left: 32px;
+    cursor: pointer;
+    background: #fff;
+    &:hover {
+      cursor: pointer;
+      background: aliceblue;
+    }
+    .operation-item {
+      line-height: 36px;
+
+      &:not(:first-child) {
+        border-top: 1px solid #eee;
+      }
+    }
+  }
+}

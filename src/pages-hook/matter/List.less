@@ -1,0 +1,68 @@
+.matter-list {
+  min-height: calc(100% + 20px);
+  margin: -10px;
+  padding: 10px;
+  position: relative;
+  .obscure {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .ant-upload {
+    display: inline-block;
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .matter-pagination {
+    margin-top: 10px;
+  }
+
+  .widget-matter-list-header {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    height: 48px;
+    color: #999;
+    .sort-part {
+      line-height: 48px;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        cursor: pointer;
+        background-color: aliceblue;
+      }
+
+      &-name {
+        flex-grow: 1;
+        padding-left: 10px;
+      }
+
+      &-size {
+        flex-shrink: 0;
+        width: 90px;
+        padding-left: 10px;
+        cursor: pointer;
+      }
+
+      &-date {
+        padding-left: 10px;
+        flex-shrink: 0;
+        width: 145px;
+        cursor: pointer;
+      }
+    }
+  }
+}

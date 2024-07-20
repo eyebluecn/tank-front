@@ -32,10 +32,8 @@ let LangZh = {
     testMysqlConnection: '测试MySQL连接',
     notice: '注意',
     sqliteNotice1: 'sqlite是一个轻量的文件数据库，无需安装即可使用',
-    mysqlNotice1:
-      '如果数据库和蓝眼云盘安装在同一台服务器，Host可以直接填写 127.0.0.1。',
-    mysqlNotice2:
-      '数据库账户的权限要求要能够创建表，否则第二步"创建表"操作会出错',
+    mysqlNotice1: '如果数据库和蓝眼云盘安装在同一台服务器，Host可以直接填写 127.0.0.1。',
+    mysqlNotice2: '数据库账户的权限要求要能够创建表，否则第二步"创建表"操作会出错',
     validateMysqlFirst: '请首先验证数据库连接',
     preStep: '上一步',
     nextStep: '下一步',
@@ -49,16 +47,14 @@ let LangZh = {
     tableNotice1: '如果某表不存在，则直接创建表。',
     tableNotice2: '如果某表存在并且字段齐全，那么不会对该表做任何操作。',
     tableNotice3: '如果某表存在但是部分字段缺失，那么会在该表中增加缺失字段。',
-    tableNotice4:
-      '如果表中有多余的字段(多余字段即不是蓝眼云盘需要的字段)，不会做删除处理，而会维持原样。',
+    tableNotice4: '如果表中有多余的字段(多余字段即不是蓝眼云盘需要的字段)，不会做删除处理，而会维持原样。',
     oneKeyCreate: '一键建表',
     createFinish: '建表完成',
     createTableSuccess: '建表成功',
     crateTableFirst: "请首先点击'一键建表'",
     setAdministrator: '设置管理员',
     detectAdministrator: '检测到系统中已经存在有以下管理员：',
-    useOrCreateAdministrator:
-      '你可以使用其中一位管理员的用户名和密码进行验证，或者创建一位新的管理员账户',
+    useOrCreateAdministrator: '你可以使用其中一位管理员的用户名和密码进行验证，或者创建一位新的管理员账户',
     validateAdministrator: '验证管理员账户',
     createAdministrator: '创建管理员账户',
     administratorUsername: '管理员用户名',
@@ -105,6 +101,7 @@ let LangZh = {
     create: '新建',
     createTime: '创建时间',
     updateTime: '修改时间',
+    updateDate: '修改日期',
     deleteTime: '删除时间',
     uploadUserNickname: '上传者',
     root: '根目录',
@@ -139,8 +136,7 @@ let LangZh = {
     downloadTimes: '下载次数',
     operations: '操作',
     oneTimeLink: '一次性链接',
-    oneTimeLinkInfo:
-      '使用一次性链接下载后链接立即失效,可以分享这个链接给朋友，点击复制',
+    oneTimeLinkInfo: '使用一次性链接下载后链接立即失效,可以分享这个链接给朋友，点击复制',
     imageCache: '图片缓存',
     searchFile: '搜索文件',
     noContentYet: '该目录下暂无任何内容',
@@ -162,8 +158,7 @@ let LangZh = {
     crawlFilenameTip: '请输入文件名',
     crawlBackground: '后台抓取',
     crawlSuccessTip: '抓取成功',
-    crawlDescription:
-      '抓取文件指后台将从指定资源链接直接下载到蓝眼云盘当前目录下',
+    crawlDescription: '抓取文件指后台将从指定资源链接直接下载到蓝眼云盘当前目录下',
   },
   router: {
     allFiles: '全部文件',
@@ -204,8 +199,7 @@ let LangZh = {
     allowRegister: '允许自主注册',
     systemCleanup: '重置系统',
     systemCleanupDescription: '重置系统将清空除管理员账号外所有数据',
-    systemCleanupPrompt:
-      '重置系统将清空除管理员账号外所有数据，事关重大，请输入登录密码',
+    systemCleanupPrompt: '重置系统将清空除管理员账号外所有数据，事关重大，请输入登录密码',
     previewConfig: '文件预览配置',
     editPreference: '设置网站偏好',
     editPreviewEngine: '设置预览引擎',
@@ -222,13 +216,10 @@ let LangZh = {
     defaultPreview: '默认引擎',
     previewEngine: '{}号引擎',
     defaultPreviewDesc: '默认预览引擎，不可移除',
-    engineRegHelper:
-      '此处填写模板语法：{url}表示文件路径，预览时会自动替换成对应的文件url；{b64url}表示base64机密后的路径，适用于kkfileview；',
-    engineUsageHint:
-      '对于一个文件的预览，使用第一个匹配到后缀名的引擎，没有配匹到则使用系统默认预览引擎',
+    engineRegHelper: '此处填写模板语法：{url}表示文件路径，预览时会自动替换成对应的文件url；{b64url}表示base64机密后的路径，适用于kkfileview；',
+    engineUsageHint: '对于一个文件的预览，使用第一个匹配到后缀名的引擎，没有配匹到则使用系统默认预览引擎',
     engineRegPlaceHolder: '例如：https://xxx.xxx.xxx?url={url}',
-    engineSuffixPlaceHolder:
-      '输入后缀，使用逗号分隔，不用带. 例如：doc,ppt,xls',
+    engineSuffixPlaceHolder: '输入后缀，使用逗号分隔，不用带. 例如：doc,ppt,xls',
     previewCurrent: '本站预览',
     previewOpen: '新标签打开',
     editScan: '设置磁盘扫描',
@@ -315,8 +306,7 @@ let LangZh = {
     disableUser: '禁用该用户',
     activeUser: '激活该用户',
     deleteUser: '删除该用户',
-    deleteHint:
-      '此操作将删除用户【{}】的所有记录，包括文件，分享，用户信息等内容，确定继续？',
+    deleteHint: '此操作将删除用户【{}】的所有记录，包括文件，分享，用户信息等内容，确定继续？',
     disable: '禁用',
     sync: '同步',
     active: '激活',
@@ -341,8 +331,7 @@ let LangZh = {
     editUser: '编辑用户',
     editSomebodyPassword: '修改{}的密码',
     transfigurationPromptText: '变身提示',
-    transfigurationPrompt:
-      '您将使用该用户的身份登录。请复制以下链接到其他浏览器访问，在当前浏览器访问会导致当前用户登录信息失效。',
+    transfigurationPrompt: '您将使用该用户的身份登录。请复制以下链接到其他浏览器访问，在当前浏览器访问会导致当前用户登录信息失效。',
     searchUser: '搜索用户',
   },
   space: {
@@ -354,8 +343,7 @@ let LangZh = {
     sizeLimitTip: '请输入单文件大小限制',
     totalSizeLimit: '总大小限制',
     totalSizeLimitTip: '请输入总大小限制',
-    deleteHint:
-      '此操作将永久删除该空间, 请先删除空间所有文件和空间成员, 是否继续?',
+    deleteHint: '此操作将永久删除该空间, 请先删除空间所有文件和空间成员, 是否继续?',
     memberManage: '空间成员管理',
     member: '空间成员',
     memberTip: '请搜索选择用户',
@@ -422,6 +410,6 @@ let LangZh = {
   inputRequired: '该项必填',
   selectRequired: '该项必选',
   more: '更多',
-};
+}
 
-export default LangZh;
+export default LangZh
