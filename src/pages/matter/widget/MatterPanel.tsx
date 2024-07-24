@@ -101,7 +101,6 @@ export default class MatterPanel extends TankComponent<IProps, IState> {
 
   deleteMatter() {
     MatterDeleteModal.open(
-      this.props.mode === 'space',
       () => {
         this.props.matter.httpSoftDelete(() => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));

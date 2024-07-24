@@ -283,7 +283,6 @@ export default class List extends TankComponent<IProps, IState> {
   deleteBatch() {
     const uuids = this.selectedMatters.map((i) => i.uuid).toString();
     MatterDeleteModal.open(
-      !!this.props.spaceUuid,
       () => {
         Matter.httpSoftDeleteBatch(uuids, this.getSpaceUuid(), () => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));

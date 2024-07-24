@@ -6,7 +6,16 @@ import Pager from '../../common/model/base/Pager';
 import Matter from '../../common/model/matter/Matter';
 import Moon from '../../common/model/global/Moon';
 import SortDirection from '../../common/model/base/SortDirection';
-import { Button, Col, Empty, Input, Modal, Pagination, Row, Space } from 'antd';
+import {
+  Button,
+  Col,
+  Empty,
+  Input,
+  Modal,
+  Pagination,
+  Row,
+  Space as AntdSpace,
+} from 'antd';
 import MessageBoxUtil from '../../common/util/MessageBoxUtil';
 import {
   CloseCircleOutlined,
@@ -22,12 +31,18 @@ import Lang from '../../common/model/global/Lang';
 import TankTitle from '../widget/TankTitle';
 import BinMatterPanel from './widget/BinMatterPanel';
 import Sun from '../../common/model/global/Sun';
+import Space from '../../common/model/space/Space';
 
-interface IProps extends RouteComponentProps {}
+interface IProps
+  extends RouteComponentProps<{
+    spaceUuid?: string;
+  }> {}
 
 interface IState {}
 
 export default class List extends TankComponent<IProps, IState> {
+  //当前空间信息
+  space = new Space();
   //当前文件夹信息。
   matter = new Matter();
   //当前选中的文件
@@ -41,7 +56,15 @@ export default class List extends TankComponent<IProps, IState> {
     super(props);
   }
 
+  initSpace() {
+    if (this.props.match.params.spaceUuid) {
+      this.space.uuid = this.props.match.params.spaceUuid;
+      this.space.httpDetail(() => this.updateUI());
+    }
+  }
+
   componentDidMount() {
+    this.initSpace();
     //刷新一下列表
     if (this.user.role === UserRole.ADMINISTRATOR) {
       this.pager.getFilter('userUuid')!.visible = true;
@@ -71,6 +94,11 @@ export default class List extends TankComponent<IProps, IState> {
     if (!this.pager.getCurrentSortFilter()) {
       this.pager.setFilterValue('orderDeleteTime', SortDirection.DESC);
       this.pager.setFilterValue('orderDir', SortDirection.DESC);
+    }
+
+    // 如果在共享空间中
+    if (this.props.match.params.spaceUuid) {
+      this.pager.setFilterValue('spaceUuid', this.props.match.params.spaceUuid);
     }
 
     // 过滤掉被软删除的文件
@@ -115,13 +143,20 @@ export default class List extends TankComponent<IProps, IState> {
     this.checkMatter();
   }
 
+  getSpaceUuid() {
+    if (this.props.match.params.spaceUuid) {
+      return this.props.match.params.spaceUuid;
+    }
+    return this.user.spaceUuid!;
+  }
+
   deleteBatch() {
     Modal.confirm({
       title: Lang.t('actionCanNotRevertConfirm'),
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         const uuids = this.selectedMatters.map((i) => i.uuid).toString();
-        Matter.httpDeleteBatch(uuids, this.user.spaceUuid!, () => {
+        Matter.httpDeleteBatch(uuids, this.getSpaceUuid(), () => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
           this.refresh();
         });
@@ -150,6 +185,12 @@ export default class List extends TankComponent<IProps, IState> {
       this.pager.setFilterValue('orderDir', SortDirection.DESC);
       this.pager.setFilterValue('name', value);
       this.pager.setFilterValue('deleted', true);
+      if (this.props.match.params.spaceUuid) {
+        this.pager.setFilterValue(
+          'spaceUuid',
+          this.props.match.params.spaceUuid
+        );
+      }
       this.pager.httpList();
     } else {
       this.refresh();
@@ -193,7 +234,7 @@ export default class List extends TankComponent<IProps, IState> {
 
         <Row className="mt10">
           <Col xs={24} sm={24} md={14} lg={16}>
-            <Space className="buttons">
+            <AntdSpace className="buttons">
               {selectedMatters.length !== pager.data.length ? (
                 <Button
                   type="primary"
@@ -244,7 +285,7 @@ export default class List extends TankComponent<IProps, IState> {
                 <SyncOutlined />
                 {Lang.t('refresh')}
               </Button>
-            </Space>
+            </AntdSpace>
           </Col>
           <Col xs={24} sm={24} md={10} lg={8}>
             <Input.Search

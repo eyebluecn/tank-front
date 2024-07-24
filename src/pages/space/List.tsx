@@ -13,6 +13,7 @@ import {
   Space as AntdSpace,
   Modal,
   Empty,
+  Tooltip,
 } from 'antd';
 import './List.less';
 import Lang from '../../common/model/global/Lang';
@@ -22,6 +23,7 @@ import MessageBoxUtil from '../../common/util/MessageBoxUtil';
 import {
   EditOutlined,
   ExclamationCircleFilled,
+  RestOutlined,
   TeamOutlined,
 } from '@ant-design/icons';
 import { DeleteOutlined } from '@ant-design/icons/lib';
@@ -116,6 +118,10 @@ export default class List extends TankComponent<IProps, IState> {
     this.props.history.push(`/space/${space.uuid}/member`);
   }
 
+  handleSpaceRecycleBin(space: Space) {
+    this.props.history.push(`/space/${space.uuid}/bin/list`);
+  }
+
   handleSpaceMatterList(space: Space) {
     this.props.history.push(`/space/${space.uuid}/matter/list`);
   }
@@ -150,32 +156,51 @@ export default class List extends TankComponent<IProps, IState> {
                       {space.name}
                     </div>
                     <AntdSpace className="space-item-icons">
-                      <TeamOutlined
-                        className="btn-action btn-member"
-                        onClick={(e) =>
-                          SafeUtil.stopPropagationWrap(e)(
-                            this.handleSpaceMember(space)
-                          )
-                        }
-                      />
+                      <Tooltip title={Lang.t('space.memberManage')}>
+                        <TeamOutlined
+                          className="btn-action btn-member"
+                          onClick={(e) =>
+                            SafeUtil.stopPropagationWrap(e)(
+                              this.handleSpaceMember(space)
+                            )
+                          }
+                        />
+                      </Tooltip>
+
+                      <Tooltip title={Lang.t('space.bin')}>
+                        <RestOutlined
+                          className="btn-action btn-bin"
+                          onClick={(e) =>
+                            SafeUtil.stopPropagationWrap(e)(
+                              this.handleSpaceRecycleBin(space)
+                            )
+                          }
+                        />
+                      </Tooltip>
+
                       {this.user.isAdmin() && (
                         <>
-                          <EditOutlined
-                            className="btn-action btn-edit"
-                            onClick={(e) =>
-                              SafeUtil.stopPropagationWrap(e)(
-                                this.handleEdit(space)
-                              )
-                            }
-                          />
-                          <DeleteOutlined
-                            className="btn-action btn-del"
-                            onClick={(e) =>
-                              SafeUtil.stopPropagationWrap(e)(
-                                this.handleDelete(space)
-                              )
-                            }
-                          />
+                          <Tooltip title={Lang.t('space.edit')}>
+                            <EditOutlined
+                              className="btn-action btn-edit"
+                              onClick={(e) =>
+                                SafeUtil.stopPropagationWrap(e)(
+                                  this.handleEdit(space)
+                                )
+                              }
+                            />
+                          </Tooltip>
+
+                          <Tooltip title={Lang.t('space.delete')}>
+                            <DeleteOutlined
+                              className="btn-action btn-del"
+                              onClick={(e) =>
+                                SafeUtil.stopPropagationWrap(e)(
+                                  this.handleDelete(space)
+                                )
+                              }
+                            />
+                          </Tooltip>
                         </>
                       )}
                     </AntdSpace>
