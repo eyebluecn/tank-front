@@ -18,9 +18,12 @@ import { Checkbox, Dropdown, Menu, Modal, Tooltip } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import SafeUtil from '../../../common/util/SafeUtil';
 import Lang from '../../../common/model/global/Lang';
+import { SpaceMemberRole } from '../../../common/model/space/member/SpaceMemberRole';
 
 interface IProps {
   matter: Matter;
+  mode: 'normal' | 'space'; // normal:正常模式，space:空间模式
+  spaceMemberRole?: SpaceMemberRole; // 用户在当前空间下的角色,只有在space模式下才有值
   onDeleteSuccess: () => any;
   onRecoverySuccess: () => any;
   onCheckMatter: (matter?: Matter) => any;
@@ -83,20 +86,20 @@ export default class BinMatterPanel extends TankComponent<IProps, IState> {
     this.updateUI();
   }
 
+  // 如果在空间下，有些操作权限只对管理员和读写成员开放
+  checkHandlePermission() {
+    if (this.props.mode === 'normal') return true;
+    return [SpaceMemberRole.ADMIN, SpaceMemberRole.READ_WRITE].includes(
+      this.props.spaceMemberRole!
+    );
+  }
+
   renderPcOperation() {
     const { matter } = this.props;
 
     return (
       <div className="right-part">
         <span className="matter-operation text-theme">
-          <Tooltip title={Lang.t('matter.recovery')}>
-            <RedoOutlined
-              className="btn-action"
-              onClick={(e) =>
-                SafeUtil.stopPropagationWrap(e)(this.recoveryMatter())
-              }
-            />
-          </Tooltip>
           <Tooltip title={Lang.t('matter.fileDetail')}>
             <InfoCircleOutlined
               className="btn-action"
@@ -107,14 +110,26 @@ export default class BinMatterPanel extends TankComponent<IProps, IState> {
               }
             />
           </Tooltip>
-          <Tooltip title={Lang.t('matter.hardDelete')}>
-            <CloseCircleOutlined
-              className="btn-action text-danger"
-              onClick={(e) =>
-                SafeUtil.stopPropagationWrap(e)(this.hardDeleteMatter())
-              }
-            />
-          </Tooltip>
+          {this.checkHandlePermission() && (
+            <>
+              <Tooltip title={Lang.t('matter.recovery')}>
+                <RedoOutlined
+                  className="btn-action"
+                  onClick={(e) =>
+                    SafeUtil.stopPropagationWrap(e)(this.recoveryMatter())
+                  }
+                />
+              </Tooltip>
+              <Tooltip title={Lang.t('matter.hardDelete')}>
+                <CloseCircleOutlined
+                  className="btn-action text-danger"
+                  onClick={(e) =>
+                    SafeUtil.stopPropagationWrap(e)(this.hardDeleteMatter())
+                  }
+                />
+              </Tooltip>
+            </>
+          )}
         </span>
         <Tooltip title={Lang.t('matter.size')}>
           <span className="matter-size">
@@ -131,7 +146,7 @@ export default class BinMatterPanel extends TankComponent<IProps, IState> {
   }
 
   getHandles() {
-    return [
+    const handles = [
       <div
         className="cell-btn navy"
         onClick={(e) =>
@@ -143,23 +158,31 @@ export default class BinMatterPanel extends TankComponent<IProps, IState> {
         <InfoCircleOutlined className="btn-action mr5" />
         {Lang.t('matter.fileDetail')}
       </div>,
-      <div
-        className="cell-btn navy"
-        onClick={(e) => SafeUtil.stopPropagationWrap(e)(this.recoveryMatter())}
-      >
-        <RedoOutlined className="btn-action mr5" />
-        {Lang.t('matter.recovery')}
-      </div>,
-      <div
-        className="cell-btn text-danger"
-        onClick={(e) =>
-          SafeUtil.stopPropagationWrap(e)(this.hardDeleteMatter())
-        }
-      >
-        <CloseCircleOutlined className="btn-action mr5" />
-        {Lang.t('matter.hardDelete')}
-      </div>,
     ];
+    if (this.checkHandlePermission()) {
+      handles.push(
+        <div
+          className="cell-btn navy"
+          onClick={(e) =>
+            SafeUtil.stopPropagationWrap(e)(this.recoveryMatter())
+          }
+        >
+          <RedoOutlined className="btn-action mr5" />
+          {Lang.t('matter.recovery')}
+        </div>,
+        <div
+          className="cell-btn text-danger"
+          onClick={(e) =>
+            SafeUtil.stopPropagationWrap(e)(this.hardDeleteMatter())
+          }
+        >
+          <CloseCircleOutlined className="btn-action mr5" />
+          {Lang.t('matter.hardDelete')}
+        </div>
+      );
+    }
+
+    return handles;
   }
 
   renderMobileOperation() {

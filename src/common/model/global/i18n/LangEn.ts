@@ -98,6 +98,7 @@ let LangEn = {
     delete: 'Delete',
     hardDelete: 'Hard delete',
     recovery: 'Recovery',
+    recoverySuccess: 'Recovery Succeed',
     more: 'More',
     share: 'Share',
     close: 'Close',

@@ -28,10 +28,13 @@ import {
 import ImagePreviewer from '../widget/previewer/ImagePreviewer';
 import { UserRole } from '../../common/model/user/UserRole';
 import Lang from '../../common/model/global/Lang';
-import TankTitle from '../widget/TankTitle';
 import BinMatterPanel from './widget/BinMatterPanel';
 import Sun from '../../common/model/global/Sun';
 import Space from '../../common/model/space/Space';
+import BreadcrumbPanel from '../widget/BreadcrumbPanel';
+import BreadcrumbModel from '../../common/model/base/option/BreadcrumbModel';
+import SpaceMember from '../../common/model/space/member/SpaceMember';
+import { SpaceMemberRole } from '../../common/model/space/member/SpaceMemberRole';
 
 interface IProps
   extends RouteComponentProps<{
@@ -43,6 +46,8 @@ interface IState {}
 export default class List extends TankComponent<IProps, IState> {
   //当前空间信息
   space = new Space();
+  // 当前用户在当前空间下的成员信息
+  spaceMember = new SpaceMember();
   //当前文件夹信息。
   matter = new Matter();
   //当前选中的文件
@@ -60,7 +65,18 @@ export default class List extends TankComponent<IProps, IState> {
     if (this.props.match.params.spaceUuid) {
       this.space.uuid = this.props.match.params.spaceUuid;
       this.space.httpDetail(() => this.updateUI());
+      this.spaceMember.httpMine(this.props.match.params.spaceUuid, () =>
+        this.updateUI()
+      );
     }
+  }
+
+  // 如果在空间下，有些操作权限只对管理员和读写成员开放
+  checkHandlePermission() {
+    if (!this.props.match.params.spaceUuid) return true;
+    return [SpaceMemberRole.ADMIN, SpaceMemberRole.READ_WRITE].includes(
+      this.spaceMember.role!
+    );
   }
 
   componentDidMount() {
@@ -170,7 +186,7 @@ export default class List extends TankComponent<IProps, IState> {
       icon: <ExclamationCircleFilled twoToneColor="#FFDC00" />,
       onOk: () => {
         const uuids = this.selectedMatters.map((i) => i.uuid).toString();
-        Matter.httpRecoveryBatch(uuids, () => {
+        Matter.httpRecoveryBatch(uuids, this.getSpaceUuid(), () => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
           this.refresh();
         });
@@ -223,59 +239,87 @@ export default class List extends TankComponent<IProps, IState> {
   }
 
   goDetail(matter: Matter) {
-    Sun.navigateTo(`/matter/detail/${matter.uuid}`);
+    const prefix = this.props.match.params.spaceUuid
+      ? `/space/${this.props.match.params.spaceUuid}`
+      : '';
+    Sun.navigateTo(`${prefix}/matter/detail/${matter.uuid}`);
+  }
+
+  getBreadcrumbModels(): BreadcrumbModel[] {
+    const breadcrumbModels: BreadcrumbModel[] = [
+      {
+        name: Lang.t('layout.bin'),
+        path: '',
+        query: {},
+        displayDirect: true,
+      },
+    ];
+    if (this.space.name) {
+      breadcrumbModels.unshift({
+        name: this.space.name,
+        path: '/space',
+        query: {},
+        displayDirect: false,
+      });
+    }
+
+    return breadcrumbModels;
   }
 
   render() {
     const { pager, selectedMatters } = this;
     return (
-      <div className="matter-list">
-        <TankTitle name={Lang.t('layout.bin')} />
+      <div className="page-bin-list">
+        <BreadcrumbPanel breadcrumbModels={this.getBreadcrumbModels()} />
 
         <Row className="mt10">
           <Col xs={24} sm={24} md={14} lg={16}>
             <AntdSpace className="buttons">
-              {selectedMatters.length !== pager.data.length ? (
-                <Button
-                  type="primary"
-                  className="mb10"
-                  onClick={() => this.checkAll()}
-                >
-                  <PlusSquareOutlined />
-                  {Lang.t('selectAll')}
-                </Button>
-              ) : null}
-              {pager.data.length &&
-              selectedMatters.length === pager.data.length ? (
-                <Button
-                  type="primary"
-                  className="mb10"
-                  onClick={() => this.checkNone()}
-                >
-                  <MinusSquareOutlined />
-                  {Lang.t('cancel')}
-                </Button>
-              ) : null}
-              {selectedMatters.length ? (
+              {this.checkHandlePermission() && (
                 <>
-                  <Button
-                    type="primary"
-                    className="mb10"
-                    onClick={() => this.recoverBatch()}
-                  >
-                    <RedoOutlined />
-                    {Lang.t('matter.recovery')}
-                  </Button>
-                  <Button
-                    type="primary"
-                    className="mb10"
-                    onClick={() => this.deleteBatch()}
-                  >
-                    <CloseCircleOutlined />
-                    {Lang.t('matter.hardDelete')}
-                  </Button>
+                  {selectedMatters.length !== pager.data.length ? (
+                    <Button
+                      type="primary"
+                      className="mb10"
+                      onClick={() => this.checkAll()}
+                    >
+                      <PlusSquareOutlined />
+                      {Lang.t('selectAll')}
+                    </Button>
+                  ) : null}
+                  {pager.data.length &&
+                  selectedMatters.length === pager.data.length ? (
+                    <Button
+                      type="primary"
+                      className="mb10"
+                      onClick={() => this.checkNone()}
+                    >
+                      <MinusSquareOutlined />
+                      {Lang.t('cancel')}
+                    </Button>
+                  ) : null}
+                  {selectedMatters.length ? (
+                    <>
+                      <Button
+                        type="primary"
+                        className="mb10"
+                        onClick={() => this.recoverBatch()}
+                      >
+                        <RedoOutlined />
+                        {Lang.t('matter.recovery')}
+                      </Button>
+                      <Button
+                        type="primary"
+                        className="mb10"
+                        onClick={() => this.deleteBatch()}
+                      >
+                        <CloseCircleOutlined />
+                        {Lang.t('matter.hardDelete')}
+                      </Button>
+                    </>
+                  ) : null}
                 </>
-              ) : null}
+              )}
 
               <Button
                 type="primary"
@@ -303,7 +347,13 @@ export default class List extends TankComponent<IProps, IState> {
             pager.data.map((matter) => (
               <BinMatterPanel
                 key={matter.uuid}
+                mode={this.props.match.params.spaceUuid ? 'space' : 'normal'}
                 matter={matter}
+                spaceMemberRole={
+                  this.props.match.params.spaceUuid
+                    ? this.spaceMember.role!
+                    : undefined
+                }
                 onDeleteSuccess={() => this.refresh()}
                 onRecoverySuccess={() => this.refresh()}
                 onCheckMatter={(m) => this.checkMatter(m)}

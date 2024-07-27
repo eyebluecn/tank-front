@@ -94,6 +94,7 @@ let LangZh = {
     delete: '删除',
     hardDelete: '彻底删除',
     recovery: '恢复',
+    recoverySuccess: '恢复成功',
     more: '更多',
     share: '分享',
     close: '关闭',

@@ -9,6 +9,7 @@ import SortFilter from '../base/filter/SortFilter';
 import InputFilter from '../base/filter/InputFilter';
 import SelectionFilter from '../base/filter/SelectionFilter';
 import Space from '../space/Space';
+import HttpBase from '../base/HttpBase';
 
 export default class User extends BaseEntity {
   //获取当前登录者的信息
@@ -22,6 +23,7 @@ export default class User extends BaseEntity {
   static URL_USER_TOGGLE_STATUS = '/api/user/toggle/status';
   static URL_USER_TRANSFIGURATION = '/api/user/transfiguration';
   static URL_USER_SCAN = '/api/user/scan';
+  static URL_USER_SEARCH = '/api/user/search';
 
   role: UserRole = UserRole.GUEST;
   username: string | null = null;
@@ -226,8 +228,7 @@ export default class User extends BaseEntity {
     oldPassword: string,
     newPassword: string,
     successCallback?: any,
-    errorCallback?: any,
-    finalCallback?: any
+    errorCallback?: any
   ) {
     let that = this;
     this.httpPost(
@@ -279,11 +280,25 @@ export default class User extends BaseEntity {
     );
   }
 
+  static httpSearch(
+    keyword?: string,
+    successCallback?: any,
+    errorCallback?: any
+  ) {
+    new HttpBase().httpGet(
+      User.URL_USER_SEARCH,
+      {
+        keyword,
+      },
+      successCallback,
+      errorCallback
+    );
+  }
+
   httpAuthenticationLogin(
     authentication: string,
     successCallback?: any,
-    errorCallback?: any,
-    finalCallback?: any
+    errorCallback?: any
   ) {
     let that = this;
     let form = { authentication };

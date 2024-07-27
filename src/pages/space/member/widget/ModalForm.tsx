@@ -7,7 +7,6 @@ import {
   SpaceMemberRole,
   SpaceMemberRoleList,
 } from '../../../../common/model/space/member/SpaceMemberRole';
-import Pager from '../../../../common/model/base/Pager';
 import User from '../../../../common/model/user/User';
 
 export interface SpaceMemberModalFormValues {
@@ -23,7 +22,6 @@ interface Props {
 }
 const ModalForm = ({ mode, targetSpaceMember, onOk, onCancel }: Props) => {
   const isCreate = mode === 'create';
-  const userPager = useRef(new Pager<User>(null, User, 100));
   const [form] = Form.useForm<SpaceMemberModalFormValues>();
   const [userList, setUserList] = useState<User[]>([]); // 用户列表
   const initialValues: SpaceMemberModalFormValues | undefined =
@@ -34,20 +32,15 @@ const ModalForm = ({ mode, targetSpaceMember, onOk, onCancel }: Props) => {
         }
       : undefined;
 
-  useEffect(() => {
-    refresh();
-  }, []);
-
-  const refresh = () => {
-    userPager.current.httpList(() => {
-      setUserList(userPager.current.data);
+  const refreshUserList = (keyword?: string) => {
+    User.httpSearch(keyword, (res: any) => {
+      setUserList(res.data.data);
     });
   };
 
-  const handleSearchUser = (value?: string) => {
-    userPager.current.setFilterValue('username', value);
-    refresh();
-  };
+  useEffect(() => {
+    refreshUserList();
+  }, []);
 
   return (
     <Modal
@@ -80,7 +73,7 @@ const ModalForm = ({ mode, targetSpaceMember, onOk, onCancel }: Props) => {
             showSearch
             allowClear
             filterOption={false}
-            onSearch={handleSearchUser}
+            onSearch={refreshUserList}
           />
         </Form.Item>
         <Form.Item

@@ -17,7 +17,7 @@ import ImagePreviewer from '../../../pages/widget/previewer/ImagePreviewer';
 import MessageBoxUtil from '../../util/MessageBoxUtil';
 import PreviewerHelper from '../../../pages/widget/previewer/PreviewerHelper';
 import HttpBase from '../base/HttpBase';
-import User from "../user/User";
+import User from '../user/User';
 
 export default class Matter extends BaseEntity {
   puuid: string = '';
@@ -288,7 +288,7 @@ export default class Matter extends BaseEntity {
   httpRecovery(successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_RECOVERY,
-      { uuid: this.uuid },
+      { uuid: this.uuid, spaceUuid: this.spaceUuid },
       function (response: any) {
         typeof successCallback === 'function' && successCallback(response);
       },
@@ -298,12 +298,13 @@ export default class Matter extends BaseEntity {
 
   static httpRecoveryBatch(
     uuids: string,
+    spaceUuid: string,
     successCallback?: any,
     errorCallback?: any
   ) {
     new HttpBase().httpPost(
       Matter.URL_MATTER_RECOVERY_BATCH,
-      { uuids: uuids },
+      { uuids, spaceUuid },
       function (response: any) {
         typeof successCallback === 'function' && successCallback(response);
       },
