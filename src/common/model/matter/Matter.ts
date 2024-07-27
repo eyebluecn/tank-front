@@ -73,6 +73,7 @@ export default class Matter extends BaseEntity {
   static URL_MATTER_UPLOAD = '/api/matter/upload';
   static URL_MATTER_ZIP = '/api/matter/zip';
   static URL_MATTER_CRAWL = '/api/matter/crawl';
+  static URL_MATTER_SEARCH = '/api/matter/search';
 
   static MATTER_ROOT = 'root';
 
@@ -244,6 +245,28 @@ export default class Matter extends BaseEntity {
         typeof successCallback === 'function' && successCallback(response);
       },
       errorCallback
+    );
+  }
+
+  static httpSearch(
+    params: {
+      puuid: string;
+      spaceUuid: string;
+      keyword?: string;
+    },
+    successCallback?: any,
+    errorCallback?: any,
+    finallyCallback?: any
+  ) {
+    new HttpBase().httpGet(
+      Matter.URL_MATTER_SEARCH,
+      params,
+      (res: any) => {
+        const list = BaseEntity.renderList(res.data.data, Matter);
+        successCallback?.(list);
+      },
+      errorCallback,
+      finallyCallback
     );
   }
 
