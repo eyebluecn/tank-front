@@ -17,7 +17,7 @@ import ImagePreviewer from '../../../pages/widget/previewer/ImagePreviewer';
 import MessageBoxUtil from '../../util/MessageBoxUtil';
 import PreviewerHelper from '../../../pages/widget/previewer/PreviewerHelper';
 import HttpBase from '../base/HttpBase';
-import User from "../user/User";
+import User from '../user/User';
 
 export default class Matter extends BaseEntity {
   puuid: string = '';
@@ -73,6 +73,7 @@ export default class Matter extends BaseEntity {
   static URL_MATTER_UPLOAD = '/api/matter/upload';
   static URL_MATTER_ZIP = '/api/matter/zip';
   static URL_MATTER_CRAWL = '/api/matter/crawl';
+  static URL_MATTER_SEARCH = '/api/matter/search';
 
   static MATTER_ROOT = 'root';
 
@@ -247,6 +248,28 @@ export default class Matter extends BaseEntity {
     );
   }
 
+  static httpSearch(
+    params: {
+      puuid: string;
+      spaceUuid: string;
+      keyword?: string;
+    },
+    successCallback?: any,
+    errorCallback?: any,
+    finallyCallback?: any
+  ) {
+    new HttpBase().httpGet(
+      Matter.URL_MATTER_SEARCH,
+      params,
+      (res: any) => {
+        const list = BaseEntity.renderList(res.data.data, Matter);
+        successCallback?.(list);
+      },
+      errorCallback,
+      finallyCallback
+    );
+  }
+
   static httpCrawl(
     body: {
       url: string;
@@ -288,7 +311,7 @@ export default class Matter extends BaseEntity {
   httpRecovery(successCallback?: any, errorCallback?: any) {
     this.httpPost(
       Matter.URL_MATTER_RECOVERY,
-      { uuid: this.uuid },
+      { uuid: this.uuid, spaceUuid: this.spaceUuid },
       function (response: any) {
         typeof successCallback === 'function' && successCallback(response);
       },
@@ -298,12 +321,13 @@ export default class Matter extends BaseEntity {
 
   static httpRecoveryBatch(
     uuids: string,
+    spaceUuid: string,
     successCallback?: any,
     errorCallback?: any
   ) {
     new HttpBase().httpPost(
       Matter.URL_MATTER_RECOVERY_BATCH,
-      { uuids: uuids },
+      { uuids, spaceUuid },
       function (response: any) {
         typeof successCallback === 'function' && successCallback(response);
       },

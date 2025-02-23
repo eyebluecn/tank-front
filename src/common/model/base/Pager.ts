@@ -256,8 +256,6 @@ export default class Pager<T> extends HttpBase {
       return params;
     }
 
-    console.log("this.filters",this.filters)
-
     for (let i = 0; i < this.filters.length; i++) {
       let filter = this.filters[i];
 

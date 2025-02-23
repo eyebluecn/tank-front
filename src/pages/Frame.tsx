@@ -193,6 +193,11 @@ class RawFrame extends TankComponent<IProps, IState> {
                   exact
                   component={MatterDetail}
                 />
+                <Route
+                  path="/space/:spaceUuid/bin/list"
+                  exact
+                  component={BinList}
+                />
               </div>
             ) : (
               <div className="pages-content">

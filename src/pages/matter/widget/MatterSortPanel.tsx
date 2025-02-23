@@ -9,6 +9,7 @@ import Pager from '../../../common/model/base/Pager';
 interface IProps {
   pager: Pager<Matter>;
   refresh: () => any;
+  disabled?: boolean;
 }
 
 interface IState {}
@@ -38,10 +39,14 @@ export default class MatterSortPanel extends TankComponent<IProps, IState> {
   }
 
   render() {
-    const { pager } = this.props;
+    const { pager, disabled } = this.props;
 
     return (
-      <div className="matter-sort-panel">
+      <div
+        className={`matter-sort-panel ${
+          disabled ? 'matter-sort-panel-disabled' : ''
+        }`}
+      >
         <div
           className="sort-part sort-part-name"
           onClick={() => this.changeFilterOrder('orderName')}

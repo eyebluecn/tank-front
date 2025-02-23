@@ -98,6 +98,7 @@ let LangEn = {
     delete: 'Delete',
     hardDelete: 'Hard delete',
     recovery: 'Recovery',
+    recoverySuccess: 'Recovery Succeed',
     more: 'More',
     share: 'Share',
     close: 'Close',
@@ -378,6 +379,9 @@ let LangEn = {
     emptyHint: 'No Space Yet',
     allSpaces: 'All Spaces',
     partialSpaces: 'Partial Spaces',
+    bin: 'Space recycle bin',
+    edit: 'Edit Space',
+    delete: 'Delete Space',
   },
   model: {
     usernameRule: 'only lowercase letter and number and _ is permitted.',

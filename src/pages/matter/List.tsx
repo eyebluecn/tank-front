@@ -20,6 +20,7 @@ import {
   Row,
   Space as AntdSpace,
   Upload,
+  List as AntdList,
 } from 'antd';
 import MessageBoxUtil from '../../common/util/MessageBoxUtil';
 import {
@@ -33,6 +34,7 @@ import {
   MenuOutlined,
   MinusSquareOutlined,
   PlusSquareOutlined,
+  SearchOutlined,
   ShareAltOutlined,
   SyncOutlined,
 } from '@ant-design/icons';
@@ -56,6 +58,7 @@ import Space from '../../common/model/space/Space';
 import MatterCrawlModal from './widget/MatterCrawlModal';
 import SpaceMember from '../../common/model/space/member/SpaceMember';
 import { SpaceMemberRole } from '../../common/model/space/member/SpaceMemberRole';
+import { debounce } from '../../common/util/OptimizeUtil';
 
 interface IProps {
   spaceUuid?: string;
@@ -76,8 +79,6 @@ export default class List extends TankComponent<IProps, IState> {
 
   //当前选中的文件
   selectedMatters: Matter[] = [];
-  //搜索的文字
-  searchText: string | null = null;
   //获取分页的一个帮助器
   pager = new Pager<Matter>(this, Matter, Pager.MAX_PAGE_SIZE);
   user = Moon.getSingleton().user;
@@ -110,6 +111,21 @@ export default class List extends TankComponent<IProps, IState> {
 
   // 抓取模态窗状态
   crawlModalVisible = false;
+
+  // 搜索
+  searchState: {
+    keyword?: string;
+    loading: boolean;
+    data: Matter[];
+  } = {
+    loading: false,
+    data: [],
+  };
+
+  // 当前是否有关键词是搜索状态，逻辑上有不一样
+  isSearch() {
+    return !!this.searchState.keyword;
+  }
 
   //持有全局唯一的实例。
   static instance: List | null = null;
@@ -203,6 +219,7 @@ export default class List extends TankComponent<IProps, IState> {
 
   componentWillReceiveProps() {
     this.pager.enableHistory();
+    this.resetSearch();
     this.refresh();
     this.refreshBreadcrumbs();
   }
@@ -218,8 +235,15 @@ export default class List extends TankComponent<IProps, IState> {
   refresh() {
     // 清空暂存区
     this.selectedMatters = [];
-    // 刷新文件列表
-    this.refreshPager();
+
+    if (this.isSearch()) {
+      // 刷新搜索列表
+      console.log('search this2', this.searchState.keyword);
+      this.refreshSearch(this.searchState.keyword);
+    } else {
+      // 刷新分页列表
+      this.refreshPager();
+    }
   }
 
   refreshPager() {
@@ -244,6 +268,15 @@ export default class List extends TankComponent<IProps, IState> {
     this.pager.httpList();
   }
 
+  getList() {
+    if (this.isSearch()) return this.searchState;
+    return this.pager;
+  }
+
+  getListData() {
+    return this.getList().data;
+  }
+
   checkMatter(matter?: Matter) {
     if (matter) {
       if (matter.check) {
@@ -257,7 +290,7 @@ export default class List extends TankComponent<IProps, IState> {
     } else {
       //统计所有的勾选
       this.selectedMatters = [];
-      this.pager.data.forEach((matter) => {
+      this.getListData().forEach((matter) => {
         if (matter.check) {
           this.selectedMatters.push(matter);
         }
@@ -267,14 +300,14 @@ export default class List extends TankComponent<IProps, IState> {
   }
 
   checkAll() {
-    this.pager.data.forEach((i) => {
+    this.getListData().forEach((i) => {
       i.check = true;
     });
     this.checkMatter();
   }
 
   checkNone() {
-    this.pager.data.forEach((i) => {
+    this.getListData().forEach((i) => {
       i.check = false;
     });
     this.checkMatter();
@@ -283,7 +316,6 @@ export default class List extends TankComponent<IProps, IState> {
   deleteBatch() {
     const uuids = this.selectedMatters.map((i) => i.uuid).toString();
     MatterDeleteModal.open(
-      !!this.props.spaceUuid,
       () => {
         Matter.httpSoftDeleteBatch(uuids, this.getSpaceUuid(), () => {
           MessageBoxUtil.success(Lang.t('operationSuccess'));
@@ -474,16 +506,6 @@ export default class List extends TankComponent<IProps, IState> {
     });
   }
 
-  searchFile(value?: string) {
-    this.pager.setFilterValue('name', value);
-    this.pager.setFilterValue('page', 0);
-    this.refresh();
-  }
-
-  changeSearch(e: any) {
-    if (!e.currentTarget.value) this.searchFile();
-  }
-
   changePage(page: number) {
     this.pager.page = page - 1; // page的页数0基
     this.pager.httpList();
@@ -510,7 +532,7 @@ export default class List extends TankComponent<IProps, IState> {
   previewImage(matter: Matter) {
     let imageArray: string[] = [];
     let startIndex = -1;
-    this.pager.data.forEach((item) => {
+    this.getListData().forEach((item) => {
       if (item.isImage()) {
         imageArray.push(item.getPreviewUrl());
         if (item.uuid === matter.uuid) {
@@ -546,11 +568,7 @@ export default class List extends TankComponent<IProps, IState> {
   }
 
   goToDirectory(id: string) {
-    this.searchText = null;
-    this.pager.setFilterValues({
-      puuid: id,
-      name: '',
-    });
+    this.pager.setFilterValue('puuid', id);
     this.pager.page = 0;
     const query = this.pager.getParams();
     Sun.navigateQueryTo({ path: this.getMatterListPath(), query });
@@ -645,6 +663,52 @@ export default class List extends TankComponent<IProps, IState> {
     );
   }
 
+  handleChangeSearch = (value?: string) => {
+    // 清空暂存区
+    this.selectedMatters = [];
+    this.searchState.keyword = value;
+    this.updateUI();
+
+    if (value) {
+      // search
+      console.log('search this', value);
+      this.refreshSearch(value);
+    } else {
+      // reset
+      this.resetSearch();
+    }
+  };
+
+  refreshSearch = debounce((value: string) => {
+    this.searchState.loading = true;
+    this.updateUI();
+    console.log('this.searchState.keyword', this.searchState.keyword);
+    Matter.httpSearch(
+      {
+        keyword: value,
+        puuid: this.currentDirectory.uuid || Matter.MATTER_ROOT,
+        spaceUuid: this.getSpaceUuid(),
+      },
+      (data: Matter[]) => {
+        this.searchState.data = data;
+      },
+      null,
+      () => {
+        this.searchState.loading = false;
+        this.updateUI();
+      }
+    );
+  }, 200);
+
+  resetSearch() {
+    this.searchState = {
+      keyword: undefined,
+      loading: false,
+      data: [],
+    };
+    this.updateUI();
+  }
+
   render() {
     const { pager, director, selectedMatters, dragEnterCount } = this;
     return (
@@ -659,7 +723,7 @@ export default class List extends TankComponent<IProps, IState> {
         <Row>
           <Col xs={24} sm={24} md={14} lg={16} className="mt10">
             <AntdSpace className="buttons">
-              {selectedMatters.length !== pager.data.length ? (
+              {selectedMatters.length !== this.getListData().length ? (
                 <Button
                   type="primary"
                   className="mb10"
@@ -669,8 +733,8 @@ export default class List extends TankComponent<IProps, IState> {
                   {Lang.t('selectAll')}
                 </Button>
               ) : null}
-              {pager.data.length &&
-              selectedMatters.length === pager.data.length ? (
+              {this.getListData().length &&
+              selectedMatters.length === this.getListData().length ? (
                 <Button
                   type="primary"
                   className="mb10"
@@ -682,14 +746,16 @@ export default class List extends TankComponent<IProps, IState> {
               ) : null}
               {selectedMatters.length ? (
                 <>
-                  <Button
-                    type="primary"
-                    className="mb10"
-                    onClick={() => this.downloadZip()}
-                  >
-                    <DownloadOutlined />
-                    {Lang.t('download')}
-                  </Button>
+                  {!this.isSearch() && (
+                    <Button
+                      type="primary"
+                      className="mb10"
+                      onClick={() => this.downloadZip()}
+                    >
+                      <DownloadOutlined />
+                      {Lang.t('download')}
+                    </Button>
+                  )}
                   {this.checkHandlePermission() && (
                     <>
                       <Button
@@ -712,7 +778,7 @@ export default class List extends TankComponent<IProps, IState> {
                   )}
 
                   {/*共享空间下暂不支持分享功能*/}
-                  {!this.isInSpace && (
+                  {!this.isInSpace && !this.isSearch() && (
                     <Button
                       type="primary"
                       className="mb10"
@@ -725,7 +791,7 @@ export default class List extends TankComponent<IProps, IState> {
                 </>
               ) : null}
 
-              {this.checkHandlePermission() && (
+              {this.checkHandlePermission() && !this.isSearch() && (
                 <>
                   <Upload
                     className="ant-upload"
@@ -781,12 +847,13 @@ export default class List extends TankComponent<IProps, IState> {
             </AntdSpace>
           </Col>
           <Col xs={24} sm={24} md={10} lg={8} className="mt10">
-            <Input.Search
+            <Input
               className="mb10"
               placeholder={Lang.t('matter.searchFile')}
-              onSearch={(value) => this.searchFile(value)}
-              onChange={(e) => this.changeSearch(e)}
-              enterButton
+              prefix={<SearchOutlined />}
+              value={this.searchState.keyword}
+              onChange={(e) => this.handleChangeSearch(e.target.value)}
+              allowClear
             />
           </Col>
         </Row>
@@ -797,8 +864,12 @@ export default class List extends TankComponent<IProps, IState> {
           ))
         )}
 
-        {pager.data.length ? (
-          <MatterSortPanel pager={pager} refresh={() => this.refresh()} />
+        {this.getListData().length ? (
+          <MatterSortPanel
+            pager={pager}
+            refresh={() => this.refresh()}
+            disabled={this.isSearch()}
+          />
         ) : null}
 
         {director.createMode ? (
@@ -811,35 +882,44 @@ export default class List extends TankComponent<IProps, IState> {
           />
         ) : null}
         <div>
-          {pager.loading || pager.data.length ? (
-            pager.data.map((matter) => (
-              <MatterPanel
-                mode={this.isInSpace ? 'space' : 'normal'}
-                spaceMemberRole={
-                  this.isInSpace ? this.spaceMember.role! : undefined
-                }
-                key={matter.uuid!}
-                director={director}
-                matter={matter}
-                onGoToDirectory={(id) => this.goToDirectory(id)}
-                onDeleteSuccess={() => this.pagerAndCapacityRefresh()}
-                onCheckMatter={(m) => this.checkMatter(m)}
-                onPreviewImage={(m) => this.previewImage(m)}
-                onGoDetail={(m) => this.goDetail(m)}
-              />
-            ))
+          {this.getList().loading || this.getList().data.length > 0 ? (
+            <AntdList
+              rowKey="uuid"
+              className="matter-list-content"
+              loading={this.getList().loading}
+              dataSource={this.getList().data}
+              renderItem={(matter) => (
+                <MatterPanel
+                  mode={this.isInSpace ? 'space' : 'normal'}
+                  spaceMemberRole={
+                    this.isInSpace ? this.spaceMember.role! : undefined
+                  }
+                  key={matter.uuid}
+                  director={director}
+                  matter={matter}
+                  onGoToDirectory={(id) => this.goToDirectory(id)}
+                  onDeleteSuccess={() => this.pagerAndCapacityRefresh()}
+                  onCheckMatter={(m) => this.checkMatter(m)}
+                  onPreviewImage={(m) => this.previewImage(m)}
+                  onGoDetail={(m) => this.goDetail(m)}
+                />
+              )}
+              pagination={
+                this.isSearch()
+                  ? false
+                  : {
+                      onChange: (page) => this.changePage(page),
+                      current: pager.page + 1,
+                      total: pager.totalItems,
+                      pageSize: pager.pageSize,
+                      hideOnSinglePage: true,
+                    }
+              }
+            />
           ) : (
             <Empty description={Lang.t('matter.noContentYet')} />
           )}
         </div>
-        <Pagination
-          className="matter-pagination pull-right"
-          onChange={(page) => this.changePage(page)}
-          current={pager.page + 1}
-          total={pager.totalItems}
-          pageSize={pager.pageSize}
-          hideOnSinglePage
-        />
         {this.crawlModalVisible && (
           <MatterCrawlModal
             spaceUuid={this.getSpaceUuid()}

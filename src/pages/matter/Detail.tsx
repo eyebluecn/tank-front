@@ -15,6 +15,8 @@ import Lang from '../../common/model/global/Lang';
 import InfoCell from '../widget/InfoCell';
 import TankContentCard from '../widget/TankContentCard';
 import Color from '../../common/model/base/option/Color';
+import SpaceMember from '../../common/model/space/member/SpaceMember';
+import { SpaceMemberRole } from '../../common/model/space/member/SpaceMemberRole';
 
 interface RouteParam {
   spaceUuid?: string;
@@ -27,6 +29,8 @@ interface IState {}
 
 export default class Detail extends TankComponent<IProps, IState> {
   matter = new Matter();
+  // 当前用户在当前空间下的成员信息
+  spaceMember = new SpaceMember();
   downloadToken = new DownloadToken();
 
   constructor(props: IProps) {
@@ -44,6 +48,9 @@ export default class Detail extends TankComponent<IProps, IState> {
         this.downloadToken.httpFetchDownloadToken(this.matter.uuid!);
       }
     });
+    if (spaceUuid) {
+      this.spaceMember.httpMine(spaceUuid, () => this.updateUI());
+    }
   }
 
   copyLink() {
@@ -61,8 +68,16 @@ export default class Detail extends TankComponent<IProps, IState> {
       this.matter.httpDetail(() => {
         this.updateUI();
       });
-      MessageBoxUtil.success(Lang.t('copySuccess'));
+      MessageBoxUtil.success(Lang.t('matter.recoverySuccess'));
     });
+  }
+
+  // 如果在空间下，有些操作权限只对管理员和读写成员开放
+  checkHandlePermission() {
+    if (!this.props.match.params.spaceUuid) return true;
+    return [SpaceMemberRole.ADMIN, SpaceMemberRole.READ_WRITE].includes(
+      this.spaceMember.role!
+    );
   }
 
   render() {
@@ -123,7 +138,7 @@ export default class Detail extends TankComponent<IProps, IState> {
                           ? Lang.t('matter.oneTimeLink')
                           : Lang.t('matter.copyPath')}
                       </a>
-                      {matter.deleted ? (
+                      {matter.deleted && this.checkHandlePermission() ? (
                         <a onClick={() => this.recovery()}>
                           {Lang.t('matter.recovery')}
                         </a>
@@ -132,13 +147,13 @@ export default class Detail extends TankComponent<IProps, IState> {
                   </InfoCell>
                 </>
               ) : null}
-              {matter.dir && matter.deleted && (
+              {matter.dir && matter.deleted && this.checkHandlePermission() ? (
                 <InfoCell name={Lang.t('matter.operations')}>
                   <a onClick={() => this.recovery()}>
                     {Lang.t('matter.recovery')}
                   </a>
                 </InfoCell>
-              )}
+              ) : null}
             </div>
           </TankContentCard>
         </div>

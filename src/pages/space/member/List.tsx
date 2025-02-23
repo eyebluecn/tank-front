@@ -1,9 +1,7 @@
 import TankComponent from '../../../common/component/TankComponent';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import Pager from '../../../common/model/base/Pager';
-import SpaceMember, {
-  SpaceMemberFormValues,
-} from '../../../common/model/space/member/SpaceMember';
+import SpaceMember from '../../../common/model/space/member/SpaceMember';
 import Lang from '../../../common/model/global/Lang';
 import { Button, Modal, Table, Tag, Tooltip, Typography } from 'antd';
 import TankTitle from '../../widget/TankTitle';
@@ -25,7 +23,7 @@ import {
 } from '@ant-design/icons';
 import Color from '../../../common/model/base/option/Color';
 import MessageBoxUtil from '../../../common/util/MessageBoxUtil';
-import ModalForm from './widget/ModalForm';
+import ModalForm, { SpaceMemberModalFormValues } from './widget/ModalForm';
 
 interface IProps
   extends RouteComponentProps<{
@@ -41,7 +39,7 @@ export default class SpaceMemberList extends TankComponent<IProps, IState> {
   modalState: {
     visible: boolean;
     mode: 'create' | 'edit';
-    initialValues?: SpaceMemberFormValues;
+    targetSpaceMember?: SpaceMember;
   } = {
     visible: false,
     mode: 'create',
@@ -74,7 +72,7 @@ export default class SpaceMemberList extends TankComponent<IProps, IState> {
     this.modalState = {
       visible: true,
       mode: 'edit',
-      initialValues: spaceMember.getForm(),
+      targetSpaceMember: spaceMember,
     };
     this.updateUI();
   }
@@ -94,18 +92,38 @@ export default class SpaceMemberList extends TankComponent<IProps, IState> {
     });
   }
 
-  handleConfirmModalForm(values: SpaceMemberFormValues) {
+  handleConfirmModalForm(values: SpaceMemberModalFormValues) {
     const spaceMember = new SpaceMember();
-    spaceMember.spaceUuid = this.spaceUuid;
-    spaceMember.assign(values);
-    spaceMember.httpSave(
-      () => {
-        MessageBoxUtil.success(Lang.t('operationSuccess'));
-        this.refresh();
-      },
-      null,
-      () => this.handleHideModalForm()
-    );
+    const body = {
+      spaceUuid: this.spaceUuid,
+      role: values.role,
+    };
+    if (this.modalState.mode === 'edit') {
+      spaceMember.httpEdit(
+        {
+          ...body,
+          uuid: this.modalState.targetSpaceMember?.uuid!,
+          userUuid: values.userUuids.join(','),
+        },
+        () => {
+          MessageBoxUtil.success(Lang.t('operationSuccess'));
+          this.handleHideModalForm();
+          this.refresh();
+        }
+      );
+    } else {
+      spaceMember.httpCreate(
+        {
+          ...body,
+          userUuids: values.userUuids.join(','),
+        },
+        () => {
+          MessageBoxUtil.success(Lang.t('operationSuccess'));
+          this.handleHideModalForm();
+          this.refresh();
+        }
+      );
+    }
   }
 
   handleHideModalForm() {
@@ -218,7 +236,7 @@ export default class SpaceMemberList extends TankComponent<IProps, IState> {
         {modalState.visible && (
           <ModalForm
             mode={modalState.mode}
-            initialValues={modalState.initialValues}
+            targetSpaceMember={modalState.targetSpaceMember}
             onOk={this.handleConfirmModalForm.bind(this)}
             onCancel={() => this.handleHideModalForm()}
           />

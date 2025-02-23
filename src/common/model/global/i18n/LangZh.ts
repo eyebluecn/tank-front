@@ -94,6 +94,7 @@ let LangZh = {
     delete: '删除',
     hardDelete: '彻底删除',
     recovery: '恢复',
+    recoverySuccess: '恢复成功',
     more: '更多',
     share: '分享',
     close: '关闭',
@@ -370,6 +371,9 @@ let LangZh = {
     emptyHint: '暂无任何空间',
     allSpaces: '全部空间',
     partialSpaces: '局部空间',
+    bin: '空间回收站',
+    edit: '编辑空间',
+    delete: '删除空间',
   },
   model: {
     usernameRule: '用户名只能包含字母，数字和"_"',

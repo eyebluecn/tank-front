@@ -8,7 +8,6 @@ import './MatterDeleteModal.less';
 import Preference from '../../../common/model/preference/Preference';
 
 interface IProps {
-  isSpace: boolean; // 是否是空间，空间下暂不展示放入回收站逻辑
   onSoftDel: () => void;
   onHardDel: () => void;
   onClose: () => void;
@@ -23,7 +22,7 @@ export default class MatterDeleteModal extends TankComponent<IProps, IState> {
 
   static preference: Preference = Moon.getSingleton().preference;
 
-  static open(isSpace: boolean, onSoftDel: () => void, onHardDel: () => void) {
+  static open(onSoftDel: () => void, onHardDel: () => void) {
     let modal = Modal.warning({
       className: 'delete-modal custom-handle-modal',
       title: Lang.t('delete'),
@@ -31,7 +30,6 @@ export default class MatterDeleteModal extends TankComponent<IProps, IState> {
       okCancel: false,
       content: (
         <MatterDeleteModal
-          isSpace={isSpace}
           onSoftDel={() => {
             onSoftDel();
             modal.destroy();
@@ -59,16 +57,15 @@ export default class MatterDeleteModal extends TankComponent<IProps, IState> {
           <Button type="primary" danger onClick={this.props.onHardDel}>
             {Lang.t('deleteDirectly')}
           </Button>
-          {!this.props.isSpace &&
-            MatterDeleteModal.preference.getRecycleBinStatus() && (
-              <Button
-                type="primary"
-                className="ml10"
-                onClick={this.props.onSoftDel}
-              >
-                {Lang.t('matter.intoRecycleBin')}
-              </Button>
-            )}
+          {MatterDeleteModal.preference.getRecycleBinStatus() && (
+            <Button
+              type="primary"
+              className="ml10"
+              onClick={this.props.onSoftDel}
+            >
+              {Lang.t('matter.intoRecycleBin')}
+            </Button>
+          )}
         </div>
       </div>
     );

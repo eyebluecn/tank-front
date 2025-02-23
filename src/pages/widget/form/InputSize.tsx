@@ -20,7 +20,11 @@ const InputSize = ({
 
   const renderAfter = () => {
     return (
-      <Select value={unit} onChange={handleChangeUnit}>
+      <Select
+        value={unit}
+        disabled={otherProps.disabled}
+        onChange={handleChangeUnit}
+      >
         {FileUtil.sizeUnits.map((u) => (
           <Select.Option key={u} value={u}>
             {u}
