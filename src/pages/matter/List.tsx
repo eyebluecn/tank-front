@@ -64,7 +64,7 @@ interface IProps {
   spaceUuid?: string;
 }
 
-interface IState {}
+interface IState { }
 
 export default class List extends TankComponent<IProps, IState> {
   isInSpace = !!this.props.spaceUuid; // 是否在空间中
@@ -118,9 +118,9 @@ export default class List extends TankComponent<IProps, IState> {
     loading: boolean;
     data: Matter[];
   } = {
-    loading: false,
-    data: [],
-  };
+      loading: false,
+      data: [],
+    };
 
   // 当前是否有关键词是搜索状态，逻辑上有不一样
   isSearch() {
@@ -238,7 +238,6 @@ export default class List extends TankComponent<IProps, IState> {
 
     if (this.isSearch()) {
       // 刷新搜索列表
-      console.log('search this2', this.searchState.keyword);
       this.refreshSearch(this.searchState.keyword);
     } else {
       // 刷新分页列表
@@ -441,7 +440,7 @@ export default class List extends TankComponent<IProps, IState> {
   launchUpload(
     f: File | FileList,
     puuid = this.currentDirectory.uuid!,
-    errHandle = () => {}
+    errHandle = () => { }
   ) {
     const files = f instanceof FileList ? f : [f];
     for (let i = 0; i < files.length; i++) {
@@ -560,6 +559,11 @@ export default class List extends TankComponent<IProps, IState> {
     return [SpaceMemberRole.ADMIN, SpaceMemberRole.READ_WRITE].includes(
       this.spaceMember.role!
     );
+  }
+
+  checkDeleteHandlePermission() {
+    if (!this.isInSpace) return true;
+    return this.spaceMember.role === SpaceMemberRole.ADMIN;
   }
 
   handleCloseMatterCrawlModal() {
@@ -734,7 +738,7 @@ export default class List extends TankComponent<IProps, IState> {
                 </Button>
               ) : null}
               {this.getListData().length &&
-              selectedMatters.length === this.getListData().length ? (
+                selectedMatters.length === this.getListData().length ? (
                 <Button
                   type="primary"
                   className="mb10"
@@ -756,25 +760,25 @@ export default class List extends TankComponent<IProps, IState> {
                       {Lang.t('download')}
                     </Button>
                   )}
-                  {this.checkHandlePermission() && (
-                    <>
-                      <Button
-                        type="primary"
-                        className="mb10"
-                        onClick={() => this.deleteBatch()}
-                      >
-                        <DeleteOutlined />
-                        {Lang.t('delete')}
-                      </Button>
-                      <Button
-                        type="primary"
-                        className="mb10"
-                        onClick={() => this.toggleMoveBatch()}
-                      >
-                        <DragOutlined />
-                        {Lang.t('matter.move')}
-                      </Button>
-                    </>
+                  {this.checkDeleteHandlePermission() && (
+                    <Button
+                      type="primary"
+                      className="mb10"
+                      onClick={() => this.deleteBatch()}
+                    >
+                      <DeleteOutlined />
+                      {Lang.t('delete')}
+                    </Button>
+                  )}
+
+                  {this.checkHandlePermission() && (<Button
+                    type="primary"
+                    className="mb10"
+                    onClick={() => this.toggleMoveBatch()}
+                  >
+                    <DragOutlined />
+                    {Lang.t('matter.move')}
+                  </Button>
                   )}
 
                   {/*共享空间下暂不支持分享功能*/}
@@ -908,12 +912,12 @@ export default class List extends TankComponent<IProps, IState> {
                 this.isSearch()
                   ? false
                   : {
-                      onChange: (page) => this.changePage(page),
-                      current: pager.page + 1,
-                      total: pager.totalItems,
-                      pageSize: pager.pageSize,
-                      hideOnSinglePage: true,
-                    }
+                    onChange: (page) => this.changePage(page),
+                    current: pager.page + 1,
+                    total: pager.totalItems,
+                    pageSize: pager.pageSize,
+                    hideOnSinglePage: true,
+                  }
               }
             />
           ) : (
