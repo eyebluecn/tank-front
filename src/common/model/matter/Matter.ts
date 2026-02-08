@@ -18,6 +18,11 @@ import MessageBoxUtil from '../../util/MessageBoxUtil';
 import PreviewerHelper from '../../../pages/widget/previewer/PreviewerHelper';
 import HttpBase from '../base/HttpBase';
 import User from '../user/User';
+import ChunkUploader, {
+  UploadSessionStatus,
+  ChunkUploadProgress,
+} from '../chunk/ChunkUploader';
+import Moon from '../global/Moon';
 
 export default class Matter extends BaseEntity {
   puuid: string = '';
@@ -59,6 +64,17 @@ export default class Matter extends BaseEntity {
   speed: number = 0;
   //取消上传source
   cancelSource: CancelTokenSource = axios.CancelToken.source();
+
+  // Chunked upload related
+  chunkUploader: ChunkUploader | null = null;
+  // Uploaded chunks count (for UI display)
+  uploadedChunks: number = 0;
+  // Total chunks count (for UI display)
+  totalChunks: number = 0;
+  // Whether using chunked upload
+  useChunkedUpload: boolean = false;
+  // Upload status for chunked upload
+  uploadStatus: UploadSessionStatus = UploadSessionStatus.UPLOADING;
 
   static URL_MATTER_CREATE_DIRECTORY = '/api/matter/create/directory';
   static URL_MATTER_SOFT_DELETE = '/api/matter/soft/delete';
@@ -628,7 +644,129 @@ export default class Matter extends BaseEntity {
   }
 
   cancelUpload() {
-    this.cancelSource.cancel();
+    if (this.chunkUploader) {
+      this.chunkUploader.cancel();
+      this.loading = false;
+      this.uploadStatus = UploadSessionStatus.CANCELLED;
+      this.updateUI();
+    } else {
+      this.cancelSource.cancel();
+    }
+  }
+
+  // Pause chunked upload
+  pauseUpload() {
+    if (this.chunkUploader && this.uploadStatus === UploadSessionStatus.UPLOADING) {
+      this.chunkUploader.pause();
+      this.uploadStatus = UploadSessionStatus.PAUSED;
+      // Force UI update to show resume button
+      if (this.reactComponent) {
+        this.reactComponent.setState({ _forceUpdate: Date.now() });
+      }
+    }
+  }
+
+  // Resume chunked upload
+  resumeUpload() {
+    if (this.chunkUploader && this.uploadStatus === UploadSessionStatus.PAUSED) {
+      this.uploadStatus = UploadSessionStatus.UPLOADING;
+      this.chunkUploader.resume();
+      // Force UI update to show pause button
+      if (this.reactComponent) {
+        this.reactComponent.setState({ _forceUpdate: Date.now() });
+      }
+    }
+  }
+
+  // Check if using chunked upload and is paused
+  canResume(): boolean {
+    return this.useChunkedUpload && this.uploadStatus === UploadSessionStatus.PAUSED;
+  }
+
+  // Check if using chunked upload and is uploading (not merging, as merging cannot be paused)
+  canPause(): boolean {
+    return this.useChunkedUpload && this.uploadStatus === UploadSessionStatus.UPLOADING;
+  }
+
+  // Smart upload: use chunked upload for large files, regular upload for small files
+  httpSmartUpload(successCallback?: any, failureCallback?: any) {
+    if (!this.file) {
+      this.errorMessage = '请选择上传文件';
+      return;
+    }
+
+    // Check if chunk upload is enabled in preference and file is large enough
+    const allowChunkUpload = Moon.getSingleton().preference.allowChunkUpload;
+    if (allowChunkUpload && ChunkUploader.shouldUseChunkedUpload(this.file.size)) {
+      this.httpChunkedUpload(successCallback, failureCallback);
+    } else {
+      this.httpUpload(successCallback, failureCallback);
+    }
+  }
+
+  // Chunked upload for large files
+  // MD5 verification is always enabled when spark-md5 is available
+  httpChunkedUpload(successCallback?: any, failureCallback?: any) {
+    let that = this;
+
+    // Validate
+    if (!this.validate()) {
+      return;
+    }
+
+    if (!this.validateFilter()) {
+      return;
+    }
+
+    if (!this.validateFileType()) {
+      MessageBoxUtil.error('文件类型不满足，请重试');
+      return;
+    }
+
+    this.useChunkedUpload = true;
+    this.loading = true;
+    this.uploadStatus = UploadSessionStatus.UPLOADING;
+
+    // Create chunk uploader
+    this.chunkUploader = new ChunkUploader(
+      this.file!,
+      this.puuid,
+      this.spaceUuid!,
+      this.privacy,
+      undefined,
+      this.reactComponent!
+    );
+
+    // Set callbacks
+    this.chunkUploader.onProgress = (progress: ChunkUploadProgress) => {
+      that.progress = progress.progress;
+      that.speed = progress.speed;
+      that.uploadedChunks = progress.uploadedChunks;
+      that.totalChunks = progress.totalChunks;
+      // Only update status if not manually paused (avoid race condition with progress events)
+      if (that.uploadStatus !== UploadSessionStatus.PAUSED) {
+        that.uploadStatus = progress.status;
+      }
+      that.updateUI();
+    };
+
+    this.chunkUploader.onComplete = (matter: any) => {
+      that.uuid = matter.uuid;
+      that.loading = false;
+      that.uploadStatus = UploadSessionStatus.COMPLETED;
+      SafeUtil.safeCallback(successCallback)({ data: { data: matter } });
+    };
+
+    this.chunkUploader.onError = (error: string) => {
+      that.errorMessage = error;
+      that.loading = false;
+      that.uploadStatus = UploadSessionStatus.ERROR;
+      that.defaultErrorHandler(error);
+      SafeUtil.safeCallback(failureCallback)(error);
+    };
+
+    // Start upload
+    this.chunkUploader.start();
   }
 
   //清除文件

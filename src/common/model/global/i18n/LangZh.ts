@@ -165,6 +165,20 @@ let LangZh = {
     crawlSuccessTip: '抓取成功',
     crawlDescription:
       '抓取文件指后台将从指定资源链接直接下载到蓝眼云盘当前目录下',
+    // Chunked upload related
+    chunks: '分片',
+    chunkedUpload: '分片上传',
+    mergingChunks: '合并分片中...',
+    paused: '已暂停',
+    completed: '已完成',
+    uploadFailed: '上传失败',
+    cancelled: '已取消',
+    pause: '暂停',
+    resume: '继续',
+    cancel: '取消',
+    // MD5 verification related
+    calculatingMd5: '计算MD5校验中...',
+    md5VerificationEnabled: 'MD5校验已启用',
   },
   router: {
     allFiles: '全部文件',
@@ -203,6 +217,9 @@ let LangZh = {
     docLink: '文档链接',
     tankDocLink: 'https://tank-doc.eyeblue.cn/zh',
     allowRegister: '允许自主注册',
+    allowChunkUpload: '允许分片上传',
+    allowChunkUploadTip:
+      '分片上传适用于大文件(≥100MB)，支持断点续传。建议在服务端支持HTTP/2协议时开启，否则可能因并发连接数限制导致上传变慢。',
     systemCleanup: '重置系统',
     systemCleanupDescription: '重置系统将清空除管理员账号外所有数据',
     systemCleanupPrompt:

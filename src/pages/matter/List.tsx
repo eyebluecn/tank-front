@@ -472,7 +472,8 @@ export default class List extends TankComponent<IProps, IState> {
           }
         }
         m.file = file;
-        m.httpUpload(
+        // Use smart upload: automatically choose chunked upload for large files
+        m.httpSmartUpload(
           () => {
             const index = this.uploadMattersMap[this.getSpaceUuid()].findIndex(
               (matter) => matter === m

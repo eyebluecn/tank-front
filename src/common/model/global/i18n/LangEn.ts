@@ -171,6 +171,20 @@ let LangEn = {
     crawlSuccessTip: 'Crawl successfully',
     crawlDescription:
       'Crawl files refers to the backend downloading directly from the specified resource link to the current directory of EyeblueTank',
+    // Chunked upload related
+    chunks: 'chunks',
+    chunkedUpload: 'Chunked Upload',
+    mergingChunks: 'Merging chunks...',
+    paused: 'Paused',
+    completed: 'Completed',
+    uploadFailed: 'Upload Failed',
+    cancelled: 'Cancelled',
+    pause: 'Pause',
+    resume: 'Resume',
+    cancel: 'Cancel',
+    // MD5 verification related
+    calculatingMd5: 'Calculating MD5...',
+    md5VerificationEnabled: 'MD5 verification enabled',
   },
   router: {
     allFiles: 'All Files',
@@ -209,6 +223,9 @@ let LangEn = {
     docLink: 'Document Link',
     tankDocLink: 'https://tank-doc.eyeblue.cn',
     allowRegister: 'Allow register',
+    allowChunkUpload: 'Allow chunk upload',
+    allowChunkUploadTip:
+      'Chunked upload is for large files (≥100MB) with resume support. Recommended when server supports HTTP/2, otherwise concurrent connection limits may slow down uploads.',
     systemCleanup: 'System Cleanup',
     systemCleanupDescription:
       "This operation will cleanup everything except administrators' data",

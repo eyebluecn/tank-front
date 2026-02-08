@@ -49,6 +49,13 @@ export default class HttpUtil {
 
   /**
    * 上传文件的请求
+   * @param url 请求地址
+   * @param formData 表单数据
+   * @param successCallback 成功回调
+   * @param errorCallback 失败回调
+   * @param finallyCallback 最终回调
+   * @param processCallback 进度回调
+   * @param opts 可选配置，支持 cancelToken 和 timeout
    */
   static httpPostFile(
     url: string,
@@ -63,8 +70,10 @@ export default class HttpUtil {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-      cancelToken: opts ? opts.cancelToken : '',
+      cancelToken: opts?.cancelToken || undefined,
       onUploadProgress: processCallback,
+      // Support custom timeout, default to 10 minutes for large file uploads
+      timeout: opts?.timeout || 10 * 60 * 1000,
     };
 
     axios

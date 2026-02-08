@@ -5,9 +5,10 @@ import TankComponent from '../../common/component/TankComponent';
 import User from '../../common/model/user/User';
 import Moon from '../../common/model/global/Moon';
 import TankTitle from '../widget/TankTitle';
-import { Button, Divider, Empty, message } from 'antd';
+import { Button, Divider, Empty, message, Tooltip } from 'antd';
 import {
   EditOutlined,
+  QuestionCircleOutlined,
   ScanOutlined,
   ThunderboltOutlined,
 } from '@ant-design/icons';
@@ -172,6 +173,19 @@ export default class Index extends TankComponent<IProps, IState> {
 
             <InfoCell name={Lang.t('preference.allowRegister')}>
               {this.preference.allowRegister ? Lang.t('yes') : Lang.t('no')}
+            </InfoCell>
+
+            <InfoCell
+              name={
+                <span>
+                  {Lang.t('preference.allowChunkUpload')}
+                  <Tooltip title={Lang.t('preference.allowChunkUploadTip')}>
+                    <QuestionCircleOutlined className="ml5 text-gray" />
+                  </Tooltip>
+                </span>
+              }
+            >
+              {this.preference.allowChunkUpload ? Lang.t('yes') : Lang.t('no')}
             </InfoCell>
 
             <InfoCell name={Lang.t('preference.docLink')}>
