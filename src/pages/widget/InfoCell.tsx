@@ -3,7 +3,7 @@ import './InfoCell.less';
 import { Col, Row } from 'antd';
 
 interface IProps {
-  name: string;
+  name: React.ReactNode;
   firstSpan?: number;
 }
 
@@ -19,7 +19,7 @@ export default class InfoCell extends React.Component<IProps, IState> {
 
   render() {
     let that = this;
-    let name: string = this.props.name;
+    let name = this.props.name;
 
     let firstSpan: number = 8;
     if (this.props.firstSpan !== undefined) {

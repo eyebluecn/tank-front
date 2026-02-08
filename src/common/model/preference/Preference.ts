@@ -34,6 +34,8 @@ export default class Preference extends BaseEntity {
   deletedKeepDays: number = 7;
   //是否允许自主注册
   allowRegister: boolean = false;
+  //是否允许分片上传
+  allowChunkUpload: boolean = false;
   //预览配置
   previewConfig: PreviewConfig = new PreviewConfig();
   //扫描磁盘配置
@@ -76,6 +78,7 @@ export default class Preference extends BaseEntity {
       defaultTotalSizeLimit: this.defaultTotalSizeLimit,
       deletedKeepDays: this.deletedKeepDays,
       allowRegister: this.allowRegister,
+      allowChunkUpload: this.allowChunkUpload,
       previewConfig: JsonUtil.toJson(this.previewConfig.getForm()),
       scanConfig: JsonUtil.toJson(this.scanConfig.getForm()),
     };

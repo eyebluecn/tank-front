@@ -5,8 +5,8 @@ import TankComponent from '../../common/component/TankComponent';
 import User from '../../common/model/user/User';
 import Moon from '../../common/model/global/Moon';
 import TankTitle from '../widget/TankTitle';
-import { Button, Form, Input, InputNumber, Switch } from 'antd';
-import { SaveOutlined } from '@ant-design/icons';
+import { Button, Form, Input, InputNumber, Switch, Tooltip } from 'antd';
+import { QuestionCircleOutlined, SaveOutlined } from '@ant-design/icons';
 import TankContentCard from '../widget/TankContentCard';
 import Preference from '../../common/model/preference/Preference';
 import { FormInstance } from 'antd/lib/form';
@@ -191,7 +191,23 @@ export default class Edit extends TankComponent<IProps, IState> {
             <Form.Item
               label={Lang.t('preference.allowRegister')}
               name="allowRegister"
-              required={true}
+              required
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+
+            <Form.Item
+              label={
+                <span>
+                  {Lang.t('preference.allowChunkUpload')}
+                  <Tooltip title={Lang.t('preference.allowChunkUploadTip')}>
+                    <QuestionCircleOutlined className="ml5 text-gray" />
+                  </Tooltip>
+                </span>
+              }
+              name="allowChunkUpload"
+              required
               valuePropName="checked"
             >
               <Switch />
