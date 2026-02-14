@@ -2,14 +2,14 @@
 
 [English Version](https://tank-doc.eyeblue.cn/en)
 
-# 蓝眼云盘（4.1.1）
-[在线Demo](https://tank.eyeblue.cn) (体验账号： demo 密码：123456)
+# 蓝眼云盘（4.2.0）
+[在线Demo](https://tank.eyeblue.cn) (体验账号：demo 密码：123456)
 
 [更新文档 CHANGELOG](https://github.com/eyebluecn/tank/blob/master/CHANGELOG)
 
 蓝眼云盘是蓝眼开源系列代表作品之一，致力于打造精致，优雅，简约的云盘。核心功能如下：
 1. 文件列表
-2. 文件/文件夹上传 + 拖拽上传
+2. 文件/文件夹上传 + 拖拽上传 + 分片/断点续传
 3. 文件分享
 4. 文件监控统计
 5. 回收站
